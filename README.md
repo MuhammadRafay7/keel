@@ -41,6 +41,17 @@ Keel tracks work. Items carry state, priority, assignees, labels, estimates and 
 
 Lists render as **list, board, calendar, spreadsheet or timeline**, grouped by any property.
 
+## A look at it
+
+|                                                                                                      |                                                                                                                        |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| <img src="./docs/assets/board.png" alt="Board layout" width="100%" />                                | <img src="./docs/assets/work-item.png" alt="Work item properties" width="100%" />                                      |
+| **Board** — work items in columns by state, with cycle progress in the header                        | **Work items** — state, priority, estimate, cycle and assignee on every item                                            |
+| <img src="./docs/assets/products.png" alt="Projects, pages, AI and intake" width="100%" />           | <img src="./docs/assets/ai.png" alt="Workspace-aware AI" width="100%" />                                                |
+| **Projects, pages, intake** — the four surfaces work moves through                                   | **AI** — questions answered against the workspace, not a blank prompt                                                   |
+
+These are captures of the product illustrations on the marketing site (`apps/marketing`) rather than a signed-in workspace, so they show intended shape rather than live data.
+
 ## Architecture
 
 Keel runs on **Vercel and Supabase only** — no VPS, no always-on server.
@@ -61,7 +72,9 @@ apps/
   web/        main application
   admin/      instance administration
   space/      public shared views
+  marketing/  public marketing site (Next.js)
   live/       realtime collaboration server
+  proxy/      Caddy config for self-hosted images
   api/        Django — reference-only, not deployed
 packages/     15 shared workspace packages (@keel/*)
 supabase/
@@ -75,7 +88,7 @@ Requires **Node ≥ 22.18** and **pnpm 11.3**.
 
 ```bash
 pnpm install
-pnpm dev          # web:3000, admin:3001
+pnpm dev          # web:3000, admin:3001, marketing:3002
 pnpm build
 pnpm check        # format, lint, types
 pnpm fix          # auto-fix
@@ -95,6 +108,7 @@ Two long-lived branches: `staging` for integration, `main` for production. Every
 | --------------------------------------------- | ------------------------------------------ |
 | [architecture.md](./docs/architecture.md)     | Target architecture and what replaces what |
 | [migration-plan.md](./docs/migration-plan.md) | The phased migration off Django            |
+| [deploying-the-backend.md](./docs/deploying-the-backend.md) | Migrations and Edge Functions the live project is missing |
 | [branching.md](./docs/branching.md)           | Branch model, protection, deploys          |
 | [brand.md](./docs/brand.md)                   | Identity — mark, wordmark, usage           |
 | [linting.md](./docs/linting.md)               | Lint and format tooling                    |
