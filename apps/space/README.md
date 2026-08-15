@@ -1,7 +1,7 @@
 <br /><br />
 
 <p align="center">
-<a href="https://plane.so">
+<a href="https://keel.ostenmark.com">
   <img src="https://keel-marketing.s3.ap-south-1.amazonaws.com/keel-readme/keel_logo_.webp" alt="Keel Logo" width="70">
 </a>
 </p>

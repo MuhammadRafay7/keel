@@ -10,7 +10,7 @@ import { create } from "storybook/theming";
 const keelTheme = create({
   base: "dark",
   brandTitle: "Keel UI",
-  brandUrl: "https://plane.so",
+  brandUrl: "https://keel.ostenmark.com",
   brandImage: "keel-lockup-light.svg",
   brandTarget: "_self",
 });

@@ -2,7 +2,7 @@
 
 # Keel Project Setup Script
 # This script prepares the local development environment by setting up all necessary .env files
-# https://github.com/makeplane/plane
+# https://github.com/MuhammadRafay7/keel
 
 # Set colors for output messages
 GREEN='\033[0;32m'
@@ -88,10 +88,10 @@ if [ "$success" = true ]; then
     echo -e "${GREEN}✓${NC} Environment setup completed successfully!\n"
     echo -e "${BOLD}Next steps:${NC}"
     echo -e "1. Review the .env files in each folder if needed"
-    echo -e "2. Start the services with: ${BOLD}docker compose -f docker-compose-local.yml up -d${NC}"
+    echo -e "2. Start the services with: ${BOLD}docker compose -f docker/docker-compose-local.yml up -d${NC}"
     echo -e "\n${GREEN}Happy coding! 🚀${NC}"
 else
     echo -e "${RED}✗${NC} Some issues occurred during setup. Please check the errors above.\n"
-    echo -e "For help, visit: ${BLUE}https://github.com/makeplane/plane${NC}"
+    echo -e "For help, visit: ${BLUE}https://github.com/MuhammadRafay7/keel${NC}"
     exit 1
 fi

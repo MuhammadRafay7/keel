@@ -65,7 +65,7 @@ services:
 
   api:
     build:
-      context: ./apps/api
+      context: ../apps/api
       dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
@@ -73,10 +73,10 @@ services:
     networks:
       - dev_env
     volumes:
-      - ./apps/api:/code
+      - ../apps/api:/code
     command: ./bin/docker-entrypoint-api-local.sh
     env_file:
-      - ./apps/api/.env
+      - ../apps/api/.env
     depends_on:
       - keel-db
       - keel-redis
@@ -86,7 +86,7 @@ services:
 
   worker:
     build:
-      context: ./apps/api
+      context: ../apps/api
       dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
@@ -94,10 +94,10 @@ services:
     networks:
       - dev_env
     volumes:
-      - ./apps/api:/code
+      - ../apps/api:/code
     command: ./bin/docker-entrypoint-worker.sh
     env_file:
-      - ./apps/api/.env
+      - ../apps/api/.env
     depends_on:
       - api
       - keel-db
@@ -105,7 +105,7 @@ services:
 
   beat-worker:
     build:
-      context: ./apps/api
+      context: ../apps/api
       dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
@@ -113,10 +113,10 @@ services:
     networks:
       - dev_env
     volumes:
-      - ./apps/api:/code
+      - ../apps/api:/code
     command: ./bin/docker-entrypoint-beat.sh
     env_file:
-      - ./apps/api/.env
+      - ../apps/api/.env
     depends_on:
       - api
       - keel-db
@@ -124,7 +124,7 @@ services:
 
   migrator:
     build:
-      context: ./apps/api
+      context: ../apps/api
       dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
@@ -132,10 +132,10 @@ services:
     networks:
       - dev_env
     volumes:
-      - ./apps/api:/code
+      - ../apps/api:/code
     command: ./bin/docker-entrypoint-migrator.sh --settings=keel.settings.local
     env_file:
-      - ./apps/api/.env
+      - ../apps/api/.env
     depends_on:
       - keel-db
       - keel-redis

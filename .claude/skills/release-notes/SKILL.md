@@ -6,7 +6,7 @@ user_invocable: true
 
 # Release Notes Generator
 
-Generate structured release notes from a Plane release PR by parsing its commit list, then update the PR description. Output matches the format used on `github.com/makeplane/plane/releases` (e.g. [v1.2.0](https://github.com/makeplane/plane/releases/tag/v1.2.0)). Works for both `makeplane/plane-cloud` and `makeplane/plane-ee`.
+Generate structured release notes from a Plane release PR by parsing its commit list, then update the PR description. Output matches the format used on `github.com/MuhammadRafay7/keel/releases` (e.g. [v1.2.0](https://github.com/MuhammadRafay7/keel)). Works for both `makeplane/plane-cloud` and `makeplane/plane-ee`.
 
 ## Repo-specific versioning
 
@@ -174,7 +174,7 @@ EOF
 
 ## Reference example
 
-The canonical target format is [v1.2.0](https://github.com/makeplane/plane/releases/tag/v1.2.0) on `makeplane/plane`. When in doubt about heading levels, spacing, bolding, or paragraph voice, match that page exactly (minus images).
+The canonical target format is [v1.2.0](https://github.com/MuhammadRafay7/keel) on `makeplane/plane`. When in doubt about heading levels, spacing, bolding, or paragraph voice, match that page exactly (minus images).
 
 ## Common Mistakes
 

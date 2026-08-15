@@ -16,17 +16,17 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": (
         "The Plane REST API\n\n"
         "Visit our quick start guide and full API documentation at "
-        "[developers.plane.so](https://developers.plane.so/api-reference/introduction)."
+        "[developers.plane.so](https://keel.ostenmark.com/docs)."
     ),
     "CONTACT": {
         "name": "Plane",
-        "url": "https://plane.so",
-        "email": "support@plane.so",
+        "url": "https://keel.ostenmark.com",
+        "email": "support@ostenmark.com",
     },
     "VERSION": "0.0.1",
     "LICENSE": {
         "name": "GNU AGPLv3",
-        "url": "https://github.com/makeplane/plane/blob/preview/LICENSE.txt",
+        "url": "https://github.com/MuhammadRafay7/keel",
     },
     # ========================================================================
     # Schema Generation Settings

@@ -17,16 +17,16 @@ const linkMap = [
   {
     key: "mail_to",
     label: "Contact Support",
-    value: "mailto:support@plane.so",
+    value: "mailto:support@ostenmark.com",
   },
   {
     key: "status",
     label: "Status Page",
-    value: "https://status.plane.so/",
+    value: "https://keel.ostenmark.com",
   },
   {
     key: "twitter_handle",
-    label: "@planepowers",
+    label: "@ostenmark",
     value: "https://x.com/planepowers",
   },
 ];
