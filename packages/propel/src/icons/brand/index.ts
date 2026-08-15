@@ -4,10 +4,6 @@
  * See the LICENSE file for details.
  */
 
-export * from "./accenture-logo";
-export * from "./dolby-logo";
-export * from "./sony-logo";
-export * from "./zerodha-logo";
 export * from "./keel-lockup";
 export * from "./keel-logo";
 export * from "./keel-wordmark";
