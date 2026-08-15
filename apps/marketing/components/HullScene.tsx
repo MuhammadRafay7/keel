@@ -5,8 +5,9 @@ import * as THREE from "three";
 import { useTheme } from "next-themes";
 
 /**
- * Three.js 3D Antigravity Hull Scene:
- * Interactive 3D orbital wireframe hull with spine, arcing ribs, and theme-adaptive colors.
+ * Three.js Antigravity 3D Interactive Hero Canvas:
+ * Features a floating quantum antigravity core, nested counter-rotating gyroscope rings,
+ * glowing field arcs, and a floating particle field that responds to pointer gravity.
  */
 export function HullScene() {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -19,9 +20,10 @@ export function HullScene() {
     const isLight = resolvedTheme === "light";
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    // Scene & Camera setup
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(38, mount.clientWidth / mount.clientHeight, 0.1, 100);
-    camera.position.set(6.5, 2.6, 7.5);
+    const camera = new THREE.PerspectiveCamera(42, mount.clientWidth / mount.clientHeight, 0.1, 100);
+    camera.position.set(0, 1.2, 9.5);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -31,84 +33,139 @@ export function HullScene() {
     renderer.domElement.style.touchAction = "pan-y";
     renderer.domElement.style.cursor = "grab";
 
-    const hull = new THREE.Group();
-    scene.add(hull);
+    const antigravityRoot = new THREE.Group();
+    scene.add(antigravityRoot);
 
-    // Theme-adaptive colors
-    const ACCENT = isLight ? new THREE.Color("#0284c7") : new THREE.Color("#38bdf8");
-    const DIM = isLight ? new THREE.Color("#cbd5e1") : new THREE.Color("#1e293b");
+    // Dynamic Theme Colors
+    const COLOR_ACCENT = isLight ? new THREE.Color("#006399") : new THREE.Color("#38bdf8");
+    const COLOR_CYAN = isLight ? new THREE.Color("#0284c7") : new THREE.Color("#67e8f9");
+    const COLOR_DIM = isLight ? new THREE.Color("#94a3b8") : new THREE.Color("#334155");
 
-    // Spine
-    const spineCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(0, 0.35, -4.6),
-      new THREE.Vector3(0, -0.35, -1.6),
-      new THREE.Vector3(0, -0.55, 1.2),
-      new THREE.Vector3(0, -0.05, 4.2),
-    ]);
-    const spine = new THREE.Mesh(
-      new THREE.TubeGeometry(spineCurve, 80, 0.075, 12, false),
-      new THREE.MeshBasicMaterial({ color: ACCENT })
-    );
-    hull.add(spine);
+    // 1. Quantum Core Icosahedron Wireframe
+    const coreGeo = new THREE.IcosahedronGeometry(1.6, 2);
+    const coreMat = new THREE.MeshBasicMaterial({
+      color: COLOR_ACCENT,
+      wireframe: true,
+      transparent: true,
+      opacity: isLight ? 0.35 : 0.45,
+    });
+    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+    antigravityRoot.add(coreMesh);
 
-    // Ribs
-    const RIB_COUNT = 17;
-    const ribs: THREE.Line[] = [];
-    for (let i = 0; i < RIB_COUNT; i++) {
-      const t = i / (RIB_COUNT - 1);
-      const z = -4.4 + t * 8.6;
-      const taper = Math.sin(Math.PI * t) ** 0.75;
-      const beam = 0.35 + taper * 2.05;
-      const depth = 0.3 + taper * 1.5;
-      const base = spineCurve.getPoint(t).y;
+    // Inner glowing core nucleus
+    const nucleusGeo = new THREE.OctahedronGeometry(0.7, 0);
+    const nucleusMat = new THREE.MeshBasicMaterial({
+      color: COLOR_CYAN,
+      wireframe: true,
+      transparent: true,
+      opacity: isLight ? 0.6 : 0.8,
+    });
+    const nucleusMesh = new THREE.Mesh(nucleusGeo, nucleusMat);
+    antigravityRoot.add(nucleusMesh);
 
-      const pts: THREE.Vector3[] = [];
-      const SEG = 44;
-      for (let s = 0; s <= SEG; s++) {
-        const a = (s / SEG) * Math.PI;
-        pts.push(new THREE.Vector3(Math.cos(a) * beam, base + Math.sin(a) * depth * 0.62, z));
-      }
-      const geo = new THREE.BufferGeometry().setFromPoints(pts);
-      const mat = new THREE.LineBasicMaterial({
-        color: DIM.clone().lerp(ACCENT, taper),
+    // 2. Three Orthogonal Antigravity Gyroscope Rings
+    const createGyroRing = (radius: number, tubeRadius: number, color: THREE.Color, opacity: number) => {
+      const ringGeo = new THREE.TorusGeometry(radius, tubeRadius, 16, 100);
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: color,
         transparent: true,
-        opacity: isLight ? 0.45 + taper * 0.4 : 0.35 + taper * 0.5,
+        opacity: opacity,
       });
-      const rib = new THREE.Line(geo, mat);
-      ribs.push(rib);
-      hull.add(rib);
+      return new THREE.Mesh(ringGeo, ringMat);
+    };
+
+    const ring1 = createGyroRing(2.6, 0.02, COLOR_ACCENT, isLight ? 0.4 : 0.6);
+    const ring2 = createGyroRing(3.2, 0.018, COLOR_CYAN, isLight ? 0.3 : 0.5);
+    ring2.rotation.x = Math.PI / 3;
+    const ring3 = createGyroRing(3.8, 0.015, COLOR_DIM, isLight ? 0.25 : 0.4);
+    ring3.rotation.y = Math.PI / 4;
+
+    antigravityRoot.add(ring1);
+    antigravityRoot.add(ring2);
+    antigravityRoot.add(ring3);
+
+    // 3. Orbital Curved Gravity Field Lines
+    const FIELD_LINES_COUNT = 8;
+    const fieldLines: THREE.Line[] = [];
+    for (let i = 0; i < FIELD_LINES_COUNT; i++) {
+      const angle = (i / FIELD_LINES_COUNT) * Math.PI * 2;
+      const pts: THREE.Vector3[] = [];
+      const steps = 40;
+      for (let s = 0; s <= steps; s++) {
+        const t = s / steps;
+        const rad = 1.6 + Math.sin(t * Math.PI) * 2.4;
+        const x = Math.cos(angle + t * 2) * rad;
+        const y = (t - 0.5) * 4.5;
+        const z = Math.sin(angle + t * 2) * rad;
+        pts.push(new THREE.Vector3(x, y, z));
+      }
+      const lineGeo = new THREE.BufferGeometry().setFromPoints(pts);
+      const lineMat = new THREE.LineBasicMaterial({
+        color: i % 2 === 0 ? COLOR_ACCENT : COLOR_CYAN,
+        transparent: true,
+        opacity: isLight ? 0.2 : 0.35,
+      });
+      const line = new THREE.Line(lineGeo, lineMat);
+      fieldLines.push(line);
+      antigravityRoot.add(line);
     }
 
-    // Waterline
-    const wl: THREE.Vector3[] = [];
-    for (let s = 0; s <= 128; s++) {
-      const a = (s / 128) * Math.PI * 2;
-      wl.push(new THREE.Vector3(Math.cos(a) * 2.5, -0.62, Math.sin(a) * 4.9));
-    }
-    hull.add(
-      new THREE.Line(
-        new THREE.BufferGeometry().setFromPoints(wl),
-        new THREE.LineBasicMaterial({
-          color: ACCENT,
-          transparent: true,
-          opacity: isLight ? 0.25 : 0.16,
-        })
-      )
-    );
+    // 4. Antigravity Particle Field (Floating Quantum Dust)
+    const PARTICLE_COUNT = 450;
+    const particlePositions = new Float32Array(PARTICLE_COUNT * 3);
+    const particleBasePositions = new Float32Array(PARTICLE_COUNT * 3);
+    const particleVelocities: { x: number; y: number; z: number }[] = [];
 
-    // Orbit handler
-    let targetAzimuth = 0.35;
-    let azimuth = 0.35;
-    let targetPolar = 0.28;
-    let polar = 0.28;
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const radius = 2.0 + Math.random() * 5.5;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+
+      const x = radius * Math.sin(phi) * Math.cos(theta);
+      const y = radius * Math.sin(phi) * Math.sin(theta);
+      const z = radius * Math.cos(phi);
+
+      particlePositions[i * 3] = x;
+      particlePositions[i * 3 + 1] = y;
+      particlePositions[i * 3 + 2] = z;
+
+      particleBasePositions[i * 3] = x;
+      particleBasePositions[i * 3 + 1] = y;
+      particleBasePositions[i * 3 + 2] = z;
+
+      particleVelocities.push({
+        x: (Math.random() - 0.5) * 0.005,
+        y: (Math.random() - 0.5) * 0.005,
+        z: (Math.random() - 0.5) * 0.005,
+      });
+    }
+
+    const particleGeo = new THREE.BufferGeometry();
+    particleGeo.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
+    const particleMat = new THREE.PointsMaterial({
+      size: isLight ? 0.065 : 0.08,
+      color: COLOR_ACCENT,
+      transparent: true,
+      opacity: isLight ? 0.65 : 0.85,
+    });
+    const particles = new THREE.Points(particleGeo, particleMat);
+    antigravityRoot.add(particles);
+
+    // 5. Interactive Orbit & Gravity Drag
+    let targetRotX = 0.15;
+    let targetRotY = 0.3;
+    let currentRotX = 0.15;
+    let currentRotY = 0.3;
     let dragging = false;
-    let lastX = 0;
-    let lastY = 0;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+    let pointerX = 0;
+    let pointerY = 0;
 
-    const onDown = (e: PointerEvent) => {
+    const onPointerDown = (e: PointerEvent) => {
       dragging = true;
-      lastX = e.clientX;
-      lastY = e.clientY;
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
       renderer.domElement.style.cursor = "grabbing";
       try {
         renderer.domElement.setPointerCapture(e.pointerId);
@@ -116,14 +173,21 @@ export function HullScene() {
         /* fallback */
       }
     };
-    const onMove = (e: PointerEvent) => {
-      if (!dragging) return;
-      targetAzimuth += (e.clientX - lastX) * 0.006;
-      targetPolar = Math.max(-0.45, Math.min(0.9, targetPolar + (e.clientY - lastY) * 0.004));
-      lastX = e.clientX;
-      lastY = e.clientY;
+
+    const onPointerMove = (e: PointerEvent) => {
+      const rect = mount.getBoundingClientRect();
+      pointerX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      pointerY = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
+
+      if (dragging) {
+        targetRotY += (e.clientX - lastMouseX) * 0.005;
+        targetRotX += (e.clientY - lastMouseY) * 0.005;
+        lastMouseX = e.clientX;
+        lastMouseY = e.clientY;
+      }
     };
-    const onUp = (e: PointerEvent) => {
+
+    const onPointerUp = (e: PointerEvent) => {
       dragging = false;
       renderer.domElement.style.cursor = "grab";
       try {
@@ -133,12 +197,12 @@ export function HullScene() {
       }
     };
 
-    renderer.domElement.addEventListener("pointerdown", onDown);
-    renderer.domElement.addEventListener("pointermove", onMove);
-    renderer.domElement.addEventListener("pointerup", onUp);
-    renderer.domElement.addEventListener("pointercancel", onUp);
+    renderer.domElement.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
 
-    const resize = () => {
+    // Resize handler
+    const onResize = () => {
       const w = mount.clientWidth;
       const h = mount.clientHeight;
       if (w === 0 || h === 0) return;
@@ -146,60 +210,92 @@ export function HullScene() {
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
     };
-    resize();
-    const ro = new ResizeObserver(resize);
-    ro.observe(mount);
+    onResize();
+    const resizeObserver = new ResizeObserver(onResize);
+    resizeObserver.observe(mount);
 
+    // Animation loop
     let raf = 0;
-    const start = performance.now();
-    const tick = () => {
-      raf = requestAnimationFrame(tick);
-      const elapsed = (performance.now() - start) / 1000;
+    const startTime = performance.now();
 
-      if (!dragging && !prefersReduced) targetAzimuth += 0.0016;
+    const animate = () => {
+      raf = requestAnimationFrame(animate);
+      const elapsed = (performance.now() - startTime) / 1000;
 
-      azimuth += (targetAzimuth - azimuth) * 0.07;
-      polar += (targetPolar - polar) * 0.07;
+      // Auto rotation when idle
+      if (!dragging && !prefersReduced) {
+        targetRotY += 0.0025;
+        targetRotX = Math.sin(elapsed * 0.4) * 0.15 + 0.1;
+      }
 
-      const r = 10.4;
-      camera.position.set(
-        Math.sin(azimuth) * r * Math.cos(polar),
-        1.9 + Math.sin(polar) * r * 0.55,
-        Math.cos(azimuth) * r * Math.cos(polar)
-      );
-      camera.lookAt(0, -0.1, 0);
+      // Smooth camera orbit
+      currentRotX += (targetRotX - currentRotX) * 0.06;
+      currentRotY += (targetRotY - currentRotY) * 0.06;
 
+      antigravityRoot.rotation.x = currentRotX;
+      antigravityRoot.rotation.y = currentRotY;
+
+      // Gyroscope counter-rotations
+      ring1.rotation.z = elapsed * 0.4;
+      ring2.rotation.y = -elapsed * 0.35;
+      ring3.rotation.x = elapsed * 0.25;
+
+      coreMesh.rotation.y = -elapsed * 0.3;
+      coreMesh.rotation.z = elapsed * 0.15;
+      nucleusMesh.rotation.y = elapsed * 0.6;
+      nucleusMesh.rotation.x = elapsed * 0.4;
+
+      // Floating particles floating buoyancy & pointer interaction
       if (!prefersReduced) {
-        ribs.forEach((rib, i) => {
-          const phase = elapsed * 0.9 - i * 0.24;
-          const m = rib.material as THREE.LineBasicMaterial;
-          const t = i / (RIB_COUNT - 1);
-          const taper = Math.sin(Math.PI * t) ** 0.75;
-          m.opacity = (isLight ? 0.35 : 0.3) + taper * 0.45 + Math.sin(phase) * 0.14;
+        const positions = particleGeo.attributes.position.array as Float32Array;
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+          const idx = i * 3;
+
+          // Buoyancy wave
+          positions[idx + 1] = particleBasePositions[idx + 1] + Math.sin(elapsed * 1.5 + i * 0.1) * 0.2;
+          positions[idx] = particleBasePositions[idx] + Math.cos(elapsed * 1.2 + i * 0.15) * 0.15;
+          positions[idx + 2] = particleBasePositions[idx + 2] + Math.sin(elapsed * 0.8 + i * 0.08) * 0.15;
+
+          // Gentle mouse gravity reaction
+          positions[idx] += pointerX * 0.08 * (1 / (1 + Math.abs(positions[idx])));
+          positions[idx + 1] += pointerY * 0.08 * (1 / (1 + Math.abs(positions[idx + 1])));
+        }
+        particleGeo.attributes.position.needsUpdate = true;
+
+        // Subtle pulsing for field lines
+        fieldLines.forEach((line, index) => {
+          const mat = line.material as THREE.LineBasicMaterial;
+          mat.opacity = (isLight ? 0.15 : 0.25) + Math.sin(elapsed * 2 + index) * 0.1;
         });
       }
 
       renderer.render(scene, camera);
     };
-    tick();
+
+    animate();
 
     return () => {
       cancelAnimationFrame(raf);
-      ro.disconnect();
-      renderer.domElement.removeEventListener("pointerdown", onDown);
-      renderer.domElement.removeEventListener("pointermove", onMove);
-      renderer.domElement.removeEventListener("pointerup", onUp);
-      renderer.domElement.removeEventListener("pointercancel", onUp);
-      scene.traverse((o) => {
-        if (o instanceof THREE.Mesh || o instanceof THREE.Line) {
-          o.geometry.dispose();
-          (o.material as THREE.Material).dispose();
+      resizeObserver.disconnect();
+      renderer.domElement.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
+      scene.traverse((obj) => {
+        if (obj instanceof THREE.Mesh || obj instanceof THREE.Line || obj instanceof THREE.Points) {
+          obj.geometry.dispose();
+          if (Array.isArray(obj.material)) {
+            obj.material.forEach((m) => m.dispose());
+          } else {
+            obj.material.dispose();
+          }
         }
       });
       renderer.dispose();
-      if (renderer.domElement.parentNode === mount) mount.removeChild(renderer.domElement);
+      if (renderer.domElement.parentNode === mount) {
+        mount.removeChild(renderer.domElement);
+      }
     };
   }, [resolvedTheme]);
 
-  return <div ref={mountRef} className="hull-canvas" aria-hidden="true" />;
+  return <div ref={mountRef} className="antigravity-canvas-container" aria-hidden="true" />;
 }
