@@ -24,6 +24,7 @@
   "dependencies": {
     "@keel/constants": "workspace:*",
     "@keel/types": "workspace:*",
+    "@supabase/supabase-js": "catalog:",
     "axios": "catalog:",
     "file-type": "catalog:"
   },

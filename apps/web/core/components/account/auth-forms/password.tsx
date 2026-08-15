@@ -12,6 +12,7 @@ import { Eye, EyeOff, Info, XCircle } from "lucide-react";
 // keel imports
 import { API_BASE_URL, E_PASSWORD_STRENGTH, AUTH_TRACKER_ELEMENTS } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";
+import { isSupabaseConfigured, supabaseAuthService } from "@keel/services";
 import { Button } from "@keel/propel/button";
 import { CloseIcon } from "@keel/propel/icons";
 import { Input, PasswordStrengthIndicator, Spinner } from "@keel/ui";
@@ -63,6 +64,7 @@ export const AuthPasswordForm = observer(function AuthPasswordForm(props: Props)
   const [isPasswordInputFocused, setIsPasswordInputFocused] = useState(false);
   const [isRetryPasswordInputFocused, setIsRetryPasswordInputFocused] = useState(false);
   const [isBannerMessage, setBannerMessage] = useState(false);
+  const [supabaseError, setSupabaseError] = useState<string | undefined>(undefined);
 
   const handleShowPassword = (key: keyof typeof showPassword) =>
     setShowPassword((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -105,11 +107,11 @@ export const AuthPasswordForm = observer(function AuthPasswordForm(props: Props)
 
   const isButtonDisabled = useMemo(
     () =>
-      !isSubmitting &&
-      !!passwordFormData.password &&
-      (mode === EAuthModes.SIGN_UP ? passwordFormData.password === passwordFormData.confirm_password : true)
-        ? false
-        : true,
+      !(
+        !isSubmitting &&
+        !!passwordFormData.password &&
+        (mode === EAuthModes.SIGN_UP ? passwordFormData.password === passwordFormData.confirm_password : true)
+      ),
     [isSubmitting, mode, passwordFormData.confirm_password, passwordFormData.password]
   );
 
@@ -144,6 +146,14 @@ export const AuthPasswordForm = observer(function AuthPasswordForm(props: Props)
           </button>
         </div>
       )}
+      {supabaseError && (
+        <div className="relative flex items-center gap-2 rounded-md border border-danger-strong/50 bg-danger-subtle p-2">
+          <div className="relative flex h-4 w-4 shrink-0 items-center justify-center">
+            <Info size={16} className="text-danger-primary" />
+          </div>
+          <div className="w-full text-13 font-medium text-danger-primary">{supabaseError}</div>
+        </div>
+      )}
       <form
         ref={formRef}
         className="space-y-4"
@@ -151,17 +161,37 @@ export const AuthPasswordForm = observer(function AuthPasswordForm(props: Props)
         action={`${API_BASE_URL}/auth/${mode === EAuthModes.SIGN_IN ? "sign-in" : "sign-up"}/`}
         onSubmit={async (event) => {
           event.preventDefault(); // Prevent form from submitting by default
-          await handleCSRFToken();
           const isPasswordValid =
             mode === EAuthModes.SIGN_UP
               ? getPasswordStrength(passwordFormData.password) === E_PASSWORD_STRENGTH.STRENGTH_VALID
               : true;
-          if (isPasswordValid) {
-            setIsSubmitting(true);
-            if (formRef.current) formRef.current.submit(); // Manually submit the form if the condition is met
-          } else {
+          if (!isPasswordValid) {
             setBannerMessage(true);
+            return;
           }
+
+          // Supabase Auth: submit over the API rather than posting the form to
+          // Django. The native POST below remains for the pre-migration path.
+          if (isSupabaseConfigured) {
+            setIsSubmitting(true);
+            setSupabaseError(undefined);
+            const result =
+              mode === EAuthModes.SIGN_UP
+                ? await supabaseAuthService.signUp(passwordFormData.email, passwordFormData.password)
+                : await supabaseAuthService.signIn(passwordFormData.email, passwordFormData.password);
+            setIsSubmitting(false);
+
+            if (result.success) {
+              window.location.assign(nextPath || "/");
+            } else {
+              setSupabaseError(result.error);
+            }
+            return;
+          }
+
+          await handleCSRFToken();
+          setIsSubmitting(true);
+          if (formRef.current) formRef.current.submit(); // Manually submit the form if the condition is met
         }}
         onError={() => {
           setIsSubmitting(false);
@@ -214,7 +244,6 @@ export const AuthPasswordForm = observer(function AuthPasswordForm(props: Props)
               onFocus={() => setIsPasswordInputFocused(true)}
               onBlur={() => setIsPasswordInputFocused(false)}
               autoComplete="off"
-              autoFocus
             />
             <button
               type="button"
