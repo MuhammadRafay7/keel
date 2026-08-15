@@ -24,7 +24,7 @@ export function Header() {
             Sign in
           </a>
           <a className="btn btn-accent" href={APP}>
-            Get started
+            Get started free
           </a>
         </div>
       </div>

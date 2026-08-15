@@ -5,8 +5,8 @@ import * as THREE from "three";
 import { useTheme } from "next-themes";
 
 /**
- * Three.js 3D Hull Scene for Keel Hero:
- * Interactive wireframe hull with orbiting spine and light/dark theme awareness.
+ * Three.js 3D Antigravity Hull Scene:
+ * Interactive 3D orbital wireframe hull with spine, arcing ribs, and theme-adaptive colors.
  */
 export function HullScene() {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -34,11 +34,11 @@ export function HullScene() {
     const hull = new THREE.Group();
     scene.add(hull);
 
-    // Theme-dependent colors
+    // Theme-adaptive colors
     const ACCENT = isLight ? new THREE.Color("#0284c7") : new THREE.Color("#38bdf8");
     const DIM = isLight ? new THREE.Color("#cbd5e1") : new THREE.Color("#1e293b");
 
-    // The spine
+    // Spine
     const spineCurve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(0, 0.35, -4.6),
       new THREE.Vector3(0, -0.35, -1.6),
@@ -46,13 +46,13 @@ export function HullScene() {
       new THREE.Vector3(0, -0.05, 4.2),
     ]);
     const spine = new THREE.Mesh(
-      new THREE.TubeGeometry(spineCurve, 80, 0.07, 12, false),
+      new THREE.TubeGeometry(spineCurve, 80, 0.075, 12, false),
       new THREE.MeshBasicMaterial({ color: ACCENT })
     );
     hull.add(spine);
 
-    // Ribs arcing off the spine
-    const RIB_COUNT = 18;
+    // Ribs
+    const RIB_COUNT = 17;
     const ribs: THREE.Line[] = [];
     for (let i = 0; i < RIB_COUNT; i++) {
       const t = i / (RIB_COUNT - 1);
@@ -79,7 +79,7 @@ export function HullScene() {
       hull.add(rib);
     }
 
-    // Waterline ring
+    // Waterline
     const wl: THREE.Vector3[] = [];
     for (let s = 0; s <= 128; s++) {
       const a = (s / 128) * Math.PI * 2;
@@ -91,12 +91,12 @@ export function HullScene() {
         new THREE.LineBasicMaterial({
           color: ACCENT,
           transparent: true,
-          opacity: isLight ? 0.25 : 0.18,
+          opacity: isLight ? 0.25 : 0.16,
         })
       )
     );
 
-    // Orbit controls
+    // Orbit handler
     let targetAzimuth = 0.35;
     let azimuth = 0.35;
     let targetPolar = 0.28;

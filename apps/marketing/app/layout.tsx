@@ -9,14 +9,14 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://keel.ostenmark.com"),
   title: {
-    default: "Keel — Open Source Project Management Platform",
+    default: "Keel — Open Source Project & Knowledge Management",
     template: "%s — Keel",
   },
   description:
-    "Keel tracks work items, cycles, modules, roadmaps, collaborative docs, and triage inbox. Built on Postgres & Supabase.",
+    "Keel brings projects, docs, and workflows into one unified workspace so teams can plan, execute, and stay aligned. Cloud and self-hosted.",
   openGraph: {
     title: "Keel",
-    description: "Open Source Project Management Platform for Software Teams.",
+    description: "Open Source Project & Knowledge Management Platform.",
     url: "https://keel.ostenmark.com",
     siteName: "Keel",
     type: "website",
