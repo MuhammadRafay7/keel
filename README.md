@@ -1,167 +1,84 @@
-<br /><br />
+# Keel
 
-<p align="center">
-<a href="https://plane.so">
-  <img src="https://media.docs.plane.so/logo/plane_github_readme.png" alt="Plane Logo" width="400">
-</a>
-</p>
-<p align="center"><b>Modern project management for all teams</b></p>
+Project management — work items, cycles, modules, roadmaps and collaborative docs.
 
-<p align="center">
-    <a href="https://plane.so/"><b>Website</b></a> •
-    <a href="https://forum.plane.so"><b>Forum</b></a> •
-    <a href="https://x.com/planepowers"><b>X</b></a> •
-    <a href="https://docs.plane.so/"><b>Documentation</b></a>
-</p>
+Running at **[keel.ostenmark.com](https://keel.ostenmark.com)**.
 
-<p>
-    <a href="https://app.plane.so/#gh-light-mode-only" target="_blank">
-      <img
-        src="https://media.docs.plane.so/GitHub-readme/github-top.webp"
-        alt="Keel Screens"
-        width="100%"
-      />
-    </a>
-</p>
+---
 
-Meet [Plane](https://plane.so/), an open-source project management tool to track issues, run ~sprints~ cycles, and manage product roadmaps without the chaos of managing the tool itself. 🧘‍♀️
+## What it is
 
-> Plane is evolving every day. Your suggestions, ideas, and reported bugs help us immensely. Do not hesitate to join in the conversation on [Forum](https://forum.plane.so) or raise a GitHub issue. We read everything and respond to most.
+Keel tracks work. Items carry state, priority, assignees, labels, estimates and dates, nest into sub-items, and link to each other as blocking, duplicate or related. Around that:
 
-## 🚀 Installation
+- **Cycles** — time-boxed sprints with burn-down tracking
+- **Modules** — durable groupings that cut across cycles
+- **Views** — saved filter, grouping and layout combinations, private or shared
+- **Pages** — collaborative rich-text docs, editable by several people at once
+- **Intake** — a triage inbox for requests before they enter the backlog
+- **Analytics** — charts across the whole workspace
 
-Getting started with Keel is simple. Choose the setup that works best for you:
+Lists render as list, board, calendar, spreadsheet or timeline, grouped by any property.
 
-- **Keel Cloud**
-  Sign up for a free account on [Plane Cloud](https://app.plane.so)—it's the fastest way to get up and running without worrying about infrastructure.
+## Architecture
 
-- **Self-host Keel**
-  Prefer full control over your data and infrastructure? Install and run Plane on your own servers. Follow our detailed [deployment guides](https://developers.plane.so/self-hosting/overview) to get started.
+Keel runs on **Vercel and Supabase only** — no VPS, no always-on server.
 
-| Installation methods | Docs link                                                                                                                                                                               |
-| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Docker               | [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://developers.plane.so/self-hosting/methods/docker-compose)         |
-| Kubernetes           | [![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)](https://developers.plane.so/self-hosting/methods/kubernetes) |
-| Managed hosting      | [<img alt="Deploy with Zenith" src="https://cdn.zenith.hosting/buttons/deploy-with-zenith.svg" height="40">](https://zenith.hosting/host/keel) |
+| Piece                                  | Runs on                               |
+| -------------------------------------- | ------------------------------------- |
+| `apps/web`, `apps/admin`, `apps/space` | Vercel — static SPA builds            |
+| Postgres, Auth, Storage, RLS, Realtime | Supabase                              |
+| API logic, scheduled and queued work   | Supabase Edge Functions, Cron, Queues |
+| `apps/api` (Django)                    | Nowhere — reference-only, see below   |
 
-`Instance admins` can configure instance settings with [God mode](https://developers.plane.so/self-hosting/govern/instance-admin).
+See [docs/architecture.md](./docs/architecture.md) for the full picture, including the one unsolved problem: collaborative editing without a stateful server.
 
-## 🌟 Features
+## Repository layout
 
-- **Work Items**
-  Efficiently create and manage tasks with a robust rich text editor that supports file uploads. Enhance organization and tracking by adding sub-properties and referencing related issues.
+```
+apps/
+  web/      main application
+  admin/    instance administration
+  space/    public shared views
+  live/     realtime collaboration server
+  api/      Django — reference-only, not deployed
+packages/   15 shared workspace packages (@keel/*)
+docs/       working documentation
+```
 
-- **Cycles**
-  Maintain your team’s momentum with Cycles. Track progress effortlessly using burn-down charts and other insightful tools.
+## Development
 
-- **Modules**
-  Simplify complex projects by dividing them into smaller, manageable modules.
+Requires Node ≥ 22.18 and pnpm 11.3.
 
-- **Views**
-  Customize your workflow by creating filters to display only the most relevant issues. Save and share these views with ease.
+```bash
+pnpm install
+pnpm dev          # web:3000, admin:3001
+pnpm build
+pnpm check        # format, lint, types
+pnpm fix          # auto-fix
+```
 
-- **Pages**
-  Capture and organize ideas using Keel Pages, complete with AI capabilities and a rich text editor. Format text, insert images, add hyperlinks, or convert your notes into actionable items.
+Tooling is the **oxc** stack — `oxlint` and `oxfmt`, not ESLint or Prettier. Internal dependencies use `workspace:*`, external ones use `catalog:` from `pnpm-workspace.yaml`.
 
-- **Analytics**
-  Access real-time insights across all your Keel data. Visualize trends, remove blockers, and keep your projects moving forward.
+## Contributing
 
-## 🛠️ Local development
+Two branches: `staging` for integration, `main` for production. Everything reaches `main` through a pull request. See [docs/branching.md](./docs/branching.md).
 
-See [CONTRIBUTING](./CONTRIBUTING.md)
+## Documentation
 
-## ⚙️ Built with
+| Doc                                           | Contents                                   |
+| --------------------------------------------- | ------------------------------------------ |
+| [architecture.md](./docs/architecture.md)     | Target architecture and what replaces what |
+| [migration-plan.md](./docs/migration-plan.md) | The phased migration off Django            |
+| [branching.md](./docs/branching.md)           | Branch model, protection, deploys          |
+| [brand.md](./docs/brand.md)                   | Identity — mark, wordmark, usage           |
+| [linting.md](./docs/linting.md)               | Lint and format tooling                    |
 
-[![React Router](https://img.shields.io/badge/-React%20Router-CA4245?logo=react-router&style=for-the-badge&logoColor=white)](https://reactrouter.com/)
-[![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=green)](https://www.djangoproject.com/)
-[![Node JS](https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white)](https://nodejs.org/en)
+## Origin and licence
 
-## 📸 Screenshots
+Keel is a fork of **[Plane](https://github.com/makeplane/plane)** by Plane Software, Inc., used under the GNU Affero General Public License v3.0. Plane is an excellent piece of software and this project would not exist without it.
 
-  <p>
-    <a href="https://plane.so" target="_blank">
-      <img
-        src="https://media.docs.plane.so/GitHub-readme/github-work-items.webp"
-        alt="Keel Views"
-        width="100%"
-      />
-    </a>
-  </p>
-  <p>
-    <a href="https://plane.so" target="_blank">
-      <img
-        src="https://media.docs.plane.so/GitHub-readme/github-cycles.webp"
-        width="100%"
-      />
-    </a>
-  </p>
-  <p>
-    <a href="https://plane.so" target="_blank">
-      <img
-        src="https://media.docs.plane.so/GitHub-readme/github-modules.webp"
-        alt="Keel Cycles and Modules"
-        width="100%"
-      />
-    </a>
-  </p>
-  <p>
-    <a href="https://plane.so" target="_blank">
-      <img
-        src="https://media.docs.plane.so/GitHub-readme/github-views.webp"
-        alt="Keel Analytics"
-        width="100%"
-      />
-    </a>
-  </p>
-   <p>
-    <a href="https://plane.so" target="_blank">
-      <img
-        src="https://media.docs.plane.so/GitHub-readme/github-analytics.webp"
-        alt="Keel Pages"
-        width="100%"
-      />
-    </a>
-  </p>
-</p>
+Keel is not affiliated with, endorsed by, or supported by Plane Software, Inc.
 
-## 📝 Documentation
+This project remains licensed under **[AGPL-3.0-only](./LICENSE.txt)**. Upstream copyright notices are preserved throughout the source.
 
-Explore Plane's [product documentation](https://docs.plane.so/) and [developer documentation](https://developers.plane.so/) to learn about features, setup, and usage.
-
-## ❤️ Community
-
-Join the Plane community on [GitHub Discussions](https://github.com/orgs/makeplane/discussions) and our [Forum](https://forum.plane.so). We follow a [Code of conduct](https://github.com/makeplane/plane/blob/master/CODE_OF_CONDUCT.md) in all our community channels.
-
-Feel free to ask questions, report bugs, participate in discussions, share ideas, request features, or showcase your projects. We’d love to hear from you!
-
-## 🛡️ Security
-
-If you discover a security vulnerability in Plane, please report it responsibly instead of opening a public issue. We take all legitimate reports seriously and will investigate them promptly. See [Security policy](https://github.com/makeplane/plane/blob/master/SECURITY.md) for more info.
-
-To disclose any security issues, please email us at security@plane.so.
-
-## 🤝 Contributing
-
-There are many ways you can contribute to Keel:
-
-- Report [bugs](https://github.com/makeplane/plane/issues/new?assignees=srinivaspendem%2Cpushya22&labels=%F0%9F%90%9Bbug&projects=&template=--bug-report.yaml&title=%5Bbug%5D%3A+) or submit [feature requests](https://github.com/makeplane/plane/issues/new?assignees=srinivaspendem%2Cpushya22&labels=%E2%9C%A8feature&projects=&template=--feature-request.yaml&title=%5Bfeature%5D%3A+).
-- Review the [documentation](https://docs.plane.so/) and submit [pull requests](https://github.com/makeplane/docs) to improve it—whether it's fixing typos or adding new content.
-- Talk or write about Plane or any other ecosystem integration and [let us know](https://forum.plane.so)!
-- Show your support by upvoting [popular feature requests](https://github.com/makeplane/plane/issues).
-
-Please read [CONTRIBUTING.md](https://github.com/makeplane/plane/blob/master/CONTRIBUTING.md) for details on the process for submitting pull requests to us.
-
-### Repo activity
-
-![Plane Repo Activity](https://repobeats.axiom.co/api/embed/2523c6ed2f77c082b7908c33e2ab208981d76c39.svg "Repobeats analytics image")
-
-### We couldn't have done this without you.
-
-<a href="https://github.com/makeplane/plane/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=makeplane/plane" />
-</a>
-
-## License
-
-This project is licensed under the [GNU Affero General Public License v3.0](https://github.com/makeplane/plane/blob/master/LICENSE.txt).
-# keel
+Because Keel is served over a network, AGPL §13 obliges us to offer users the complete corresponding source of this modified version — which is this repository.
