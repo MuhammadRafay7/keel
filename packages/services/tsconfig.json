@@ -2,7 +2,11 @@
   "extends": "@keel/typescript-config/react-library.json",
   "compilerOptions": {
     "exactOptionalPropertyTypes": false,
-    "noUnusedLocals": false
+    "noUnusedLocals": false,
+    // Service methods keep the full `(workspaceSlug, projectId, id)` signature
+    // their Django counterparts have, even where the Supabase query needs only
+    // the id and RLS does the scoping. Matches the web app's own setting.
+    "noUnusedParameters": false
   },
   "include": ["./src"],
   "exclude": ["dist", "build", "node_modules"]

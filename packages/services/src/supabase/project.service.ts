@@ -130,7 +130,7 @@ export class SupabaseProjectService {
 
     if (error) throw new Error(`Failed to save the project: ${error.message}`);
 
-    return this.toProject(data as Record<string, unknown>);
+    return this.toProject(data as unknown as Record<string, unknown>);
   }
 
   /** Soft delete, consistent with the rest of the schema. */
@@ -174,7 +174,7 @@ export class SupabaseProjectService {
         created_at: now,
         updated_at: now,
         name: data.name ?? "",
-        description: data.description ?? "",
+        description: "",
         color: data.color ?? "#60646C",
         sort_order: 65535,
         project_id: projectId,
@@ -197,7 +197,9 @@ export class SupabaseProjectService {
     patch: Partial<IIssueLabel>
   ): Promise<IIssueLabel> {
     const payload: Record<string, unknown> = { updated_at: new Date().toISOString() };
-    for (const key of ["name", "description", "color", "sort_order"] as const) {
+    // `description` is a column on `labels` but not a field the application
+    // carries on a label, so there is nothing to send for it.
+    for (const key of ["name", "color", "sort_order"] as const) {
       if (key in patch) payload[key] = patch[key as keyof IIssueLabel];
     }
 

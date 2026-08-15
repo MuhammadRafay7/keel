@@ -24,6 +24,21 @@ const PAGE_FIELDS =
  * and until that is resolved these reads and writes are last-write-wins.
  */
 export class SupabasePageService {
+  /**
+   * Puts `project_ids` back on a page row.
+   *
+   * The column does not exist — `project_pages` is what places a page inside a
+   * project — but the application treats `project_ids[0]` as the project a page
+   * belongs to, and every write goes through that lookup. A page returned
+   * without it cannot be saved, renamed, locked or archived.
+   */
+  private toPage(row: Record<string, unknown>, projectId?: string): TPage {
+    const joined = (row.project_pages ?? []) as { project_id: string }[];
+    const projectIds = projectId ? [projectId] : joined.map((p) => p.project_id).filter(Boolean);
+    const { project_pages: _ignored, ...page } = row;
+    return { ...page, project_ids: projectIds } as unknown as TPage;
+  }
+
   private async context(): Promise<{ userId: string; now: string }> {
     const { data } = await getSupabase().auth.getSession();
     const userId = data.session?.user.id;
@@ -40,31 +55,33 @@ export class SupabasePageService {
 
     if (error) throw new Error(`Failed to load pages: ${error.message}`);
 
-    return (data ?? []).map((row) => (row as unknown as { page: TPage }).page);
+    return (data ?? []).map((row) =>
+      this.toPage((row as unknown as { page: Record<string, unknown> }).page, projectId)
+    );
   }
 
   async getWorkspacePages(workspaceSlug: string): Promise<TPage[]> {
     const { data, error } = await getSupabase()
       .from("pages")
-      .select(`${PAGE_FIELDS}, workspace:workspaces!inner(slug)`)
+      .select(`${PAGE_FIELDS}, workspace:workspaces!inner(slug), project_pages(project_id)`)
       .eq("workspace.slug", workspaceSlug)
       .is("deleted_at", null)
       .order("updated_at", { ascending: false });
 
     if (error) throw new Error(`Failed to load pages: ${error.message}`);
-    return (data ?? []) as unknown as TPage[];
+    return (data ?? []).map((row) => this.toPage(row as unknown as Record<string, unknown>));
   }
 
   async getPageDetails(workspaceSlug: string, pageId: string): Promise<TPage> {
     const { data, error } = await getSupabase()
       .from("pages")
-      .select(PAGE_FIELDS)
+      .select(`${PAGE_FIELDS}, project_pages(project_id)`)
       .eq("id", pageId)
       .is("deleted_at", null)
       .single();
 
     if (error) throw new Error(`Failed to load that page: ${error.message}`);
-    return data as unknown as TPage;
+    return this.toPage(data as unknown as Record<string, unknown>);
   }
 
   async createPage(workspaceSlug: string, data: Partial<TPage>, projectId?: string): Promise<TPage> {
@@ -76,7 +93,7 @@ export class SupabasePageService {
     });
 
     if (error) throw new Error(error.message);
-    return created as unknown as TPage;
+    return this.toPage(created as unknown as Record<string, unknown>, projectId);
   }
 
   async updatePage(workspaceSlug: string, pageId: string, patch: Partial<TPage>): Promise<TPage> {
@@ -100,11 +117,11 @@ export class SupabasePageService {
       .from("pages")
       .update(payload)
       .eq("id", pageId)
-      .select(PAGE_FIELDS)
+      .select(`${PAGE_FIELDS}, project_pages(project_id)`)
       .single();
 
     if (error) throw new Error(`Failed to save that page: ${error.message}`);
-    return data as unknown as TPage;
+    return this.toPage(data as unknown as Record<string, unknown>);
   }
 
   /**

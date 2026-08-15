@@ -20,6 +20,12 @@ export default defineConfig(() => ({
   },
   build: {
     assetsInlineLimit: 0,
+    // Without maps, every production stack trace names a minified chunk and a
+    // column number, which is unreadable. There is no error tracking yet, so
+    // these maps are the only way an error reported from production can be
+    // traced back to a line. The repository is public, so they reveal nothing
+    // the source does not.
+    sourcemap: true,
   },
   plugins: [reactRouter(), tsconfigPaths({ projects: [path.resolve(__dirname, "tsconfig.json")] })],
   resolve: {
