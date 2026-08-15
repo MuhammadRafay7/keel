@@ -7,14 +7,14 @@
 import { useMemo } from "react";
 import uniq from "lodash-es/uniq";
 import { observer } from "mobx-react";
-// plane package imports
-import type { TActivityFilters } from "@plane/constants";
-import { E_SORT_ORDER, defaultActivityFilters } from "@plane/constants";
-import { useLocalStorage } from "@plane/hooks";
+// keel package imports
+import type { TActivityFilters } from "@keel/constants";
+import { E_SORT_ORDER, defaultActivityFilters } from "@keel/constants";
+import { useLocalStorage } from "@keel/hooks";
 // i18n
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@keel/i18n";
 //types
-import type { TFileSignedURLResponse, TIssueComment } from "@plane/types";
+import type { TFileSignedURLResponse, TIssueComment } from "@keel/types";
 // components
 import { CommentCreate } from "@/components/comments/comment-create";
 // hooks

@@ -10,17 +10,17 @@ import { combine } from "@atlaskit/pragmatic-drag-and-drop/combine";
 import { draggable, dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane helpers
+// keel helpers
 import { MoreHorizontal } from "lucide-react";
-import { useOutsideClickDetector } from "@plane/hooks";
+import { useOutsideClickDetector } from "@keel/hooks";
 // types
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { Tooltip } from "@plane/propel/tooltip";
-import type { TIssue, IIssueDisplayProperties, IIssueMap } from "@plane/types";
-import { EIssueServiceType } from "@plane/types";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import { Tooltip } from "@keel/propel/tooltip";
+import type { TIssue, IIssueDisplayProperties, IIssueMap } from "@keel/types";
+import { EIssueServiceType } from "@keel/types";
 // ui
-import { ControlLink, DropIndicator } from "@plane/ui";
-import { cn, generateWorkItemLink } from "@plane/utils";
+import { ControlLink, DropIndicator } from "@keel/ui";
+import { cn, generateWorkItemLink } from "@keel/utils";
 // components
 import RenderIfVisible from "@/components/core/render-if-visible-HOC";
 import { HIGHLIGHT_CLASS, getIssueBlockId } from "@/components/issues/issue-layouts/utils";

@@ -8,18 +8,18 @@ import type { ReactNode } from "react";
 import { observer } from "mobx-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-// plane imports
-import type { IWorkspaceSidebarNavigationItem } from "@plane/constants";
-import { EUserPermissionsLevel } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { joinUrlPath } from "@plane/utils";
+// keel imports
+import type { IWorkspaceSidebarNavigationItem } from "@keel/constants";
+import { EUserPermissionsLevel } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { joinUrlPath } from "@keel/utils";
 // components
 import { SidebarNavItem } from "@/components/sidebar/sidebar-navigation";
 // hooks
 import { useAppTheme } from "@/hooks/store/use-app-theme";
 import { useUser, useUserPermissions } from "@/hooks/store/user";
 import { useWorkspaceNavigationPreferences } from "@/hooks/use-navigation-preferences";
-// plane web imports
+// keel web imports
 import { getSidebarNavigationItemIcon } from "@/components/workspace/sidebar/helper";
 
 type Props = {

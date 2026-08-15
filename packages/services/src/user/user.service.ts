@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { API_BASE_URL } from "@plane/constants";
-import type { IUser, TUserProfile } from "@plane/types";
+// keel imports
+import { API_BASE_URL } from "@keel/constants";
+import type { IUser, TUserProfile } from "@keel/types";
 // api service
 import { APIService } from "../api.service";
 

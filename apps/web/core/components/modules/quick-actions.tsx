@@ -7,13 +7,13 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { MoreHorizontal } from "lucide-react";
-// plane imports
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
-import { IconButton } from "@plane/propel/icon-button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TContextMenuItem } from "@plane/ui";
-import { ContextMenu, CustomMenu } from "@plane/ui";
-import { copyUrlToClipboard, cn } from "@plane/utils";
+// keel imports
+import { EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
+import { IconButton } from "@keel/propel/icon-button";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { TContextMenuItem } from "@keel/ui";
+import { ContextMenu, CustomMenu } from "@keel/ui";
+import { copyUrlToClipboard, cn } from "@keel/utils";
 // components
 import { useModuleMenuItems } from "@/components/common/quick-actions-helper";
 import { ArchiveModuleModal, CreateUpdateModuleModal, DeleteModuleModal } from "@/components/modules";
@@ -82,7 +82,7 @@ export const ModuleQuickActions = observer(function ModuleQuickActions(props: Pr
     }
   };
 
-  // Use unified menu hook from plane-web (resolves to CE or EE)
+  // Use unified menu hook from keel-web (resolves to CE or EE)
   const menuResult = useModuleMenuItems({
     moduleDetails: moduleDetails ?? undefined,
     workspaceSlug,

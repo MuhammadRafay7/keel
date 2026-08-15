@@ -5,9 +5,9 @@
  */
 
 import type { ReactNode } from "react";
-// plane imports
-import type { TAuthErrorInfo } from "@plane/constants";
-import { E_PASSWORD_STRENGTH, EErrorAlertType, EAuthErrorCodes } from "@plane/constants";
+// keel imports
+import type { TAuthErrorInfo } from "@keel/constants";
+import { E_PASSWORD_STRENGTH, EErrorAlertType, EAuthErrorCodes } from "@keel/constants";
 
 /**
  * @description Password strength levels

@@ -5,9 +5,9 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { ArchiveIcon } from "@plane/propel/icons";
-import { renderFormattedDate } from "@plane/utils";
+// keel imports
+import { ArchiveIcon } from "@keel/propel/icons";
+import { renderFormattedDate } from "@keel/utils";
 // store
 import type { TPageInstance } from "@/store/pages/base-page";
 

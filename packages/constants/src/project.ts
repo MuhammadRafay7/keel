@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { TProjectAppliedDisplayFilterKeys, TProjectOrderByOptions } from "@plane/types";
+// keel imports
+import type { TProjectAppliedDisplayFilterKeys, TProjectOrderByOptions } from "@keel/types";
 // local imports
 
 export type TNetworkChoiceIconKey = "Lock" | "Globe2";

@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { TSupportedFilterFieldConfigs, IFilterOption, TFilterValue } from "@plane/types";
-import { cn } from "@plane/utils";
+// keel imports
+import type { TSupportedFilterFieldConfigs, IFilterOption, TFilterValue } from "@keel/types";
+import { cn } from "@keel/utils";
 // local imports
 import { COMMON_FILTER_ITEM_BORDER_CLASSNAME } from "../../shared";
 

@@ -6,9 +6,9 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import type { TStateOperationsCallbacks } from "@plane/types";
-import { cn } from "@plane/utils";
+// keel imports
+import type { TStateOperationsCallbacks } from "@keel/types";
+import { cn } from "@keel/utils";
 
 type TStateMarksAsDefault = {
   stateId: string;

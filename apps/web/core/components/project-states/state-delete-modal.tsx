@@ -7,11 +7,11 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// Plane imports
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { IState } from "@plane/types";
+// Keel imports
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { IState } from "@keel/types";
 // ui
-import { AlertModalCore } from "@plane/ui";
+import { AlertModalCore } from "@keel/ui";
 // hooks
 import { useProjectState } from "@/hooks/store/use-project-state";
 

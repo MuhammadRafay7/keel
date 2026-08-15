@@ -6,10 +6,10 @@
 
 import React, { useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { ISSUE_PRIORITY_FILTERS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { PriorityIcon } from "@plane/propel/icons";
+// keel imports
+import { ISSUE_PRIORITY_FILTERS } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { PriorityIcon } from "@keel/propel/icons";
 // local imports
 import { FilterHeader } from "./helpers/filter-header";
 import { FilterOption } from "./helpers/filter-option";

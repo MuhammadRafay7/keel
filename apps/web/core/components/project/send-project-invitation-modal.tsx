@@ -7,15 +7,15 @@
 import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
-// plane imports
-import { ROLE, EUserPermissions } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import { PlusIcon, CloseIcon, ChevronDownIcon } from "@plane/propel/icons";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { Avatar, CustomSelect, CustomSearchSelect, EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
+// keel imports
+import { ROLE, EUserPermissions } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { Button } from "@keel/propel/button";
+import { PlusIcon, CloseIcon, ChevronDownIcon } from "@keel/propel/icons";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import { Avatar, CustomSelect, CustomSearchSelect, EModalPosition, EModalWidth, ModalCore } from "@keel/ui";
 // helpers
-import { getFileURL } from "@plane/utils";
+import { getFileURL } from "@keel/utils";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
 import { useUserPermissions } from "@/hooks/store/user";
@@ -48,7 +48,7 @@ const defaultValues: FormValues = {
 
 export const SendProjectInvitationModal = observer(function SendProjectInvitationModal(props: Props) {
   const { isOpen, onClose, onSuccess, projectId, workspaceSlug } = props;
-  // plane hooks
+  // keel hooks
   const { t } = useTranslation();
   // store hooks
   const { getProjectRoleByWorkspaceSlugAndProjectId } = useUserPermissions();

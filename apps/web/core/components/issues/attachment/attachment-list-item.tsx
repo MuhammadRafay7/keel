@@ -6,14 +6,14 @@
 
 import { observer } from "mobx-react";
 
-import { useTranslation } from "@plane/i18n";
-import { TrashIcon } from "@plane/propel/icons";
-import { Tooltip } from "@plane/propel/tooltip";
-import type { TIssueServiceType } from "@plane/types";
-import { EIssueServiceType } from "@plane/types";
+import { useTranslation } from "@keel/i18n";
+import { TrashIcon } from "@keel/propel/icons";
+import { Tooltip } from "@keel/propel/tooltip";
+import type { TIssueServiceType } from "@keel/types";
+import { EIssueServiceType } from "@keel/types";
 // ui
-import { CustomMenu } from "@plane/ui";
-import { convertBytesToSize, getFileExtension, getFileName, getFileURL, renderFormattedDate } from "@plane/utils";
+import { CustomMenu } from "@keel/ui";
+import { convertBytesToSize, getFileExtension, getFileName, getFileURL, renderFormattedDate } from "@keel/utils";
 // components
 //
 import { ButtonAvatars } from "@/components/dropdowns/member/avatar";

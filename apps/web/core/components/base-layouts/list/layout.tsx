@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-import type { IBaseLayoutsListItem, IBaseLayoutsListProps } from "@plane/types";
-import { cn } from "@plane/ui";
+import type { IBaseLayoutsListItem, IBaseLayoutsListProps } from "@keel/types";
+import { cn } from "@keel/ui";
 import { useLayoutState } from "../hooks/use-layout-state";
 import { BaseListGroup } from "./group";
 

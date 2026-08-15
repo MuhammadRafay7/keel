@@ -9,24 +9,24 @@ import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 // icons
 import { ChartNoAxesColumn, PanelRight, SlidersHorizontal } from "lucide-react";
-// plane imports
+// keel imports
 import {
   EIssueFilterType,
   EUserPermissions,
   EUserPermissionsLevel,
   ISSUE_DISPLAY_FILTERS_BY_PAGE,
   WORK_ITEM_TRACKER_ELEMENTS,
-} from "@plane/constants";
-import { usePlatformOS } from "@plane/hooks";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import { IconButton } from "@plane/propel/icon-button";
-import { CycleIcon } from "@plane/propel/icons";
-import { Tooltip } from "@plane/propel/tooltip";
-import type { ICustomSearchSelectOption, IIssueDisplayFilterOptions, IIssueDisplayProperties } from "@plane/types";
-import { EIssuesStoreType, EIssueLayoutTypes } from "@plane/types";
-import { Breadcrumbs, BreadcrumbNavigationSearchDropdown, Header } from "@plane/ui";
-import { cn } from "@plane/utils";
+} from "@keel/constants";
+import { usePlatformOS } from "@keel/hooks";
+import { useTranslation } from "@keel/i18n";
+import { Button } from "@keel/propel/button";
+import { IconButton } from "@keel/propel/icon-button";
+import { CycleIcon } from "@keel/propel/icons";
+import { Tooltip } from "@keel/propel/tooltip";
+import type { ICustomSearchSelectOption, IIssueDisplayFilterOptions, IIssueDisplayProperties } from "@keel/types";
+import { EIssuesStoreType, EIssueLayoutTypes } from "@keel/types";
+import { Breadcrumbs, BreadcrumbNavigationSearchDropdown, Header } from "@keel/ui";
+import { cn } from "@keel/utils";
 // components
 import { WorkItemsModal } from "@/components/analytics/work-items/modal";
 import { BreadcrumbLink } from "@/components/common/breadcrumb-link";
@@ -47,7 +47,7 @@ import { useProject } from "@/hooks/store/use-project";
 import { useUserPermissions } from "@/hooks/store/user";
 import { useAppRouter } from "@/hooks/use-app-router";
 import useLocalStorage from "@/hooks/use-local-storage";
-// plane web imports
+// keel web imports
 import { CommonProjectBreadcrumbs } from "@/components/breadcrumbs/common";
 
 export const CycleIssuesHeader = observer(function CycleIssuesHeader() {

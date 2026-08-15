@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { EStartOfTheWeek } from "@plane/types";
+// keel imports
+import { EStartOfTheWeek } from "@keel/types";
 
 export const PROFILE_VIEWER_TAB = [
   {

@@ -6,16 +6,16 @@
 
 import { useRef } from "react";
 import { observer } from "mobx-react";
-import { Logo } from "@plane/propel/emoji-icon-picker";
-import { PageIcon } from "@plane/propel/icons";
-// plane imports
-import { getPageName } from "@plane/utils";
+import { Logo } from "@keel/propel/emoji-icon-picker";
+import { PageIcon } from "@keel/propel/icons";
+// keel imports
+import { getPageName } from "@keel/utils";
 // components
 import { ListItem } from "@/components/core/list";
 import { BlockItemAction } from "@/components/pages/list/block-item-action";
 // hooks
 import { usePlatformOS } from "@/hooks/use-platform-os";
-// plane web hooks
+// keel web hooks
 import type { EPageStoreType } from "@/hooks/store";
 import { usePage } from "@/hooks/store";
 

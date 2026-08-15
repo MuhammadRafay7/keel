@@ -6,9 +6,9 @@
 
 import { Command } from "cmdk";
 import { observer } from "mobx-react";
-// plane imports
-import { Avatar } from "@plane/ui";
-import { getFileURL } from "@plane/utils";
+// keel imports
+import { Avatar } from "@keel/ui";
+import { getFileURL } from "@keel/utils";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
 // local imports

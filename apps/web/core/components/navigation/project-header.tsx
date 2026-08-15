@@ -6,10 +6,10 @@
 
 import { useCallback, useMemo } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { ProjectIcon } from "@plane/propel/icons";
-import type { ICustomSearchSelectOption } from "@plane/types";
-import { CustomSearchSelect } from "@plane/ui";
+// keel imports
+import { ProjectIcon } from "@keel/propel/icons";
+import type { ICustomSearchSelectOption } from "@keel/types";
+import { CustomSearchSelect } from "@keel/ui";
 // hooks
 import { useProject } from "@/hooks/store/use-project";
 import { useUserPermissions } from "@/hooks/store/user";

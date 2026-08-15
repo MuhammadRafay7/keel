@@ -5,9 +5,9 @@
  */
 
 import { useState, useEffect, useCallback } from "react";
-// plane imports
-import type { EditorRefApi, IMarking } from "@plane/editor";
-import { cn } from "@plane/utils";
+// keel imports
+import type { EditorRefApi, IMarking } from "@keel/editor";
+import { cn } from "@keel/utils";
 // components
 import type { THeadingComponentProps } from "./heading-components";
 import { OutlineHeading1, OutlineHeading2, OutlineHeading3 } from "./heading-components";

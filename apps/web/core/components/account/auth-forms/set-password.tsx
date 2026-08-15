@@ -10,14 +10,14 @@ import { observer } from "mobx-react";
 import { useSearchParams } from "next/navigation";
 // icons
 import { Eye, EyeOff } from "lucide-react";
-// plane imports
-import { E_PASSWORD_STRENGTH } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { Input, PasswordStrengthIndicator } from "@plane/ui";
+// keel imports
+import { E_PASSWORD_STRENGTH } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { Button } from "@keel/propel/button";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import { Input, PasswordStrengthIndicator } from "@keel/ui";
 // components
-import { getPasswordStrength } from "@plane/utils";
+import { getPasswordStrength } from "@keel/utils";
 // hooks
 import { useUser } from "@/hooks/store/user";
 import { useAppRouter } from "@/hooks/use-app-router";
@@ -59,7 +59,7 @@ export const SetPasswordForm = observer(function SetPasswordForm() {
   const [csrfToken, setCsrfToken] = useState<string | undefined>(undefined);
   const [isPasswordInputFocused, setIsPasswordInputFocused] = useState(false);
   const [isRetryPasswordInputFocused, setIsRetryPasswordInputFocused] = useState(false);
-  // plane hooks
+  // keel hooks
   const { t } = useTranslation();
   // hooks
   const { data: user, handleSetPassword } = useUser();

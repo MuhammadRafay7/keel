@@ -8,16 +8,16 @@ import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
 // ui
-import { ArchiveIcon, WorkItemsIcon } from "@plane/propel/icons";
-import { Breadcrumbs, Header } from "@plane/ui";
+import { ArchiveIcon, WorkItemsIcon } from "@keel/propel/icons";
+import { Breadcrumbs, Header } from "@keel/ui";
 // components
 import { BreadcrumbLink } from "@/components/common/breadcrumb-link";
 import { IssueDetailQuickActions } from "@/components/issues/issue-detail/issue-detail-quick-actions";
 // constants
-import { ISSUE_DETAILS } from "@plane/constants";
+import { ISSUE_DETAILS } from "@keel/constants";
 // hooks
 import { useProject } from "@/hooks/store/use-project";
-// plane web
+// keel web
 import { ProjectBreadcrumb } from "@/components/breadcrumbs/project";
 // services
 import { IssueService } from "@/services/issue";

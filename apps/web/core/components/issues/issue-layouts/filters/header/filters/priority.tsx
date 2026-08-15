@@ -6,11 +6,11 @@
 
 import React, { useState } from "react";
 import { observer } from "mobx-react";
-// plane constants
-import { ISSUE_PRIORITIES } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
+// keel constants
+import { ISSUE_PRIORITIES } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
 // ui
-import { PriorityIcon } from "@plane/propel/icons";
+import { PriorityIcon } from "@keel/propel/icons";
 
 // components
 import { FilterHeader, FilterOption } from "@/components/issues/issue-layouts/filters";

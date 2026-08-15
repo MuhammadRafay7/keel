@@ -6,11 +6,11 @@
 
 import { action, makeObservable, observable } from "mobx";
 import { computedFn } from "mobx-utils";
-// plane imports
-import type { TExpressionOptions } from "@plane/constants";
-import type { EIssuesStoreType, TWorkItemFilterExpression, TWorkItemFilterProperty } from "@plane/types";
-import { LOGICAL_OPERATOR } from "@plane/types";
-import { getOperatorForPayload } from "@plane/utils";
+// keel imports
+import type { TExpressionOptions } from "@keel/constants";
+import type { EIssuesStoreType, TWorkItemFilterExpression, TWorkItemFilterProperty } from "@keel/types";
+import { LOGICAL_OPERATOR } from "@keel/types";
+import { getOperatorForPayload } from "@keel/utils";
 // local imports
 import type { TWorkItemFilterCondition } from "../../utils";
 import { buildWorkItemFilterExpressionFromConditions } from "../../utils";

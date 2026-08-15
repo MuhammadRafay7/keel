@@ -4,11 +4,11 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { ADDITIONAL_EXTENSIONS } from "@plane/utils";
-import { CORE_EXTENSIONS } from "@plane/utils";
-// plane editor imports
-import type { ExtensionFileSetStorageKey } from "@/plane-editor/types/storage";
+// keel imports
+import type { ADDITIONAL_EXTENSIONS } from "@keel/utils";
+import { CORE_EXTENSIONS } from "@keel/utils";
+// keel editor imports
+import type { ExtensionFileSetStorageKey } from "@/keel-editor/types/storage";
 
 export type NodeFileMapType = Partial<
   Record<

@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane web constants
-import { EEstimateSystem } from "@plane/constants";
+// keel web constants
+import { EEstimateSystem } from "@keel/constants";
 
 export const isEstimatePointValuesRepeated = (
   estimatePoints: string[],

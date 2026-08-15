@@ -8,19 +8,19 @@ import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { Info } from "lucide-react";
-import { EEstimateSystem, MAX_ESTIMATE_POINT_INPUT_LENGTH } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { CheckIcon, CloseIcon } from "@plane/propel/icons";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { Tooltip } from "@plane/propel/tooltip";
-import type { TEstimatePointsObject, TEstimateSystemKeys, TEstimateTypeErrorObject } from "@plane/types";
-import { Spinner } from "@plane/ui";
-import { cn, isEstimatePointValuesRepeated } from "@plane/utils";
+import { EEstimateSystem, MAX_ESTIMATE_POINT_INPUT_LENGTH } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { CheckIcon, CloseIcon } from "@keel/propel/icons";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import { Tooltip } from "@keel/propel/tooltip";
+import type { TEstimatePointsObject, TEstimateSystemKeys, TEstimateTypeErrorObject } from "@keel/types";
+import { Spinner } from "@keel/ui";
+import { cn, isEstimatePointValuesRepeated } from "@keel/utils";
 import { EstimateInputRoot } from "@/components/estimates/inputs/root";
 // helpers
 // hooks
 import { useEstimatePoint } from "@/hooks/store/estimates/use-estimate-point";
-// plane web constants
+// keel web constants
 
 type TEstimatePointUpdate = {
   workspaceSlug: string;

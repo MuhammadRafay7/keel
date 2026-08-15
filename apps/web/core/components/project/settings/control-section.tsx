@@ -7,10 +7,10 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "react-router";
-// plane imports
-import { PROJECT_TRACKER_ELEMENTS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
+// keel imports
+import { PROJECT_TRACKER_ELEMENTS } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { Button } from "@keel/propel/button";
 // components
 import { SettingsBoxedControlItem } from "@/components/settings/boxed-control-item";
 // hooks

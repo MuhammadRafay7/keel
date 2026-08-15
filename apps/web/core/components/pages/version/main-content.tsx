@@ -8,11 +8,11 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 import useSWR from "swr";
 import { EyeIcon, TriangleAlert } from "lucide-react";
-// plane imports
-import { Button } from "@plane/propel/button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TPageVersion } from "@plane/types";
-import { renderFormattedDate, renderFormattedTime } from "@plane/utils";
+// keel imports
+import { Button } from "@keel/propel/button";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { TPageVersion } from "@keel/types";
+import { renderFormattedDate, renderFormattedTime } from "@keel/utils";
 // helpers
 import type { EPageStoreType } from "@/hooks/store";
 // local imports

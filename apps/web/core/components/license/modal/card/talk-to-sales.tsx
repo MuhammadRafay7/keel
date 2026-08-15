@@ -6,11 +6,11 @@
 
 import { observer } from "mobx-react";
 // types
-// plane imports
-import { getButtonStyling } from "@plane/propel/button";
-import type { EProductSubscriptionEnum, IPaymentProduct, TSubscriptionPrice } from "@plane/types";
-import { Loader } from "@plane/ui";
-import { cn } from "@plane/utils";
+// keel imports
+import { getButtonStyling } from "@keel/propel/button";
+import type { EProductSubscriptionEnum, IPaymentProduct, TSubscriptionPrice } from "@keel/types";
+import { Loader } from "@keel/ui";
+import { cn } from "@keel/utils";
 // local imports
 import { BasePaidPlanCard } from "./base-paid-plan-card";
 

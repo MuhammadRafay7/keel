@@ -6,14 +6,14 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import { observer } from "mobx-react";
-// plane imports
+// keel imports
 import type {
   IFilterOption,
   TFilterProperty,
   TSingleSelectFilterFieldConfig,
   TFilterConditionNodeForDisplay,
-} from "@plane/types";
-import { CustomSearchSelect } from "@plane/ui";
+} from "@keel/types";
+import { CustomSearchSelect } from "@keel/ui";
 // local imports
 import { SelectedOptionsDisplay } from "./selected-options-display";
 import { getCommonCustomSearchSelectProps, getFormattedOptions, loadOptions } from "./shared";

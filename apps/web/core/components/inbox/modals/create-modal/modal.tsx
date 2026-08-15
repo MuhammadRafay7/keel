@@ -5,8 +5,8 @@
  */
 
 import { useState } from "react";
-// plane imports
-import { EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
+// keel imports
+import { EModalPosition, EModalWidth, ModalCore } from "@keel/ui";
 // hooks
 import useKeypress from "@/hooks/use-keypress";
 // local imports

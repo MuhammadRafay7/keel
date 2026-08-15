@@ -5,7 +5,7 @@
  */
 
 import { createContext, useContext } from "react";
-import type { TTimelineType } from "@plane/types";
+import type { TTimelineType } from "@keel/types";
 
 export const TimeLineTypeContext = createContext<TTimelineType | undefined>(undefined);
 

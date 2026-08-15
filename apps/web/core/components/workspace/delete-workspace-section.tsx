@@ -6,11 +6,11 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { WORKSPACE_TRACKER_ELEMENTS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import type { IWorkspace } from "@plane/types";
+// keel imports
+import { WORKSPACE_TRACKER_ELEMENTS } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { Button } from "@keel/propel/button";
+import type { IWorkspace } from "@keel/types";
 // components
 import { SettingsBoxedControlItem } from "@/components/settings/boxed-control-item";
 // local imports

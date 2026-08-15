@@ -7,8 +7,8 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import useSWR from "swr";
-import { setPromiseToast } from "@plane/propel/toast";
-import { Loader, ToggleSwitch } from "@plane/ui";
+import { setPromiseToast } from "@keel/propel/toast";
+import { Loader, ToggleSwitch } from "@keel/ui";
 // assets
 import GoogleLogo from "@/app/assets/logos/google-logo.svg?url";
 // components
@@ -68,7 +68,7 @@ const InstanceGoogleAuthenticationPage = observer(function InstanceGoogleAuthent
       customHeader={
         <AuthenticationMethodCard
           name="Google"
-          description="Allow members to login or sign up to plane with their Google
+          description="Allow members to login or sign up to keel with their Google
             accounts."
           icon={<img src={GoogleLogo} height={24} width={24} alt="Google Logo" />}
           config={

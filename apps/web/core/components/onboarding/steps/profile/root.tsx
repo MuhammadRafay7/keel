@@ -8,13 +8,13 @@ import { useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import { Controller, useForm } from "react-hook-form";
 import { ImageIcon } from "lucide-react";
-// plane imports
-import { E_PASSWORD_STRENGTH } from "@plane/constants";
-import { Button } from "@plane/propel/button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { IUser } from "@plane/types";
-import { EOnboardingSteps } from "@plane/types";
-import { cn, getFileURL, getPasswordStrength, validatePersonName } from "@plane/utils";
+// keel imports
+import { E_PASSWORD_STRENGTH } from "@keel/constants";
+import { Button } from "@keel/propel/button";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { IUser } from "@keel/types";
+import { EOnboardingSteps } from "@keel/types";
+import { cn, getFileURL, getPasswordStrength, validatePersonName } from "@keel/utils";
 // components
 import { UserImageUploadModal } from "@/components/core/modals/user-image-upload-modal";
 // hooks
@@ -147,7 +147,7 @@ export const ProfileSetupStep = observer(function ProfileSetupStep({ handleStepC
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-10">
       {/* Header */}
-      <CommonOnboardingHeader title="Create your profile." description="This is how you will appear in Plane." />
+      <CommonOnboardingHeader title="Create your profile." description="This is how you will appear in Keel." />
 
       {/* Profile Picture Section */}
       <Controller

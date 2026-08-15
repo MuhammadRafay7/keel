@@ -7,10 +7,10 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { Controller, useForm } from "react-hook-form";
-import { WORKSPACE_SETTINGS_TRACKER_ELEMENTS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import type { IWebhook, TWebhookEventTypes } from "@plane/types";
+import { WORKSPACE_SETTINGS_TRACKER_ELEMENTS } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { Button } from "@keel/propel/button";
+import type { IWebhook, TWebhookEventTypes } from "@keel/types";
 // hooks
 import {
   WebhookIndividualEventOptions,

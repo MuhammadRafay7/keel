@@ -7,10 +7,10 @@
 import type { ReactNode } from "react";
 import { useRef } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { CommentReplyIcon } from "@plane/propel/icons";
-import type { TIssueComment } from "@plane/types";
-import { cn } from "@plane/utils";
+// keel imports
+import { CommentReplyIcon } from "@keel/propel/icons";
+import type { TIssueComment } from "@keel/types";
+import { cn } from "@keel/utils";
 // hooks
 
 type TCommentBlock = {

@@ -4,17 +4,17 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { API_BASE_URL } from "@plane/constants";
+// keel imports
+import { API_BASE_URL } from "@keel/constants";
 // api service
-import type { TPublicModule } from "@plane/types";
+import type { TPublicModule } from "@keel/types";
 import { APIService } from "../api.service";
 
 /**
- * Service class for managing modules within plane sites application.
+ * Service class for managing modules within keel sites application.
  * Extends APIService to handle HTTP requests to the module-related endpoints.
  * @extends {APIService}
- * @remarks This service is only available for plane sites
+ * @remarks This service is only available for keel sites
  */
 export class SitesModuleService extends APIService {
   constructor(BASE_URL?: string) {

@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { TEstimateSystems } from "@plane/types";
+// keel imports
+import type { TEstimateSystems } from "@keel/types";
 
 export const MAX_ESTIMATE_POINT_INPUT_LENGTH = 20;
 

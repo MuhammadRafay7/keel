@@ -7,9 +7,9 @@
 import { observer } from "mobx-react";
 
 // icons
-import { EIconSize } from "@plane/constants";
-import { CloseIcon, StateGroupIcon } from "@plane/propel/icons";
-import type { TStateGroups } from "@plane/types";
+import { EIconSize } from "@keel/constants";
+import { CloseIcon, StateGroupIcon } from "@keel/propel/icons";
+import type { TStateGroups } from "@keel/types";
 
 type Props = {
   handleRemove: (val: string) => void;

@@ -6,11 +6,11 @@
 
 import { observer } from "mobx-react";
 import { History } from "lucide-react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import type { TDescriptionVersion } from "@plane/types";
-import { CustomMenu } from "@plane/ui";
-import { calculateTimeAgo } from "@plane/utils";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import type { TDescriptionVersion } from "@keel/types";
+import { CustomMenu } from "@keel/ui";
+import { calculateTimeAgo } from "@keel/utils";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
 // local imports

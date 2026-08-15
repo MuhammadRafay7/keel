@@ -7,12 +7,12 @@
 import { observer } from "mobx-react";
 import { Controller, useForm } from "react-hook-form";
 import { Box, PenTool, Rocket, Monitor, RefreshCw } from "lucide-react";
-// plane imports
-import { Button } from "@plane/propel/button";
-import { CheckIcon, ViewsIcon } from "@plane/propel/icons";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TUserProfile } from "@plane/types";
-import { EOnboardingSteps } from "@plane/types";
+// keel imports
+import { Button } from "@keel/propel/button";
+import { CheckIcon, ViewsIcon } from "@keel/propel/icons";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { TUserProfile } from "@keel/types";
+import { EOnboardingSteps } from "@keel/types";
 // hooks
 import { useUserProfile } from "@/hooks/store/user";
 // local components
@@ -92,7 +92,7 @@ export const RoleSetupStep = observer(function RoleSetupStep({ handleStepChange 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-10">
       {/* Header */}
-      <CommonOnboardingHeader title="What's your role?" description="Let's set up Plane for how you work." />
+      <CommonOnboardingHeader title="What's your role?" description="Let's set up Keel for how you work." />
       {/* Role Selection */}
       <div className="flex flex-col gap-3">
         <p className="text-body-sm-semibold text-placeholder">Select one</p>

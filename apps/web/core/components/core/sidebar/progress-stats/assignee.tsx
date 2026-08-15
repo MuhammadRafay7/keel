@@ -5,10 +5,10 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { Avatar } from "@plane/ui";
-import { getFileURL } from "@plane/utils";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import { Avatar } from "@keel/ui";
+import { getFileURL } from "@keel/utils";
 // assets
 import emptyMembers from "@/app/assets/empty-state/empty_members.svg?url";
 import userImage from "@/app/assets/user.png?url";

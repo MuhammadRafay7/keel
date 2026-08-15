@@ -6,8 +6,8 @@
 
 import { observer } from "mobx-react";
 // hooks
-import { CloseIcon } from "@plane/propel/icons";
-import { Tag } from "@plane/ui";
+import { CloseIcon } from "@keel/propel/icons";
+import { Tag } from "@keel/ui";
 import { useLabel } from "@/hooks/store/use-label";
 import { useProjectInbox } from "@/hooks/store/use-project-inbox";
 

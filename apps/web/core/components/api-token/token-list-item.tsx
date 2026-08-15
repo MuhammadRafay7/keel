@@ -6,11 +6,11 @@
 
 import { useState } from "react";
 import { XCircle } from "lucide-react";
-// plane imports
-import { PROFILE_SETTINGS_TRACKER_ELEMENTS } from "@plane/constants";
-import { Tooltip } from "@plane/propel/tooltip";
-import type { IApiToken } from "@plane/types";
-import { renderFormattedDate, calculateTimeAgo, renderFormattedTime } from "@plane/utils";
+// keel imports
+import { PROFILE_SETTINGS_TRACKER_ELEMENTS } from "@keel/constants";
+import { Tooltip } from "@keel/propel/tooltip";
+import type { IApiToken } from "@keel/types";
+import { renderFormattedDate, calculateTimeAgo, renderFormattedTime } from "@keel/utils";
 // components
 import { DeleteApiTokenModal } from "@/components/api-token/delete-token-modal";
 // hooks

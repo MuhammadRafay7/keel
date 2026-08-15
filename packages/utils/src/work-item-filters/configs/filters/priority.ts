@@ -4,11 +4,11 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { TIssuePriorities } from "@plane/constants";
-import { ISSUE_PRIORITIES } from "@plane/constants";
-import type { TFilterProperty, TSupportedOperators } from "@plane/types";
-import { EQUALITY_OPERATOR, COLLECTION_OPERATOR } from "@plane/types";
+// keel imports
+import type { TIssuePriorities } from "@keel/constants";
+import { ISSUE_PRIORITIES } from "@keel/constants";
+import type { TFilterProperty, TSupportedOperators } from "@keel/types";
+import { EQUALITY_OPERATOR, COLLECTION_OPERATOR } from "@keel/types";
 // local imports
 import type { TCreateFilterConfigParams, IFilterIconConfig, TCreateFilterConfig } from "../../../rich-filters";
 import { createFilterConfig, getMultiSelectConfig, createOperatorConfigEntry } from "../../../rich-filters";

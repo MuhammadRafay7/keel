@@ -6,18 +6,18 @@
 
 import { observer } from "mobx-react";
 import { Controller, useForm } from "react-hook-form";
-// plane imports
-import { ISSUE_DISPLAY_FILTERS_BY_PAGE } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import type { IIssueDisplayFilterOptions, IIssueDisplayProperties, IWorkspaceView, IIssueFilters } from "@plane/types";
-import { EViewAccess, EIssueLayoutTypes, EIssuesStoreType } from "@plane/types";
-import { Input, TextArea } from "@plane/ui";
-import { getComputedDisplayFilters, getComputedDisplayProperties } from "@plane/utils";
+// keel imports
+import { ISSUE_DISPLAY_FILTERS_BY_PAGE } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { Button } from "@keel/propel/button";
+import type { IIssueDisplayFilterOptions, IIssueDisplayProperties, IWorkspaceView, IIssueFilters } from "@keel/types";
+import { EViewAccess, EIssueLayoutTypes, EIssuesStoreType } from "@keel/types";
+import { Input, TextArea } from "@keel/ui";
+import { getComputedDisplayFilters, getComputedDisplayProperties } from "@keel/utils";
 // components
 import { DisplayFiltersSelection, FiltersDropdown } from "@/components/issues/issue-layouts/filters";
 import { WorkspaceLevelWorkItemFiltersHOC } from "@/components/work-item-filters/filters-hoc/workspace-level";
-// plane web imports
+// keel web imports
 import { WorkItemFiltersRow } from "@/components/work-item-filters/filters-row";
 
 type Props = {

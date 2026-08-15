@@ -7,13 +7,13 @@
 import { useCallback } from "react";
 import { observer } from "mobx-react";
 import { useTheme } from "next-themes";
-// plane imports
-import { EUserPermissionsLevel } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import type { EViewAccess, TViewFilterProps } from "@plane/types";
-import { EUserProjectRoles } from "@plane/types";
-import { Header, EHeaderVariant } from "@plane/ui";
-import { calculateTotalFilters } from "@plane/utils";
+// keel imports
+import { EUserPermissionsLevel } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import type { EViewAccess, TViewFilterProps } from "@keel/types";
+import { EUserProjectRoles } from "@keel/types";
+import { Header, EHeaderVariant } from "@keel/ui";
+import { calculateTotalFilters } from "@keel/utils";
 // assets
 import darkViewsAsset from "@/app/assets/empty-state/disabled-feature/views-dark.webp?url";
 import lightViewsAsset from "@/app/assets/empty-state/disabled-feature/views-light.webp?url";
@@ -35,7 +35,7 @@ function ProjectViewsPage({ params }: Route.ComponentProps) {
   const { workspaceSlug, projectId } = params;
   // theme hook
   const { resolvedTheme } = useTheme();
-  // plane hooks
+  // keel hooks
   const { t } = useTranslation();
   // store
   const { getProjectById, currentProjectDetails } = useProject();

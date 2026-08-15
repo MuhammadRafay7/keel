@@ -5,11 +5,11 @@
  */
 
 import { useRef, useState } from "react";
-// plane imports
-import { useOutsideClickDetector } from "@plane/hooks";
-import { IconButton } from "@plane/propel/icon-button";
-import { SearchIcon, CloseIcon } from "@plane/propel/icons";
-import { cn } from "@plane/utils";
+// keel imports
+import { useOutsideClickDetector } from "@keel/hooks";
+import { IconButton } from "@keel/propel/icon-button";
+import { SearchIcon, CloseIcon } from "@keel/propel/icons";
+import { cn } from "@keel/utils";
 
 type Props = {
   searchQuery: string;

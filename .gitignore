@@ -88,7 +88,7 @@ tmp/
 ## packages
 dist
 .temp/
-deploy/selfhost/plane-app/
+deploy/selfhost/keel-app/
 
 ## Storybook
 *storybook.log

@@ -2,8 +2,8 @@
 
 BRANCH=${BRANCH:-master}
 SCRIPT_DIR=$PWD
-SERVICE_FOLDER=plane-app
-PLANE_INSTALL_DIR=$PWD/$SERVICE_FOLDER
+SERVICE_FOLDER=keel-app
+KEEL_INSTALL_DIR=$PWD/$SERVICE_FOLDER
 export APP_RELEASE=stable
 export DOCKERHUB_USER=makeplane
 export PULL_POLICY=${PULL_POLICY:-if_not_present}
@@ -15,9 +15,9 @@ CPU_ARCH=$(uname -m)
 OS_NAME=$(uname)
 UPPER_CPU_ARCH=$(tr '[:lower:]' '[:upper:]' <<< "$CPU_ARCH")
 
-mkdir -p $PLANE_INSTALL_DIR/archive
-DOCKER_FILE_PATH=$PLANE_INSTALL_DIR/docker-compose.yaml
-DOCKER_ENV_PATH=$PLANE_INSTALL_DIR/plane.env
+mkdir -p $KEEL_INSTALL_DIR/archive
+DOCKER_FILE_PATH=$KEEL_INSTALL_DIR/docker-compose.yaml
+DOCKER_ENV_PATH=$KEEL_INSTALL_DIR/keel.env
 
 function print_header() {
 clear
@@ -88,7 +88,7 @@ function initialize(){
     wait "$pid"
 
     if [ $? -eq 0 ]; then
-        echo "Plane supports ${CPU_ARCH}" >&2
+        echo "Keel supports ${CPU_ARCH}" >&2
         echo "available"
         return 0
     else
@@ -162,10 +162,10 @@ function updateCustomVariables(){
 
 function syncEnvFile(){
     echo "Syncing environment variables..." >&2
-    if [ -f "$PLANE_INSTALL_DIR/plane.env.bak" ]; then
+    if [ -f "$KEEL_INSTALL_DIR/keel.env.bak" ]; then
         updateCustomVariables
         
-        # READ keys of plane.env and update the values from plane.env.bak
+        # READ keys of keel.env and update the values from keel.env.bak
         while IFS= read -r line
         do
             # ignore is the line is empty or starts with #
@@ -173,7 +173,7 @@ function syncEnvFile(){
                 continue
             fi
             key=$(echo "$line" | cut -d'=' -f1)
-            value=$(getEnvValue "$key" "$PLANE_INSTALL_DIR/plane.env.bak")
+            value=$(getEnvValue "$key" "$KEEL_INSTALL_DIR/keel.env.bak")
             if [ -n "$value" ]; then
                 updateEnvFile "$key" "$value" "$DOCKER_ENV_PATH"
             fi
@@ -185,21 +185,21 @@ function syncEnvFile(){
 function buildYourOwnImage(){
     echo "Building images locally..."
 
-    export DOCKERHUB_USER="myplane"
+    export DOCKERHUB_USER="mykeel"
     export APP_RELEASE="local"
     export PULL_POLICY="never"
     CUSTOM_BUILD="true"
 
-    # checkout the code to ~/tmp/plane folder and build the images
-    local PLANE_TEMP_CODE_DIR=~/tmp/plane
-    rm -rf $PLANE_TEMP_CODE_DIR
-    mkdir -p $PLANE_TEMP_CODE_DIR
+    # checkout the code to ~/tmp/keel folder and build the images
+    local KEEL_TEMP_CODE_DIR=~/tmp/keel
+    rm -rf $KEEL_TEMP_CODE_DIR
+    mkdir -p $KEEL_TEMP_CODE_DIR
     REPO=https://github.com/$GH_REPO.git
-    git clone "$REPO" "$PLANE_TEMP_CODE_DIR"  --branch "$BRANCH" --single-branch --depth 1
+    git clone "$REPO" "$KEEL_TEMP_CODE_DIR"  --branch "$BRANCH" --single-branch --depth 1
 
-    cp "$PLANE_TEMP_CODE_DIR/deployments/cli/community/build.yml" "$PLANE_TEMP_CODE_DIR/build.yml"
+    cp "$KEEL_TEMP_CODE_DIR/deployments/cli/community/build.yml" "$KEEL_TEMP_CODE_DIR/build.yml"
 
-    cd "$PLANE_TEMP_CODE_DIR" || exit
+    cd "$KEEL_TEMP_CODE_DIR" || exit
 
     /bin/bash -c "$COMPOSE_CMD -f build.yml build --no-cache"  >&2
     if [ $? -ne 0 ]; then
@@ -213,7 +213,7 @@ function buildYourOwnImage(){
 }
 
 function install() {
-    echo "Begin Installing Plane"
+    echo "Begin Installing Keel"
     echo ""
 
     if [ "$APP_RELEASE" == "stable" ]; then
@@ -243,9 +243,9 @@ function download() {
     local LOCAL_BUILD=$1
     cd $SCRIPT_DIR
     TS=$(date +%s)
-    if [ -f "$PLANE_INSTALL_DIR/docker-compose.yaml" ]
+    if [ -f "$KEEL_INSTALL_DIR/docker-compose.yaml" ]
     then
-        mv $PLANE_INSTALL_DIR/docker-compose.yaml $PLANE_INSTALL_DIR/archive/$TS.docker-compose.yaml
+        mv $KEEL_INSTALL_DIR/docker-compose.yaml $KEEL_INSTALL_DIR/archive/$TS.docker-compose.yaml
     fi
 
     RESPONSE=$(curl -sSL -H 'Cache-Control: no-cache, no-store' -w "HTTPSTATUS:%{http_code}" "$RELEASE_DOWNLOAD_URL/$APP_RELEASE/docker-compose.yml?$(date +%s)")
@@ -253,7 +253,7 @@ function download() {
     STATUS=$(echo "$RESPONSE" | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
 
     if [ "$STATUS" -eq 200 ]; then
-        echo "$BODY" > $PLANE_INSTALL_DIR/docker-compose.yaml
+        echo "$BODY" > $KEEL_INSTALL_DIR/docker-compose.yaml
     else
         # Fallback to download from the raw github url
         RESPONSE=$(curl -sSL -H 'Cache-Control: no-cache, no-store' -w "HTTPSTATUS:%{http_code}" "$FALLBACK_DOWNLOAD_URL/docker-compose.yml?$(date +%s)")
@@ -261,11 +261,11 @@ function download() {
         STATUS=$(echo "$RESPONSE" | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
 
         if [ "$STATUS" -eq 200 ]; then
-            echo "$BODY" > $PLANE_INSTALL_DIR/docker-compose.yaml
+            echo "$BODY" > $KEEL_INSTALL_DIR/docker-compose.yaml
         else
             echo "Failed to download docker-compose.yml. HTTP Status: $STATUS"
             echo "URL: $RELEASE_DOWNLOAD_URL/$APP_RELEASE/docker-compose.yml"
-            mv $PLANE_INSTALL_DIR/archive/$TS.docker-compose.yaml $PLANE_INSTALL_DIR/docker-compose.yaml
+            mv $KEEL_INSTALL_DIR/archive/$TS.docker-compose.yaml $KEEL_INSTALL_DIR/docker-compose.yaml
             exit 1
         fi
     fi
@@ -275,7 +275,7 @@ function download() {
     STATUS=$(echo "$RESPONSE" | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
 
     if [ "$STATUS" -eq 200 ]; then
-        echo "$BODY" > $PLANE_INSTALL_DIR/variables-upgrade.env
+        echo "$BODY" > $KEEL_INSTALL_DIR/variables-upgrade.env
     else
         # Fallback to download from the raw github url
         RESPONSE=$(curl -sSL -H 'Cache-Control: no-cache, no-store' -w "HTTPSTATUS:%{http_code}" "$FALLBACK_DOWNLOAD_URL/variables.env?$(date +%s)")
@@ -283,27 +283,27 @@ function download() {
         STATUS=$(echo "$RESPONSE" | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
 
         if [ "$STATUS" -eq 200 ]; then
-            echo "$BODY" > $PLANE_INSTALL_DIR/variables-upgrade.env
+            echo "$BODY" > $KEEL_INSTALL_DIR/variables-upgrade.env
         else
             echo "Failed to download variables.env. HTTP Status: $STATUS"
             echo "URL: $RELEASE_DOWNLOAD_URL/$APP_RELEASE/variables.env"
-            mv $PLANE_INSTALL_DIR/archive/$TS.docker-compose.yaml $PLANE_INSTALL_DIR/docker-compose.yaml
+            mv $KEEL_INSTALL_DIR/archive/$TS.docker-compose.yaml $KEEL_INSTALL_DIR/docker-compose.yaml
             exit 1
         fi
     fi
 
     if [ -f "$DOCKER_ENV_PATH" ];
     then
-        cp "$DOCKER_ENV_PATH" "$PLANE_INSTALL_DIR/archive/$TS.env"
-        cp "$DOCKER_ENV_PATH" "$PLANE_INSTALL_DIR/plane.env.bak"
+        cp "$DOCKER_ENV_PATH" "$KEEL_INSTALL_DIR/archive/$TS.env"
+        cp "$DOCKER_ENV_PATH" "$KEEL_INSTALL_DIR/keel.env.bak"
     fi
 
-    mv $PLANE_INSTALL_DIR/variables-upgrade.env $DOCKER_ENV_PATH
+    mv $KEEL_INSTALL_DIR/variables-upgrade.env $DOCKER_ENV_PATH
 
     syncEnvFile
 
     if [ "$LOCAL_BUILD" == "true" ]; then
-        export DOCKERHUB_USER="myplane"
+        export DOCKERHUB_USER="mykeel"
         export APP_RELEASE="local"
         export PULL_POLICY="never"
         CUSTOM_BUILD="true"
@@ -329,9 +329,9 @@ function download() {
     fi
     
     echo ""
-    echo "Most recent version of Plane is now available for you to use"
+    echo "Most recent version of Keel is now available for you to use"
     echo ""
-    echo "In case of 'Upgrade', please check the 'plane.env 'file for any new variables and update them accordingly"
+    echo "In case of 'Upgrade', please check the 'keel.env 'file for any new variables and update them accordingly"
     echo ""
 }
 function startServices() {
@@ -356,7 +356,7 @@ function startServices() {
     if [ -n "$migrator_container_id" ]; then
         local migrator_exit_code=$(docker inspect --format='{{.State.ExitCode}}' $migrator_container_id)
         if [ $migrator_exit_code -ne 0 ]; then
-            echo "Plane Server failed to start ❌"
+            echo "Keel Server failed to start ❌"
             # stopServices
             echo
             echo "Please check the logs for the 'migrator' service and resolve the issue(s)."
@@ -410,7 +410,7 @@ function startServices() {
         echo "   ⚠️  API Service did not respond to health-check – please verify manually."
     fi
     source "${DOCKER_ENV_PATH}"
-    echo "   Plane Server started successfully ✅"
+    echo "   Keel Server started successfully ✅"
     echo ""
     echo "   You can access the application at $WEB_URL"
     echo ""
@@ -449,7 +449,7 @@ function upgrade() {
 
     export APP_RELEASE=$latest_release
 
-    echo "Upgrading Plane to the latest release..."
+    echo "Upgrading Keel to the latest release..."
     echo ""
 
     echo "***** STOPPING SERVICES ****"
@@ -512,10 +512,10 @@ function viewLogs(){
                 5) viewSpecificLogs "beat-worker";;
                 6) viewSpecificLogs "migrator";;
                 7) viewSpecificLogs "proxy";;
-                8) viewSpecificLogs "plane-redis";;
-                9) viewSpecificLogs "plane-db";;
-                10) viewSpecificLogs "plane-minio";;
-                11) viewSpecificLogs "plane-mq";;
+                8) viewSpecificLogs "keel-redis";;
+                9) viewSpecificLogs "keel-db";;
+                10) viewSpecificLogs "keel-minio";;
+                11) viewSpecificLogs "keel-mq";;
                 0) askForAction;;
                 *) echo "INVALID SERVICE NAME SUPPLIED";;
             esac
@@ -531,10 +531,10 @@ function viewLogs(){
             beat-worker) viewSpecificLogs "beat-worker";;
             migrator) viewSpecificLogs "migrator";;
             proxy) viewSpecificLogs "proxy";;
-            redis) viewSpecificLogs "plane-redis";;
-            postgres) viewSpecificLogs "plane-db";;
-            minio) viewSpecificLogs "plane-minio";;
-            rabbitmq) viewSpecificLogs "plane-mq";;
+            redis) viewSpecificLogs "keel-redis";;
+            postgres) viewSpecificLogs "keel-db";;
+            minio) viewSpecificLogs "keel-minio";;
+            rabbitmq) viewSpecificLogs "keel-mq";;
             *) echo "INVALID SERVICE NAME SUPPLIED";;
         esac
     else
@@ -587,7 +587,7 @@ function backup_container_dir() {
 
 function backupData() {
     local datetime=$(date +"%Y%m%d-%H%M")
-    local BACKUP_FOLDER=$PLANE_INSTALL_DIR/backup/$datetime
+    local BACKUP_FOLDER=$KEEL_INSTALL_DIR/backup/$datetime
     mkdir -p "$BACKUP_FOLDER"
 
     # Check if docker-compose.yml exists
@@ -596,10 +596,10 @@ function backupData() {
         exit 1
     fi
 
-    backup_container_dir "$BACKUP_FOLDER" "plane-db" "/var/lib/postgresql/data" "pgdata" || exit 1
-    backup_container_dir "$BACKUP_FOLDER" "plane-minio" "/export" "uploads" || exit 1
-    backup_container_dir "$BACKUP_FOLDER" "plane-mq" "/var/lib/rabbitmq" "rabbitmq_data" || exit 1
-    backup_container_dir "$BACKUP_FOLDER" "plane-redis" "/data" "redisdata" || exit 1
+    backup_container_dir "$BACKUP_FOLDER" "keel-db" "/var/lib/postgresql/data" "pgdata" || exit 1
+    backup_container_dir "$BACKUP_FOLDER" "keel-minio" "/export" "uploads" || exit 1
+    backup_container_dir "$BACKUP_FOLDER" "keel-mq" "/var/lib/rabbitmq" "rabbitmq_data" || exit 1
+    backup_container_dir "$BACKUP_FOLDER" "keel-redis" "/data" "redisdata" || exit 1
 
     echo ""
     echo "Backup completed successfully. Backup files are stored in $BACKUP_FOLDER"

@@ -6,13 +6,13 @@
 
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane imports
-import { EUserPermissions, EUserPermissionsLevel, MODULE_TRACKER_ELEMENTS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
+// keel imports
+import { EUserPermissions, EUserPermissionsLevel, MODULE_TRACKER_ELEMENTS } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
 // ui
-import { Button } from "@plane/propel/button";
-import { ModuleIcon } from "@plane/propel/icons";
-import { Breadcrumbs, Header } from "@plane/ui";
+import { Button } from "@keel/propel/button";
+import { ModuleIcon } from "@keel/propel/icons";
+import { Breadcrumbs, Header } from "@keel/ui";
 // components
 import { BreadcrumbLink } from "@/components/common/breadcrumb-link";
 import { ModuleViewHeader } from "@/components/modules";
@@ -21,7 +21,7 @@ import { useCommandPalette } from "@/hooks/store/use-command-palette";
 import { useProject } from "@/hooks/store/use-project";
 import { useUserPermissions } from "@/hooks/store/user";
 import { useAppRouter } from "@/hooks/use-app-router";
-// plane web imports
+// keel web imports
 import { CommonProjectBreadcrumbs } from "@/components/breadcrumbs/common";
 
 export const ModulesListHeader = observer(function ModulesListHeader() {

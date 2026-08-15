@@ -6,11 +6,11 @@
 
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane imports
-import { PageIcon } from "@plane/propel/icons";
-import type { ICustomSearchSelectOption } from "@plane/types";
-import { Breadcrumbs, Header, BreadcrumbNavigationSearchDropdown } from "@plane/ui";
-import { getPageName } from "@plane/utils";
+// keel imports
+import { PageIcon } from "@keel/propel/icons";
+import type { ICustomSearchSelectOption } from "@keel/types";
+import { Breadcrumbs, Header, BreadcrumbNavigationSearchDropdown } from "@keel/ui";
+import { getPageName } from "@keel/utils";
 // components
 import { BreadcrumbLink } from "@/components/common/breadcrumb-link";
 import { PageAccessIcon } from "@/components/common/page-access-icon";

@@ -5,8 +5,8 @@
  */
 
 import { CheckCircle2, Minus, MinusCircle } from "lucide-react";
-import type { EProductSubscriptionEnum } from "@plane/types";
-// plane imports
+import type { EProductSubscriptionEnum } from "@keel/types";
+// keel imports
 // constants
 import type { TPlanFeatureData } from "@/components/workspace/billing/comparison/plans";
 

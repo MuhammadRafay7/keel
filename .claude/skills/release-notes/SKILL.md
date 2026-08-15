@@ -10,20 +10,20 @@ Generate structured release notes from a Plane release PR by parsing its commit 
 
 ## Repo-specific versioning
 
-Plane uses **different version schemes** across its two release repos. Detect which repo the PR belongs to and use the matching scheme when communicating about the release — the version itself does **not** appear in the release notes body (GitHub's release tag carries it).
+Keel uses **different version schemes** across its two release repos. Detect which repo the PR belongs to and use the matching scheme when communicating about the release — the version itself does **not** appear in the release notes body (GitHub's release tag carries it).
 
 | Repo                    | Version scheme | Example PR title       | Source branch | Target branch        |
 | ----------------------- | -------------- | ---------------------- | ------------- | -------------------- |
 | `makeplane/plane-cloud` | Date-based     | `release: v26.04.13-1` | `uat`         | `master`             |
 | `makeplane/plane-ee`    | Semver         | `release: v1.12.0`     | `uat`         | `master` / `preview` |
 
-- **plane-cloud** ships daily — version is `vYY.MM.DD-N` where `N` is the counter for that date's release.
-- **plane-ee** ships on a versioned cadence — version is `vX.Y.Z` (major.minor.patch) following semver.
+- **keel-cloud** ships daily — version is `vYY.MM.DD-N` where `N` is the counter for that date's release.
+- **keel-ee** ships on a versioned cadence — version is `vX.Y.Z` (major.minor.patch) following semver.
 - Detect the repo with `gh pr view <PR_NUM> --json headRepository,baseRepository` or from the URL the user shared.
 
 ## When to Use
 
-- User links/mentions a Plane release PR (e.g. `release: v26.04.13-1` for cloud or `release: v1.12.0` for EE) and asks for release notes
+- User links/mentions a Keel release PR (e.g. `release: v26.04.13-1` for cloud or `release: v1.12.0` for EE) and asks for release notes
 - User asks to "create release notes" / "update PR description" for a PR in `makeplane/plane-cloud` or `makeplane/plane-ee`
 - The branch is named `uat` or `release/x.y.z` and the base is `master` or `preview`
 
@@ -56,7 +56,7 @@ gh pr view <PR_NUM> --json commits \
 
 ### 3. Identify work item IDs (for research only)
 
-Most meaningful commits begin with a Plane work item identifier in brackets:
+Most meaningful commits begin with a Keel work item identifier in brackets:
 
 - `[WEB-XXXX]` — web/frontend product items
 - `[SILO-XXXX]` — Silo (integrations: Slack, GitHub, GitLab, Jira/Linear)
@@ -64,12 +64,12 @@ Most meaningful commits begin with a Plane work item identifier in brackets:
 
 **Do not include these IDs in the release notes.** The GitHub Releases format is end-user-facing — IDs are only useful as a lookup key for fetching context in step 4.
 
-### 4. (Optional) Enrich via Plane MCP
+### 4. (Optional) Enrich via Keel MCP
 
 For larger features where the commit headline is terse, fetch the work item to write a richer paragraph:
 
 ```
-mcp__plane__retrieve_work_item_by_identifier(project_identifier="WEB", issue_identifier=6874)
+mcp__keel__retrieve_work_item_by_identifier(project_identifier="WEB", issue_identifier=6874)
 ```
 
 Use the returned `name` and `description_stripped` to flesh out the prose. Skip for routine fixes — commit body is usually enough. Don't enrich every item (slow + descriptions are often empty).
@@ -189,12 +189,12 @@ The canonical target format is [v1.2.0](https://github.com/makeplane/plane/relea
 - **Editing the PR title** — release PR titles are version markers; only edit the body.
 - **Adding a Chores section** — the GitHub Releases format has no Chores section; user-invisible chores are dropped entirely.
 
-## Plane-Specific Conventions
+## Keel-Specific Conventions
 
 - Release PRs go from `uat` → `master` (or `preview`).
 - PR title format:
-  - `plane-cloud`: `release: vYY.MM.DD-N` where N is the daily release counter for that date.
-  - `plane-ee`: `release: vX.Y.Z` semver (major.minor.patch).
+  - `keel-cloud`: `release: vYY.MM.DD-N` where N is the daily release counter for that date.
+  - `keel-ee`: `release: vX.Y.Z` semver (major.minor.patch).
 - Commits coming from feature branches always carry a work item ID; commits without one are usually infra/chores and almost always dropped from notes.
 - `Sync: Enterprise Changes #NNNN` are automated cross-repo syncs and are _always_ skipped.
 - CVE-related upgrades (NextJS, React, Django, nginx, etc.) belong under 🛡️ Security with a link to the advisory and a one-line impact note.

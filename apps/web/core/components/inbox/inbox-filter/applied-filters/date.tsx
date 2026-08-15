@@ -5,12 +5,12 @@
  */
 
 import { observer } from "mobx-react";
-import { PAST_DURATION_FILTER_OPTIONS } from "@plane/constants";
-import { CloseIcon } from "@plane/propel/icons";
-import type { TInboxIssueFilterDateKeys } from "@plane/types";
+import { PAST_DURATION_FILTER_OPTIONS } from "@keel/constants";
+import { CloseIcon } from "@keel/propel/icons";
+import type { TInboxIssueFilterDateKeys } from "@keel/types";
 // helpers
-import { Tag } from "@plane/ui";
-import { renderFormattedDate } from "@plane/utils";
+import { Tag } from "@keel/ui";
+import { renderFormattedDate } from "@keel/utils";
 // constants
 // hooks
 import { useProjectInbox } from "@/hooks/store/use-project-inbox";

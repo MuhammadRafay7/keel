@@ -4,17 +4,17 @@
  * See the LICENSE file for details.
  */
 
-import { API_BASE_URL } from "@plane/constants";
+import { API_BASE_URL } from "@keel/constants";
 // types
-import type { IEmailCheckData, IEmailCheckResponse } from "@plane/types";
+import type { IEmailCheckData, IEmailCheckResponse } from "@keel/types";
 // services
 import { APIService } from "../api.service";
 
 /**
- * Service class for handling authentication-related operations for Plane space application
+ * Service class for handling authentication-related operations for Keel space application
  * Provides methods for user authentication, password management, and session handling
  * @extends {APIService}
- * @remarks This service is only available for plane sites
+ * @remarks This service is only available for keel sites
  */
 export class SitesAuthService extends APIService {
   /**

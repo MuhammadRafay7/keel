@@ -6,11 +6,11 @@
 
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane imports
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { IWorkspaceView } from "@plane/types";
-import { EIssuesStoreType } from "@plane/types";
-import { EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
+// keel imports
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { IWorkspaceView } from "@keel/types";
+import { EIssuesStoreType } from "@keel/types";
+import { EModalPosition, EModalWidth, ModalCore } from "@keel/ui";
 // hooks
 import { useGlobalView } from "@/hooks/store/use-global-view";
 import { useWorkItemFilters } from "@/hooks/store/work-item-filters/use-work-item-filters";

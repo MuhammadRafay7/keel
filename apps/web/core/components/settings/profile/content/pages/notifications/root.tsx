@@ -6,8 +6,8 @@
 
 import useSWR from "swr";
 import { observer } from "mobx-react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
+// keel imports
+import { useTranslation } from "@keel/i18n";
 // components
 import { ProfileSettingsHeading } from "@/components/settings/profile/heading";
 import { EmailSettingsLoader } from "@/components/ui/loader/settings/email";

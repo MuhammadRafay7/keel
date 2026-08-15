@@ -7,9 +7,9 @@
 import { useCallback, useState } from "react";
 import { observer } from "mobx-react";
 import useSWR from "swr";
-// plane imports
-import type { TDescriptionVersionDetails, TDescriptionVersionsListResponse } from "@plane/types";
-import { cn } from "@plane/utils";
+// keel imports
+import type { TDescriptionVersionDetails, TDescriptionVersionsListResponse } from "@keel/types";
+import { cn } from "@keel/utils";
 // local imports
 import { DescriptionVersionsDropdown } from "./dropdown";
 import { DescriptionVersionsModal } from "./modal";

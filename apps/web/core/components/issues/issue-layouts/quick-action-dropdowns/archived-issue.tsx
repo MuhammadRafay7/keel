@@ -8,10 +8,10 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 // ui
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
-import { EIssuesStoreType } from "@plane/types";
-import { ContextMenu, CustomMenu } from "@plane/ui";
-import { cn } from "@plane/utils";
+import { EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
+import { EIssuesStoreType } from "@keel/types";
+import { ContextMenu, CustomMenu } from "@keel/ui";
+import { cn } from "@keel/utils";
 // hooks
 import { useIssues } from "@/hooks/store/use-issues";
 import { useUserPermissions } from "@/hooks/store/user";

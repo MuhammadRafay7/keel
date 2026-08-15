@@ -5,10 +5,10 @@
  */
 
 import { useMemo } from "react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TIssueLink, TIssueServiceType } from "@plane/types";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { TIssueLink, TIssueServiceType } from "@keel/types";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 // local imports

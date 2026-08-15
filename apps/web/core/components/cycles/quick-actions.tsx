@@ -8,13 +8,13 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 import { MoreHorizontal } from "lucide-react";
 // ui
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { IconButton } from "@plane/propel/icon-button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TContextMenuItem } from "@plane/ui";
-import { ContextMenu, CustomMenu } from "@plane/ui";
-import { copyUrlToClipboard, cn } from "@plane/utils";
+import { EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { IconButton } from "@keel/propel/icon-button";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { TContextMenuItem } from "@keel/ui";
+import { ContextMenu, CustomMenu } from "@keel/ui";
+import { copyUrlToClipboard, cn } from "@keel/utils";
 // hooks
 import { useCycleMenuItems } from "@/components/common/quick-actions-helper";
 import { useCycle } from "@/hooks/store/use-cycle";

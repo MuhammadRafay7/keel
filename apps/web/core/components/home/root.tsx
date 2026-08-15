@@ -7,12 +7,12 @@
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
-// plane imports
-import { ContentWrapper } from "@plane/ui";
+// keel imports
+import { ContentWrapper } from "@keel/ui";
 // hooks
 import { useHome } from "@/hooks/store/use-home";
 import { useUserProfile, useUser } from "@/hooks/store/user";
-// plane web imports
+// keel web imports
 import { TourRoot } from "@/components/onboarding/tour/root";
 // local imports
 import { DashboardWidgets } from "./home-dashboard-widgets";

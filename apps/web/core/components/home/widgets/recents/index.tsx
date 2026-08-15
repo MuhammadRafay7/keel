@@ -7,14 +7,14 @@
 import { useRef, useState } from "react";
 import { observer } from "mobx-react";
 import useSWR from "swr";
-import { useTranslation } from "@plane/i18n";
-// plane types
-import { PageIcon, ProjectIcon, WorkItemsIcon } from "@plane/propel/icons";
-import type { TActivityEntityData, THomeWidgetProps, TRecentActivityFilterKeys } from "@plane/types";
-// plane ui
+import { useTranslation } from "@keel/i18n";
+// keel types
+import { PageIcon, ProjectIcon, WorkItemsIcon } from "@keel/propel/icons";
+import type { TActivityEntityData, THomeWidgetProps, TRecentActivityFilterKeys } from "@keel/types";
+// keel ui
 // components
 import { ContentOverflowWrapper } from "@/components/core/content-overflow-HOC";
-// plane web services
+// keel web services
 import { WorkspaceService } from "@/services/workspace.service";
 import { RecentsEmptyState } from "../empty-states";
 import { EWidgetKeys, WidgetLoader } from "../loaders";

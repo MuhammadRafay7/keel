@@ -9,15 +9,15 @@
 import type { FormEvent } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { ETabIndices } from "@plane/constants";
-import type { EditorRefApi } from "@plane/editor";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TIssue } from "@plane/types";
-import { ToggleSwitch } from "@plane/ui";
-import { renderFormattedPayloadDate, getTabIndex } from "@plane/utils";
+// keel imports
+import { ETabIndices } from "@keel/constants";
+import type { EditorRefApi } from "@keel/editor";
+import { useTranslation } from "@keel/i18n";
+import { Button } from "@keel/propel/button";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { TIssue } from "@keel/types";
+import { ToggleSwitch } from "@keel/ui";
+import { renderFormattedPayloadDate, getTabIndex } from "@keel/utils";
 // hooks
 import { useProjectInbox } from "@/hooks/store/use-project-inbox";
 import { useWorkspace } from "@/hooks/store/use-workspace";

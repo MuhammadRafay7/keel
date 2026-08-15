@@ -5,12 +5,12 @@
  */
 
 import { ArrowDownWideNarrow, ArrowUpWideNarrow } from "lucide-react";
-// plane imports
-import { getButtonStyling } from "@plane/propel/button";
+// keel imports
+import { getButtonStyling } from "@keel/propel/button";
 // types
-import { CheckIcon } from "@plane/propel/icons";
-import type { TPageFiltersSortBy, TPageFiltersSortKey } from "@plane/types";
-import { CustomMenu } from "@plane/ui";
+import { CheckIcon } from "@keel/propel/icons";
+import type { TPageFiltersSortBy, TPageFiltersSortKey } from "@keel/types";
+import { CustomMenu } from "@keel/ui";
 
 type Props = {
   onChange: (value: { key?: TPageFiltersSortKey; order?: TPageFiltersSortBy }) => void;

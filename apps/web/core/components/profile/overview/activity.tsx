@@ -8,15 +8,15 @@ import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
 // ui
-import { useTranslation } from "@plane/i18n";
-import { Avatar } from "@plane/propel/avatar";
-import { EmptyStateCompact } from "@plane/propel/empty-state";
-import { Loader, Card } from "@plane/ui";
-import { calculateTimeAgo, getFileURL } from "@plane/utils";
+import { useTranslation } from "@keel/i18n";
+import { Avatar } from "@keel/propel/avatar";
+import { EmptyStateCompact } from "@keel/propel/empty-state";
+import { Loader, Card } from "@keel/ui";
+import { calculateTimeAgo, getFileURL } from "@keel/utils";
 // components
 import { ActivityMessage, IssueLink } from "@/components/core/activity";
 // constants
-import { USER_PROFILE_ACTIVITY } from "@plane/constants";
+import { USER_PROFILE_ACTIVITY } from "@keel/constants";
 // helpers
 // hooks
 import { useUser } from "@/hooks/store/user";

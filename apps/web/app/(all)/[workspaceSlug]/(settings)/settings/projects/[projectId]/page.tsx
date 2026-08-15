@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
+// keel imports
+import { EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
 // components
 import { PageHead } from "@/components/core/page-title";
 import { ProjectDetailsForm } from "@/components/project/form";

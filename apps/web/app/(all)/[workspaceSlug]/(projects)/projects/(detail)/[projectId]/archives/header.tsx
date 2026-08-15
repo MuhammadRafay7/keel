@@ -6,11 +6,11 @@
 
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { ArchiveIcon, CycleIcon, ModuleIcon, WorkItemsIcon } from "@plane/propel/icons";
-import { Tooltip } from "@plane/propel/tooltip";
-import { EIssuesStoreType } from "@plane/types";
+import { ArchiveIcon, CycleIcon, ModuleIcon, WorkItemsIcon } from "@keel/propel/icons";
+import { Tooltip } from "@keel/propel/tooltip";
+import { EIssuesStoreType } from "@keel/types";
 // ui
-import { Breadcrumbs, Header } from "@plane/ui";
+import { Breadcrumbs, Header } from "@keel/ui";
 // components
 import { BreadcrumbLink } from "@/components/common/breadcrumb-link";
 // hooks
@@ -18,7 +18,7 @@ import { useIssues } from "@/hooks/store/use-issues";
 import { useProject } from "@/hooks/store/use-project";
 import { useAppRouter } from "@/hooks/use-app-router";
 import { usePlatformOS } from "@/hooks/use-platform-os";
-// plane web imports
+// keel web imports
 import { CommonProjectBreadcrumbs } from "@/components/breadcrumbs/common";
 
 type TProps = {

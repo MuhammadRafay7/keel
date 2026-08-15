@@ -9,15 +9,15 @@ import { observer } from "mobx-react";
 import type { Control } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import { Sparkle } from "lucide-react";
-// plane imports
-import { ETabIndices } from "@plane/constants";
-import type { EditorRefApi } from "@plane/editor";
-import { useTranslation } from "@plane/i18n";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TIssue } from "@plane/types";
-import { EFileAssetType } from "@plane/types";
-import { Loader } from "@plane/ui";
-import { getDescriptionPlaceholderI18n, getTabIndex } from "@plane/utils";
+// keel imports
+import { ETabIndices } from "@keel/constants";
+import type { EditorRefApi } from "@keel/editor";
+import { useTranslation } from "@keel/i18n";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { TIssue } from "@keel/types";
+import { EFileAssetType } from "@keel/types";
+import { Loader } from "@keel/ui";
+import { getDescriptionPlaceholderI18n, getTabIndex } from "@keel/utils";
 // components
 import { GptAssistantPopover } from "@/components/core/modals/gpt-assistant-popover";
 import { RichTextEditor } from "@/components/editor/rich-text";
@@ -28,7 +28,7 @@ import { useInstance } from "@/hooks/store/use-instance";
 import { useWorkspace } from "@/hooks/store/use-workspace";
 import useKeypress from "@/hooks/use-keypress";
 import { usePlatformOS } from "@/hooks/use-platform-os";
-// plane web services
+// keel web services
 import { WorkspaceService } from "@/services/workspace.service";
 // services
 import { AIService } from "@/services/ai.service";

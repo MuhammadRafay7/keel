@@ -12,11 +12,11 @@ import {
   DueDatePropertyIcon,
   LabelPropertyIcon,
   DuplicatePropertyIcon,
-} from "@plane/propel/icons";
-import { Tooltip } from "@plane/propel/tooltip";
-import type { TInboxDuplicateIssueDetails, TIssue } from "@plane/types";
-import { ControlLink } from "@plane/ui";
-import { getDate, renderFormattedPayloadDate, generateWorkItemLink } from "@plane/utils";
+} from "@keel/propel/icons";
+import { Tooltip } from "@keel/propel/tooltip";
+import type { TInboxDuplicateIssueDetails, TIssue } from "@keel/types";
+import { ControlLink } from "@keel/ui";
+import { getDate, renderFormattedPayloadDate, generateWorkItemLink } from "@keel/utils";
 // components
 import { DateDropdown } from "@/components/dropdowns/date";
 import { IntakeStateDropdown } from "@/components/dropdowns/intake-state/dropdown";

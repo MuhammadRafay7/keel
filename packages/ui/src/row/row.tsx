@@ -27,6 +27,6 @@ const Row = React.forwardRef(function Row(props: RowProps, ref: React.ForwardedR
   );
 });
 
-Row.displayName = "plane-ui-row";
+Row.displayName = "keel-ui-row";
 
 export { Row, ERowVariant };

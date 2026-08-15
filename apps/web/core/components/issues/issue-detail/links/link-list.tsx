@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import type { TIssueServiceType } from "@plane/types";
+// keel imports
+import type { TIssueServiceType } from "@keel/types";
 // computed
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 // local imports

@@ -170,7 +170,7 @@
           },
           "company_name": {
             "label": "Názov spoločnosti",
-            "placeholder": "Plane",
+            "placeholder": "Keel",
             "validation": {
               "required": "Názov spoločnosti je povinný",
               "maxLength": "Názov spoločnosti by nemal presiahnuť 255 znakov"
@@ -186,7 +186,7 @@
           },
           "privacy_policy_url": {
             "label": "Odkaz na vaše zásady ochrany súkromia",
-            "placeholder": "https://planes.so/privacy-policy",
+            "placeholder": "https://keels.so/privacy-policy",
             "validation": {
               "invalid": "Neplatná URL",
               "maxLength": "URL by nemala presiahnuť 800 znakov"
@@ -194,7 +194,7 @@
           },
           "terms_of_service_url": {
             "label": "Odkaz na vaše podmienky používania",
-            "placeholder": "https://planes.so/terms-of-use",
+            "placeholder": "https://keels.so/terms-of-use",
             "validation": {
               "invalid": "Neplatná URL",
               "maxLength": "URL by nemala presiahnuť 800 znakov"
@@ -227,7 +227,7 @@
     "empty_state": {
       "upgrade": {
         "title": "Šablóny",
-        "description": "S projektmi, pracovnými položkami a stránkami v Plane, nemusíte vytvárať projekty od začiatku alebo nastavovať vlastnosti pracovných položiek ručne.",
+        "description": "S projektmi, pracovnými položkami a stránkami v Keel, nemusíte vytvárať projekty od začiatku alebo nastavovať vlastnosti pracovných položiek ručne.",
         "sub_description": "Ušetríte 80% času, keď použijete šablóny."
       },
       "no_templates": {

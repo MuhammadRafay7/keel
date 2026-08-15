@@ -5,11 +5,11 @@
  */
 
 import { useMemo } from "react";
-// plane imports
-import { IS_FAVORITE_MENU_OPEN } from "@plane/constants";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { EPageAccess } from "@plane/types";
-import { copyUrlToClipboard } from "@plane/utils";
+// keel imports
+import { IS_FAVORITE_MENU_OPEN } from "@keel/constants";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import { EPageAccess } from "@keel/types";
+import { copyUrlToClipboard } from "@keel/utils";
 // hooks
 import { useCollaborativePageActions } from "@/hooks/use-collaborative-page-actions";
 // store types

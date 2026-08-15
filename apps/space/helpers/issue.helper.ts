@@ -5,9 +5,9 @@
  */
 
 import { differenceInCalendarDays } from "date-fns/differenceInCalendarDays";
-// plane internal
-import { STATE_GROUPS } from "@plane/constants";
-import type { TStateGroups } from "@plane/types";
+// keel internal
+import { STATE_GROUPS } from "@keel/constants";
+import type { TStateGroups } from "@keel/types";
 // helpers
 import { getDate } from "@/helpers/date-time.helper";
 

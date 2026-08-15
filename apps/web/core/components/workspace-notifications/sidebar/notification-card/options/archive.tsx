@@ -6,10 +6,10 @@
 
 import { observer } from "mobx-react";
 import { ArchiveRestore } from "lucide-react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { ArchiveIcon } from "@plane/propel/icons";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import { ArchiveIcon } from "@keel/propel/icons";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
 // store
 import type { INotification } from "@/store/notifications/notification";
 // local imports

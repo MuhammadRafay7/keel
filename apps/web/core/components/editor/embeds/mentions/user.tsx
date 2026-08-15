@@ -7,11 +7,11 @@
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { Link } from "react-router";
-// plane imports
-import { ROLE } from "@plane/constants";
-import { Popover } from "@plane/propel/popover";
-import { Avatar } from "@plane/ui";
-import { cn, getFileURL } from "@plane/utils";
+// keel imports
+import { ROLE } from "@keel/constants";
+import { Popover } from "@keel/propel/popover";
+import { Avatar } from "@keel/ui";
+import { cn, getFileURL } from "@keel/utils";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
 import { useUser } from "@/hooks/store/user";

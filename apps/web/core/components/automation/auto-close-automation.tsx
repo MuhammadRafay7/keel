@@ -8,12 +8,12 @@ import { useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { ArchiveX } from "lucide-react";
-// plane imports
-import { PROJECT_AUTOMATION_MONTHS, EUserPermissions, EUserPermissionsLevel, EIconSize } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { StateGroupIcon, StatePropertyIcon } from "@plane/propel/icons";
-import type { IProject } from "@plane/types";
-import { CustomSelect, CustomSearchSelect, ToggleSwitch, Loader } from "@plane/ui";
+// keel imports
+import { PROJECT_AUTOMATION_MONTHS, EUserPermissions, EUserPermissionsLevel, EIconSize } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { StateGroupIcon, StatePropertyIcon } from "@keel/propel/icons";
+import type { IProject } from "@keel/types";
+import { CustomSelect, CustomSearchSelect, ToggleSwitch, Loader } from "@keel/ui";
 import { SelectMonthModal } from "@/components/automation";
 import { SettingsControlItem } from "@/components/settings/control-item";
 // hooks

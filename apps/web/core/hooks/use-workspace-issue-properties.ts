@@ -5,10 +5,10 @@
  */
 
 import useSWR from "swr";
-// plane web imports
-import { WORKSPACE_ESTIMATES, WORKSPACE_CYCLES, WORKSPACE_LABELS, WORKSPACE_MODULES } from "@plane/constants";
+// keel web imports
+import { WORKSPACE_ESTIMATES, WORKSPACE_CYCLES, WORKSPACE_LABELS, WORKSPACE_MODULES } from "@keel/constants";
 import { useWorkspaceIssuePropertiesExtended } from "@/hooks/use-workspace-issue-properties-extended";
-// plane imports
+// keel imports
 import { useProjectEstimates } from "./store/estimates";
 import { useCycle } from "./store/use-cycle";
 import { useLabel } from "./store/use-label";

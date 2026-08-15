@@ -6,19 +6,19 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
+// keel imports
 import { useParams, useRouter } from "next/navigation";
-import { EUserPermissionsLevel, EPageAccess } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { EmptyStateDetailed } from "@plane/propel/empty-state";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TPage, TPageNavigationTabs } from "@plane/types";
-import { EUserProjectRoles } from "@plane/types";
+import { EUserPermissionsLevel, EPageAccess } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { EmptyStateDetailed } from "@keel/propel/empty-state";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { TPage, TPageNavigationTabs } from "@keel/types";
+import { EUserProjectRoles } from "@keel/types";
 // components
 import { PageLoader } from "@/components/pages/loaders/page-loader";
 import { useProject } from "@/hooks/store/use-project";
 import { useUserPermissions } from "@/hooks/store/user";
-// plane web hooks
+// keel web hooks
 import { EPageStoreType, usePageStore } from "@/hooks/store";
 
 type Props = {
@@ -29,7 +29,7 @@ type Props = {
 
 export const PagesListMainContent = observer(function PagesListMainContent(props: Props) {
   const { children, pageType, storeType } = props;
-  // plane hooks
+  // keel hooks
   const { t } = useTranslation();
   // store hooks
   const { currentProjectDetails } = useProject();

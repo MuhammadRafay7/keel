@@ -6,10 +6,10 @@
 
 import React, { useMemo } from "react";
 import { observer } from "mobx-react";
-import { useTranslation } from "@plane/i18n";
-import type { TIssueServiceType } from "@plane/types";
-import { EIssueServiceType } from "@plane/types";
-import { CollapsibleButton } from "@plane/ui";
+import { useTranslation } from "@keel/i18n";
+import type { TIssueServiceType } from "@keel/types";
+import { EIssueServiceType } from "@keel/types";
+import { CollapsibleButton } from "@keel/ui";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 // components

@@ -4,13 +4,13 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { BarChart } from "@plane/propel/charts/bar-chart";
-import { EmptyStateCompact } from "@plane/propel/empty-state";
-import type { IUserProfileData } from "@plane/types";
-import { Loader, Card } from "@plane/ui";
-import { capitalizeFirstLetter } from "@plane/utils";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import { BarChart } from "@keel/propel/charts/bar-chart";
+import { EmptyStateCompact } from "@keel/propel/empty-state";
+import type { IUserProfileData } from "@keel/types";
+import { Loader, Card } from "@keel/ui";
+import { capitalizeFirstLetter } from "@keel/utils";
 
 type Props = {
   userProfile: IUserProfileData | undefined;

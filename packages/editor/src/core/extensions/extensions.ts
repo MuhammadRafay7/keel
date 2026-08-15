@@ -33,8 +33,8 @@ import {
   TableRow,
   UtilityExtension,
 } from "@/extensions";
-// plane editor extensions
-import { CoreEditorAdditionalExtensions } from "@/plane-editor/extensions";
+// keel editor extensions
+import { CoreEditorAdditionalExtensions } from "@/keel-editor/extensions";
 // types
 import type { IEditorProps } from "@/types";
 // local imports

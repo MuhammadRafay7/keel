@@ -5,11 +5,11 @@
  */
 
 import { useCallback, useMemo } from "react";
-// plane imports
-import type { EventToPayloadMap } from "@plane/editor";
-import { setToast, TOAST_TYPE } from "@plane/propel/toast";
+// keel imports
+import type { EventToPayloadMap } from "@keel/editor";
+import { setToast, TOAST_TYPE } from "@keel/propel/toast";
 // types
-import type { IUserLite } from "@plane/types";
+import type { IUserLite } from "@keel/types";
 // components
 import type { TEditorBodyHandlers } from "@/components/pages/editor/editor-body";
 // hooks

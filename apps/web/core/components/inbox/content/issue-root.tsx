@@ -7,11 +7,11 @@
 import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useMemo, useRef } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import type { EditorRefApi } from "@plane/editor";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TIssue, TNameDescriptionLoader } from "@plane/types";
-import { EFileAssetType, EInboxIssueSource, EInboxIssueStatus } from "@plane/types";
+// keel imports
+import type { EditorRefApi } from "@keel/editor";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { TIssue, TNameDescriptionLoader } from "@keel/types";
+import { EFileAssetType, EInboxIssueSource, EInboxIssueStatus } from "@keel/types";
 // components
 import { DescriptionVersionsRoot } from "@/components/core/description-versions";
 import { DescriptionInput } from "@/components/editor/rich-text/description-input";

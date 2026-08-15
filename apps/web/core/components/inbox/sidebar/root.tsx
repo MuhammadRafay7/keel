@@ -6,13 +6,13 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
-import { useTranslation } from "@plane/i18n";
-import { EmptyStateDetailed } from "@plane/propel/empty-state";
-import type { TInboxIssueCurrentTab } from "@plane/types";
-import { EInboxIssueCurrentTab } from "@plane/types";
-// plane imports
-import { Header, Loader, EHeaderVariant } from "@plane/ui";
-import { cn } from "@plane/utils";
+import { useTranslation } from "@keel/i18n";
+import { EmptyStateDetailed } from "@keel/propel/empty-state";
+import type { TInboxIssueCurrentTab } from "@keel/types";
+import { EInboxIssueCurrentTab } from "@keel/types";
+// keel imports
+import { Header, Loader, EHeaderVariant } from "@keel/ui";
+import { cn } from "@keel/utils";
 // components
 import { InboxSidebarLoader } from "@/components/ui/loader/layouts/project-inbox/inbox-sidebar-loader";
 // hooks
@@ -50,7 +50,7 @@ export const InboxSidebar = observer(function InboxSidebar(props: IInboxSidebarP
   // ref
   const containerRef = useRef<HTMLDivElement>(null);
   const [elementRef, setElementRef] = useState<HTMLDivElement | null>(null);
-  // plane hooks
+  // keel hooks
   const { t } = useTranslation();
   // store
   const { currentProjectDetails } = useProject();

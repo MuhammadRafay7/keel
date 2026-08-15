@@ -7,11 +7,11 @@
 import { observer } from "mobx-react";
 import { useTheme } from "next-themes";
 import { Disclosure } from "@headlessui/react";
-import { EmptyStateDetailed } from "@plane/propel/empty-state";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import type { ICycle } from "@plane/types";
-import { Row } from "@plane/ui";
+import { EmptyStateDetailed } from "@keel/propel/empty-state";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import type { ICycle } from "@keel/types";
+import { Row } from "@keel/ui";
 // assets
 import darkActiveCycleAsset from "@/app/assets/empty-state/cycle/active-dark.webp?url";
 import lightActiveCycleAsset from "@/app/assets/empty-state/cycle/active-light.webp?url";
@@ -101,7 +101,7 @@ export const ActiveCycleRoot = observer(function ActiveCycleRoot(props: IActiveC
   const { workspaceSlug, projectId, cycleId: propsCycleId, showHeader = true } = props;
   // theme hook
   const { resolvedTheme } = useTheme();
-  // plane hooks
+  // keel hooks
   const { t } = useTranslation();
   // store hooks
   const { currentProjectActiveCycleId } = useCycle();

@@ -5,9 +5,9 @@
  */
 
 // ui
-import { Checkbox } from "@plane/ui";
+import { Checkbox } from "@keel/ui";
 // helpers
-import { cn } from "@plane/utils";
+import { cn } from "@keel/utils";
 // hooks
 import type { TSelectionHelper } from "@/hooks/use-multiple-select";
 

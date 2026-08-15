@@ -8,11 +8,11 @@ import { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 
-// plane imports
-import { DEFAULT_GLOBAL_VIEWS_LIST, EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
-import { PlusIcon } from "@plane/propel/icons";
-import type { TStaticViewTypes } from "@plane/types";
-import { Header, EHeaderVariant } from "@plane/ui";
+// keel imports
+import { DEFAULT_GLOBAL_VIEWS_LIST, EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
+import { PlusIcon } from "@keel/propel/icons";
+import type { TStaticViewTypes } from "@keel/types";
+import { Header, EHeaderVariant } from "@keel/ui";
 // hooks
 import { useGlobalView } from "@/hooks/store/use-global-view";
 import { useUserPermissions } from "@/hooks/store/user";

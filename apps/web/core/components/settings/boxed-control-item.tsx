@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { cn } from "@plane/utils";
+// keel imports
+import { cn } from "@keel/utils";
 
 type Props = {
   className?: string;

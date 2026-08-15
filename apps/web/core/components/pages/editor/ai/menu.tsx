@@ -7,17 +7,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import { CornerDownRight, RefreshCcw, Sparkles, TriangleAlert } from "lucide-react";
-// plane editor
-import type { EditorRefApi } from "@plane/editor";
-import { ChevronRightIcon } from "@plane/propel/icons";
-// plane ui
-import { Tooltip } from "@plane/propel/tooltip";
+// keel editor
+import type { EditorRefApi } from "@keel/editor";
+import { ChevronRightIcon } from "@keel/propel/icons";
+// keel ui
+import { Tooltip } from "@keel/propel/tooltip";
 // components
-import { cn } from "@plane/utils";
+import { cn } from "@keel/utils";
 import { RichTextEditor } from "@/components/editor/rich-text";
-// plane web constants
-import { AI_EDITOR_TASKS, LOADING_TEXTS } from "@plane/constants";
-// plane web services
+// keel web constants
+import { AI_EDITOR_TASKS, LOADING_TEXTS } from "@keel/constants";
+// keel web services
 import type { TTaskPayload } from "@/services/ai.service";
 import { AIService } from "@/services/ai.service";
 import { AskPiMenu } from "./ask-pi-menu";

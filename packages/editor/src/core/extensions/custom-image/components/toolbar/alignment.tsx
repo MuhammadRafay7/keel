@@ -5,10 +5,10 @@
  */
 
 import { useEffect, useRef, useState } from "react";
-// plane imports
-import { useOutsideClickDetector } from "@plane/hooks";
-import { ChevronDownIcon } from "@plane/propel/icons";
-import { Tooltip } from "@plane/propel/tooltip";
+// keel imports
+import { useOutsideClickDetector } from "@keel/hooks";
+import { ChevronDownIcon } from "@keel/propel/icons";
+import { Tooltip } from "@keel/propel/tooltip";
 // local imports
 import type { TCustomImageAlignment } from "../../types";
 import { IMAGE_ALIGNMENT_OPTIONS } from "../../utils";

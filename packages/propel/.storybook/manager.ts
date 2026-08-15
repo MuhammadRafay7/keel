@@ -7,14 +7,14 @@
 import { addons } from "storybook/manager-api";
 import { create } from "storybook/theming";
 
-const planeTheme = create({
+const keelTheme = create({
   base: "dark",
-  brandTitle: "Plane UI",
+  brandTitle: "Keel UI",
   brandUrl: "https://plane.so",
-  brandImage: "plane-lockup-light.svg",
+  brandImage: "keel-lockup-light.svg",
   brandTarget: "_self",
 });
 
 addons.setConfig({
-  theme: planeTheme,
+  theme: keelTheme,
 });

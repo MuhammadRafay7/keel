@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { TFilterAndGroupNode, TFilterExpression, TFilterGroupNode, TFilterProperty } from "@plane/types";
+// keel imports
+import type { TFilterAndGroupNode, TFilterExpression, TFilterGroupNode, TFilterProperty } from "@keel/types";
 // local imports
 import { getAndGroupChildren, isAndGroupNode } from "./core";
 

@@ -6,8 +6,8 @@
 
 // constants
 import type { CORE_EXTENSIONS } from "@/constants/extension";
-// plane editor imports
-import type { TAdditionalEditorAsset } from "@/plane-editor/types/asset";
+// keel editor imports
+import type { TAdditionalEditorAsset } from "@/keel-editor/types/asset";
 
 export type TEditorImageAsset = {
   href: string;

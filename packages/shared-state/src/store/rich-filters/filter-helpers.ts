@@ -6,9 +6,9 @@
 
 import { cloneDeep } from "lodash-es";
 import { action, makeObservable, observable, toJS } from "mobx";
-// plane imports
-import type { TAutoVisibilityOptions, TExpressionOptions } from "@plane/constants";
-import { DEFAULT_FILTER_EXPRESSION_OPTIONS } from "@plane/constants";
+// keel imports
+import type { TAutoVisibilityOptions, TExpressionOptions } from "@keel/constants";
+import { DEFAULT_FILTER_EXPRESSION_OPTIONS } from "@keel/constants";
 import type {
   IFilterAdapter,
   TSupportedOperators,
@@ -19,9 +19,9 @@ import type {
   TExternalFilter,
   TLogicalOperator,
   TFilterConditionPayload,
-} from "@plane/types";
-import { LOGICAL_OPERATOR } from "@plane/types";
-import { addAndCondition, createConditionNode, updateNodeInExpression } from "@plane/utils";
+} from "@keel/types";
+import { LOGICAL_OPERATOR } from "@keel/types";
+import { addAndCondition, createConditionNode, updateNodeInExpression } from "@keel/utils";
 // local imports
 import type { IFilterInstance } from "./filter";
 

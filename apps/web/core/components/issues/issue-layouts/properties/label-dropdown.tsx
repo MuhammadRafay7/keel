@@ -10,17 +10,17 @@ import { useParams } from "next/navigation";
 import { usePopper } from "react-popper";
 import { Loader } from "lucide-react";
 import { Combobox } from "@headlessui/react";
-// plane imports
-import { EUserPermissionsLevel, getRandomLabelColor } from "@plane/constants";
-import { useOutsideClickDetector } from "@plane/hooks";
-import { useTranslation } from "@plane/i18n";
-import { CheckIcon, SearchIcon, ChevronDownIcon } from "@plane/propel/icons";
+// keel imports
+import { EUserPermissionsLevel, getRandomLabelColor } from "@keel/constants";
+import { useOutsideClickDetector } from "@keel/hooks";
+import { useTranslation } from "@keel/i18n";
+import { CheckIcon, SearchIcon, ChevronDownIcon } from "@keel/propel/icons";
 // types
-import type { IIssueLabel } from "@plane/types";
-import { EUserProjectRoles } from "@plane/types";
+import type { IIssueLabel } from "@keel/types";
+import { EUserProjectRoles } from "@keel/types";
 // components
-import { ComboDropDown } from "@plane/ui";
-import { sortBySelectedFirst } from "@plane/utils";
+import { ComboDropDown } from "@keel/ui";
+import { sortBySelectedFirst } from "@keel/utils";
 // hooks
 import { useLabel } from "@/hooks/store/use-label";
 import { useUserPermissions } from "@/hooks/store/user";

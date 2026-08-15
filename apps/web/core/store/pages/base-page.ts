@@ -6,11 +6,11 @@
 
 import { set } from "lodash-es";
 import { action, computed, makeObservable, observable, reaction, runInAction } from "mobx";
-// plane imports
-import { EPageAccess } from "@plane/constants";
-import type { TChangeHandlerProps } from "@plane/propel/emoji-icon-picker";
-import type { TDocumentPayload, TLogoProps, TNameDescriptionLoader, TPage } from "@plane/types";
-// plane web store
+// keel imports
+import { EPageAccess } from "@keel/constants";
+import type { TChangeHandlerProps } from "@keel/propel/emoji-icon-picker";
+import type { TDocumentPayload, TLogoProps, TNameDescriptionLoader, TPage } from "@keel/types";
+// keel web store
 import { ExtendedBasePage } from "@/store/pages/extended-base-page";
 import type { RootStore } from "@/store/root.store";
 // local imports

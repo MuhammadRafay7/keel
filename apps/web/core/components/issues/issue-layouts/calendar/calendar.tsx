@@ -8,8 +8,8 @@ import { useEffect, useRef, useState } from "react";
 import { combine } from "@atlaskit/pragmatic-drag-and-drop/combine";
 import { autoScrollForElements } from "@atlaskit/pragmatic-drag-and-drop-auto-scroll/element";
 import { observer } from "mobx-react";
-// plane constants
-import type { TSupportedFilterTypeForUpdate } from "@plane/constants";
+// keel constants
+import type { TSupportedFilterTypeForUpdate } from "@keel/constants";
 // types
 import type {
   TGroupedIssues,
@@ -18,13 +18,13 @@ import type {
   TPaginationData,
   ICalendarWeek,
   TSupportedFilterForUpdate,
-} from "@plane/types";
-import { EIssuesStoreType, EIssueLayoutTypes } from "@plane/types";
+} from "@keel/types";
+import { EIssuesStoreType, EIssueLayoutTypes } from "@keel/types";
 // ui
-import { Spinner } from "@plane/ui";
-import { renderFormattedPayloadDate, cn } from "@plane/utils";
+import { Spinner } from "@keel/ui";
+import { renderFormattedPayloadDate, cn } from "@keel/utils";
 // constants
-import { MONTHS_LIST } from "@plane/constants";
+import { MONTHS_LIST } from "@keel/constants";
 // helpers
 // hooks
 import { useIssues } from "@/hooks/store/use-issues";

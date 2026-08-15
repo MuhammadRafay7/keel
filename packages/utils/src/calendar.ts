@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { ICalendarDate, ICalendarPayload } from "@plane/types";
-import { EStartOfTheWeek } from "@plane/types";
+// keel imports
+import type { ICalendarDate, ICalendarPayload } from "@keel/types";
+import { EStartOfTheWeek } from "@keel/types";
 // local imports
 import { getWeekNumberOfDate, renderFormattedPayloadDate } from "./datetime";
 

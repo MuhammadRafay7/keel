@@ -6,11 +6,11 @@
 
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane imports
-import { Popover } from "@plane/propel/popover";
-import { Tooltip } from "@plane/propel/tooltip";
-import { ControlLink } from "@plane/ui";
-import { findTotalDaysInRange, generateWorkItemLink } from "@plane/utils";
+// keel imports
+import { Popover } from "@keel/propel/popover";
+import { Tooltip } from "@keel/propel/tooltip";
+import { ControlLink } from "@keel/ui";
+import { findTotalDaysInRange, generateWorkItemLink } from "@keel/utils";
 // components
 import { SIDEBAR_WIDTH } from "@/components/gantt-chart/constants";
 import { IssueIdentifier } from "@/components/issues/issue-detail/issue-identifier";

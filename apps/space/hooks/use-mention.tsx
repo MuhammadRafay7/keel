@@ -6,9 +6,9 @@
 
 import { useRef, useEffect } from "react";
 import useSWR from "swr";
-// plane imports
-import { UserService } from "@plane/services";
-import type { IUser } from "@plane/types";
+// keel imports
+import { UserService } from "@keel/services";
+import type { IUser } from "@keel/types";
 
 export const useMention = () => {
   const userService = new UserService();

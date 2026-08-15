@@ -7,11 +7,11 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router";
 import { LogOut, MoreHorizontal, Settings, Share2, ArchiveIcon } from "lucide-react";
-// plane imports
-import { MEMBER_TRACKER_ELEMENTS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { LinkIcon } from "@plane/propel/icons";
-import { CustomMenu } from "@plane/ui";
+// keel imports
+import { MEMBER_TRACKER_ELEMENTS } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { LinkIcon } from "@keel/propel/icons";
+import { CustomMenu } from "@keel/ui";
 
 type Props = {
   workspaceSlug: string;

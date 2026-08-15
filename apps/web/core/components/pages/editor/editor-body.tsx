@@ -6,9 +6,9 @@
 
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { LIVE_BASE_PATH, LIVE_BASE_URL } from "@plane/constants";
-import { CollaborativeDocumentEditorWithRef } from "@plane/editor";
+// keel imports
+import { LIVE_BASE_PATH, LIVE_BASE_URL } from "@keel/constants";
+import { CollaborativeDocumentEditorWithRef } from "@keel/editor";
 import type {
   CollaborationState,
   EditorRefApi,
@@ -18,11 +18,11 @@ import type {
   TFileHandler,
   TRealtimeConfig,
   TServerHandler,
-} from "@plane/editor";
-import { useTranslation } from "@plane/i18n";
-import type { TSearchEntityRequestPayload, TSearchResponse, TWebhookConnectionQueryParams } from "@plane/types";
-import { ERowVariant, Row } from "@plane/ui";
-import { cn, generateRandomColor, hslToHex } from "@plane/utils";
+} from "@keel/editor";
+import { useTranslation } from "@keel/i18n";
+import type { TSearchEntityRequestPayload, TSearchResponse, TWebhookConnectionQueryParams } from "@keel/types";
+import { ERowVariant, Row } from "@keel/ui";
+import { cn, generateRandomColor, hslToHex } from "@keel/utils";
 // components
 import { EditorMentionsRoot } from "@/components/editor/embeds/mentions";
 // hooks
@@ -32,7 +32,7 @@ import { useWorkspace } from "@/hooks/store/use-workspace";
 import { useUser } from "@/hooks/store/user";
 import { usePageFilters } from "@/hooks/use-page-filters";
 import { useParseEditorContent } from "@/hooks/use-parse-editor-content";
-// plane web imports
+// keel web imports
 import type { TCustomEventHandlers } from "@/hooks/use-realtime-page-events";
 import { useRealtimePageEvents } from "@/hooks/use-realtime-page-events";
 import type { TExtendedEditorExtensionsConfig } from "@/hooks/pages";

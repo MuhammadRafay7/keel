@@ -6,10 +6,10 @@
 
 import { Suspense } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { ScrollArea } from "@plane/propel/scrollarea";
-import type { TProfileSettingsTabs } from "@plane/types";
-import { cn } from "@plane/utils";
+// keel imports
+import { ScrollArea } from "@keel/propel/scrollarea";
+import type { TProfileSettingsTabs } from "@keel/types";
+import { cn } from "@keel/utils";
 // local imports
 import { PROFILE_SETTINGS_PAGES_MAP } from "./pages";
 

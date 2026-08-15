@@ -16,9 +16,9 @@ import type {
   TCycleEstimateDistribution,
   TCycleDistribution,
   TCycleEstimateType,
-} from "@plane/types";
-import type { DistributionUpdates } from "@plane/utils";
-import { orderCycles, shouldFilterCycle, getDate, updateDistribution } from "@plane/utils";
+} from "@keel/types";
+import type { DistributionUpdates } from "@keel/utils";
+import { orderCycles, shouldFilterCycle, getDate, updateDistribution } from "@keel/utils";
 // helpers
 // services
 import { CycleService } from "@/services/cycle.service";

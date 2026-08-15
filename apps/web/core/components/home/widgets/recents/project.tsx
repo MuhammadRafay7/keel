@@ -5,10 +5,10 @@
  */
 
 import { useRouter } from "next/navigation";
-// plane types
-import { Logo } from "@plane/propel/emoji-icon-picker";
-import type { TActivityEntityData, TProjectEntityData } from "@plane/types";
-import { calculateTimeAgo } from "@plane/utils";
+// keel types
+import { Logo } from "@keel/propel/emoji-icon-picker";
+import type { TActivityEntityData, TProjectEntityData } from "@keel/types";
+import { calculateTimeAgo } from "@keel/utils";
 // components
 import { ListItem } from "@/components/core/list";
 import { MemberDropdown } from "@/components/dropdowns/member/dropdown";

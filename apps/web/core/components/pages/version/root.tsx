@@ -7,12 +7,12 @@
 import { useCallback } from "react";
 import { observer } from "mobx-react";
 import { useRouter, useSearchParams } from "next/navigation";
-// plane imports
-import type { TPageVersion } from "@plane/types";
-import { cn } from "@plane/utils";
+// keel imports
+import type { TPageVersion } from "@keel/types";
+import { cn } from "@keel/utils";
 // hooks
 import { useQueryParams } from "@/hooks/use-query-params";
-// plane web imports
+// keel web imports
 import type { EPageStoreType } from "@/hooks/store";
 // local imports
 import { PAGE_NAVIGATION_PANE_VERSION_QUERY_PARAM, PAGE_NAVIGATION_PANE_WIDTH } from "../navigation-pane";

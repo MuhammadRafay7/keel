@@ -5,17 +5,17 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
+// keel imports
 import {
   SUBSCRIPTION_REDIRECTION_URLS,
   SUBSCRIPTION_WITH_BILLING_FREQUENCY,
   TALK_TO_SALES_URL,
-} from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import type { TBillingFrequency } from "@plane/types";
-import { EProductSubscriptionEnum } from "@plane/types";
-import { getSubscriptionName } from "@plane/utils";
+} from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { Button } from "@keel/propel/button";
+import type { TBillingFrequency } from "@keel/types";
+import { EProductSubscriptionEnum } from "@keel/types";
+import { getSubscriptionName } from "@keel/utils";
 // components
 import { DiscountInfo } from "@/components/license/modal/card/discount-info";
 import type { TPlanDetail } from "@/components/workspace/billing/comparison/plans";
@@ -31,7 +31,7 @@ type TPlanDetailProps = {
 
 export const PlanDetail = observer(function PlanDetail(props: TPlanDetailProps) {
   const { subscriptionType, planDetail, billingFrequency, setBillingFrequency } = props;
-  // plane hooks
+  // keel hooks
   const { t } = useTranslation();
   // subscription details
   const subscriptionName = getSubscriptionName(subscriptionType);

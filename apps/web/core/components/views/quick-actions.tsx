@@ -8,14 +8,14 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 import { MoreHorizontal } from "lucide-react";
 // types
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
-import { IconButton } from "@plane/propel/icon-button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { IProjectView } from "@plane/types";
+import { EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
+import { IconButton } from "@keel/propel/icon-button";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { IProjectView } from "@keel/types";
 // ui
-import type { TContextMenuItem } from "@plane/ui";
-import { ContextMenu, CustomMenu } from "@plane/ui";
-import { copyUrlToClipboard, cn } from "@plane/utils";
+import type { TContextMenuItem } from "@keel/ui";
+import { ContextMenu, CustomMenu } from "@keel/ui";
+import { copyUrlToClipboard, cn } from "@keel/utils";
 // helpers
 import { useViewMenuItems } from "@/components/common/quick-actions-helper";
 // hooks

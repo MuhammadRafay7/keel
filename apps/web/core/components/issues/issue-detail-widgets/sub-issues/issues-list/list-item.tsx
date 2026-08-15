@@ -6,14 +6,14 @@
 
 import { observer } from "mobx-react";
 import { Link as Loader } from "lucide-react";
-import { useTranslation } from "@plane/i18n";
-import { LinkIcon, EditIcon, TrashIcon, CloseIcon, ChevronRightIcon } from "@plane/propel/icons";
-// plane imports
-import { Tooltip } from "@plane/propel/tooltip";
-import type { TIssue, TIssueServiceType, TSubIssueOperations } from "@plane/types";
-import { EIssueServiceType, EIssuesStoreType } from "@plane/types";
-import { ControlLink, CustomMenu } from "@plane/ui";
-import { cn, generateWorkItemLink } from "@plane/utils";
+import { useTranslation } from "@keel/i18n";
+import { LinkIcon, EditIcon, TrashIcon, CloseIcon, ChevronRightIcon } from "@keel/propel/icons";
+// keel imports
+import { Tooltip } from "@keel/propel/tooltip";
+import type { TIssue, TIssueServiceType, TSubIssueOperations } from "@keel/types";
+import { EIssueServiceType, EIssuesStoreType } from "@keel/types";
+import { ControlLink, CustomMenu } from "@keel/ui";
+import { cn, generateWorkItemLink } from "@keel/utils";
 // helpers
 import { useSubIssueOperations } from "@/components/issues/issue-detail-widgets/sub-issues/helper";
 import { WithDisplayPropertiesHOC } from "@/components/issues/issue-layouts/properties/with-display-properties-HOC";

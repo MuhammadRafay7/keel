@@ -1,5 +1,5 @@
 {
-  "name": "@plane/codemods",
+  "name": "@keel/codemods",
   "version": "1.4.1",
   "private": true,
   "scripts": {

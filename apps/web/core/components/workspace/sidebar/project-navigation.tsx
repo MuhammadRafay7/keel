@@ -8,11 +8,11 @@ import React, { useCallback, useMemo } from "react";
 import { observer } from "mobx-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import { EUserPermissionsLevel, EUserPermissions } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { CycleIcon, IntakeIcon, ModuleIcon, PageIcon, ViewsIcon, WorkItemsIcon } from "@plane/propel/icons";
-import type { EUserProjectRoles } from "@plane/types";
-// plane ui
+import { EUserPermissionsLevel, EUserPermissions } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { CycleIcon, IntakeIcon, ModuleIcon, PageIcon, ViewsIcon, WorkItemsIcon } from "@keel/propel/icons";
+import type { EUserProjectRoles } from "@keel/types";
+// keel ui
 // components
 import { SidebarNavItem } from "@/components/sidebar/sidebar-navigation";
 // hooks

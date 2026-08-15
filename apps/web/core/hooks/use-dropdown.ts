@@ -5,8 +5,8 @@
  */
 
 import { useEffect } from "react";
-// plane helpers
-import { useOutsideClickDetector } from "@plane/hooks";
+// keel helpers
+import { useOutsideClickDetector } from "@keel/hooks";
 // hooks
 import { useDropdownKeyDown } from "@/hooks/use-dropdown-key-down";
 import { usePlatformOS } from "./use-platform-os";

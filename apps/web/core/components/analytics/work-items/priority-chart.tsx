@@ -10,16 +10,16 @@ import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { useTheme } from "next-themes";
 import useSWR from "swr";
-// plane package imports
+// keel package imports
 import { Download } from "lucide-react";
-import type { ChartXAxisDateGrouping } from "@plane/constants";
-import { ANALYTICS_X_AXIS_VALUES, ANALYTICS_Y_AXIS_VALUES, CHART_COLOR_PALETTES, EChartModels } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import { BarChart } from "@plane/propel/charts/bar-chart";
-import { EmptyStateCompact } from "@plane/propel/empty-state";
-import type { TBarItem, TChart, TChartDatum, ChartXAxisProperty, ChartYAxisMetric } from "@plane/types";
-// plane web components
+import type { ChartXAxisDateGrouping } from "@keel/constants";
+import { ANALYTICS_X_AXIS_VALUES, ANALYTICS_Y_AXIS_VALUES, CHART_COLOR_PALETTES, EChartModels } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { Button } from "@keel/propel/button";
+import { BarChart } from "@keel/propel/charts/bar-chart";
+import { EmptyStateCompact } from "@keel/propel/empty-state";
+import type { TBarItem, TChart, TChartDatum, ChartXAxisProperty, ChartYAxisMetric } from "@keel/types";
+// keel web components
 import { generateExtendedColors, parseChartData } from "@/components/chart/utils";
 // hooks
 import { useAnalytics } from "@/hooks/store/use-analytics";

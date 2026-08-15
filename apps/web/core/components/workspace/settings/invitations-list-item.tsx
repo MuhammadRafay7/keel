@@ -7,14 +7,14 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane imports
-import { ROLE, EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { LinkIcon, TrashIcon, ChevronDownIcon } from "@plane/propel/icons";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TContextMenuItem } from "@plane/ui";
-import { CustomSelect, CustomMenu } from "@plane/ui";
-import { cn, copyTextToClipboard } from "@plane/utils";
+// keel imports
+import { ROLE, EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { LinkIcon, TrashIcon, ChevronDownIcon } from "@keel/propel/icons";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { TContextMenuItem } from "@keel/ui";
+import { CustomSelect, CustomMenu } from "@keel/ui";
+import { cn, copyTextToClipboard } from "@keel/utils";
 // components
 import { ConfirmWorkspaceMemberRemove } from "@/components/workspace/confirm-workspace-member-remove";
 // hooks
@@ -31,7 +31,7 @@ export const WorkspaceInvitationsListItem = observer(function WorkspaceInvitatio
   const { workspaceSlug } = useParams();
   // states
   const [removeMemberModal, setRemoveMemberModal] = useState(false);
-  // plane hooks
+  // keel hooks
   const { t } = useTranslation();
   // store hooks
   const { allowPermissions, workspaceInfoBySlug } = useUserPermissions();

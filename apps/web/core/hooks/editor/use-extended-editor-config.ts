@@ -5,8 +5,8 @@
  */
 
 import { useCallback } from "react";
-// plane imports
-import type { TExtendedFileHandler } from "@plane/editor";
+// keel imports
+import type { TExtendedFileHandler } from "@keel/editor";
 
 export type TExtendedEditorFileHandlersArgs = {
   projectId?: string;

@@ -11,10 +11,10 @@ import { clone, isNil, pull, uniq, concat } from "lodash-es";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
 import type { FC } from "react";
 import { CalendarDays, LayersIcon, Paperclip } from "lucide-react";
-// plane types
-import { EIconSize, ISSUE_PRIORITIES, STATE_GROUPS } from "@plane/constants";
-import { Logo } from "@plane/propel/emoji-icon-picker";
-import type { ISvgIcons } from "@plane/propel/icons";
+// keel types
+import { EIconSize, ISSUE_PRIORITIES, STATE_GROUPS } from "@keel/constants";
+import { Logo } from "@keel/propel/emoji-icon-picker";
+import type { ISvgIcons } from "@keel/propel/icons";
 import {
   CycleGroupIcon,
   CycleIcon,
@@ -29,7 +29,7 @@ import {
   LabelPropertyIcon,
   PriorityPropertyIcon,
   StartDatePropertyIcon,
-} from "@plane/propel/icons";
+} from "@keel/propel/icons";
 import type {
   GroupByColumnTypes,
   IGroupByColumn,
@@ -44,17 +44,17 @@ import type {
   IIssueDisplayFilterOptions,
   TGetColumns,
   TSpreadsheetColumn,
-} from "@plane/types";
-import { EIssuesStoreType } from "@plane/types";
-// plane ui
-import { Avatar } from "@plane/ui";
-import { renderFormattedDate, getFileURL } from "@plane/utils";
+} from "@keel/types";
+import { EIssuesStoreType } from "@keel/types";
+// keel ui
+import { Avatar } from "@keel/ui";
+import { renderFormattedDate, getFileURL } from "@keel/utils";
 // store
 import { store } from "@/lib/store-context";
 import { ISSUE_FILTER_DEFAULT_DATA } from "@/store/issue/helpers/base-issues.store";
 import { DEFAULT_DISPLAY_PROPERTIES } from "@/store/issue/issue-details/sub_issues_filter.store";
 // constants
-import { ISSUE_GROUP_BY_OPTIONS } from "@plane/constants";
+import { ISSUE_GROUP_BY_OPTIONS } from "@keel/constants";
 // components
 import {
   SpreadsheetAssigneeColumn,

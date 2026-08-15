@@ -6,11 +6,11 @@
 
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-// plane imports
-import { PROFILE_VIEWER_TAB, PROFILE_ADMINS_TAB } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { Header, EHeaderVariant } from "@plane/ui";
-import { cn } from "@plane/utils";
+// keel imports
+import { PROFILE_VIEWER_TAB, PROFILE_ADMINS_TAB } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { Header, EHeaderVariant } from "@keel/ui";
+import { cn } from "@keel/utils";
 
 type Props = {
   isAuthorized: boolean;

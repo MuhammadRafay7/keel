@@ -5,9 +5,9 @@
  */
 
 import { ArchiveIcon, Earth } from "lucide-react";
-import { EPageAccess } from "@plane/constants";
-import { LockIcon } from "@plane/propel/icons";
-import type { TPage } from "@plane/types";
+import { EPageAccess } from "@keel/constants";
+import { LockIcon } from "@keel/propel/icons";
+import type { TPage } from "@keel/types";
 
 export function PageAccessIcon(page: TPage) {
   return (

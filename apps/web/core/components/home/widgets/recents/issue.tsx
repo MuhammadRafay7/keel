@@ -5,13 +5,13 @@
  */
 
 import { observer } from "mobx-react";
-// plane types
-import { PriorityIcon, StateGroupIcon, WorkItemsIcon } from "@plane/propel/icons";
-import { Tooltip } from "@plane/propel/tooltip";
-import type { TActivityEntityData, TIssueEntityData } from "@plane/types";
-import { EIssueServiceType } from "@plane/types";
-// plane ui
-import { calculateTimeAgo, generateWorkItemLink } from "@plane/utils";
+// keel types
+import { PriorityIcon, StateGroupIcon, WorkItemsIcon } from "@keel/propel/icons";
+import { Tooltip } from "@keel/propel/tooltip";
+import type { TActivityEntityData, TIssueEntityData } from "@keel/types";
+import { EIssueServiceType } from "@keel/types";
+// keel ui
+import { calculateTimeAgo, generateWorkItemLink } from "@keel/utils";
 // components
 import { ListItem } from "@/components/core/list";
 import { MemberDropdown } from "@/components/dropdowns/member/dropdown";

@@ -6,11 +6,11 @@
 
 import { observer } from "mobx-react";
 import type { UseFormGetValues } from "react-hook-form";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import { setToast, TOAST_TYPE } from "@plane/propel/toast";
-import type { IUserTheme } from "@plane/types";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import { Button } from "@keel/propel/button";
+import { setToast, TOAST_TYPE } from "@keel/propel/toast";
+import type { IUserTheme } from "@keel/types";
 
 type Props = {
   getValues: UseFormGetValues<IUserTheme>;
@@ -36,7 +36,7 @@ export const CustomThemeDownloadConfigButton = observer(function CustomThemeDown
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `plane-theme-${Date.now()}.json`;
+      link.download = `keel-theme-${Date.now()}.json`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

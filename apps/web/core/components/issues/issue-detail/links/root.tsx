@@ -6,11 +6,11 @@
 
 import { useCallback, useMemo, useState } from "react";
 
-import { PlusIcon } from "@plane/propel/icons";
-// plane imports
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TIssueLink } from "@plane/types";
-import { EIssueServiceType } from "@plane/types";
+import { PlusIcon } from "@keel/propel/icons";
+// keel imports
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { TIssueLink } from "@keel/types";
+import { EIssueServiceType } from "@keel/types";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 // local imports

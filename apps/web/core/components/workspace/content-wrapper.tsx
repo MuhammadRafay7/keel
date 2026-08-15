@@ -6,8 +6,8 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { cn } from "@plane/utils";
+// keel imports
+import { cn } from "@keel/utils";
 import { AppRailRoot } from "@/components/navigation";
 import { useAppRailVisibility } from "@/lib/app-rail";
 import { TopNavigationRoot } from "@/components/navigation/top-navigation-root";

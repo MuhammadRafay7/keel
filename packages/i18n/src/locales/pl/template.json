@@ -170,7 +170,7 @@
           },
           "company_name": {
             "label": "Nazwa firmy",
-            "placeholder": "Plane",
+            "placeholder": "Keel",
             "validation": {
               "required": "Nazwa firmy jest wymagana",
               "maxLength": "Nazwa firmy powinna mieć mniej niż 255 znaków"
@@ -186,7 +186,7 @@
           },
           "privacy_policy_url": {
             "label": "Link do Twojej polityki prywatności",
-            "placeholder": "https://planes.so/privacy-policy",
+            "placeholder": "https://keels.so/privacy-policy",
             "validation": {
               "invalid": "Nieprawidłowy adres URL",
               "maxLength": "Adres URL powinien mieć mniej niż 800 znaków"
@@ -194,7 +194,7 @@
           },
           "terms_of_service_url": {
             "label": "Link do Twoich warunków użycia",
-            "placeholder": "https://planes.so/terms-of-use",
+            "placeholder": "https://keels.so/terms-of-use",
             "validation": {
               "invalid": "Nieprawidłowy adres URL",
               "maxLength": "Adres URL powinien mieć mniej niż 800 znaków"
@@ -227,7 +227,7 @@
     "empty_state": {
       "upgrade": {
         "title": "Szablony",
-        "description": "Dzięki szablonom projektów, elementów pracy i stron w Plane nie musisz tworzyć projektu od podstaw ani ręcznie ustawiać właściwości elementów pracy.",
+        "description": "Dzięki szablonom projektów, elementów pracy i stron w Keel nie musisz tworzyć projektu od podstaw ani ręcznie ustawiać właściwości elementów pracy.",
         "sub_description": "Odzyskaj 80% czasu administracyjnego, korzystając z Szablonów."
       },
       "no_templates": {

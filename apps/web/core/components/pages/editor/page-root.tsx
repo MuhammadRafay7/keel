@@ -6,9 +6,9 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import type { CollaborationState, EditorRefApi } from "@plane/editor";
-import type { TDocumentPayload, TPage, TPageVersion, TWebhookConnectionQueryParams } from "@plane/types";
+// keel imports
+import type { CollaborationState, EditorRefApi } from "@keel/editor";
+import type { TDocumentPayload, TPage, TPageVersion, TWebhookConnectionQueryParams } from "@keel/types";
 // hooks
 import { usePageFallback } from "@/hooks/use-page-fallback";
 import type { PageUpdateHandler, TCustomEventHandlers } from "@/hooks/use-realtime-page-events";

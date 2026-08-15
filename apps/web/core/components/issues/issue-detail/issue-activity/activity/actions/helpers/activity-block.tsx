@@ -6,9 +6,9 @@
 
 import type { ReactNode } from "react";
 import { Network } from "lucide-react";
-// plane imports
-import { Tooltip } from "@plane/propel/tooltip";
-import { renderFormattedTime, renderFormattedDate, calculateTimeAgo } from "@plane/utils";
+// keel imports
+import { Tooltip } from "@keel/propel/tooltip";
+import { renderFormattedTime, renderFormattedDate, calculateTimeAgo } from "@keel/utils";
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 import { usePlatformOS } from "@/hooks/use-platform-os";
 // local imports

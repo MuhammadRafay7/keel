@@ -7,15 +7,15 @@
 import type { ChangeEvent } from "react";
 import type { UseFormSetValue } from "react-hook-form";
 import { Controller, useFormContext } from "react-hook-form";
-import { InfoIcon } from "@plane/propel/icons";
-// plane imports
-import { ETabIndices } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import type { TProject } from "@plane/types";
+import { InfoIcon } from "@keel/propel/icons";
+// keel imports
+import { ETabIndices } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import type { TProject } from "@keel/types";
 // ui
-import { Tooltip } from "@plane/propel/tooltip";
-import { Input, TextArea } from "@plane/ui";
-import { cn, projectIdentifierSanitizer, getTabIndex } from "@plane/utils";
+import { Tooltip } from "@keel/propel/tooltip";
+import { Input, TextArea } from "@keel/ui";
+import { cn, projectIdentifierSanitizer, getTabIndex } from "@keel/utils";
 
 type Props = {
   setValue: UseFormSetValue<TProject>;

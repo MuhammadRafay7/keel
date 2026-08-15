@@ -4,10 +4,10 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { TBuildFilterExpressionParams, TExternalFilter, TFilterProperty, TFilterValue } from "@plane/types";
-import { LOGICAL_OPERATOR } from "@plane/types";
-import { getOperatorForPayload } from "@plane/utils";
+// keel imports
+import type { TBuildFilterExpressionParams, TExternalFilter, TFilterProperty, TFilterValue } from "@keel/types";
+import { LOGICAL_OPERATOR } from "@keel/types";
+import { getOperatorForPayload } from "@keel/utils";
 // local imports
 import { FilterInstance } from "../store/rich-filters/filter";
 

@@ -17,25 +17,25 @@ import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { FolderPlus } from "lucide-react";
 import { Disclosure, Transition } from "@headlessui/react";
-import { IS_FAVORITE_MENU_OPEN } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { ChevronRightIcon } from "@plane/propel/icons";
+import { IS_FAVORITE_MENU_OPEN } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { ChevronRightIcon } from "@keel/propel/icons";
 // ui
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { Tooltip } from "@plane/propel/tooltip";
-import type { IFavorite } from "@plane/types";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import { Tooltip } from "@keel/propel/tooltip";
+import type { IFavorite } from "@keel/types";
 // helpers
-import { cn } from "@plane/utils";
+import { cn } from "@keel/utils";
 // hooks
 import { useFavorite } from "@/hooks/store/use-favorite";
 import useLocalStorage from "@/hooks/use-local-storage";
-// plane web components
+// keel web components
 import { FavoriteFolder } from "./favorite-folder";
 import { FavoriteRoot } from "./favorite-items";
 import type { TargetData } from "./favorites.helpers";
 import { getInstructionFromPayload } from "./favorites.helpers";
 import { NewFavoriteFolder } from "./new-fav-folder";
-import { IconButton } from "@plane/propel/icon-button";
+import { IconButton } from "@keel/propel/icon-button";
 
 export const SidebarFavoritesMenu = observer(function SidebarFavoritesMenu() {
   // states

@@ -6,11 +6,11 @@
 
 import { observer } from "mobx-react";
 import { Tab } from "@headlessui/react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import type { TWorkItemFilterCondition } from "@plane/shared-state";
-import type { TCycleDistribution, TCycleEstimateDistribution, TCyclePlotType } from "@plane/types";
-import { cn, toFilterArray } from "@plane/utils";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import type { TWorkItemFilterCondition } from "@keel/shared-state";
+import type { TCycleDistribution, TCycleEstimateDistribution, TCyclePlotType } from "@keel/types";
+import { cn, toFilterArray } from "@keel/utils";
 // components
 import type { TAssigneeData } from "@/components/core/sidebar/progress-stats/assignee";
 import { AssigneeStatComponent } from "@/components/core/sidebar/progress-stats/assignee";
@@ -52,7 +52,7 @@ export const CycleProgressStats = observer(function CycleProgressStats(props: TC
     size = "sm",
     totalIssuesCount,
   } = props;
-  // plane imports
+  // keel imports
   const { t } = useTranslation();
   // store imports
   const { storedValue: currentTab, setValue: setCycleTab } = useLocalStorage(

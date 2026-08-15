@@ -7,12 +7,12 @@
 import type { Editor } from "@tiptap/core";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
 import type { EditorState, Transaction } from "@tiptap/pm/state";
-// plane imports
-import { CORE_EXTENSIONS } from "@plane/utils";
+// keel imports
+import { CORE_EXTENSIONS } from "@keel/utils";
 // helpers
 import { CORE_ASSETS_META_DATA_RECORD } from "@/helpers/assets";
-// plane editor imports
-import { NODE_FILE_MAP } from "@/plane-editor/constants/utility";
+// keel editor imports
+import { NODE_FILE_MAP } from "@/keel-editor/constants/utility";
 // types
 import type { TFileHandler } from "@/types";
 // local imports

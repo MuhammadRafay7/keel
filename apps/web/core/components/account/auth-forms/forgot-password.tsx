@@ -10,12 +10,12 @@ import { useSearchParams } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 // icons
 import { CircleCheck } from "lucide-react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { Button, getButtonStyling } from "@plane/propel/button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { Input } from "@plane/ui";
-import { cn, checkEmailValidity } from "@plane/utils";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import { Button, getButtonStyling } from "@keel/propel/button";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import { Input } from "@keel/ui";
+import { cn, checkEmailValidity } from "@keel/utils";
 // hooks
 import useTimer from "@/hooks/use-timer";
 // services
@@ -39,7 +39,7 @@ export const ForgotPasswordForm = observer(function ForgotPasswordForm() {
   // search params
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
-  // plane hooks
+  // keel hooks
   const { t } = useTranslation();
   // timer
   const { timer: resendTimerCode, setTimer: setResendCodeTimer } = useTimer(0);

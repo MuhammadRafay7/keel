@@ -5,16 +5,16 @@
  */
 
 import { observer } from "mobx-react";
-import { Logo } from "@plane/propel/emoji-icon-picker";
-import { ProjectIcon } from "@plane/propel/icons";
-// plane imports
-import type { ICustomSearchSelectOption } from "@plane/types";
-import { BreadcrumbNavigationSearchDropdown, Breadcrumbs } from "@plane/ui";
+import { Logo } from "@keel/propel/emoji-icon-picker";
+import { ProjectIcon } from "@keel/propel/icons";
+// keel imports
+import type { ICustomSearchSelectOption } from "@keel/types";
+import { BreadcrumbNavigationSearchDropdown, Breadcrumbs } from "@keel/ui";
 import { SwitcherLabel } from "@/components/common/switcher-label";
 // hooks
 import { useProject } from "@/hooks/store/use-project";
 import { useAppRouter } from "@/hooks/use-app-router";
-import type { TProject } from "@plane/types";
+import type { TProject } from "@keel/types";
 
 type TProjectBreadcrumbProps = {
   workspaceSlug: string;

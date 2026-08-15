@@ -6,11 +6,11 @@
 
 import type { RefObject } from "react";
 import { observer } from "mobx-react";
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@keel/i18n";
 // components
-import type { IBlockUpdateData } from "@plane/types";
-import { Row, ERowVariant } from "@plane/ui";
-import { cn } from "@plane/utils";
+import type { IBlockUpdateData } from "@keel/types";
+import { Row, ERowVariant } from "@keel/ui";
+import { cn } from "@keel/utils";
 import { MultipleSelectGroupAction } from "@/components/core/multiple-select";
 // helpers
 // hooks

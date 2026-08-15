@@ -6,11 +6,11 @@
 
 import { observer } from "mobx-react";
 
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import { PlusIcon } from "@plane/propel/icons";
-import { cn } from "@plane/utils";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import { Button } from "@keel/propel/button";
+import { PlusIcon } from "@keel/propel/icons";
+import { cn } from "@keel/utils";
 
 type TInvitationModalActionsProps = {
   isInviteDisabled?: boolean;

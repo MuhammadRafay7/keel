@@ -14,8 +14,8 @@ import type {
   IGanttBlock,
   TGanttViews,
   EGanttBlockType,
-} from "@plane/types";
-import { renderFormattedPayloadDate } from "@plane/utils";
+} from "@keel/types";
+import { renderFormattedPayloadDate } from "@keel/utils";
 import { currentViewDataWithView } from "@/components/gantt-chart/data";
 import {
   getDateFromPositionOnGantt,

@@ -16,16 +16,16 @@ import { createRoot } from "react-dom/client";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
 import { Settings, Share2, LogOut, MoreHorizontal } from "lucide-react";
 import { Disclosure, Transition } from "@headlessui/react";
-// plane imports
-import { EUserPermissions, EUserPermissionsLevel, MEMBER_TRACKER_ELEMENTS } from "@plane/constants";
-import { useOutsideClickDetector } from "@plane/hooks";
-import { useTranslation } from "@plane/i18n";
-import { Logo } from "@plane/propel/emoji-icon-picker";
-import { LinkIcon, ArchiveIcon, ChevronRightIcon } from "@plane/propel/icons";
-import { IconButton } from "@plane/propel/icon-button";
-import { Tooltip } from "@plane/propel/tooltip";
-import { CustomMenu, DropIndicator, DragHandle, ControlLink } from "@plane/ui";
-import { cn } from "@plane/utils";
+// keel imports
+import { EUserPermissions, EUserPermissionsLevel, MEMBER_TRACKER_ELEMENTS } from "@keel/constants";
+import { useOutsideClickDetector } from "@keel/hooks";
+import { useTranslation } from "@keel/i18n";
+import { Logo } from "@keel/propel/emoji-icon-picker";
+import { LinkIcon, ArchiveIcon, ChevronRightIcon } from "@keel/propel/icons";
+import { IconButton } from "@keel/propel/icon-button";
+import { Tooltip } from "@keel/propel/tooltip";
+import { CustomMenu, DropIndicator, DragHandle, ControlLink } from "@keel/ui";
+import { cn } from "@keel/utils";
 // components
 import { DEFAULT_TAB_KEY, getTabUrl } from "@/components/navigation/tab-navigation-utils";
 import { useTabPreferences } from "@/components/navigation/use-tab-preferences";

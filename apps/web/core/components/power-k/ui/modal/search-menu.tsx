@@ -6,10 +6,10 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-// plane imports
-import { WORKSPACE_DEFAULT_SEARCH_RESULT } from "@plane/constants";
-import type { IWorkspaceSearchResults } from "@plane/types";
-import { cn } from "@plane/utils";
+// keel imports
+import { WORKSPACE_DEFAULT_SEARCH_RESULT } from "@keel/constants";
+import type { IWorkspaceSearchResults } from "@keel/types";
+import { cn } from "@keel/utils";
 // hooks
 import { usePowerK } from "@/hooks/store/use-power-k";
 import useDebounce from "@/hooks/use-debounce";

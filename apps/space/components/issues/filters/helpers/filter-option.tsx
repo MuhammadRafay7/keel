@@ -5,8 +5,8 @@
  */
 
 import React from "react";
-// plane imports
-import { CheckIcon } from "@plane/propel/icons";
+// keel imports
+import { CheckIcon } from "@keel/propel/icons";
 
 type Props = {
   icon?: React.ReactNode;

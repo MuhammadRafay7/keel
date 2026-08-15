@@ -5,12 +5,12 @@
  */
 
 import { useRouter } from "next/navigation";
-import { Logo } from "@plane/propel/emoji-icon-picker";
-import { PageIcon } from "@plane/propel/icons";
-// plane import
-import type { TActivityEntityData, TPageEntityData } from "@plane/types";
-import { Avatar } from "@plane/ui";
-import { calculateTimeAgo, getFileURL, getPageName } from "@plane/utils";
+import { Logo } from "@keel/propel/emoji-icon-picker";
+import { PageIcon } from "@keel/propel/icons";
+// keel import
+import type { TActivityEntityData, TPageEntityData } from "@keel/types";
+import { Avatar } from "@keel/ui";
+import { calculateTimeAgo, getFileURL, getPageName } from "@keel/utils";
 import { ListItem } from "@/components/core/list";
 // hooks
 import { useMember } from "@/hooks/store/use-member";

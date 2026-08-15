@@ -5,8 +5,8 @@
  */
 
 // types
-import { API_BASE_URL } from "@plane/constants";
-import type { IProjectBulkAddFormData, TProjectMembership } from "@plane/types";
+import { API_BASE_URL } from "@keel/constants";
+import type { IProjectBulkAddFormData, TProjectMembership } from "@keel/types";
 // services
 import { APIService } from "@/services/api.service";
 

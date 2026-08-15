@@ -5,11 +5,11 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import type { TDescriptionVersion } from "@plane/types";
-import { Avatar, CustomMenu } from "@plane/ui";
-import { calculateTimeAgo, getFileURL } from "@plane/utils";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import type { TDescriptionVersion } from "@keel/types";
+import { Avatar, CustomMenu } from "@keel/ui";
+import { calculateTimeAgo, getFileURL } from "@keel/utils";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
 

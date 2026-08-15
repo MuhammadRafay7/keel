@@ -6,10 +6,10 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { IWorkspaceMemberInvitation, TOnboardingStep, TOnboardingSteps, TUserProfile } from "@plane/types";
-import { EOnboardingSteps } from "@plane/types";
+// keel imports
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { IWorkspaceMemberInvitation, TOnboardingStep, TOnboardingSteps, TUserProfile } from "@keel/types";
+import { EOnboardingSteps } from "@keel/types";
 // hooks
 import { useInstance } from "@/hooks/store/use-instance";
 import { useWorkspace } from "@/hooks/store/use-workspace";

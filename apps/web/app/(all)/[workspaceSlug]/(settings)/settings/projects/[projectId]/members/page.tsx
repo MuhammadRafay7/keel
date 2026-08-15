@@ -5,9 +5,9 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
+// keel imports
+import { EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
 // components
 import { NotAuthorizedView } from "@/components/auth-screens/not-authorized-view";
 import { PageHead } from "@/components/core/page-title";
@@ -25,7 +25,7 @@ import { MembersProjectSettingsHeader } from "./header";
 function MembersSettingsPage({ params }: Route.ComponentProps) {
   // router
   const { workspaceSlug, projectId } = params;
-  // plane hooks
+  // keel hooks
   const { t } = useTranslation();
   // store hooks
   const { currentProjectDetails } = useProject();

@@ -6,10 +6,10 @@
 
 import React from "react";
 import { Paperclip } from "lucide-react";
-import { useTranslation } from "@plane/i18n";
-import { LinkIcon, ViewsIcon, RelationPropertyIcon } from "@plane/propel/icons";
-// plane imports
-import type { TIssueServiceType, TWorkItemWidgets } from "@plane/types";
+import { useTranslation } from "@keel/i18n";
+import { LinkIcon, ViewsIcon, RelationPropertyIcon } from "@keel/propel/icons";
+// keel imports
+import type { TIssueServiceType, TWorkItemWidgets } from "@keel/types";
 // local imports
 import { IssueAttachmentActionButton } from "./attachments";
 import { IssueLinksActionButton } from "./links";

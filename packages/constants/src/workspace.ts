@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-import type { TStaticViewTypes, IWorkspaceSearchResults } from "@plane/types";
-import { EUserWorkspaceRoles } from "@plane/types";
+import type { TStaticViewTypes, IWorkspaceSearchResults } from "@keel/types";
+import { EUserWorkspaceRoles } from "@keel/types";
 
 export const ORGANIZATION_SIZE: string[] = ["Just myself", "2-10", "11-50", "51-200", "201-500", "500+"];
 
@@ -26,10 +26,10 @@ export const RESTRICTED_URLS: string[] = [
   "monitor",
   "monitoring",
   "ingest",
-  "plane-pro",
-  "plane-ultimate",
+  "keel-pro",
+  "keel-ultimate",
   "enterprise",
-  "plane-enterprise",
+  "keel-enterprise",
   "disco",
   "silo",
   "chat",

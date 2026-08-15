@@ -5,10 +5,10 @@
  */
 
 // assets
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@keel/i18n";
 import packageJson from "package.json";
 
-export function PlaneVersionNumber() {
+export function KeelVersionNumber() {
   const { t } = useTranslation();
   return (
     <span>

@@ -7,13 +7,13 @@
 import { observer } from "mobx-react";
 import { Controller, useForm } from "react-hook-form";
 import { AlertTriangle } from "lucide-react";
-// Plane Imports
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { IWorkspace } from "@plane/types";
-import { Input } from "@plane/ui";
-import { cn } from "@plane/utils";
+// Keel Imports
+import { useTranslation } from "@keel/i18n";
+import { Button } from "@keel/propel/button";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { IWorkspace } from "@keel/types";
+import { Input } from "@keel/ui";
+import { cn } from "@keel/utils";
 // hooks
 import { useWorkspace } from "@/hooks/store/use-workspace";
 import { useUserSettings } from "@/hooks/store/user";

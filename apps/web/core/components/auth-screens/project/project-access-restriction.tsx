@@ -5,9 +5,9 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { EmptyStateDetailed } from "@plane/propel/empty-state";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import { EmptyStateDetailed } from "@keel/propel/empty-state";
 
 type TProps = {
   isWorkspaceAdmin: boolean;
@@ -18,7 +18,7 @@ type TProps = {
 
 export const ProjectAccessRestriction = observer(function ProjectAccessRestriction(props: TProps) {
   const { isWorkspaceAdmin, handleJoinProject, isJoinButtonDisabled, errorStatusCode } = props;
-  // plane hooks
+  // keel hooks
   const { t } = useTranslation();
 
   // Show join project screen if:

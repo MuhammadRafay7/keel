@@ -7,11 +7,11 @@
 import { useCallback } from "react";
 import { observer } from "mobx-react";
 import { ListFilter } from "lucide-react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import type { TPageFilterProps, TPageNavigationTabs } from "@plane/types";
-import { Header, EHeaderVariant } from "@plane/ui";
-import { calculateTotalFilters } from "@plane/utils";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import type { TPageFilterProps, TPageNavigationTabs } from "@keel/types";
+import { Header, EHeaderVariant } from "@keel/ui";
+import { calculateTotalFilters } from "@keel/utils";
 // components
 import { FiltersDropdown } from "@/components/issues/issue-layouts/filters";
 // hooks

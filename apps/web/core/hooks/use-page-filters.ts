@@ -5,8 +5,8 @@
  */
 
 import { useCallback, useMemo } from "react";
-// plane editor
-import type { TEditorFontSize, TEditorFontStyle } from "@plane/editor";
+// keel editor
+import type { TEditorFontSize, TEditorFontStyle } from "@keel/editor";
 // hooks
 import useLocalStorage from "@/hooks/use-local-storage";
 

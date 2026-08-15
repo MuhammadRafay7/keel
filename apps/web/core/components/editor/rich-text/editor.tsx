@@ -5,18 +5,18 @@
  */
 
 import { forwardRef } from "react";
-// plane imports
-import { RichTextEditorWithRef } from "@plane/editor";
-import type { EditorRefApi, IRichTextEditorProps, TFileHandler } from "@plane/editor";
-import type { MakeOptional, TSearchEntityRequestPayload, TSearchResponse } from "@plane/types";
-import { cn } from "@plane/utils";
+// keel imports
+import { RichTextEditorWithRef } from "@keel/editor";
+import type { EditorRefApi, IRichTextEditorProps, TFileHandler } from "@keel/editor";
+import type { MakeOptional, TSearchEntityRequestPayload, TSearchResponse } from "@keel/types";
+import { cn } from "@keel/utils";
 // components
 import { EditorMentionsRoot } from "@/components/editor/embeds/mentions";
 // hooks
 import { useEditorConfig, useEditorMention } from "@/hooks/editor";
 import { useMember } from "@/hooks/store/use-member";
 import { useParseEditorContent } from "@/hooks/use-parse-editor-content";
-// plane web hooks
+// keel web hooks
 import { useEditorFlagging } from "@/hooks/use-editor-flagging";
 
 type RichTextEditorWrapperProps = MakeOptional<

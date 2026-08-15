@@ -7,9 +7,9 @@
 import { orderBy, isEmpty, update, set } from "lodash-es";
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { computedFn } from "mobx-utils";
-// plane imports
-import type { TNotificationTab } from "@plane/constants";
-import { ENotificationTab, ENotificationLoader, ENotificationQueryParamType } from "@plane/constants";
+// keel imports
+import type { TNotificationTab } from "@keel/constants";
+import { ENotificationTab, ENotificationLoader, ENotificationQueryParamType } from "@keel/constants";
 import type {
   TNotification,
   TNotificationFilter,
@@ -17,9 +17,9 @@ import type {
   TNotificationPaginatedInfo,
   TNotificationPaginatedInfoQueryParams,
   TUnreadNotificationsCount,
-} from "@plane/types";
+} from "@keel/types";
 // helpers
-import { convertToEpoch } from "@plane/utils";
+import { convertToEpoch } from "@keel/utils";
 // services
 import workspaceNotificationService from "@/services/workspace-notification.service";
 // store

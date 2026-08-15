@@ -9,13 +9,13 @@ import { xor } from "lodash-es";
 import { observer } from "mobx-react";
 import { useTheme } from "next-themes";
 import { Combobox } from "@headlessui/react";
-// plane ui
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import { Logo } from "@plane/propel/emoji-icon-picker";
-import { SearchIcon, CloseIcon } from "@plane/propel/icons";
-import { Checkbox, EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
-import { cn } from "@plane/utils";
+// keel ui
+import { useTranslation } from "@keel/i18n";
+import { Button } from "@keel/propel/button";
+import { Logo } from "@keel/propel/emoji-icon-picker";
+import { SearchIcon, CloseIcon } from "@keel/propel/icons";
+import { Checkbox, EModalPosition, EModalWidth, ModalCore } from "@keel/ui";
+import { cn } from "@keel/utils";
 // assets
 import darkProjectAsset from "@/app/assets/empty-state/search/project-dark.webp?url";
 import lightProjectAsset from "@/app/assets/empty-state/search/project-light.webp?url";
@@ -42,7 +42,7 @@ export const ProjectMultiSelectModal = observer(function ProjectMultiSelectModal
   const moveButtonRef = useRef<HTMLButtonElement>(null);
   // theme hook
   const { resolvedTheme } = useTheme();
-  // plane hooks
+  // keel hooks
   const { t } = useTranslation();
   // store hooks
   const { getProjectById } = useProject();

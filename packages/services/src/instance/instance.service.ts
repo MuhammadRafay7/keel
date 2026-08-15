@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { API_BASE_URL } from "@plane/constants";
+// keel imports
+import { API_BASE_URL } from "@keel/constants";
 import type {
   IFormattedInstanceConfiguration,
   IInstance,
@@ -13,7 +13,7 @@ import type {
   IInstanceConfiguration,
   IInstanceInfo,
   TPage,
-} from "@plane/types";
+} from "@keel/types";
 // api service
 import { APIService } from "../api.service";
 

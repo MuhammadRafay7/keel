@@ -6,9 +6,9 @@
 
 import { observer } from "mobx-react";
 // constants
-import { NETWORK_CHOICES } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { CloseIcon } from "@plane/propel/icons";
+import { NETWORK_CHOICES } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { CloseIcon } from "@keel/propel/icons";
 
 type Props = {
   handleRemove: (val: string) => void;

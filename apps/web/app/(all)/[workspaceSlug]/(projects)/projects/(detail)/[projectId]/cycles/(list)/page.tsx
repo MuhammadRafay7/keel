@@ -6,16 +6,16 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
+// keel imports
 import { useTheme } from "next-themes";
-import { EUserPermissionsLevel, CYCLE_TRACKER_ELEMENTS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { EmptyStateDetailed } from "@plane/propel/empty-state";
-import type { TCycleFilters } from "@plane/types";
-import { EUserProjectRoles } from "@plane/types";
+import { EUserPermissionsLevel, CYCLE_TRACKER_ELEMENTS } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { EmptyStateDetailed } from "@keel/propel/empty-state";
+import type { TCycleFilters } from "@keel/types";
+import { EUserProjectRoles } from "@keel/types";
 // components
-import { Header, EHeaderVariant } from "@plane/ui";
-import { calculateTotalFilters } from "@plane/utils";
+import { Header, EHeaderVariant } from "@keel/ui";
+import { calculateTotalFilters } from "@keel/utils";
 // assets
 import darkEmptyState from "@/app/assets/empty-state/disabled-feature/cycles-dark.webp?url";
 import lightEmptyState from "@/app/assets/empty-state/disabled-feature/cycles-light.webp?url";
@@ -45,7 +45,7 @@ function ProjectCyclesPage({ params }: Route.ComponentProps) {
   const { workspaceSlug, projectId } = params;
   // theme hook
   const { resolvedTheme } = useTheme();
-  // plane hooks
+  // keel hooks
   const { t } = useTranslation();
   // cycle filters hook
   const { clearAllFilters, currentProjectFilters, updateFilters } = useCycleFilter();

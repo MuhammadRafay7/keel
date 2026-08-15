@@ -6,8 +6,8 @@
 
 import { observer } from "mobx-react";
 import useSWR from "swr";
-// plane imports
-import { getNumberCount } from "@plane/utils";
+// keel imports
+import { getNumberCount } from "@keel/utils";
 // components
 import { CountChip } from "@/components/common/count-chip";
 // hooks

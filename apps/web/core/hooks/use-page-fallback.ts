@@ -5,11 +5,11 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { EditorRefApi, CollaborationState } from "@plane/editor";
-// plane editor
-import { convertBinaryDataToBase64String, getBinaryDataFromDocumentEditorHTMLString } from "@plane/editor";
-// plane types
-import type { TDocumentPayload } from "@plane/types";
+import type { EditorRefApi, CollaborationState } from "@keel/editor";
+// keel editor
+import { convertBinaryDataToBase64String, getBinaryDataFromDocumentEditorHTMLString } from "@keel/editor";
+// keel types
+import type { TDocumentPayload } from "@keel/types";
 // hooks
 import useAutoSave from "@/hooks/use-auto-save";
 import type { TPageInstance } from "@/store/pages/base-page";

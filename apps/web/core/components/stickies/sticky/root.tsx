@@ -8,10 +8,10 @@ import { useCallback, useState } from "react";
 import { debounce } from "lodash-es";
 import { observer } from "mobx-react";
 import { Minimize2 } from "lucide-react";
-// plane types
-import type { TSticky } from "@plane/types";
-// plane utils
-import { cn } from "@plane/utils";
+// keel types
+import type { TSticky } from "@keel/types";
+// keel utils
+import { cn } from "@keel/utils";
 // hooks
 import { useSticky } from "@/hooks/use-stickies";
 // components

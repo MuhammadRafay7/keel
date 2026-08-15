@@ -6,10 +6,10 @@
 
 import { ArrowLeft } from "lucide-react";
 import { observer } from "mobx-react";
-// plane imports
-import { ROLE_DETAILS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { IconButton } from "@plane/propel/icon-button";
+// keel imports
+import { ROLE_DETAILS } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { IconButton } from "@keel/propel/icon-button";
 // components
 import { WorkspaceLogo } from "@/components/workspace/logo";
 // hooks

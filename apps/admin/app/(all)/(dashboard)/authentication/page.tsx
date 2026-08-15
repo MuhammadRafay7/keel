@@ -8,11 +8,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { useTheme } from "next-themes";
 import useSWR from "swr";
-// plane internal packages
-import { setPromiseToast, setToast, TOAST_TYPE } from "@plane/propel/toast";
-import type { TInstanceConfigurationKeys, TInstanceAuthenticationModes } from "@plane/types";
-import { Loader, ToggleSwitch } from "@plane/ui";
-import { cn, resolveGeneralTheme } from "@plane/utils";
+// keel internal packages
+import { setPromiseToast, setToast, TOAST_TYPE } from "@keel/propel/toast";
+import type { TInstanceConfigurationKeys, TInstanceAuthenticationModes } from "@keel/types";
+import { Loader, ToggleSwitch } from "@keel/ui";
+import { cn, resolveGeneralTheme } from "@keel/utils";
 // components
 import { PageWrapper } from "@/components/common/page-wrapper";
 import { AuthenticationMethodCard } from "@/components/authentication/authentication-method-card";
@@ -171,6 +171,6 @@ const InstanceAuthenticationPage = observer(function InstanceAuthenticationPage(
   );
 });
 
-export const meta: Route.MetaFunction = () => [{ title: "Authentication Settings - Plane Web" }];
+export const meta: Route.MetaFunction = () => [{ title: "Authentication Settings - Keel Web" }];
 
 export default InstanceAuthenticationPage;

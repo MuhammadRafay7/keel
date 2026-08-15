@@ -6,11 +6,11 @@
 
 import { observer } from "mobx-react";
 
-// plane internal packages
-import { WEB_BASE_URL } from "@plane/constants";
-import { NewTabIcon } from "@plane/propel/icons";
-import { Tooltip } from "@plane/propel/tooltip";
-import { getFileURL } from "@plane/utils";
+// keel internal packages
+import { WEB_BASE_URL } from "@keel/constants";
+import { NewTabIcon } from "@keel/propel/icons";
+import { Tooltip } from "@keel/propel/tooltip";
+import { getFileURL } from "@keel/utils";
 // hooks
 import { useWorkspace } from "@/hooks/store";
 

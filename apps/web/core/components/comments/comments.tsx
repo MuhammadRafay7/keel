@@ -7,9 +7,9 @@
 import { useMemo } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane imports
-import type { E_SORT_ORDER } from "@plane/constants";
-import type { TCommentsOperations, TIssueComment } from "@plane/types";
+// keel imports
+import type { E_SORT_ORDER } from "@keel/constants";
+import type { TCommentsOperations, TIssueComment } from "@keel/types";
 // local components
 import { CommentCard } from "./card/root";
 import { CommentCreate } from "./comment-create";

@@ -6,9 +6,9 @@
 
 import { useEffect } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { Tooltip } from "@plane/propel/tooltip";
-import { cn } from "@plane/utils";
+// keel imports
+import { Tooltip } from "@keel/propel/tooltip";
+import { cn } from "@keel/utils";
 // hooks
 import { useLabel } from "@/hooks/store/use-label";
 import { usePlatformOS } from "@/hooks/use-platform-os";

@@ -5,11 +5,11 @@
  */
 
 import { action, observable, runInAction, makeObservable } from "mobx";
-// plane internal packages
-import type { TUserStatus } from "@plane/constants";
-import { EUserStatus } from "@plane/constants";
-import { AuthService, UserService } from "@plane/services";
-import type { IUser } from "@plane/types";
+// keel internal packages
+import type { TUserStatus } from "@keel/constants";
+import { EUserStatus } from "@keel/constants";
+import { AuthService, UserService } from "@keel/services";
+import type { IUser } from "@keel/types";
 // root store
 import type { RootStore } from "@/store/root.store";
 

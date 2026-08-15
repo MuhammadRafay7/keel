@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
+// keel imports
 import type {
   TAllAvailableOperatorsForDisplay,
   TFilterConditionNode,
@@ -13,7 +13,7 @@ import type {
   TFilterGroupNode,
   TFilterProperty,
   TFilterValue,
-} from "@plane/types";
+} from "@keel/types";
 // local imports
 import { isConditionNode, isGroupNode } from "../../types/core";
 import { getGroupChildren } from "../../types/shared";

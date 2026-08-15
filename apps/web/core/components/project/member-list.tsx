@@ -6,11 +6,11 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { EUserPermissions, EUserPermissionsLevel, MEMBER_TRACKER_ELEMENTS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import { SearchIcon } from "@plane/propel/icons";
+// keel imports
+import { EUserPermissions, EUserPermissionsLevel, MEMBER_TRACKER_ELEMENTS } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { Button } from "@keel/propel/button";
+import { SearchIcon } from "@keel/propel/icons";
 // components
 import { MembersSettingsLoader } from "@/components/ui/loader/settings/members";
 // hooks

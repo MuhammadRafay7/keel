@@ -5,7 +5,7 @@
       "not_right_now": "Teď ne",
       "create_project": {
         "title": "Vytvořit projekt",
-        "description": "Většina věcí začíná projektem v Plane.",
+        "description": "Většina věcí začíná projektem v Keel.",
         "cta": "Začít"
       },
       "invite_team": {
@@ -19,7 +19,7 @@
         "cta": "Konfigurovat tento prostor"
       },
       "personalize_account": {
-        "title": "Přizpůsobte si Plane.",
+        "title": "Přizpůsobte si Keel.",
         "description": "Vyberte si obrázek, barvy a další.",
         "cta": "Personalizovat nyní"
       },
@@ -52,8 +52,8 @@
         "issues": "Úkoly"
       }
     },
-    "new_at_plane": {
-      "title": "Novinky v Plane"
+    "new_at_keel": {
+      "title": "Novinky v Keel"
     },
     "quick_tutorial": {
       "title": "Rychlý tutoriál"

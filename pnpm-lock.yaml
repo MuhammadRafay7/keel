@@ -619,25 +619,25 @@ importers:
       '@headlessui/react':
         specifier: 'catalog:'
         version: 1.7.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@plane/constants':
+      '@keel/constants':
         specifier: workspace:*
         version: link:../../packages/constants
-      '@plane/hooks':
+      '@keel/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
-      '@plane/propel':
+      '@keel/propel':
         specifier: workspace:*
         version: link:../../packages/propel
-      '@plane/services':
+      '@keel/services':
         specifier: workspace:*
         version: link:../../packages/services
-      '@plane/types':
+      '@keel/types':
         specifier: workspace:*
         version: link:../../packages/types
-      '@plane/ui':
+      '@keel/ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@plane/utils':
+      '@keel/utils':
         specifier: workspace:*
         version: link:../../packages/utils
       '@react-router/node':
@@ -683,10 +683,10 @@ importers:
         specifier: 14.0.0
         version: 14.0.0
     devDependencies:
-      '@plane/tailwind-config':
+      '@keel/tailwind-config':
         specifier: workspace:*
         version: link:../../packages/tailwind-config
-      '@plane/typescript-config':
+      '@keel/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
       '@react-router/dev':
@@ -746,19 +746,19 @@ importers:
       '@hocuspocus/transformer':
         specifier: 'catalog:'
         version: 2.15.2(@tiptap/core@2.26.3(@tiptap/pm@3.6.6))(@tiptap/pm@3.6.6)(y-prosemirror@1.3.7(prosemirror-model@1.25.3)(prosemirror-state@1.4.3)(prosemirror-view@1.40.0)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(yjs@13.6.27)
-      '@plane/decorators':
+      '@keel/decorators':
         specifier: workspace:*
         version: link:../../packages/decorators
-      '@plane/editor':
+      '@keel/editor':
         specifier: workspace:*
         version: link:../../packages/editor
-      '@plane/logger':
+      '@keel/logger':
         specifier: workspace:*
         version: link:../../packages/logger
-      '@plane/types':
+      '@keel/types':
         specifier: workspace:*
         version: link:../../packages/types
-      '@plane/utils':
+      '@keel/utils':
         specifier: workspace:*
         version: link:../../packages/utils
       '@react-pdf/renderer':
@@ -825,7 +825,7 @@ importers:
         specifier: 'catalog:'
         version: 3.25.76
     devDependencies:
-      '@plane/typescript-config':
+      '@keel/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
       '@types/compression':
@@ -885,28 +885,28 @@ importers:
       '@headlessui/react':
         specifier: 'catalog:'
         version: 1.7.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@plane/constants':
+      '@keel/constants':
         specifier: workspace:*
         version: link:../../packages/constants
-      '@plane/editor':
+      '@keel/editor':
         specifier: workspace:*
         version: link:../../packages/editor
-      '@plane/i18n':
+      '@keel/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
-      '@plane/propel':
+      '@keel/propel':
         specifier: workspace:*
         version: link:../../packages/propel
-      '@plane/services':
+      '@keel/services':
         specifier: workspace:*
         version: link:../../packages/services
-      '@plane/types':
+      '@keel/types':
         specifier: workspace:*
         version: link:../../packages/types
-      '@plane/ui':
+      '@keel/ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@plane/utils':
+      '@keel/utils':
         specifier: workspace:*
         version: link:../../packages/utils
       '@popperjs/core':
@@ -973,10 +973,10 @@ importers:
         specifier: 14.0.0
         version: 14.0.0
     devDependencies:
-      '@plane/tailwind-config':
+      '@keel/tailwind-config':
         specifier: workspace:*
         version: link:../../packages/tailwind-config
-      '@plane/typescript-config':
+      '@keel/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
       '@react-router/dev':
@@ -1039,34 +1039,34 @@ importers:
       '@headlessui/react':
         specifier: 'catalog:'
         version: 1.7.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@plane/constants':
+      '@keel/constants':
         specifier: workspace:*
         version: link:../../packages/constants
-      '@plane/editor':
+      '@keel/editor':
         specifier: workspace:*
         version: link:../../packages/editor
-      '@plane/hooks':
+      '@keel/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
-      '@plane/i18n':
+      '@keel/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
-      '@plane/propel':
+      '@keel/propel':
         specifier: workspace:*
         version: link:../../packages/propel
-      '@plane/services':
+      '@keel/services':
         specifier: workspace:*
         version: link:../../packages/services
-      '@plane/shared-state':
+      '@keel/shared-state':
         specifier: workspace:*
         version: link:../../packages/shared-state
-      '@plane/types':
+      '@keel/types':
         specifier: workspace:*
         version: link:../../packages/types
-      '@plane/ui':
+      '@keel/ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@plane/utils':
+      '@keel/utils':
         specifier: workspace:*
         version: link:../../packages/utils
       '@popperjs/core':
@@ -1178,10 +1178,10 @@ importers:
         specifier: 14.0.0
         version: 14.0.0
     devDependencies:
-      '@plane/tailwind-config':
+      '@keel/tailwind-config':
         specifier: workspace:*
         version: link:../../packages/tailwind-config
-      '@plane/typescript-config':
+      '@keel/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
       '@react-router/dev':
@@ -1241,11 +1241,11 @@ importers:
 
   packages/constants:
     dependencies:
-      '@plane/types':
+      '@keel/types':
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@plane/typescript-config':
+      '@keel/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@types/node':
@@ -1263,7 +1263,7 @@ importers:
 
   packages/decorators:
     devDependencies:
-      '@plane/typescript-config':
+      '@keel/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@types/express':
@@ -1299,22 +1299,22 @@ importers:
       '@hocuspocus/provider':
         specifier: 'catalog:'
         version: 2.15.2(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27)
-      '@plane/constants':
+      '@keel/constants':
         specifier: workspace:*
         version: link:../constants
-      '@plane/hooks':
+      '@keel/hooks':
         specifier: workspace:*
         version: link:../hooks
-      '@plane/propel':
+      '@keel/propel':
         specifier: workspace:*
         version: link:../propel
-      '@plane/types':
+      '@keel/types':
         specifier: workspace:*
         version: link:../types
-      '@plane/ui':
+      '@keel/ui':
         specifier: workspace:*
         version: link:../ui
-      '@plane/utils':
+      '@keel/utils':
         specifier: workspace:*
         version: link:../utils
       '@tiptap/core':
@@ -1441,10 +1441,10 @@ importers:
         specifier: 'catalog:'
         version: 13.6.27
     devDependencies:
-      '@plane/tailwind-config':
+      '@keel/tailwind-config':
         specifier: workspace:*
         version: link:../tailwind-config
-      '@plane/typescript-config':
+      '@keel/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@types/lodash-es':
@@ -1475,7 +1475,7 @@ importers:
         specifier: 'catalog:'
         version: 18.3.1
     devDependencies:
-      '@plane/typescript-config':
+      '@keel/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@types/node':
@@ -1509,7 +1509,7 @@ importers:
         specifier: 'catalog:'
         version: 16.6.6(i18next@25.10.9(typescript@5.8.3))(react@18.3.1)(typescript@5.8.3)
     devDependencies:
-      '@plane/typescript-config':
+      '@keel/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@types/node':
@@ -1537,7 +1537,7 @@ importers:
         specifier: 'catalog:'
         version: 3.17.0
     devDependencies:
-      '@plane/typescript-config':
+      '@keel/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@types/express':
@@ -1558,16 +1558,16 @@ importers:
       '@base-ui-components/react':
         specifier: 'catalog:'
         version: 1.0.0-beta.3(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@plane/constants':
+      '@keel/constants':
         specifier: workspace:*
         version: link:../constants
-      '@plane/hooks':
+      '@keel/hooks':
         specifier: workspace:*
         version: link:../hooks
-      '@plane/types':
+      '@keel/types':
         specifier: workspace:*
         version: link:../types
-      '@plane/utils':
+      '@keel/utils':
         specifier: workspace:*
         version: link:../utils
       '@tanstack/react-table':
@@ -1610,10 +1610,10 @@ importers:
         specifier: 'catalog:'
         version: 1.3.0(react@18.3.1)
     devDependencies:
-      '@plane/tailwind-config':
+      '@keel/tailwind-config':
         specifier: workspace:*
         version: link:../tailwind-config
-      '@plane/typescript-config':
+      '@keel/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@storybook/addon-designs':
@@ -1643,10 +1643,10 @@ importers:
 
   packages/services:
     dependencies:
-      '@plane/constants':
+      '@keel/constants':
         specifier: workspace:*
         version: link:../constants
-      '@plane/types':
+      '@keel/types':
         specifier: workspace:*
         version: link:../types
       axios:
@@ -1656,7 +1656,7 @@ importers:
         specifier: 'catalog:'
         version: 21.3.3
     devDependencies:
-      '@plane/typescript-config':
+      '@keel/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       tsdown:
@@ -1668,13 +1668,13 @@ importers:
 
   packages/shared-state:
     dependencies:
-      '@plane/constants':
+      '@keel/constants':
         specifier: workspace:*
         version: link:../constants
-      '@plane/types':
+      '@keel/types':
         specifier: workspace:*
         version: link:../types
-      '@plane/utils':
+      '@keel/utils':
         specifier: workspace:*
         version: link:../utils
       lodash-es:
@@ -1693,7 +1693,7 @@ importers:
         specifier: 'catalog:'
         version: 3.25.76
     devDependencies:
-      '@plane/typescript-config':
+      '@keel/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@types/lodash-es':
@@ -1731,7 +1731,7 @@ importers:
         specifier: 'catalog:'
         version: 18.3.1(react@18.3.1)
     devDependencies:
-      '@plane/typescript-config':
+      '@keel/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@types/node':
@@ -1769,19 +1769,19 @@ importers:
       '@headlessui/react':
         specifier: 'catalog:'
         version: 1.7.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@plane/constants':
+      '@keel/constants':
         specifier: workspace:*
         version: link:../constants
-      '@plane/hooks':
+      '@keel/hooks':
         specifier: workspace:*
         version: link:../hooks
-      '@plane/propel':
+      '@keel/propel':
         specifier: workspace:*
         version: link:../propel
-      '@plane/types':
+      '@keel/types':
         specifier: workspace:*
         version: link:../types
-      '@plane/utils':
+      '@keel/utils':
         specifier: workspace:*
         version: link:../utils
       '@popperjs/core':
@@ -1824,10 +1824,10 @@ importers:
       '@chromatic-com/storybook':
         specifier: 'catalog:'
         version: 5.2.1(storybook@10.4.6(@testing-library/dom@10.4.0)(@types/react@18.3.11)(prettier@3.7.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      '@plane/tailwind-config':
+      '@keel/tailwind-config':
         specifier: workspace:*
         version: link:../tailwind-config
-      '@plane/typescript-config':
+      '@keel/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@storybook/addon-docs':
@@ -1887,10 +1887,10 @@ importers:
 
   packages/utils:
     dependencies:
-      '@plane/constants':
+      '@keel/constants':
         specifier: workspace:*
         version: link:../constants
-      '@plane/types':
+      '@keel/types':
         specifier: workspace:*
         version: link:../types
       chroma-js:
@@ -1945,7 +1945,7 @@ importers:
         specifier: 14.0.0
         version: 14.0.0
     devDependencies:
-      '@plane/typescript-config':
+      '@keel/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@types/chroma-js':
@@ -6010,6 +6010,7 @@ packages:
 
   crypto-js@4.2.0:
     resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
+    deprecated: Active development of CryptoJS has been discontinued. This library is no longer maintained.
 
   css-loader@7.1.4:
     resolution: {integrity: sha512-vv3J9tlOl04WjiMvHQI/9tmIrCxVrj6PFbHemBB1iihpeRbi/I4h033eoFIhwxBBqLhI0KYFS7yvynBFhIZfTw==}

@@ -9,7 +9,7 @@ import * as React from "react";
 import { IconWrapper } from "../icon-wrapper";
 import type { ISvgIcons } from "../type";
 
-export function PlaneNewIcon({ color = "currentColor", ...rest }: ISvgIcons) {
+export function KeelNewIcon({ color = "currentColor", ...rest }: ISvgIcons) {
   return (
     <IconWrapper color={color} {...rest}>
       <path

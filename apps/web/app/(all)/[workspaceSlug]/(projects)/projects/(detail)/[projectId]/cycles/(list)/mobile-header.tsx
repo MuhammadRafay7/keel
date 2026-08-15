@@ -7,11 +7,11 @@
 import type React from "react";
 import { observer } from "mobx-react";
 // ui
-import type { ISvgIcons } from "@plane/propel/icons";
-import { TimelineLayoutIcon, GridLayoutIcon, ListLayoutIcon } from "@plane/propel/icons";
-// plane package imports
-import type { TCycleLayoutOptions } from "@plane/types";
-import { CustomMenu } from "@plane/ui";
+import type { ISvgIcons } from "@keel/propel/icons";
+import { TimelineLayoutIcon, GridLayoutIcon, ListLayoutIcon } from "@keel/propel/icons";
+// keel package imports
+import type { TCycleLayoutOptions } from "@keel/types";
+import { CustomMenu } from "@keel/ui";
 // hooks
 import { useCycleFilter } from "@/hooks/store/use-cycle-filter";
 import { useProject } from "@/hooks/store/use-project";

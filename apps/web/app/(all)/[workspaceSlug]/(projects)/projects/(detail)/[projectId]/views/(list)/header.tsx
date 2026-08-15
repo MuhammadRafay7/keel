@@ -7,17 +7,17 @@
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 // ui
-import { PROJECT_VIEW_TRACKER_ELEMENTS } from "@plane/constants";
-import { Button } from "@plane/propel/button";
-import { ViewsIcon } from "@plane/propel/icons";
-import { Breadcrumbs, Header } from "@plane/ui";
+import { PROJECT_VIEW_TRACKER_ELEMENTS } from "@keel/constants";
+import { Button } from "@keel/propel/button";
+import { ViewsIcon } from "@keel/propel/icons";
+import { Breadcrumbs, Header } from "@keel/ui";
 // components
 import { BreadcrumbLink } from "@/components/common/breadcrumb-link";
 import { ViewListHeader } from "@/components/views/view-list-header";
 // hooks
 import { useCommandPalette } from "@/hooks/store/use-command-palette";
 import { useProject } from "@/hooks/store/use-project";
-// plane web imports
+// keel web imports
 import { CommonProjectBreadcrumbs } from "@/components/breadcrumbs/common";
 
 export const ProjectViewsHeader = observer(function ProjectViewsHeader() {

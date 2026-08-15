@@ -9,12 +9,12 @@ import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 // icons
 import { ListFilter } from "lucide-react";
-import { useOutsideClickDetector } from "@plane/hooks";
-import { SearchIcon, CloseIcon } from "@plane/propel/icons";
-// plane helpers
+import { useOutsideClickDetector } from "@keel/hooks";
+import { SearchIcon, CloseIcon } from "@keel/propel/icons";
+// keel helpers
 // types
-import type { TCycleFilters } from "@plane/types";
-import { cn, calculateTotalFilters } from "@plane/utils";
+import type { TCycleFilters } from "@keel/types";
+import { cn, calculateTotalFilters } from "@keel/utils";
 // components
 import { ArchiveTabsList } from "@/components/archives";
 import { FiltersDropdown } from "@/components/issues/issue-layouts/filters";

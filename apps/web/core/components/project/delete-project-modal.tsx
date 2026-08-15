@@ -7,11 +7,11 @@
 import { useParams } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { AlertTriangle } from "lucide-react";
-// Plane imports
-import { Button } from "@plane/propel/button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { IProject } from "@plane/types";
-import { Input, EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
+// Keel imports
+import { Button } from "@keel/propel/button";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { IProject } from "@keel/types";
+import { Input, EModalPosition, EModalWidth, ModalCore } from "@keel/ui";
 // hooks
 import { useProject } from "@/hooks/store/use-project";
 import { useAppRouter } from "@/hooks/use-app-router";

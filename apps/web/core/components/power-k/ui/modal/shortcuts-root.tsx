@@ -6,10 +6,10 @@
 
 import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-// plane imports
-import { CloseIcon, SearchIcon } from "@plane/propel/icons";
-import { ScrollArea } from "@plane/propel/scrollarea";
-import { Input } from "@plane/ui";
+// keel imports
+import { CloseIcon, SearchIcon } from "@keel/propel/icons";
+import { ScrollArea } from "@keel/propel/scrollarea";
+import { Input } from "@keel/ui";
 // hooks
 import { usePowerK } from "@/hooks/store/use-power-k";
 // local imports

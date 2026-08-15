@@ -6,10 +6,10 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
+// keel imports
+import { EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { Button } from "@keel/propel/button";
 // components
 import { PageHead } from "@/components/core/page-title";
 import { DownloadActivityButton } from "@/components/profile/activity/download-button";

@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { API_BASE_URL } from "@plane/constants";
+// keel imports
+import { API_BASE_URL } from "@keel/constants";
 
 /**
  * @description combine the file path with the base URL

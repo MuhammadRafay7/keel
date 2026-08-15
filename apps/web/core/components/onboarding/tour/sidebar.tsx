@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { CycleIcon, ModuleIcon, PageIcon, ViewsIcon, WorkItemsIcon } from "@plane/propel/icons";
-import type { ISvgIcons } from "@plane/propel/icons";
+// keel imports
+import { CycleIcon, ModuleIcon, PageIcon, ViewsIcon, WorkItemsIcon } from "@keel/propel/icons";
+import type { ISvgIcons } from "@keel/propel/icons";
 // types
 import type { TTourSteps } from "./root";
 
@@ -53,7 +53,7 @@ export function TourSidebar({ step, setStep }: Props) {
       <h3 className="text-16 font-medium">
         Let{"'"}s get started!
         <br />
-        Get more out of Plane.
+        Get more out of Keel.
       </h3>
       <div className="mt-8 space-y-5">
         {sidebarOptions.map((option) => (

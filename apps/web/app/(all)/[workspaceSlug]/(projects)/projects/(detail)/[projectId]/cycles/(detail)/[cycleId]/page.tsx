@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { cn } from "@plane/utils";
+// keel imports
+import { cn } from "@keel/utils";
 // assets
 import emptyCycle from "@/app/assets/empty-state/cycle.svg?url";
 // components

@@ -6,10 +6,10 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { EIconSize } from "@plane/constants";
-import { StateGroupIcon } from "@plane/propel/icons";
-import type { IState } from "@plane/types";
-import { Loader } from "@plane/ui";
+import { EIconSize } from "@keel/constants";
+import { StateGroupIcon } from "@keel/propel/icons";
+import type { IState } from "@keel/types";
+import { Loader } from "@keel/ui";
 // components
 import { FilterHeader, FilterOption } from "@/components/issues/issue-layouts/filters";
 // hooks

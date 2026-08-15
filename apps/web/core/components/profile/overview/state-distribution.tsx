@@ -4,14 +4,14 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { STATE_GROUPS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { PieChart } from "@plane/propel/charts/pie-chart";
-import { EmptyStateCompact } from "@plane/propel/empty-state";
-import type { IUserProfileData, IUserStateDistribution } from "@plane/types";
-import { Card } from "@plane/ui";
-import { capitalizeFirstLetter } from "@plane/utils";
+// keel imports
+import { STATE_GROUPS } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { PieChart } from "@keel/propel/charts/pie-chart";
+import { EmptyStateCompact } from "@keel/propel/empty-state";
+import type { IUserProfileData, IUserStateDistribution } from "@keel/types";
+import { Card } from "@keel/ui";
+import { capitalizeFirstLetter } from "@keel/utils";
 
 type Props = {
   stateDistribution: IUserStateDistribution[];
