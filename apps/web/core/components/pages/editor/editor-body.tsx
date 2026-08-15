@@ -6,6 +6,7 @@
 
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { observer } from "mobx-react";
+import { debounce } from "lodash-es";
 // keel imports
 import { LIVE_BASE_PATH, LIVE_BASE_URL } from "@keel/constants";
 import { CollaborativeDocumentEditorWithRef, DocumentEditorWithRef } from "@keel/editor";
@@ -136,6 +137,51 @@ export const PageEditorBody = observer(function PageEditorBody(props: Props) {
     [fontSize, fontStyle, isFullWidth]
   );
 
+  // -- Single-writer persistence (Supabase path only) -----------------------
+  // Without Hocuspocus there is no server holding the document, so the editor
+  // has to load and save it itself.
+
+  // use-editor calls setContent whenever `value` changes, and updateDescription
+  // writes description_html back to the store optimistically. Passing the live
+  // observable would therefore re-set the content on every keystroke and fight
+  // the caret, so the body is captured once per page and then held stable.
+  // Null until the store has loaded it — use-editor treats null as "nothing to
+  // sync yet" and leaves the editor alone rather than blanking it.
+  const initialDescriptionRef = useRef<{ pageId: string; html: string } | null>(null);
+  const loadedDescription = page.description_html;
+  if (pageId && loadedDescription !== undefined && initialDescriptionRef.current?.pageId !== pageId) {
+    initialDescriptionRef.current = { pageId, html: loadedDescription };
+  }
+  const cachedDescription = initialDescriptionRef.current;
+  const initialDescription = cachedDescription?.pageId === pageId ? (cachedDescription?.html ?? null) : null;
+
+  const saveDescription = useMemo(
+    () =>
+      debounce((json: object, html: string) => {
+        setSyncingStatus("syncing");
+        page
+          .updateDescription({
+            // A Yjs snapshot has no meaning in this path; the store keeps the
+            // field for the collaborative one, so it is sent empty rather than
+            // fabricated.
+            description_binary: "",
+            description_html: html,
+            description_json: json,
+          })
+          .then(() => setSyncingStatus("synced"))
+          .catch((error: unknown) => {
+            // The store rolls its optimistic write back, so the indicator must
+            // say so rather than leaving the page looking saved.
+            setSyncingStatus("error");
+            console.error("Failed to save this page:", error);
+          });
+      }, 1000),
+    [page, setSyncingStatus]
+  );
+
+  // A page closed within the debounce window would otherwise lose its last edit.
+  useEffect(() => () => saveDescription.flush(), [saveDescription]);
+
   // Use the new hook to handle page events
   const { updatePageProperties } = useRealtimePageEvents({
     storeType,
@@ -146,6 +192,13 @@ export const PageEditorBody = observer(function PageEditorBody(props: Props) {
 
   // Set syncing status when page changes and reset collaboration state
   useEffect(() => {
+    // There is no socket to connect to on the Supabase path, so reporting
+    // "connecting" would leave the indicator spinning for the life of the page.
+    // A single-writer page is settled until the next edit.
+    if (isSupabaseConfigured) {
+      setSyncingStatus("synced");
+      return;
+    }
     setSyncingStatus("syncing");
     onCollaborationStateChange?.({
       stage: { kind: "connecting" },
@@ -277,6 +330,8 @@ export const PageEditorBody = observer(function PageEditorBody(props: Props) {
             <DocumentEditorWithRef
               editable={isContentEditable}
               id={pageId}
+              value={initialDescription}
+              onChange={(json, html) => saveDescription(json, html)}
               fileHandler={config.fileHandler}
               handleEditorReady={handleEditorReady}
               ref={editorForwardRef}

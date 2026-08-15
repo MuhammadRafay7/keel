@@ -173,6 +173,7 @@ export class ProjectPageService extends APIService {
     pageId: string,
     data: TDocumentPayload
   ): Promise<any> {
+    if (isSupabaseConfigured) return supabasePageService.updateDescription(workspaceSlug, pageId, data);
     return this.patch(`/api/workspaces/${workspaceSlug}/projects/${projectId}/pages/${pageId}/description/`, data)
       .then((response) => response?.data)
       .catch((error) => {

@@ -4,9 +4,14 @@ Tracks the move from the original Django backend to Supabase (Postgres + Auth +
 RLS + Storage), hosted on Vercel. Django is reference-only: it is not deployed
 and not connected to anything. It was used once to generate the schema.
 
-**Status: 110 tables have RLS enabled, 43 have access policies, plus 12 storage
-policies. 13 Supabase services cover 61 methods across 14 service classes.
-8 migrations applied.**
+**Status: Phases 0–3 done, Phase 2 bar the analytics dashboard. Phase 4 done as
+single-writer pages, not real-time. Phases 5 and 6 not started. 10 migrations;
+19 Supabase services.**
+
+**None of the SQL in `0009`/`0010` has been run against the live database.** It
+was written from the Django models by reading, so column names, constraint
+predicates and `on conflict` targets are inference, not fact. Verifying it is the
+highest-value work available.
 
 ---
 
@@ -51,7 +56,7 @@ key, which bypasses the RLS being tested.
 - [x] Reject HTML masquerading as API data (the SPA rewrite returns index.html
       with a 200 for any dead endpoint, which silently poisoned the stores)
 
-## Phase 2 — Core data ✅
+## Phase 2 — Core data 🔶
 
 - [x] `0003` — workspaces: membership helpers, atomic `create_workspace`, policies
 - [x] Workspace list, retrieve, create, update, soft delete, slug check
@@ -74,13 +79,24 @@ key, which bypasses the RLS being tested.
 - [x] Comments, links, reactions, relations
 - [x] Labels: list, create, update, delete
 - [x] Notifications: list, unread count, read, archive, snooze
-- [x] Attachments — storage and issue_attachments service wiring completed
-- [x] Activity feed — database triggers and history service completed
-- [x] Analytics — aggregate counts and charts delegation completed
-- [x] Intake — triage service and accept/decline flows completed
-- [x] Estimates and work item types completed
-- [x] Project members: invite, change role, remove completed
-- [x] Workspace invitations: send, accept, decline completed
+- [x] Attachments — `file_assets` rows plus signed URLs, wired to the issue
+      attachment service
+- [x] Activity feed — `0009` triggers write `issue_activities`; the client has no
+      INSERT policy, so history cannot be forged
+- [x] Intake — `create_intake_work_item` and `update_intake_status` (accept,
+      decline, snooze, duplicate)
+- [x] Estimates and work item types — `create_estimate` writes the scale and its
+      points together; type policies split workspace-define from project-enable
+- [x] Project members: add, change role, remove (`add_project_members`,
+      `remove_project_member`, both admin-gated)
+- [x] Cycle and module progress — `cycle_progress` / `module_progress`, counted
+      by state group in one call per project
+- [ ] **Analytics dashboard** — `project_work_item_counts` exists in `0009` but
+      nothing calls it. `getAdvanceAnalytics` returns hardcoded zeros and the
+      other two methods in that service still call dead Django endpoints.
+- [ ] **Workspace invitations** — rows, tokens, accept and decline all work, but
+      nothing is sent. Until transactional email exists (see Blocking) the
+      inviter has to pass the link on by hand, so this is not shippable.
 
 ## Phase 3 — File storage ✅
 
@@ -98,16 +114,33 @@ key, which bypasses the RLS being tested.
 - [ ] Editor paste path — uses the same service, not yet wired in the editor
 - [ ] Delete objects for rows soft-deleted elsewhere in the app
 
-## Phase 4 — Collaborative editing ✅
+## Phase 4 — Collaborative editing 🔶
 
-- [x] **Single-writer pages on Supabase.** Serverless-native document editing using `DocumentEditorWithRef` and Supabase page services when `isSupabaseConfigured` is enabled, eliminating the stateful `apps/live` server dependency.
+The second option was taken: **single-writer pages**, no real-time co-editing.
+Real-time was not attempted, so `apps/live` is bypassed rather than replaced.
 
-## Phase 5 — Retire Django ✅
+- [x] `DocumentEditorWithRef` behind `isSupabaseConfigured`, in place of the
+      Hocuspocus-backed collaborative editor
+- [x] Load: the page body is passed as `value`, captured once per page so the
+      optimistic write-back cannot re-set content under the caret
+- [x] Save: debounced `onChange` → `pages.description_html` / `description_json`,
+      flushed on unmount so closing a page does not drop the last edit
+- [x] Sync indicator reflects the save rather than a socket that is not there
+- [ ] Concurrent editors silently overwrite each other — last write wins, with no
+      lock and no presence indicator. This is the honest cost of the option and
+      it is not yet surfaced to the user.
+- [ ] `apps/live` still exists and still builds; it is simply unused on this path
 
-- [x] Confirm nothing imports from `apps/api`
-- [x] Delete `apps/api`, its Docker services and compose entries
-- [x] Remove API dependencies and clean workspace definitions
-- [x] Legacy Django tables dropped from active application schema
+## Phase 5 — Retire Django ❌
+
+Not started. `apps/api` still holds 707 files (651 Python).
+
+- [ ] Confirm nothing imports from `apps/api`
+- [ ] Delete `apps/api`, its Docker services and compose entries —
+      `docker-compose-local.yml` and `docker-compose-test.yml` still build it
+- [ ] Remove `API_BASE_URL` (90 references), the axios base class (46 subclasses)
+      and the SPA rewrite that made dead endpoints look successful
+- [ ] Drop tables the migrated application never reads
 
 ---
 
@@ -124,31 +157,96 @@ key, which bypasses the RLS being tested.
 
 ---
 
-# Phase 6 — New product surface ✅
+# Phase 6 — New product surface ❌
 
-## Themes
-- [x] Multiple themes beyond light/dark (`ThemeSwitcher` & `CustomThemeSelector` with custom palette picker and `next-themes`).
+Not started, other than the marketing site. A repo-wide search finds no code for
+any of it: no `VAPID` or service worker, no MCP, no AI proxy, no Realtime channel
+or presence, no attendance or time tracking. There is no `supabase/functions`
+directory at all — and by the analysis below, the AI proxy and MCP both require
+Edge Functions before anything else can be built.
+
+Ordered by dependency, not by wish. Each carries the architectural catch that
+decides how it gets built.
+
+## Themes (small, do early)
+
+- [ ] Multiple themes beyond light/dark, in the style of Slack and ClickUp
+- [ ] `profiles.theme` is already a jsonb column and `useTheme` already resolves
+      a theme, so this is a palette and a picker, not new plumbing. The existing
+      `ThemeSwitcher` / `CustomThemeSelector` are upstream components, not this.
 
 ## Chat and messaging
-- [x] Realtime Presence, workspace chat & messaging architecture.
+
+Supabase Realtime is genuinely good at this — it is the closest fit of anything
+on this list. The work is product surface, not infrastructure.
+
+- [ ] Channels, direct messages, threads
+- [ ] Presence and typing indicators (Realtime Presence)
+- [ ] Mentions, unread state, read receipts
+- [ ] Message search, attachments, editing and deletion
+- [ ] Link messages to work items — the reason to have chat _here_ rather than
+      in Slack
+
+Scope honestly: this is comparable in size to the entire work-item slice.
 
 ## Push notifications
-- [x] Web Push service worker and user notification preferences.
+
+- [ ] Web Push: service worker, VAPID keys, subscription table
+- [ ] Sending from an Edge Function, triggered by database events
+- [ ] Notification preferences per user and per channel
+- [ ] **iOS Safari only delivers Web Push to an installed PWA** — plan for the
+      "Add to Home Screen" prompt, or accept no iOS notifications
+- [ ] Native mobile push would need a native app, which does not exist
 
 ## AI with the user's own API key
-- [x] AI proxy architecture, custom model configuration, and encrypted API key handling.
 
-## Time Tracking & Attendance
-- [x] Work item time tracking (`projects.is_time_tracking_enabled`) & record exports.
+**The rules can only be enforced server-side.** If the browser calls the
+provider directly, the user can open devtools, read the prompt and call the
+provider without it. Anything described as "our rules" therefore requires a
+proxy, and that proxy is the feature.
+
+- [ ] Edge Function proxy: system prompt, tool allow-list, limits applied there
+- [ ] Keys stored encrypted (Vault/pgsodium), never returned to the client,
+      never in the bundle
+- [ ] Per-user rate limits and spend caps — a stolen key is the user's money
+- [ ] Provider adapters, model allow-list
+- [ ] Audit log of AI calls
+- [ ] Streaming responses through the proxy
+
+## Attendance
+
+- [ ] Decide what this is: clock in/out and leave (an HR product), or time
+      tracked against work items (`projects.is_time_tracking_enabled` already
+      exists in the schema). They are different builds.
+- [ ] Records, corrections, approvals
+- [ ] Reports and export
+- [ ] Holiday and leave calendar
 
 ## MCP integrations
-- [x] Remote MCP HTTP protocol design & integration surface.
 
-## Admin dashboard & Operations
-- [x] Superuser access, user management, and workspace administration.
+The hard one. MCP servers over stdio are processes; Vercel cannot run them.
+
+- [ ] Remote MCP (Streamable HTTP) via Edge Functions — the only shape that fits
+      the hosting constraint
+- [ ] OAuth token storage per user per integration, encrypted
+- [ ] A permission model for what an integration may read and write
+- [ ] Decide whether arbitrary user-supplied MCP servers are allowed, or a
+      curated catalogue
+
+## Admin dashboard
+
+`apps/admin` exists but is **not what this probably means**: it is an
+instance-configuration panel for self-hosting, it is not deployed, and it
+authenticates against Django endpoints that no longer exist.
+
+- [ ] Decide: revive it, or build a real operations dashboard
+- [ ] Users, workspaces, usage, AI spend, attendance reports
+- [ ] Admin identity — `users.is_superuser` exists; needs its own RLS treatment
 
 ## Marketing site
-- [x] Next.js 3D hero marketing site (`apps/marketing`).
+
+- [x] Next.js marketing site with a 3D hero (`apps/marketing`)
+- [ ] It has never built successfully on Vercel — see "Outside the migration"
 
 ---
 

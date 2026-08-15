@@ -4,12 +4,16 @@
  * See the LICENSE file for details.
  */
 
-import { type AxiosRequestConfig, CancelToken, isCancel } from "axios";
+import { type AxiosRequestConfig, isCancel } from "axios";
 // services
 import { APIService } from "@/services/api.service";
 
 export class FileUploadService extends APIService {
-  private cancelSource: any;
+  // AbortController rather than axios's CancelToken: CancelToken has been
+  // deprecated since axios 0.22 and its typings no longer export it as a value,
+  // so it cannot be called under verbatimModuleSyntax. isCancel still
+  // recognises the CanceledError an abort produces.
+  private abortController: AbortController | undefined;
 
   constructor() {
     super("");
@@ -20,12 +24,12 @@ export class FileUploadService extends APIService {
     data: FormData,
     uploadProgressHandler?: AxiosRequestConfig["onUploadProgress"]
   ): Promise<void> {
-    this.cancelSource = CancelToken.source();
+    this.abortController = new AbortController();
     return this.post(url, data, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-      cancelToken: this.cancelSource.token,
+      signal: this.abortController.signal,
       withCredentials: false,
       onUploadProgress: uploadProgressHandler,
     })
@@ -40,6 +44,6 @@ export class FileUploadService extends APIService {
   }
 
   cancelUpload() {
-    this.cancelSource.cancel("Upload canceled");
+    this.abortController?.abort();
   }
 }
