@@ -87,6 +87,7 @@ export class WorkspaceService extends APIService {
   }
 
   async inviteWorkspace(workspaceSlug: string, data: IWorkspaceBulkInviteFormData): Promise<any> {
+    if (isSupabaseConfigured) return supabaseMemberService.inviteWorkspace(workspaceSlug, data);
     return this.post(`/api/workspaces/${workspaceSlug}/invitations/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -95,6 +96,7 @@ export class WorkspaceService extends APIService {
   }
 
   async joinWorkspace(workspaceSlug: string, invitationId: string, data: any): Promise<any> {
+    if (isSupabaseConfigured) return supabaseMemberService.joinWorkspace(workspaceSlug, invitationId);
     return this.post(`/api/workspaces/${workspaceSlug}/invitations/${invitationId}/join/`, data, {
       headers: {},
     })
@@ -105,6 +107,7 @@ export class WorkspaceService extends APIService {
   }
 
   async joinWorkspaces(data: any): Promise<any> {
+    if (isSupabaseConfigured) return supabaseMemberService.joinWorkspaces(data);
     return this.post("/api/users/me/workspaces/invitations/", data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -160,6 +163,7 @@ export class WorkspaceService extends APIService {
     memberId: string,
     data: Partial<IWorkspaceMember>
   ): Promise<IWorkspaceMember> {
+    if (isSupabaseConfigured) return supabaseMemberService.updateWorkspaceMember(workspaceSlug, memberId, data);
     return this.patch(`/api/workspaces/${workspaceSlug}/members/${memberId}/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -168,6 +172,7 @@ export class WorkspaceService extends APIService {
   }
 
   async deleteWorkspaceMember(workspaceSlug: string, memberId: string): Promise<any> {
+    if (isSupabaseConfigured) return supabaseMemberService.deleteWorkspaceMember(workspaceSlug, memberId);
     return this.delete(`/api/workspaces/${workspaceSlug}/members/${memberId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -176,6 +181,7 @@ export class WorkspaceService extends APIService {
   }
 
   async workspaceInvitations(workspaceSlug: string): Promise<IWorkspaceMemberInvitation[]> {
+    if (isSupabaseConfigured) return supabaseMemberService.workspaceInvitations(workspaceSlug);
     return this.get(`/api/workspaces/${workspaceSlug}/invitations/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -184,6 +190,7 @@ export class WorkspaceService extends APIService {
   }
 
   async getWorkspaceInvitation(workspaceSlug: string, invitationId: string): Promise<IWorkspaceMemberInvitation> {
+    if (isSupabaseConfigured) return supabaseMemberService.getWorkspaceInvitation(workspaceSlug, invitationId);
     return this.get(`/api/workspaces/${workspaceSlug}/invitations/${invitationId}/join/`, { headers: {} })
       .then((response) => response?.data)
       .catch((error) => {
@@ -196,6 +203,8 @@ export class WorkspaceService extends APIService {
     invitationId: string,
     data: Partial<IWorkspaceMember>
   ): Promise<any> {
+    if (isSupabaseConfigured)
+      return supabaseMemberService.updateWorkspaceInvitation(workspaceSlug, invitationId, data as never);
     return this.patch(`/api/workspaces/${workspaceSlug}/invitations/${invitationId}/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -204,6 +213,7 @@ export class WorkspaceService extends APIService {
   }
 
   async deleteWorkspaceInvitations(workspaceSlug: string, invitationId: string): Promise<any> {
+    if (isSupabaseConfigured) return supabaseMemberService.deleteWorkspaceInvitations(workspaceSlug, invitationId);
     return this.delete(`/api/workspaces/${workspaceSlug}/invitations/${invitationId}/`)
       .then((response) => response?.data)
       .catch((error) => {

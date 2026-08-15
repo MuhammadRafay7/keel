@@ -138,13 +138,26 @@ export class SupabaseWorkspaceService {
     return { status: Boolean(data) };
   }
 
-  /** Invitations addressed to the signed-in user's email address. */
+  /**
+   * Invitations addressed to the signed-in user's email address.
+   *
+   * The email filter is applied here as well as in the policy. 0010 gave
+   * workspace admins read access to the invitations they sent, so "everything I
+   * can see" is no longer the same set as "everything addressed to me" — an
+   * admin would otherwise be asked to accept their own outgoing invitations.
+   */
   async userWorkspaceInvitations(): Promise<IWorkspaceMemberInvitation[]> {
     const supabase = getSupabase();
+
+    const { data: sessionData } = await supabase.auth.getSession();
+    const email = sessionData.session?.user.email?.toLowerCase();
+    if (!email) return [];
 
     const { data, error } = await supabase
       .from("workspace_member_invites")
       .select("*, workspace:workspaces(id, name, slug, logo)")
+      .ilike("email", email)
+      .eq("accepted", false)
       .is("deleted_at", null);
 
     if (error) throw new Error(`Failed to load your invitations: ${error.message}`);

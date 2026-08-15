@@ -11,6 +11,7 @@ import { API_BASE_URL } from "@keel/constants";
 import type { IEstimate, IEstimateFormData, IEstimatePoint } from "@keel/types";
 // helpers
 // services
+import { isSupabaseConfigured, supabaseEstimateService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 
 export class EstimateService extends APIService {
@@ -19,6 +20,7 @@ export class EstimateService extends APIService {
   }
 
   async fetchWorkspaceEstimates(workspaceSlug: string): Promise<IEstimate[] | undefined> {
+    if (isSupabaseConfigured) return supabaseEstimateService.fetchWorkspaceEstimates(workspaceSlug);
     try {
       const { data } = await this.get(`/api/workspaces/${workspaceSlug}/estimates/`);
       return data || undefined;
@@ -28,6 +30,7 @@ export class EstimateService extends APIService {
   }
 
   async fetchProjectEstimates(workspaceSlug: string, projectId: string): Promise<IEstimate[] | undefined> {
+    if (isSupabaseConfigured) return supabaseEstimateService.fetchProjectEstimates(workspaceSlug, projectId);
     try {
       const { data } = await this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/estimates/`);
       return data || undefined;
@@ -41,6 +44,7 @@ export class EstimateService extends APIService {
     projectId: string,
     estimateId: string
   ): Promise<IEstimate | undefined> {
+    if (isSupabaseConfigured) return supabaseEstimateService.fetchEstimateById(workspaceSlug, projectId, estimateId);
     try {
       const { data } = await this.get(
         `/api/workspaces/${workspaceSlug}/projects/${projectId}/estimates/${estimateId}/`
@@ -56,6 +60,7 @@ export class EstimateService extends APIService {
     projectId: string,
     payload: IEstimateFormData
   ): Promise<IEstimate | undefined> {
+    if (isSupabaseConfigured) return supabaseEstimateService.createEstimate(workspaceSlug, projectId, payload);
     try {
       const { data } = await this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/estimates/`, payload);
       return data || undefined;
@@ -65,6 +70,7 @@ export class EstimateService extends APIService {
   }
 
   async deleteEstimate(workspaceSlug: string, projectId: string, estimateId: string): Promise<void> {
+    if (isSupabaseConfigured) return supabaseEstimateService.deleteEstimate(workspaceSlug, projectId, estimateId);
     try {
       await this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/estimates/${estimateId}/`);
     } catch (error) {
@@ -78,6 +84,8 @@ export class EstimateService extends APIService {
     estimateId: string,
     payload: Partial<IEstimatePoint>
   ): Promise<IEstimatePoint | undefined> {
+    if (isSupabaseConfigured)
+      return supabaseEstimateService.createEstimatePoint(workspaceSlug, projectId, estimateId, payload);
     try {
       const { data } = await this.post(
         `/api/workspaces/${workspaceSlug}/projects/${projectId}/estimates/${estimateId}/estimate-points/`,
@@ -96,6 +104,14 @@ export class EstimateService extends APIService {
     estimatePointId: string,
     payload: Partial<IEstimatePoint>
   ): Promise<IEstimatePoint | undefined> {
+    if (isSupabaseConfigured)
+      return supabaseEstimateService.updateEstimatePoint(
+        workspaceSlug,
+        projectId,
+        estimateId,
+        estimatePointId,
+        payload
+      );
     try {
       const { data } = await this.patch(
         `/api/workspaces/${workspaceSlug}/projects/${projectId}/estimates/${estimateId}/estimate-points/${estimatePointId}/`,

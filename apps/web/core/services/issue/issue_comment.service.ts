@@ -9,6 +9,7 @@ import { API_BASE_URL } from "@keel/constants";
 import type { TIssueComment, TIssueServiceType } from "@keel/types";
 import { EIssueServiceType } from "@keel/types";
 // services
+import { isSupabaseConfigured, supabaseWorkItemDetailService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 import { FileUploadService } from "@/services/file-upload.service";
 
@@ -33,6 +34,7 @@ export class IssueCommentService extends APIService {
         }
       | object = {}
   ): Promise<TIssueComment[]> {
+    if (isSupabaseConfigured) return supabaseWorkItemDetailService.getIssueComments(workspaceSlug, projectId, issueId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/history/`, {
       params: {
         activity_type: `${this.serviceType === EIssueServiceType.EPICS ? "epic-comment" : "issue-comment"}`,
@@ -51,6 +53,8 @@ export class IssueCommentService extends APIService {
     issueId: string,
     data: Partial<TIssueComment>
   ): Promise<TIssueComment> {
+    if (isSupabaseConfigured)
+      return supabaseWorkItemDetailService.createIssueComment(workspaceSlug, projectId, issueId, data);
     return this.post(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/comments/`,
       data
@@ -68,6 +72,8 @@ export class IssueCommentService extends APIService {
     commentId: string,
     data: Partial<TIssueComment>
   ): Promise<TIssueComment> {
+    if (isSupabaseConfigured)
+      return supabaseWorkItemDetailService.patchIssueComment(workspaceSlug, projectId, issueId, commentId, data);
     return this.patch(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/comments/${commentId}/`,
       data
@@ -84,6 +90,8 @@ export class IssueCommentService extends APIService {
     issueId: string,
     commentId: string
   ): Promise<void> {
+    if (isSupabaseConfigured)
+      return supabaseWorkItemDetailService.deleteIssueComment(workspaceSlug, projectId, issueId, commentId);
     return this.delete(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/comments/${commentId}/`
     )

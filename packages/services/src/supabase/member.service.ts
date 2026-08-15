@@ -4,18 +4,35 @@
  * See the LICENSE file for details.
  */
 
-import type { IUserProjectsRole, IWorkspaceMember, IWorkspaceMemberMe } from "@keel/types";
+import type {
+  IProjectBulkAddFormData,
+  IUserProjectsRole,
+  IWorkspaceBulkInviteFormData,
+  IWorkspaceMember,
+  IWorkspaceMemberInvitation,
+  IWorkspaceMemberMe,
+  TProjectMembership,
+} from "@keel/types";
 
 import { getSupabase } from "./client";
 
 const MEMBER_USER_FIELDS = "id, email, first_name, last_name, display_name, avatar, is_bot, is_active";
 
+const PROJECT_MEMBER_FIELDS = "id, member_id, role, is_active, sort_order, project_id, workspace_id, created_at";
+
+const INVITE_FIELDS = "id, email, accepted, token, message, responded_at, role, workspace_id, created_at";
+
 /**
- * Workspace membership.
+ * Workspace and project membership, and the invitations that produce it.
  *
  * Every query here is scoped by the workspace slug rather than an id, because
  * that is what the router carries. RLS does the access check, so a slug the
  * user has no membership in simply returns nothing.
+ *
+ * The privileged operations — adding, removing, changing a role, inviting,
+ * accepting — go through the functions in 0010 rather than table writes. A role
+ * change has consequences a policy cannot express: a workspace must keep an
+ * admin, and an invitation must not grant more than its sender holds.
  */
 export class SupabaseMemberService {
   private async currentUserId(): Promise<string> {
@@ -43,7 +60,7 @@ export class SupabaseMemberService {
 
     if (error) throw new Error(`Failed to load your access to this workspace: ${error.message}`);
 
-    const row = data as Record<string, unknown>;
+    const row = data as unknown as Record<string, unknown>;
     const workspace = row.workspace as { id: string } | null;
 
     return {
@@ -125,6 +142,274 @@ export class SupabaseMemberService {
       roles[String(row.project_id)] = row.role as number;
     }
     return roles;
+  }
+
+  // -- Workspace members ----------------------------------------------------
+
+  async updateWorkspaceMember(
+    workspaceSlug: string,
+    memberId: string,
+    data: Partial<IWorkspaceMember>
+  ): Promise<IWorkspaceMember> {
+    const { error } = await getSupabase().rpc("update_workspace_member_role", {
+      p_workspace_slug: workspaceSlug,
+      p_member_id: memberId,
+      p_role: (data as { role?: number }).role,
+    });
+
+    if (error) throw new Error(error.message);
+
+    const members = await this.fetchWorkspaceMembers(workspaceSlug);
+    const updated = members.find((member) => member.member.id === memberId);
+    if (!updated) throw new Error("The role was changed, but that member could not be read back.");
+    return updated;
+  }
+
+  /**
+   * Removal is a deactivation. The person's work items, comments and activity
+   * still point at them, so the row has to survive even when the access does
+   * not — and project access goes with it, inside the function.
+   */
+  async deleteWorkspaceMember(workspaceSlug: string, memberId: string): Promise<void> {
+    const { error } = await getSupabase().rpc("remove_workspace_member", {
+      p_workspace_slug: workspaceSlug,
+      p_member_id: memberId,
+    });
+
+    if (error) throw new Error(error.message);
+  }
+
+  // -- Workspace invitations ------------------------------------------------
+
+  /**
+   * Creates the invitation rows and returns them, tokens included.
+   *
+   * Nothing is emailed: there is no transactional email yet. The caller gets the
+   * link and passes it on by hand. That is a gap, not a design — until email
+   * exists, inviting someone requires a second channel.
+   */
+  async inviteWorkspace(
+    workspaceSlug: string,
+    data: IWorkspaceBulkInviteFormData
+  ): Promise<IWorkspaceMemberInvitation[]> {
+    const { data: created, error } = await getSupabase().rpc("create_workspace_invitations", {
+      p_workspace_slug: workspaceSlug,
+      p_invites: data.emails ?? [],
+    });
+
+    if (error) throw new Error(error.message);
+    return ((created ?? []) as Record<string, unknown>[]).map((row) => this.toInvitation(row));
+  }
+
+  /** Invitations sent for this workspace — what the members settings page lists. */
+  async workspaceInvitations(workspaceSlug: string): Promise<IWorkspaceMemberInvitation[]> {
+    const { data, error } = await getSupabase()
+      .from("workspace_member_invites")
+      .select(`${INVITE_FIELDS}, workspace:workspaces!inner(id, name, slug, logo)`)
+      .eq("workspace.slug", workspaceSlug)
+      .eq("accepted", false)
+      .is("deleted_at", null)
+      .order("created_at", { ascending: false });
+
+    if (error) throw new Error(`Failed to load invitations: ${error.message}`);
+    return (data ?? []).map((row) => this.toInvitation(row as Record<string, unknown>));
+  }
+
+  async getWorkspaceInvitation(workspaceSlug: string, invitationId: string): Promise<IWorkspaceMemberInvitation> {
+    const { data, error } = await getSupabase()
+      .from("workspace_member_invites")
+      .select(`${INVITE_FIELDS}, workspace:workspaces(id, name, slug, logo)`)
+      .eq("id", invitationId)
+      .is("deleted_at", null)
+      .single();
+
+    if (error) throw new Error(`Failed to load that invitation: ${error.message}`);
+    return this.toInvitation(data as unknown as Record<string, unknown>);
+  }
+
+  async updateWorkspaceInvitation(
+    workspaceSlug: string,
+    invitationId: string,
+    data: Partial<IWorkspaceMemberInvitation>
+  ): Promise<IWorkspaceMemberInvitation> {
+    const { error } = await getSupabase()
+      .from("workspace_member_invites")
+      .update({ role: data.role, updated_at: new Date().toISOString() })
+      .eq("id", invitationId);
+
+    if (error) throw new Error(`Failed to change that invitation: ${error.message}`);
+    return this.getWorkspaceInvitation(workspaceSlug, invitationId);
+  }
+
+  /** Revoking an invitation that has not been accepted. */
+  async deleteWorkspaceInvitations(workspaceSlug: string, invitationId: string): Promise<void> {
+    const now = new Date().toISOString();
+
+    const { error } = await getSupabase()
+      .from("workspace_member_invites")
+      .update({ deleted_at: now, updated_at: now })
+      .eq("id", invitationId);
+
+    if (error) throw new Error(`Failed to revoke that invitation: ${error.message}`);
+  }
+
+  /** Accepting one invitation, from its own page. */
+  async joinWorkspace(workspaceSlug: string, invitationId: string): Promise<void> {
+    const { error } = await getSupabase().rpc("accept_workspace_invitation", {
+      p_invitation_id: invitationId,
+    });
+
+    if (error) throw new Error(error.message);
+  }
+
+  /**
+   * Accepting or declining several at once, from the invitations list shown
+   * after sign-up. Each is a separate call: one failing must not silently
+   * abandon the rest, so they are settled and the first failure reported.
+   */
+  async joinWorkspaces(data: { invitations?: string[]; accept?: boolean }): Promise<void> {
+    const invitationIds = data.invitations ?? [];
+    const accepting = data.accept !== false;
+
+    const results = await Promise.allSettled(
+      invitationIds.map((id) =>
+        getSupabase().rpc(accepting ? "accept_workspace_invitation" : "decline_workspace_invitation", {
+          p_invitation_id: id,
+        })
+      )
+    );
+
+    for (const result of results) {
+      if (result.status === "rejected") throw new Error(String(result.reason));
+      if (result.value.error) throw new Error(result.value.error.message);
+    }
+  }
+
+  // -- Project members ------------------------------------------------------
+
+  async fetchProjectMembers(workspaceSlug: string, projectId: string): Promise<TProjectMembership[]> {
+    const { data, error } = await getSupabase()
+      .from("project_members")
+      .select(PROJECT_MEMBER_FIELDS)
+      .eq("project_id", projectId)
+      .eq("is_active", true)
+      .is("deleted_at", null);
+
+    if (error) throw new Error(`Failed to load the members of this project: ${error.message}`);
+    return (data ?? []).map((row) => this.toProjectMembership(row as Record<string, unknown>));
+  }
+
+  async projectMemberMe(workspaceSlug: string, projectId: string): Promise<TProjectMembership> {
+    const userId = await this.currentUserId();
+
+    const { data, error } = await getSupabase()
+      .from("project_members")
+      .select(PROJECT_MEMBER_FIELDS)
+      .eq("project_id", projectId)
+      .eq("member_id", userId)
+      .eq("is_active", true)
+      .single();
+
+    if (error) throw new Error(`Failed to load your access to this project: ${error.message}`);
+    return this.toProjectMembership(data as unknown as Record<string, unknown>);
+  }
+
+  async getProjectMember(workspaceSlug: string, projectId: string, memberId: string): Promise<TProjectMembership> {
+    const { data, error } = await getSupabase()
+      .from("project_members")
+      .select(PROJECT_MEMBER_FIELDS)
+      .eq("project_id", projectId)
+      .eq("member_id", memberId)
+      .single();
+
+    if (error) throw new Error(`Failed to load that project member: ${error.message}`);
+    return this.toProjectMembership(data as unknown as Record<string, unknown>);
+  }
+
+  /**
+   * Adding people to a project. Not an invitation — they are already in the
+   * workspace, which the function verifies before writing anything.
+   */
+  async bulkAddMembersToProject(
+    workspaceSlug: string,
+    projectId: string,
+    data: IProjectBulkAddFormData
+  ): Promise<TProjectMembership[]> {
+    const { data: created, error } = await getSupabase().rpc("add_project_members", {
+      p_project_id: projectId,
+      p_members: data.members ?? [],
+    });
+
+    if (error) throw new Error(error.message);
+    return ((created ?? []) as Record<string, unknown>[]).map((row) => this.toProjectMembership(row));
+  }
+
+  async updateProjectMember(
+    workspaceSlug: string,
+    projectId: string,
+    memberId: string,
+    data: Partial<TProjectMembership>
+  ): Promise<TProjectMembership> {
+    const payload: Record<string, unknown> = { updated_at: new Date().toISOString() };
+    if (data.role !== undefined) payload.role = data.role;
+
+    const { data: updated, error } = await getSupabase()
+      .from("project_members")
+      .update(payload)
+      .eq("project_id", projectId)
+      .eq("member_id", memberId)
+      .select(PROJECT_MEMBER_FIELDS)
+      .single();
+
+    if (error) throw new Error(`Failed to change that member's role: ${error.message}`);
+    return this.toProjectMembership(updated as Record<string, unknown>);
+  }
+
+  async deleteProjectMember(workspaceSlug: string, projectId: string, memberId: string): Promise<void> {
+    const { error } = await getSupabase().rpc("remove_project_member", {
+      p_project_id: projectId,
+      p_member_id: memberId,
+    });
+
+    if (error) throw new Error(error.message);
+  }
+
+  // -- Mapping --------------------------------------------------------------
+
+  private toProjectMembership(row: Record<string, unknown>): TProjectMembership {
+    return {
+      id: String(row.id),
+      member: String(row.member_id ?? ""),
+      role: row.role,
+      // The API distinguished the role a member holds from the one they were
+      // granted; nothing downgrades a role behind the member's back here, so
+      // the two are the same value.
+      original_role: row.role,
+      created_at: String(row.created_at ?? ""),
+    } as unknown as TProjectMembership;
+  }
+
+  private toInvitation(row: Record<string, unknown>): IWorkspaceMemberInvitation {
+    const workspace = (row.workspace ?? {}) as Record<string, unknown>;
+
+    return {
+      id: String(row.id),
+      email: (row.email as string) ?? "",
+      accepted: Boolean(row.accepted),
+      token: (row.token as string) ?? "",
+      message: (row.message as string) ?? "",
+      responded_at: row.responded_at as Date,
+      role: row.role as IWorkspaceMemberInvitation["role"],
+      // The link the inviter has to pass on themselves, for as long as there is
+      // no email to send it in.
+      invite_link: `${typeof window === "undefined" ? "" : window.location.origin}/workspace-invitations/?invitation_id=${String(row.id)}&email=${encodeURIComponent((row.email as string) ?? "")}`,
+      workspace: {
+        id: String(workspace.id ?? row.workspace_id ?? ""),
+        name: (workspace.name as string) ?? "",
+        slug: (workspace.slug as string) ?? "",
+        logo_url: (workspace.logo as string) ?? "",
+      },
+    };
   }
 }
 

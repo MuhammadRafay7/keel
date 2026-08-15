@@ -6,6 +6,7 @@
 
 import { API_BASE_URL } from "@keel/constants";
 import type { IProjectView } from "@keel/types";
+import { isSupabaseConfigured, supabasePlanningService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 // types
 // helpers
@@ -16,6 +17,7 @@ export class ViewService extends APIService {
   }
 
   async createView(workspaceSlug: string, projectId: string, data: Partial<IProjectView>): Promise<any> {
+    if (isSupabaseConfigured) return supabasePlanningService.createView(workspaceSlug, projectId, data);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/views/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -24,6 +26,7 @@ export class ViewService extends APIService {
   }
 
   async patchView(workspaceSlug: string, projectId: string, viewId: string, data: Partial<IProjectView>): Promise<any> {
+    if (isSupabaseConfigured) return supabasePlanningService.patchView(workspaceSlug, projectId, viewId, data);
     return this.patch(`/api/workspaces/${workspaceSlug}/projects/${projectId}/views/${viewId}/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -32,6 +35,7 @@ export class ViewService extends APIService {
   }
 
   async deleteView(workspaceSlug: string, projectId: string, viewId: string): Promise<any> {
+    if (isSupabaseConfigured) return supabasePlanningService.deleteView(workspaceSlug, projectId, viewId);
     return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/views/${viewId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -40,6 +44,7 @@ export class ViewService extends APIService {
   }
 
   async getViews(workspaceSlug: string, projectId: string): Promise<IProjectView[]> {
+    if (isSupabaseConfigured) return supabasePlanningService.getViews(workspaceSlug, projectId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/views/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -48,6 +53,7 @@ export class ViewService extends APIService {
   }
 
   async getViewDetails(workspaceSlug: string, projectId: string, viewId: string): Promise<IProjectView> {
+    if (isSupabaseConfigured) return supabasePlanningService.getViewDetails(workspaceSlug, projectId, viewId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/views/${viewId}/`)
       .then((response) => response?.data)
       .catch((error) => {

@@ -17,7 +17,7 @@ import type {
 // keel web types
 import type { TProject, TPartialProject } from "@keel/types";
 // services
-import { isSupabaseConfigured, supabaseWorkspaceContentService } from "@keel/services";
+import { isSupabaseConfigured, supabaseProjectService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 
 export class ProjectService extends APIService {
@@ -26,6 +26,7 @@ export class ProjectService extends APIService {
   }
 
   async createProject(workspaceSlug: string, data: Partial<TProject>): Promise<TProject> {
+    if (isSupabaseConfigured) return supabaseProjectService.createProject(workspaceSlug, data);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -34,6 +35,7 @@ export class ProjectService extends APIService {
   }
 
   async checkProjectIdentifierAvailability(workspaceSlug: string, data: string): Promise<any> {
+    if (isSupabaseConfigured) return supabaseProjectService.checkProjectIdentifierAvailability(workspaceSlug, data);
     return this.get(`/api/workspaces/${workspaceSlug}/project-identifiers`, {
       params: {
         name: data,
@@ -46,7 +48,7 @@ export class ProjectService extends APIService {
   }
 
   async getProjectsLite(workspaceSlug: string): Promise<TPartialProject[]> {
-    if (isSupabaseConfigured) return supabaseWorkspaceContentService.getProjectsLite(workspaceSlug);
+    if (isSupabaseConfigured) return supabaseProjectService.getProjectsLite(workspaceSlug);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -55,6 +57,7 @@ export class ProjectService extends APIService {
   }
 
   async getProjects(workspaceSlug: string): Promise<TProject[]> {
+    if (isSupabaseConfigured) return supabaseProjectService.getProjects(workspaceSlug);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/details/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -63,6 +66,7 @@ export class ProjectService extends APIService {
   }
 
   async getProject(workspaceSlug: string, projectId: string): Promise<TProject> {
+    if (isSupabaseConfigured) return supabaseProjectService.getProject(workspaceSlug, projectId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -84,6 +88,7 @@ export class ProjectService extends APIService {
   }
 
   async updateProject(workspaceSlug: string, projectId: string, data: Partial<TProject>): Promise<TProject> {
+    if (isSupabaseConfigured) return supabaseProjectService.updateProject(workspaceSlug, projectId, data);
     return this.patch(`/api/workspaces/${workspaceSlug}/projects/${projectId}/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -92,6 +97,7 @@ export class ProjectService extends APIService {
   }
 
   async deleteProject(workspaceSlug: string, projectId: string): Promise<any> {
+    if (isSupabaseConfigured) return supabaseProjectService.deleteProject(workspaceSlug, projectId);
     return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/`)
       .then((response) => response?.data)
       .catch((error) => {

@@ -8,6 +8,7 @@
 import { API_BASE_URL } from "@keel/constants";
 import type { IProjectBulkAddFormData, TProjectMembership } from "@keel/types";
 // services
+import { isSupabaseConfigured, supabaseMemberService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 
 export class ProjectMemberService extends APIService {
@@ -16,6 +17,7 @@ export class ProjectMemberService extends APIService {
   }
 
   async fetchProjectMembers(workspaceSlug: string, projectId: string): Promise<TProjectMembership[]> {
+    if (isSupabaseConfigured) return supabaseMemberService.fetchProjectMembers(workspaceSlug, projectId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/members/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -28,6 +30,7 @@ export class ProjectMemberService extends APIService {
     projectId: string,
     data: IProjectBulkAddFormData
   ): Promise<TProjectMembership[]> {
+    if (isSupabaseConfigured) return supabaseMemberService.bulkAddMembersToProject(workspaceSlug, projectId, data);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/members/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -36,6 +39,7 @@ export class ProjectMemberService extends APIService {
   }
 
   async projectMemberMe(workspaceSlug: string, projectId: string): Promise<TProjectMembership> {
+    if (isSupabaseConfigured) return supabaseMemberService.projectMemberMe(workspaceSlug, projectId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/project-members/me/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -44,6 +48,7 @@ export class ProjectMemberService extends APIService {
   }
 
   async getProjectMember(workspaceSlug: string, projectId: string, memberId: string): Promise<TProjectMembership> {
+    if (isSupabaseConfigured) return supabaseMemberService.getProjectMember(workspaceSlug, projectId, memberId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/members/${memberId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -57,6 +62,8 @@ export class ProjectMemberService extends APIService {
     memberId: string,
     data: Partial<TProjectMembership>
   ): Promise<TProjectMembership> {
+    if (isSupabaseConfigured)
+      return supabaseMemberService.updateProjectMember(workspaceSlug, projectId, memberId, data);
     return this.patch(`/api/workspaces/${workspaceSlug}/projects/${projectId}/members/${memberId}/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -65,6 +72,7 @@ export class ProjectMemberService extends APIService {
   }
 
   async deleteProjectMember(workspaceSlug: string, projectId: string, memberId: string): Promise<void> {
+    if (isSupabaseConfigured) return supabaseMemberService.deleteProjectMember(workspaceSlug, projectId, memberId);
     return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/members/${memberId}/`)
       .then((response) => response?.data)
       .catch((error) => {

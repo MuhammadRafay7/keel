@@ -15,6 +15,7 @@ import type {
 } from "@keel/types";
 // helpers
 // services
+import { isSupabaseConfigured, supabaseNotificationService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 
 export class WorkspaceNotificationService extends APIService {
@@ -62,6 +63,7 @@ export class WorkspaceNotificationService extends APIService {
   }
 
   async markNotificationAsRead(workspaceSlug: string, notificationId: string): Promise<TNotification | undefined> {
+    if (isSupabaseConfigured) return supabaseNotificationService.markAsRead(workspaceSlug, notificationId) as never;
     try {
       const { data } = await this.post(`/api/workspaces/${workspaceSlug}/users/notifications/${notificationId}/read/`);
       return data || undefined;
@@ -71,6 +73,7 @@ export class WorkspaceNotificationService extends APIService {
   }
 
   async markNotificationAsUnread(workspaceSlug: string, notificationId: string): Promise<TNotification | undefined> {
+    if (isSupabaseConfigured) return supabaseNotificationService.markAsUnread(workspaceSlug, notificationId) as never;
     try {
       const { data } = await this.delete(
         `/api/workspaces/${workspaceSlug}/users/notifications/${notificationId}/read/`
@@ -82,6 +85,7 @@ export class WorkspaceNotificationService extends APIService {
   }
 
   async markNotificationAsArchived(workspaceSlug: string, notificationId: string): Promise<TNotification | undefined> {
+    if (isSupabaseConfigured) return supabaseNotificationService.archive(workspaceSlug, notificationId) as never;
     try {
       const { data } = await this.post(
         `/api/workspaces/${workspaceSlug}/users/notifications/${notificationId}/archive/`
@@ -110,6 +114,7 @@ export class WorkspaceNotificationService extends APIService {
     workspaceSlug: string,
     payload: TNotificationPaginatedInfoQueryParams
   ): Promise<TNotification | undefined> {
+    if (isSupabaseConfigured) return supabaseNotificationService.markAllAsRead(workspaceSlug) as never;
     try {
       const { data } = await this.post(`/api/workspaces/${workspaceSlug}/users/notifications/mark-all-read/`, payload);
       return data || undefined;

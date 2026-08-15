@@ -8,13 +8,7 @@ import { isEqual, set } from "lodash-es";
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { computedFn } from "mobx-utils";
 // components
-import type {
-  ChartDataType,
-  IBlockUpdateDependencyData,
-  IGanttBlock,
-  TGanttViews,
-  EGanttBlockType,
-} from "@keel/types";
+import type { ChartDataType, IBlockUpdateDependencyData, IGanttBlock, TGanttViews, EGanttBlockType } from "@keel/types";
 import { renderFormattedPayloadDate } from "@keel/utils";
 import { currentViewDataWithView } from "@/components/gantt-chart/data";
 import {

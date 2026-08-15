@@ -4,13 +4,13 @@
  * See the LICENSE file for details.
  */
 
-import type { IFavorite, IState, IWorkspaceSidebarNavigation, TPartialProject } from "@keel/types";
+import type { IFavorite, IState, IWorkspaceSidebarNavigation } from "@keel/types";
 
 import { getSupabase } from "./client";
 
 /**
- * The reads the application fires the moment a workspace opens: its projects,
- * states, favourites and sidebar preferences.
+ * The reads the application fires the moment a workspace opens: its states,
+ * favourites and sidebar preferences. Projects have their own service.
  *
  * All of them are membership-scoped by RLS, so a slug the user cannot see comes
  * back empty rather than forbidden. Each returns a real (usually empty) result
@@ -23,23 +23,6 @@ export class SupabaseWorkspaceContentService {
     const id = data.session?.user.id;
     if (!id) throw new Error("Not signed in.");
     return id;
-  }
-
-  async getProjectsLite(workspaceSlug: string): Promise<TPartialProject[]> {
-    const supabase = getSupabase();
-
-    const { data, error } = await supabase
-      .from("projects")
-      .select(
-        "id, name, identifier, description, logo_props, network, workspace_id, archived_at, workspace:workspaces!inner(slug)"
-      )
-      .eq("workspace.slug", workspaceSlug)
-      .is("deleted_at", null)
-      .order("name", { ascending: true });
-
-    if (error) throw new Error(`Failed to load projects: ${error.message}`);
-
-    return (data ?? []) as unknown as TPartialProject[];
   }
 
   async getWorkspaceStates(workspaceSlug: string): Promise<IState[]> {

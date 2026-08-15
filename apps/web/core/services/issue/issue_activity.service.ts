@@ -7,6 +7,7 @@
 import { API_BASE_URL } from "@keel/constants";
 import type { TIssueActivity, TIssueServiceType } from "@keel/types";
 import { EIssueServiceType } from "@keel/types";
+import { isSupabaseConfigured, supabaseActivityService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 // types
 // helper
@@ -29,6 +30,8 @@ export class IssueActivityService extends APIService {
         }
       | object = {}
   ): Promise<TIssueActivity[]> {
+    if (isSupabaseConfigured)
+      return supabaseActivityService.getIssueActivities(workspaceSlug, projectId, issueId, params);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/history/`, {
       params: {
         activity_type: `${this.serviceType === EIssueServiceType.EPICS ? "epic-property" : "issue-property"}`,

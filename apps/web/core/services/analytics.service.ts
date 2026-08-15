@@ -6,12 +6,7 @@
 
 // keel imports
 import { API_BASE_URL } from "@keel/constants";
-import type {
-  IAnalyticsResponse,
-  TAnalyticsTabsBase,
-  TAnalyticsGraphsBase,
-  TAnalyticsFilterParams,
-} from "@keel/types";
+import type { IAnalyticsResponse, TAnalyticsTabsBase, TAnalyticsGraphsBase, TAnalyticsFilterParams } from "@keel/types";
 // services
 import { APIService } from "./api.service";
 

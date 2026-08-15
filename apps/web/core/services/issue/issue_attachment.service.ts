@@ -7,7 +7,12 @@
 import type { AxiosRequestConfig } from "axios";
 import { API_BASE_URL } from "@keel/constants";
 // keel types
-import { getFileMetaDataForUpload, generateFileUploadPayload } from "@keel/services";
+import {
+  getFileMetaDataForUpload,
+  generateFileUploadPayload,
+  isSupabaseConfigured,
+  supabaseAttachmentService,
+} from "@keel/services";
 import type { TIssueAttachment, TIssueAttachmentUploadResponse, TIssueServiceType } from "@keel/types";
 import { EIssueServiceType } from "@keel/types";
 // services
@@ -47,6 +52,11 @@ export class IssueAttachmentService extends APIService {
     file: File,
     uploadProgressHandler?: AxiosRequestConfig["onUploadProgress"]
   ): Promise<TIssueAttachment> {
+    // The upload goes straight to Supabase Storage, which reports no progress —
+    // uploadProgressHandler is dropped rather than faked. The UI shows an
+    // indeterminate state, which is honest about what is known.
+    if (isSupabaseConfigured)
+      return supabaseAttachmentService.uploadIssueAttachment(workspaceSlug, projectId, issueId, file);
     const fileMetaData = await getFileMetaDataForUpload(file);
     return this.post(
       `/api/assets/v2/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/attachments/`,
@@ -69,6 +79,7 @@ export class IssueAttachmentService extends APIService {
   }
 
   async getIssueAttachments(workspaceSlug: string, projectId: string, issueId: string): Promise<TIssueAttachment[]> {
+    if (isSupabaseConfigured) return supabaseAttachmentService.getIssueAttachments(workspaceSlug, projectId, issueId);
     return this.get(
       `/api/assets/v2/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/attachments/`
     )
@@ -84,6 +95,8 @@ export class IssueAttachmentService extends APIService {
     issueId: string,
     assetId: string
   ): Promise<TIssueAttachment> {
+    if (isSupabaseConfigured)
+      return supabaseAttachmentService.deleteIssueAttachment(workspaceSlug, projectId, issueId, assetId);
     return this.delete(
       `/api/assets/v2/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/attachments/${assetId}/`
     )
