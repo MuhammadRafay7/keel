@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import { Mark } from "./Mark";
 
 const APP = "https://app.keel.ostenmark.com";
@@ -9,7 +10,7 @@ export function Header() {
       <div className="shell nav">
         <Link href="/" className="logo">
           <Mark className="logo-mark" />
-          <b>KEEL</b>
+          <b>Keel</b>
         </Link>
         <nav className="nav-links">
           <Link href="/features">Features</Link>
@@ -22,7 +23,7 @@ export function Header() {
             Sign in
           </a>
           <a className="btn btn-accent" href={APP}>
-            Get started <span>→</span>
+            Get started
           </a>
         </div>
       </div>
