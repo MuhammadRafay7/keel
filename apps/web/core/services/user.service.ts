@@ -19,6 +19,7 @@ import type {
   TUserProfile,
   IEmailCheckResponse,
 } from "@keel/types";
+import { isSupabaseConfigured, supabaseProfileService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 // types
 // helpers
@@ -93,6 +94,7 @@ export class UserService extends APIService {
   }
 
   async currentUserSettings(bustCache: boolean = false): Promise<IUserSettings> {
+    if (isSupabaseConfigured) return supabaseProfileService.settings();
     const url = bustCache ? `/api/users/me/settings/?t=${Date.now()}` : "/api/users/me/settings/";
     return this.get(url)
       .then((response) => response?.data)

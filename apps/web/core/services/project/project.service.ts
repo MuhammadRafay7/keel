@@ -17,6 +17,7 @@ import type {
 // keel web types
 import type { TProject, TPartialProject } from "@keel/types";
 // services
+import { isSupabaseConfigured, supabaseWorkspaceContentService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 
 export class ProjectService extends APIService {
@@ -45,6 +46,7 @@ export class ProjectService extends APIService {
   }
 
   async getProjectsLite(workspaceSlug: string): Promise<TPartialProject[]> {
+    if (isSupabaseConfigured) return supabaseWorkspaceContentService.getProjectsLite(workspaceSlug);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/`)
       .then((response) => response?.data)
       .catch((error) => {

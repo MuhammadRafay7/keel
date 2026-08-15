@@ -11,13 +11,23 @@
 export function LogoSpinner() {
   return (
     <div className="flex items-center justify-center">
+      {/*
+       * width/height are set as attributes, not only as classes, on purpose.
+       * This spinner renders in the hydrate fallback — the first paint, before
+       * the CSS bundle has loaded. Until it does, Tailwind's h-6/w-6 are inert,
+       * and an SVG carrying only a viewBox scales to fill its parent, which here
+       * is a full-screen box. The attributes give it an intrinsic size so it is
+       * never larger than this for a frame.
+       */}
       <svg
+        width="44"
+        height="44"
         viewBox="0 0 48 48"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         role="img"
         aria-label="Loading"
-        className="text-custom-primary-100 h-6 w-6 sm:h-11 sm:w-11"
+        className="h-6 w-6 text-primary sm:h-11 sm:w-11"
       >
         <style>{`
           @keyframes keel-rib-pulse {

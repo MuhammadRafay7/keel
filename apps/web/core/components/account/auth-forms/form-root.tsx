@@ -13,6 +13,7 @@ import type { IEmailCheckData } from "@keel/types";
 // helpers
 import type { TAuthErrorInfo } from "@/helpers/authentication.helper";
 import { authErrorHandler } from "@/helpers/authentication.helper";
+import type { EAuthenticationErrorCodes } from "@/helpers/authentication.helper";
 // hooks
 import { useInstance } from "@/hooks/store/use-instance";
 import { useAppRouter } from "@/hooks/use-app-router";
@@ -82,10 +83,9 @@ export const AuthFormRoot = observer(function AuthFormRoot(props: TAuthFormRoot)
 
       setIsExistingEmail(response.existing);
     } catch (error) {
-      const errorhandler = authErrorHandler(
-        (error as { error_code?: string | number })?.error_code?.toString(),
-        data?.email || undefined
-      );
+      const errorCode = (error as { error_code?: string | number })?.error_code?.toString();
+      if (!errorCode) return;
+      const errorhandler = authErrorHandler(errorCode as EAuthenticationErrorCodes, data?.email || undefined);
       if (errorhandler?.type) setErrorInfo(errorhandler);
     }
   };

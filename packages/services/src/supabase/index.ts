@@ -7,3 +7,7 @@
 export * from "./client";
 export * from "./auth.service";
 export * from "./user.service";
+export * from "./profile.service";
+export * from "./workspace.service";
+export * from "./member.service";
+export * from "./workspace-content.service";

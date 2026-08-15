@@ -11,7 +11,14 @@
 export function LogoSpinner() {
   return (
     <div className="flex items-center justify-center">
+      {/*
+       * width/height are attributes, not only classes, on purpose: this renders
+       * before the CSS bundle loads, and an SVG with only a viewBox scales to
+       * fill its parent until Tailwind's sizing applies.
+       */}
       <svg
+        width="44"
+        height="44"
         viewBox="0 0 48 48"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

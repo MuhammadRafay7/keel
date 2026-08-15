@@ -141,13 +141,13 @@ export class UserStore implements IUserStore {
         }
 
         runInAction(() => {
-          this.data = user;
+          this.data = user ?? undefined;
           this.isLoading = false;
           this.isAuthenticated = true;
         });
       } else
         runInAction(() => {
-          this.data = user;
+          this.data = user ?? undefined;
           this.isLoading = false;
           this.isAuthenticated = false;
         });
