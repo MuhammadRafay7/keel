@@ -161,6 +161,8 @@ grant execute on function public.is_project_identifier_available(text, text) to 
 -- is visible if it is public to the workspace (network 2) or you are a member
 -- of it, which is what the network column exists to express.
 drop policy if exists "projects read as member" on public.projects;
+-- Drop the replacement too, so re-running this file is safe.
+drop policy if exists "projects read" on public.projects;
 create policy "projects read"
   on public.projects for select
   to authenticated
@@ -177,6 +179,7 @@ create policy "projects update as project admin"
   with check (public.is_project_member(id));
 
 drop policy if exists "project_members read as member" on public.project_members;
+drop policy if exists "project members read" on public.project_members;
 create policy "project members read"
   on public.project_members for select
   to authenticated
@@ -192,6 +195,7 @@ create policy "project members update own"
 -- States belong to a project, so project membership is the test, not workspace
 -- membership as the placeholder in 0003 assumed.
 drop policy if exists "states read as member" on public.states;
+drop policy if exists "states read" on public.states;
 create policy "states read"
   on public.states for select
   to authenticated
@@ -205,6 +209,7 @@ create policy "states write as project member"
   with check (public.is_project_member(project_id));
 
 drop policy if exists "labels read as member" on public.labels;
+drop policy if exists "labels read" on public.labels;
 create policy "labels read"
   on public.labels for select
   to authenticated

@@ -16,8 +16,9 @@ and not connected to anything. It was used once to generate the schema.
 | 5 — Retire Django              | ⏸️ **on hold — nothing is being deleted** | audit done, see below                                       |
 | 6 — New product surface        | ❌ not started                            | marketing site only                                         |
 
-**11 migrations; 20 Supabase services; 97 of 340 web service methods (29%) have
-a Supabase path.**
+**14 migrations (8 applied to production); 20 Supabase services; 97 of 340 web
+service methods (29%) have a Supabase path. Neither Edge Function in
+`supabase/functions` is deployed.**
 
 That 29% is the number to watch. The phases above track _features_, and the
 primary path of each is migrated — but a great deal of secondary surface still
@@ -25,11 +26,20 @@ calls Django. The inventory is at the bottom under "What still calls Django".
 
 ### Two things gate everything else
 
-1. **None of the SQL in `0009`–`0011` has ever run.** It was written from the
-   Django models by reading, so column names, constraint predicates and
-   `on conflict` targets are inference, not fact. Verifying it against the live
-   database with a real signed-in token is the highest-value work available, and
-   nothing further should be built on top of it until that happens.
+1. **`0009`–`0014` have never run against the live database — confirmed.**
+   Probed on 2026-08-15 with a real signed-in token: `workspace_analytics`,
+   `workspace_work_item_stats`, `cycle_progress`, `module_progress`,
+   `project_work_item_counts`, `project_role`, `create_intake_work_item`,
+   `update_intake_status`, `create_estimate` and `create_workspace_invitations`
+   all return `404 PGRST202`, `user_ai_keys` does not exist, and creating a work
+   item writes no `issue_activities` row. The live project is at `0008`.
+
+   The SQL itself is no longer unverified: all fourteen migrations now apply,
+   in order, to the schema Django generates (checked in a
+   `supabase/postgres:15.8.1.060` container), and `0009`–`0014` are re-runnable.
+   `0010` needed one fix to get there. Deployment steps are in
+   `docs/deploying-the-backend.md`; nothing has been applied to production.
+
 2. **Transactional email does not exist.** It blocks workspace invitations,
    which makes every collaborative feature single-player.
 
@@ -169,7 +179,9 @@ reasons, and both have to clear before deletion is safe:
    breaks them.
 
 - [x] Confirm what still depends on Django — done, inventory below
-- [ ] Verify `0009`–`0011` against the live database _(gate for everything else)_
+- [x] Verify `0009`–`0014` apply cleanly — done against a reproduced schema
+- [ ] Apply `0009`–`0014` to production and deploy the two Edge Functions —
+      `docs/deploying-the-backend.md` _(gate for everything else)_
 - [ ] Migrate the remaining 243 methods, or consciously drop the features
 - [ ] Delete `apps/api`, its Docker services and compose entries —
       `docker-compose-local.yml` and `docker-compose-test.yml` still build it
@@ -370,7 +382,13 @@ cover the primary path of each feature; this covers everything.
 ## How to read this
 
 A method with no Supabase path calls a Django endpoint that is not deployed. The
-SPA rewrite returns `index.html` with a 200 for those, which the Phase 1 guard
-now rejects — so they surface as errors rather than silently poisoning a store.
+SPA rewrite returns `index.html` with a 200 for those, which the guard now
+rejects — so they surface as errors rather than silently poisoning a store.
 Loud failure is the current behaviour and it is the correct one; it is not the
 same as the feature working.
+
+That guard lived only in `packages/services/src/api.service.ts`. The web app has
+its own `APIService` (`apps/web/core/services/api.service.ts`) which all 46 of
+its service classes extend, and it had no guard at all — so HTML did reach the
+stores, and `profile.state_distribution` on a string is what put the error page
+on the profile and analytics routes. Both classes now carry the check.
