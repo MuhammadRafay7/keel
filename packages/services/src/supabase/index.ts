@@ -22,3 +22,4 @@ export * from "./attachment.service";
 export * from "./activity.service";
 export * from "./intake.service";
 export * from "./estimate.service";
+export * from "./analytics.service";

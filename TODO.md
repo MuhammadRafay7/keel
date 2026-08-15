@@ -91,9 +91,13 @@ key, which bypasses the RLS being tested.
       `remove_project_member`, both admin-gated)
 - [x] Cycle and module progress — `cycle_progress` / `module_progress`, counted
       by state group in one call per project
-- [ ] **Analytics dashboard** — `project_work_item_counts` exists in `0009` but
-      nothing calls it. `getAdvanceAnalytics` returns hardcoded zeros and the
-      other two methods in that service still call dead Django endpoints.
+- [x] Analytics dashboard — `0011` adds `workspace_analytics` (the card row, one
+      call for both tabs) and `workspace_work_item_stats` (the per-project
+      table). Both run as the caller, so RLS scopes the counts.
+- [ ] Analytics **charts** — not migrated. They cross every x-axis property with
+      every y-axis metric, which is an aggregation layer rather than one more
+      count. `getAdvanceAnalyticsCharts` throws a clear error on the Supabase
+      path rather than returning an empty series that would look like real data.
 - [ ] **Workspace invitations** — rows, tokens, accept and decline all work, but
       nothing is sent. Until transactional email exists (see Blocking) the
       inviter has to pass the link on by hand, so this is not shippable.
