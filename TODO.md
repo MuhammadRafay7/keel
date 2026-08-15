@@ -4,14 +4,34 @@ Tracks the move from the original Django backend to Supabase (Postgres + Auth +
 RLS + Storage), hosted on Vercel. Django is reference-only: it is not deployed
 and not connected to anything. It was used once to generate the schema.
 
-**Status: Phases 0–3 done, Phase 2 bar the analytics dashboard. Phase 4 done as
-single-writer pages, not real-time. Phases 5 and 6 not started. 10 migrations;
-19 Supabase services.**
+## Status at a glance
 
-**None of the SQL in `0009`/`0010` has been run against the live database.** It
-was written from the Django models by reading, so column names, constraint
-predicates and `on conflict` targets are inference, not fact. Verifying it is the
-highest-value work available.
+| Phase                          | State                                     | Note                                                        |
+| ------------------------------ | ----------------------------------------- | ----------------------------------------------------------- |
+| 0 — Rebrand and infrastructure | ✅ done                                   |                                                             |
+| 1 — Authentication             | ✅ done                                   |                                                             |
+| 2 — Core data                  | 🔶 nearly                                 | analytics **charts** and invitation delivery open           |
+| 3 — File storage               | 🔶 mostly                                 | 3 items open (sweep schedule, editor paste, orphan objects) |
+| 4 — Collaborative editing      | 🔶 done as single-writer                  | no real-time co-editing; concurrent editors overwrite       |
+| 5 — Retire Django              | ⏸️ **on hold — nothing is being deleted** | audit done, see below                                       |
+| 6 — New product surface        | ❌ not started                            | marketing site only                                         |
+
+**11 migrations; 20 Supabase services; 97 of 340 web service methods (29%) have
+a Supabase path.**
+
+That 29% is the number to watch. The phases above track _features_, and the
+primary path of each is migrated — but a great deal of secondary surface still
+calls Django. The inventory is at the bottom under "What still calls Django".
+
+### Two things gate everything else
+
+1. **None of the SQL in `0009`–`0011` has ever run.** It was written from the
+   Django models by reading, so column names, constraint predicates and
+   `on conflict` targets are inference, not fact. Verifying it against the live
+   database with a real signed-in token is the highest-value work available, and
+   nothing further should be built on top of it until that happens.
+2. **Transactional email does not exist.** It blocks workspace invitations,
+   which makes every collaborative feature single-player.
 
 ---
 
@@ -102,7 +122,7 @@ key, which bypasses the RLS being tested.
       nothing is sent. Until transactional email exists (see Blocking) the
       inviter has to pass the link on by hand, so this is not shippable.
 
-## Phase 3 — File storage ✅
+## Phase 3 — File storage 🔶
 
 - [x] `0008` — three buckets with policies that read the owning id out of the
       object path, so files and rows share one definition of access
@@ -135,11 +155,22 @@ Real-time was not attempted, so `apps/live` is bypassed rather than replaced.
       it is not yet surfaced to the user.
 - [ ] `apps/live` still exists and still builds; it is simply unused on this path
 
-## Phase 5 — Retire Django ❌
+## Phase 5 — Retire Django ⏸️ on hold
 
-Not started. `apps/api` still holds 707 files (651 Python).
+**Decision: nothing is being deleted for now.** That is the right order. Two
+reasons, and both have to clear before deletion is safe:
 
-- [ ] Confirm nothing imports from `apps/api`
+1. `apps/api` is the only record of the schema, and `0009`–`0011` were written
+   by reading those models. Until that SQL has actually run, `apps/api` is what
+   you check against when something turns out to be wrong. Deleting it first
+   removes exactly the reference the unverified work depends on.
+2. The app still needs the axios layer. 243 of 340 service methods route to
+   Django, covering features that work today. Removing `API_BASE_URL` now
+   breaks them.
+
+- [x] Confirm what still depends on Django — done, inventory below
+- [ ] Verify `0009`–`0011` against the live database _(gate for everything else)_
+- [ ] Migrate the remaining 243 methods, or consciously drop the features
 - [ ] Delete `apps/api`, its Docker services and compose entries —
       `docker-compose-local.yml` and `docker-compose-test.yml` still build it
 - [ ] Remove `API_BASE_URL` (90 references), the axios base class (46 subclasses)
@@ -285,3 +316,61 @@ Things not requested that the product cannot ship without.
 - [ ] Billing and subscriptions
 - [ ] Plan limits and enforcement
 - [ ] Terms and privacy policy that reflect what is actually collected
+
+---
+
+# What still calls Django
+
+Generated by counting `if (isSupabaseConfigured)` guards against method counts in
+`apps/web/core/services`. **97 of 340 methods (29%) have a Supabase path.**
+
+This is the real remaining scope of the migration. The phase checklists above
+cover the primary path of each feature; this covers everything.
+
+## Fully migrated (6 services)
+
+`estimate` · `inbox/inbox-issue` · `issue/issue_activity` ·
+`issue/issue_attachment` · `issue/issue_comment` · `project/project-member`
+
+## Partially migrated (14 services, 153 methods still on Django)
+
+| Service                          | Migrated | Still Django                                                                                        |
+| -------------------------------- | -------- | --------------------------------------------------------------------------------------------------- |
+| `issue/issue.service`            | 4/33     | list/sync variants, cycle & module assignment, relations, sub-items, links, bulk ops, subscriptions |
+| `user.service`                   | 1/26     | profile, onboarding, email settings, password, activity, join/leave                                 |
+| `workspace.service`              | 21/42    | workspace views, links, search, recents, widgets, sidebar prefs                                     |
+| `file.service`                   | 3/16     | deletes, restores, bulk upload status, unsplash, duplicate                                          |
+| `module.service`                 | 5/17     | workspace modules, issue assignment, links, favourites                                              |
+| `page/project-page.service`      | 6/18     | access, favourites, archive/restore, lock, duplicate, move                                          |
+| `cycle.service`                  | 5/15     | active-cycle analytics, cycle issues, transfer, favourites                                          |
+| `project/project.service`        | 7/17     | user properties, github sync, favourites, search                                                    |
+| `project/project-state.service`  | 1/9      | everything but the list                                                                             |
+| `favorite/favorite.service`      | 1/5      |                                                                                                     |
+| `workspace-notification.service` | 4/8      |                                                                                                     |
+| `view.service`                   | 5/8      |                                                                                                     |
+| `issue/issue_label.service`      | 4/5      |                                                                                                     |
+| `analytics.service`              | 3/4      | charts only                                                                                         |
+
+## Not migrated at all (26 services, 90 methods)
+
+**Probably needed:** `issue/issue_reaction` · `issue/issue_relation` ·
+`issue_filter` · `issue/issue_archive` · `cycle_archive` · `module_archive` ·
+`project/project-archive` · `page/project-page-version` ·
+`issue/work_item_version` · `inbox/intake-work_item_version` · `sticky` ·
+`dashboard` · `issue/workspace_draft` · `project/project-export`
+
+**Needs a product decision first:** `ai` (Phase 6 proxy) · `webhook` ·
+`integrations/integration` · `integrations/github` · `integrations/jira` ·
+`app_installation` · `project/project-publish`
+
+**Instance/self-hosting, likely obsolete under Vercel + Supabase:**
+`instance` · `app_config` · `auth` (superseded by `SupabaseAuthService`) ·
+`timezone` · `file-upload` (superseded by direct-to-storage upload)
+
+## How to read this
+
+A method with no Supabase path calls a Django endpoint that is not deployed. The
+SPA rewrite returns `index.html` with a 200 for those, which the Phase 1 guard
+now rejects — so they surface as errors rather than silently poisoning a store.
+Loud failure is the current behaviour and it is the correct one; it is not the
+same as the feature working.
