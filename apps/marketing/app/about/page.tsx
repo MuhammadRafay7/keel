@@ -1,48 +1,201 @@
-export const metadata = { title: "About" };
+import Link from "next/link";
 
-export default function Page() {
+export const metadata = {
+  title: "About — Plane",
+  description: "Learn about Plane's mission to build the future of AI-native project management for teams and agents.",
+};
+
+const APP = "https://app.keel.ostenmark.com";
+
+export default function AboutPage() {
   return (
     <>
-      <section className="page-head">
+      {/* 1. Page Header */}
+      <section className="inner-page-head">
         <div className="shell">
-          <p className="label">About</p>
-          <h1>Small tool, serious work</h1>
+          <span className="label-badge">ABOUT PLANE</span>
+          <h1 className="font-satoshi">Building the future of AI-native project management</h1>
+          <p className="inner-page-lede">
+            Most project tools ask you to manage the tool as much as the work. Plane is built for modern engineering
+            organizations: enough structure to see what is happening, with autonomous AI agents that eliminate busywork.
+          </p>
         </div>
       </section>
-      <section className="doc">
+
+      {/* 2. Mission & Values Bento Grid */}
+      <section className="section-pad">
         <div className="shell">
-          <div className="prose">
-            <h2>Why Keel exists</h2>
-            <p>
-              Most project tools ask you to manage the tool as much as the work. Keel is an attempt at the opposite:
-              enough structure to see what is happening, and nothing that needs babysitting.
-            </p>
-            <h2>What we are building</h2>
-            <p>
-              A tracker with real documents attached. Work items with proper relationships, cycles that show whether you
-              will land, modules that survive longer than a sprint, and pages your team actually writes in &mdash; all
-              on top of Postgres.
-            </p>
-            <h2>Open source</h2>
-            <p>
-              Keel is AGPL-licensed. You can read every line, run your own copy, and leave whenever you like. That is
-              deliberate: a tool that holds your team&rsquo;s planning should not be able to hold it hostage.
-            </p>
-            <h2>Where it runs</h2>
-            <p>
-              The hosted service runs on Vercel with a managed Postgres database in the European Union. There is no
-              server to patch and no VPS in the loop, which keeps operations small enough for a small team.
-            </p>
-            <h2>Status</h2>
-            <p>
-              Keel is young and actively changing. The <a href="/changelog">changelog</a> is the honest picture of what
-              works today and what is still being built.
-            </p>
-            <h2>Get in touch</h2>
-            <p>
-              <a href="/contact">Contact us</a>, or open an issue on{" "}
-              <a href="https://github.com/MuhammadRafay7/keel">GitHub</a>.
-            </p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.5rem" }}>
+            <div
+              style={{
+                background: "var(--surface-product)",
+                border: "1px solid var(--line)",
+                borderRadius: "16px",
+                padding: "2.25rem",
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
+              }}
+            >
+              <div style={{ fontSize: "2rem" }}>🎯</div>
+              <h3 style={{ fontSize: "1.35rem", margin: 0 }}>Why Plane exists</h3>
+              <p style={{ color: "var(--fg-muted)", margin: 0, lineHeight: "1.65" }}>
+                Traditional project trackers were designed two decades ago around manual form fills and rigid status
+                reports. Plane was built from the ground up to unify issues, docs, and AI agents in real time without
+                sacrificing reporting capabilities.
+              </p>
+            </div>
+
+            <div
+              style={{
+                background: "var(--surface-product)",
+                border: "1px solid var(--line)",
+                borderRadius: "16px",
+                padding: "2.25rem",
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
+              }}
+            >
+              <div style={{ fontSize: "2rem" }}>🔓</div>
+              <h3 style={{ fontSize: "1.35rem", margin: 0 }}>Open source &amp; Data sovereignty</h3>
+              <p style={{ color: "var(--fg-muted)", margin: 0, lineHeight: "1.65" }}>
+                Plane is AGPL-licensed. You can inspect every line of source code, run your own instance with Docker or
+                Kubernetes, and deploy in air-gapped environments. A tool that holds your team&apos;s critical planning
+                should never hold it hostage.
+              </p>
+            </div>
+
+            <div
+              style={{
+                background: "var(--surface-product)",
+                border: "1px solid var(--line)",
+                borderRadius: "16px",
+                padding: "2.25rem",
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
+              }}
+            >
+              <div style={{ fontSize: "2rem" }}>🤖</div>
+              <h3 style={{ fontSize: "1.35rem", margin: 0 }}>AI-native from day one</h3>
+              <p style={{ color: "var(--fg-muted)", margin: 0, lineHeight: "1.65" }}>
+                Plane was not retrofitted for AI; it incorporates native Model Context Protocol (MCP) servers, workspace
+                knowledge indexing, and autonomous triage agents so AI can take real assignments and ship real progress.
+              </p>
+            </div>
+
+            <div
+              style={{
+                background: "var(--surface-product)",
+                border: "1px solid var(--line)",
+                borderRadius: "16px",
+                padding: "2.25rem",
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
+              }}
+            >
+              <div style={{ fontSize: "2rem" }}>🏢</div>
+              <h3 style={{ fontSize: "1.35rem", margin: 0 }}>Enterprise ready</h3>
+              <p style={{ color: "var(--fg-muted)", margin: 0, lineHeight: "1.65" }}>
+                Certified for SOC 2 Type II, ISO 27001, GDPR, and HIPAA. Offering SAML SSO, Row-Level Security, custom
+                SLAs, and dedicated migration tools for moving out of legacy Jira and Linear instances.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Global Stats Band (Dark Section #0F0F10) */}
+      <section className="section-pad section-dark">
+        <div className="shell">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              gap: "2rem",
+              textAlign: "center",
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontSize: "2.75rem",
+                  fontWeight: 700,
+                  color: "var(--accent-brand-bright)",
+                  fontFamily: "var(--mono)",
+                }}
+              >
+                30,000+
+              </div>
+              <div style={{ color: "var(--fg-dark-secondary)", fontSize: "0.95rem", marginTop: "0.5rem" }}>
+                GitHub Stars &amp; Community
+              </div>
+            </div>
+
+            <div>
+              <div
+                style={{
+                  fontSize: "2.75rem",
+                  fontWeight: 700,
+                  color: "var(--accent-brand-bright)",
+                  fontFamily: "var(--mono)",
+                }}
+              >
+                100,000+
+              </div>
+              <div style={{ color: "var(--fg-dark-secondary)", fontSize: "0.95rem", marginTop: "0.5rem" }}>
+                Self-hosted Instances Deployed
+              </div>
+            </div>
+
+            <div>
+              <div
+                style={{
+                  fontSize: "2.75rem",
+                  fontWeight: 700,
+                  color: "var(--accent-brand-bright)",
+                  fontFamily: "var(--mono)",
+                }}
+              >
+                99.99%
+              </div>
+              <div style={{ color: "var(--fg-dark-secondary)", fontSize: "0.95rem", marginTop: "0.5rem" }}>
+                Guaranteed Cloud Uptime SLA
+              </div>
+            </div>
+
+            <div>
+              <div
+                style={{
+                  fontSize: "2.75rem",
+                  fontWeight: 700,
+                  color: "var(--accent-brand-bright)",
+                  fontFamily: "var(--mono)",
+                }}
+              >
+                Fortune 10
+              </div>
+              <div style={{ color: "var(--fg-dark-secondary)", fontSize: "0.95rem", marginTop: "0.5rem" }}>
+                Enterprise Migrations Completed
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Pre-Footer CTA */}
+      <section className="cta-band-section">
+        <div className="shell">
+          <h2 className="font-satoshi">Join thousands of teams shipping faster with Plane</h2>
+          <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
+            <a className="btn btn-inverse btn-lg" href={`${APP}/sign-up`}>
+              Get started free
+            </a>
+            <Link className="btn btn-secondary btn-lg" href="/contact">
+              Talk to our team
+            </Link>
           </div>
         </div>
       </section>

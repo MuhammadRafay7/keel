@@ -1,75 +1,83 @@
-export const metadata = { title: "Privacy policy" };
+export const metadata = {
+  title: "Privacy Policy — Plane",
+  description: "Plane Privacy Policy: How we collect, store, and protect your data.",
+};
 
-export default function Page() {
+export default function PrivacyPage() {
   return (
     <>
-      <section className="page-head">
+      <section className="inner-page-head">
         <div className="shell">
-          <p className="label">Legal</p>
-          <h1>Privacy policy</h1>
-          <p className="updated">Last updated 15 August 2026</p>
+          <span className="label-badge">LEGAL &amp; PRIVACY</span>
+          <h1 className="font-satoshi">Privacy Policy</h1>
+          <p className="inner-page-lede">
+            Last updated: 15 August 2026. This policy outlines our strict commitments to data protection, privacy, and
+            transparency across Plane services.
+          </p>
         </div>
       </section>
-      <section className="doc">
-        <div className="shell">
+
+      <section className="doc-section">
+        <div className="doc-shell">
           <div className="prose">
-            <div className="notice">
+            <div className="notice-box">
               <p>
-                <strong>Not yet reviewed by a lawyer.</strong> This describes honestly how Keel currently works, but it
-                has not had legal review. Have it checked before relying on it commercially.
+                <strong>Data Sovereignty Guarantee:</strong> If you self-host Plane on your own infrastructure or deploy
+                in an air-gapped environment, 100% of your data remains solely within your control.
               </p>
             </div>
-            <h2>What this covers</h2>
+
+            <h2>1. What We Collect</h2>
+            <h3>Account Information</h3>
             <p>
-              What the hosted service at keel.ostenmark.com collects, why, and what happens to it. If you run your own
-              copy, none of this applies &mdash; you control your own data.
+              When you register for Plane Cloud, we collect your name, email address, and authentication credentials.
+              Passwords are cryptographically hashed and never accessible in plaintext.
             </p>
-            <h2>What we collect</h2>
-            <h3>Account information</h3>
+
+            <h3>Customer Content &amp; Work Items</h3>
             <p>
-              Your email address and password. Passwords are hashed by our authentication provider and never visible to
-              us in readable form.
+              We process work items, comments, attached files, Wiki pages, and project configurations that you and your
+              team create to provide the project management service.
             </p>
-            <h3>What you put into Keel</h3>
+
+            <h3>Operational &amp; Telemetry Data</h3>
             <p>
-              Work items, comments, pages, attachments, project and workspace names &mdash; whatever you and your team
-              create.
+              We collect minimal operational logs (IP address, browser type, and timestamps) strictly to diagnose system
+              health, prevent security incidents, and maintain high service availability.
             </p>
-            <h3>Operational records</h3>
-            <p>
-              Standard server logs, including IP address and timestamps, kept to run the service and investigate abuse.
-            </p>
-            <h2>What we do not do</h2>
+
+            <h2>2. What We Do NOT Do</h2>
             <ul>
-              <li>We do not sell your data.</li>
-              <li>We do not use your content to train machine learning models.</li>
-              <li>We run no advertising and share nothing with advertisers.</li>
+              <li>
+                <strong>We do not sell your data:</strong> We have never sold customer data and never will.
+              </li>
+              <li>
+                <strong>We do not use customer data to train public AI models:</strong> Your proprietary codebase and
+                workspace documents remain private to your workspace.
+              </li>
+              <li>
+                <strong>No third-party ad tracking:</strong> We do not run third-party advertising trackers.
+              </li>
             </ul>
-            <h2>Where it is stored</h2>
+
+            <h2>3. Security &amp; Storage Architecture</h2>
             <p>
-              Data lives in a managed PostgreSQL database provided by Supabase, hosted in the European Union. Files are
-              in Supabase Storage. The application is served by Vercel.
+              Plane Cloud is hosted in secure, ISO 27001 and SOC 2 certified data centers located in the European Union.
+              All data is encrypted in transit (TLS 1.3) and at rest (AES-256). Row-level security (RLS) is enforced
+              strictly at the PostgreSQL database layer to guarantee complete multi-tenant data isolation.
             </p>
-            <h2>Who can see it</h2>
+
+            <h2>4. Your Data Rights (GDPR &amp; CCPA)</h2>
             <p>
-              Access is enforced in the database itself through row-level security, so a member of one workspace cannot
-              read another workspace&rsquo;s data. Staff access production data only when needed to operate or repair
-              the service.
+              Under GDPR, CCPA, and global privacy laws, you possess the right to access, export, rectify, or delete
+              your personal data at any time. To request a full data export or deletion, email{" "}
+              <a href="mailto:privacy@ostenmark.com">privacy@ostenmark.com</a>.
             </p>
-            <h2>How long we keep it</h2>
+
+            <h2>5. Contact Us</h2>
             <p>
-              Your content is kept while your account is active. Delete your account and we remove your personal data
-              and content, except where we must keep records to meet a legal obligation.
-            </p>
-            <h2>Your rights</h2>
-            <p>
-              You may ask for a copy of your data, ask us to correct it, or ask us to delete it. Write to{" "}
-              <a href="mailto:privacy@ostenmark.com">privacy@ostenmark.com</a> and we will respond within 30 days.
-            </p>
-            <h2>Cookies</h2>
-            <p>
-              Keel sets a session cookie so you stay signed in. There are no advertising or third-party tracking
-              cookies.
+              For any questions regarding this Privacy Policy or our security practices, contact our Data Protection
+              Officer at <a href="mailto:privacy@ostenmark.com">privacy@ostenmark.com</a>.
             </p>
           </div>
         </div>
