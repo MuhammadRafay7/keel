@@ -1,75 +1,35 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;430;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
 
-:root,
-.dark {
-  --ground: #0b1015;
-  --ground-elevated: #0f1720;
-  --surface: #131b24;
-  --surface-hover: #192430;
-  --surface-product: #17212b;
-  --surface-dark-section: #0f0f10;
-  --surface-dark-card: #181a1b;
-  --line: #1e293b;
-  --line-strong: #334155;
-  --line-dark: #2c2e30;
-
-  --fg: #f8fafc;
-  --fg-muted: #94a3b8;
-  --fg-subtle: #64748b;
-  --fg-dark-primary: #e4e6e7;
-  --fg-dark-secondary: #cacdce;
-  --fg-dark-tertiary: #959a9d;
-
-  --accent: #38bdf8;
-  --accent-hover: #7dd3fc;
-  --accent-brand: #006399;
-  --accent-brand-bright: #2893cc;
-  --accent-muted: rgba(56, 189, 248, 0.12);
-  --accent-fg: #030712;
-
-  --badge-bg: rgba(56, 189, 248, 0.08);
-  --badge-border: rgba(56, 189, 248, 0.25);
-
-  --card-bg: #131b24;
-  --card-border: #1e293b;
-  --card-hover-border: #38bdf8;
-
-  --canvas-opacity: 0.85;
-
-  --btn-inverse-bg: #ffffff;
-  --btn-inverse-fg: #0b1015;
-}
-
-.light {
+:root {
   --ground: #ffffff;
   --ground-elevated: #fafafa;
   --surface: #ffffff;
   --surface-hover: #f1f5f9;
-  --surface-product: #f7f7f8;
-  --surface-dark-section: #0f0f10;
-  --surface-dark-card: #181a1b;
+  --surface-product: #f8fafc;
+  --surface-dark-section: #f1f5f9;
+  --surface-dark-card: #ffffff;
   --line: #eaebeb;
   --line-strong: #cbd5e1;
-  --line-dark: #2c2e30;
+  --line-dark: #e2e8f0;
 
   --fg: #1d1f20;
   --fg-muted: #64748b;
   --fg-subtle: #8a9094;
-  --fg-dark-primary: #e4e6e7;
-  --fg-dark-secondary: #cacdce;
-  --fg-dark-tertiary: #959a9d;
+  --fg-dark-primary: #1d1f20;
+  --fg-dark-secondary: #475569;
+  --fg-dark-tertiary: #64748b;
 
   --accent: #006399;
   --accent-hover: #004d77;
   --accent-brand: #006399;
-  --accent-brand-bright: #2893cc;
+  --accent-brand-bright: #0284c7;
   --accent-muted: rgba(0, 99, 153, 0.08);
   --accent-fg: #ffffff;
 
   --badge-bg: rgba(0, 99, 153, 0.06);
   --badge-border: rgba(0, 99, 153, 0.2);
 
-  --card-bg: #f7f7f8;
+  --card-bg: #f8fafc;
   --card-border: #eaebeb;
   --card-hover-border: #006399;
 
@@ -914,7 +874,7 @@ h4,
   border-color: #1e293b;
 }
 
-/* Plane AI Interactive Showcase */
+/* Keel AI Interactive Showcase */
 .ai-tabs-container {
   display: flex;
   flex-direction: column;

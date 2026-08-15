@@ -17,7 +17,7 @@ export function HullScene() {
     const mount = mountRef.current;
     if (!mount) return;
 
-    const isLight = resolvedTheme === "light";
+    const isLight = true;
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     // Scene & Camera setup

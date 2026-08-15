@@ -1,6 +1,6 @@
 export const metadata = {
-  title: "Privacy Policy — Plane",
-  description: "Plane Privacy Policy: How we collect, store, and protect your data.",
+  title: "Privacy Policy — Keel",
+  description: "Keel Privacy Policy: How we collect, store, and protect your data.",
 };
 
 export default function PrivacyPage() {
@@ -12,7 +12,7 @@ export default function PrivacyPage() {
           <h1 className="font-satoshi">Privacy Policy</h1>
           <p className="inner-page-lede">
             Last updated: 15 August 2026. This policy outlines our strict commitments to data protection, privacy, and
-            transparency across Plane services.
+            transparency across Keel services.
           </p>
         </div>
       </section>
@@ -22,7 +22,7 @@ export default function PrivacyPage() {
           <div className="prose">
             <div className="notice-box">
               <p>
-                <strong>Data Sovereignty Guarantee:</strong> If you self-host Plane on your own infrastructure or deploy
+                <strong>Data Sovereignty Guarantee:</strong> If you self-host Keel on your own infrastructure or deploy
                 in an air-gapped environment, 100% of your data remains solely within your control.
               </p>
             </div>
@@ -30,7 +30,7 @@ export default function PrivacyPage() {
             <h2>1. What We Collect</h2>
             <h3>Account Information</h3>
             <p>
-              When you register for Plane Cloud, we collect your name, email address, and authentication credentials.
+              When you register for Keel Cloud, we collect your name, email address, and authentication credentials.
               Passwords are cryptographically hashed and never accessible in plaintext.
             </p>
 
@@ -62,7 +62,7 @@ export default function PrivacyPage() {
 
             <h2>3. Security &amp; Storage Architecture</h2>
             <p>
-              Plane Cloud is hosted in secure, ISO 27001 and SOC 2 certified data centers located in the European Union.
+              Keel Cloud is hosted in secure, ISO 27001 and SOC 2 certified data centers located in the European Union.
               All data is encrypted in transit (TLS 1.3) and at rest (AES-256). Row-level security (RLS) is enforced
               strictly at the PostgreSQL database layer to guarantee complete multi-tenant data isolation.
             </p>

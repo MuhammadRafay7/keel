@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Contact — Plane",
+  title: "Contact — Keel",
   description:
-    "Get in touch with the Plane team for enterprise sales, migration assistance, technical support, or inquiries.",
+    "Get in touch with the Keel team for enterprise sales, migration assistance, technical support, or inquiries.",
 };
 
 const APP = "https://app.keel.ostenmark.com";

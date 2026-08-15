@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Documentation — Plane",
-  description: "Comprehensive documentation, API references, and self-hosting deployment guides for Plane.",
+  title: "Documentation — Keel",
+  description: "Comprehensive documentation, architecture specs, and deployment guides for Keel.",
 };
 
 const APP = "https://app.keel.ostenmark.com";
@@ -54,7 +54,7 @@ export default function DocsPage() {
               <div style={{ fontSize: "1.75rem" }}>🚀</div>
               <h3 style={{ fontSize: "1.25rem", margin: 0 }}>Getting Started</h3>
               <p style={{ color: "var(--fg-muted)", fontSize: "0.9rem", margin: 0 }}>
-                Learn the core mental models of Plane: Workspaces, Projects, Work Items, and Members.
+                Learn the core mental models of Keel: Workspaces, Projects, Work Items, Cycles, Modules, and Members.
               </p>
               <ul
                 style={{
@@ -100,7 +100,7 @@ export default function DocsPage() {
               <div style={{ fontSize: "1.75rem" }}>🐳</div>
               <h3 style={{ fontSize: "1.25rem", margin: 0 }}>Self-Hosting &amp; Deployment</h3>
               <p style={{ color: "var(--fg-muted)", fontSize: "0.9rem", margin: 0 }}>
-                Run Plane on your own infrastructure with Docker Compose or Kubernetes Helm charts.
+                Run Keel on your own infrastructure with Docker Compose or Kubernetes Helm charts.
               </p>
               <ul
                 style={{
@@ -171,7 +171,7 @@ export default function DocsPage() {
                 </li>
                 <li>
                   <a href={`${REPO}/blob/main/docs/architecture.md`} style={{ color: "var(--accent-brand-bright)" }}>
-                    • Plane Compose YAML Specification &rarr;
+                    • Keel Architecture Specification &rarr;
                   </a>
                 </li>
               </ul>
@@ -229,7 +229,7 @@ export default function DocsPage() {
       {/* 3. Pre-Footer CTA */}
       <section className="cta-band-section">
         <div className="shell">
-          <h2 className="font-satoshi">Start building with Plane today</h2>
+          <h2 className="font-satoshi">Start building with Keel today</h2>
           <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
             <a className="btn btn-inverse btn-lg" href={`${APP}/sign-up`}>
               Create free account

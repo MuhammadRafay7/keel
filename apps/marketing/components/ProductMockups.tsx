@@ -28,7 +28,7 @@ export function HeroDashboardMockup() {
             <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#10b981" }} />
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontWeight: 600, color: "#e4e6e7" }}>
-            <span>⚡️ Plane Core / Platform Engineering</span>
+            <span>⚡️ Keel Core / Platform Engineering</span>
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
@@ -472,7 +472,7 @@ export function AiBentoVisual() {
           marginBottom: "0.75rem",
         }}
       >
-        <span style={{ fontWeight: 600, color: "#a855f7" }}>Plane Agent Task Run</span>
+        <span style={{ fontWeight: 600, color: "#a855f7" }}>Keel Agent Task Run</span>
         <span style={{ color: "#10b981", fontFamily: "var(--mono)" }}>● Active</span>
       </div>
       <div

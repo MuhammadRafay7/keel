@@ -1,8 +1,9 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "About — Plane",
-  description: "Learn about Plane's mission to build the future of AI-native project management for teams and agents.",
+  title: "About — Keel",
+  description:
+    "Learn about Keel's mission to keep project management on course with Vercel, Supabase, and AI workflows.",
 };
 
 const APP = "https://app.keel.ostenmark.com";
@@ -13,10 +14,10 @@ export default function AboutPage() {
       {/* 1. Page Header */}
       <section className="inner-page-head">
         <div className="shell">
-          <span className="label-badge">ABOUT PLANE</span>
-          <h1 className="font-satoshi">Building the future of AI-native project management</h1>
+          <span className="label-badge">ABOUT KEEL</span>
+          <h1 className="font-satoshi">Project management that keeps its course</h1>
           <p className="inner-page-lede">
-            Most project tools ask you to manage the tool as much as the work. Plane is built for modern engineering
+            Most project tools ask you to manage the tool as much as the work. Keel is built for modern engineering
             organizations: enough structure to see what is happening, with autonomous AI agents that eliminate busywork.
           </p>
         </div>
@@ -38,11 +39,11 @@ export default function AboutPage() {
               }}
             >
               <div style={{ fontSize: "2rem" }}>🎯</div>
-              <h3 style={{ fontSize: "1.35rem", margin: 0 }}>Why Plane exists</h3>
+              <h3 style={{ fontSize: "1.35rem", margin: 0 }}>Why Keel exists</h3>
               <p style={{ color: "var(--fg-muted)", margin: 0, lineHeight: "1.65" }}>
-                Traditional project trackers were designed two decades ago around manual form fills and rigid status
-                reports. Plane was built from the ground up to unify issues, docs, and AI agents in real time without
-                sacrificing reporting capabilities.
+                A keel is the structural backbone running the length of a hull that keeps a ship steady and holds its
+                course. Keel was built from the ground up to unify work items, cycles, modules, docs, and AI agents in
+                real time without sacrificing reporting capabilities.
               </p>
             </div>
 
@@ -60,9 +61,9 @@ export default function AboutPage() {
               <div style={{ fontSize: "2rem" }}>🔓</div>
               <h3 style={{ fontSize: "1.35rem", margin: 0 }}>Open source &amp; Data sovereignty</h3>
               <p style={{ color: "var(--fg-muted)", margin: 0, lineHeight: "1.65" }}>
-                Plane is AGPL-licensed. You can inspect every line of source code, run your own instance with Docker or
-                Kubernetes, and deploy in air-gapped environments. A tool that holds your team&apos;s critical planning
-                should never hold it hostage.
+                Keel is AGPL-3.0 licensed. You can inspect every line of source code, run your own instance with Docker
+                or Kubernetes, and deploy in air-gapped environments. A tool that holds your team&apos;s critical
+                planning should never hold it hostage.
               </p>
             </div>
 
@@ -80,7 +81,7 @@ export default function AboutPage() {
               <div style={{ fontSize: "2rem" }}>🤖</div>
               <h3 style={{ fontSize: "1.35rem", margin: 0 }}>AI-native from day one</h3>
               <p style={{ color: "var(--fg-muted)", margin: 0, lineHeight: "1.65" }}>
-                Plane was not retrofitted for AI; it incorporates native Model Context Protocol (MCP) servers, workspace
+                Keel was not retrofitted for AI; it incorporates native Model Context Protocol (MCP) servers, workspace
                 knowledge indexing, and autonomous triage agents so AI can take real assignments and ship real progress.
               </p>
             </div>
@@ -188,7 +189,7 @@ export default function AboutPage() {
       {/* 4. Pre-Footer CTA */}
       <section className="cta-band-section">
         <div className="shell">
-          <h2 className="font-satoshi">Join thousands of teams shipping faster with Plane</h2>
+          <h2 className="font-satoshi">Join thousands of teams shipping faster with Keel</h2>
           <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
             <a className="btn btn-inverse btn-lg" href={`${APP}/sign-up`}>
               Get started free

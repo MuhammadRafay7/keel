@@ -17,7 +17,7 @@ export function Header() {
         {/* Brand Logo & Wordmark */}
         <Link href="/" className="logo">
           <Mark className="logo-mark" />
-          <b style={{ color: "var(--fg)" }}>Plane</b>
+          <b style={{ color: "var(--fg)" }}>Keel</b>
         </Link>
 
         {/* Desktop Navigation Links with Interactive Dropdowns */}
@@ -44,20 +44,20 @@ export function Header() {
             {activeDropdown === "product" && (
               <div className="nav-dropdown">
                 <Link href="/features" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">Projects</span>
+                  <span className="dropdown-item-title">Projects &amp; Work Items</span>
                   <span className="dropdown-item-desc">Plan, track, and ship with issues, cycles, and modules</span>
                 </Link>
                 <Link href="/docs" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">Wiki &amp; Docs</span>
-                  <span className="dropdown-item-desc">Documentation tied directly to project work</span>
+                  <span className="dropdown-item-title">Pages &amp; Wiki</span>
+                  <span className="dropdown-item-desc">Collaborative rich-text docs tied directly to work</span>
                 </Link>
                 <Link href="/features" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">Plane AI</span>
-                  <span className="dropdown-item-desc">Autonomous agents and workspace knowledge graph</span>
+                  <span className="dropdown-item-title">Keel AI</span>
+                  <span className="dropdown-item-desc">Autonomous agents and workspace context graph</span>
                 </Link>
                 <Link href="/features" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">Desk (Intake)</span>
-                  <span className="dropdown-item-desc">Triage customer requests before touching backlogs</span>
+                  <span className="dropdown-item-title">Intake Triage</span>
+                  <span className="dropdown-item-desc">Triage incoming requests before touching backlogs</span>
                 </Link>
               </div>
             )}
@@ -131,7 +131,7 @@ export function Header() {
                 </Link>
                 <Link href="/about" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
                   <span className="dropdown-item-title">Customer Stories</span>
-                  <span className="dropdown-item-desc">How Sony, FortyAU &amp; teams scale with Plane</span>
+                  <span className="dropdown-item-desc">How engineering teams scale with Keel</span>
                 </Link>
               </div>
             )}
@@ -141,7 +141,7 @@ export function Header() {
             Pricing
           </Link>
           <Link href="/docs" className="nav-link-btn">
-            Self-host Plane
+            Self-host Keel
           </Link>
         </nav>
 

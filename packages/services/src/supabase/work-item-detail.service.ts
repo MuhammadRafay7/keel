@@ -172,6 +172,30 @@ export class SupabaseWorkItemDetailService {
     return created as unknown as TIssueLink;
   }
 
+  async updateIssueLink(
+    workspaceSlug: string,
+    projectId: string,
+    issueId: string,
+    linkId: string,
+    data: Partial<TIssueLink>
+  ): Promise<TIssueLink> {
+    const now = new Date().toISOString();
+
+    const { data: updated, error } = await getSupabase()
+      .from("issue_links")
+      .update({
+        title: data.title,
+        url: data.url,
+        updated_at: now,
+      })
+      .eq("id", linkId)
+      .select("*")
+      .single();
+
+    if (error) throw new Error(`Failed to update that link: ${error.message}`);
+    return updated as unknown as TIssueLink;
+  }
+
   async deleteIssueLink(workspaceSlug: string, projectId: string, issueId: string, linkId: string): Promise<void> {
     const { error } = await getSupabase().from("issue_links").delete().eq("id", linkId);
     if (error) throw new Error(`Failed to remove that link: ${error.message}`);

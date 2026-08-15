@@ -1,6 +1,6 @@
 export const metadata = {
-  title: "Changelog — Plane",
-  description: "Recent product updates, releases, improvements, and fixes in Plane.",
+  title: "Changelog — Keel",
+  description: "Recent product updates, releases, improvements, and fixes in Keel.",
 };
 
 const APP = "https://app.keel.ostenmark.com";
@@ -11,11 +11,11 @@ export default function ChangelogPage() {
       version: "v1.4.1",
       date: "15 Aug 2026",
       status: "shipped",
-      title: "Plane.so UI Layout Redesign & Antigravity 3D Hero",
+      title: "Keel Platform UI & Antigravity 3D Hero",
       items: [
-        "Identical Plane.so landing page layout with 15 platform sections.",
+        "Updated Keel landing page layout with 15 platform sections.",
         "Interactive 3D Antigravity quantum core hero canvas with particle gravity physics.",
-        "Interactive Plane AI feature tabs with auto-synchronized progress timers.",
+        "Interactive Keel AI feature tabs with auto-synchronized progress timers.",
         "Comprehensive Mega Footer with compliance seals and desktop/mobile app download links.",
       ],
     },
@@ -45,9 +45,9 @@ export default function ChangelogPage() {
       version: "v1.3.0",
       date: "15 Jul 2026",
       status: "shipped",
-      title: "Real-Time Collaborative Wiki & Five Layout Views",
+      title: "Real-Time Collaborative Pages & Five Layout Views",
       items: [
-        "Wiki Pages with real-time multi-person editing and work item embeddings.",
+        "Collaborative Pages with real-time multi-person editing and work item embeddings.",
         "Gantt Timeline and Spreadsheet Grid layouts added alongside Board and List.",
         "Custom workflow state automations and stage gates.",
       ],
@@ -62,7 +62,7 @@ export default function ChangelogPage() {
           <span className="label-badge">CHANGELOG</span>
           <h1 className="font-satoshi">What shipped, and what&apos;s coming next</h1>
           <p className="inner-page-lede">
-            A continuous record of releases, new features, performance enhancements, and system upgrades across Plane.
+            A continuous record of releases, new features, performance enhancements, and system upgrades across Keel.
           </p>
         </div>
       </section>
@@ -126,9 +126,9 @@ export default function ChangelogPage() {
           <h2 className="font-satoshi">Never miss a release</h2>
           <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
             <a className="btn btn-inverse btn-lg" href={`${APP}/sign-up`}>
-              Try Plane now
+              Try Keel now
             </a>
-            <a className="btn btn-secondary btn-lg" href="https://github.com/makeplane/plane">
+            <a className="btn btn-secondary btn-lg" href="https://github.com/MuhammadRafay7/keel">
               Star on GitHub
             </a>
           </div>

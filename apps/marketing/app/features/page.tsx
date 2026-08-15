@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Features — Plane",
+  title: "Features — Keel",
   description:
-    "Explore the full suite of Plane features: Work items, Cycles, Modules, Views, Wiki, Intake Triage, and Plane AI.",
+    "Explore the full suite of Keel features: Work items, Cycles, Modules, Views, Pages & Wiki, Intake Triage, and Keel AI.",
 };
 
 const APP = "https://app.keel.ostenmark.com";
@@ -17,7 +17,7 @@ export default function FeaturesPage() {
           <span className="label-badge">FEATURES</span>
           <h1 className="font-satoshi">Every capability your team needs to plan, track, and ship</h1>
           <p className="inner-page-lede">
-            Plane brings projects, docs, and AI-powered workflows into one unified workspace so teams and agents can
+            Keel brings work items, docs, and AI-powered workflows into one unified workspace so teams and agents can
             plan, execute, and stay aligned across every layer of the organization.
           </p>
 
@@ -26,11 +26,11 @@ export default function FeaturesPage() {
               "Work Items",
               "Cycles & Sprints",
               "Modules & Epics",
-              "Views",
-              "Wiki & Docs",
+              "5 Layout Views",
+              "Pages & Wiki",
               "Intake Triage",
               "Analytics",
-              "Plane AI",
+              "Keel AI",
             ].map((item) => (
               <span
                 key={item}

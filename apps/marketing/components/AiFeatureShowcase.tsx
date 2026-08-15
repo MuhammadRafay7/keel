@@ -13,7 +13,7 @@ const FEATURES: AiFeature[] = [
   {
     id: "answers",
     title: "Answers from across your workspace",
-    desc: "Ask Plane AI anything. Status on a cycle, blockers on a project, what changed in a doc last week. It reads across your complete workspace.",
+    desc: "Ask Keel AI anything. Status on a cycle, blockers on a project, what changed in a doc last week. It reads across your complete workspace.",
     badge: "KNOWLEDGE GRAPH & CONTEXT",
   },
   {
@@ -25,7 +25,7 @@ const FEATURES: AiFeature[] = [
   {
     id: "slack",
     title: "Works where your team already talks",
-    desc: "Bring Plane AI into Slack or Teams. Turn conversations into work items, get updates, and keep projects moving without switching tools.",
+    desc: "Bring Keel AI into Slack or Teams. Turn conversations into work items, get updates, and keep projects moving without switching tools.",
     badge: "SLACK & TEAMS INTEGRATION",
   },
 ];
@@ -92,7 +92,7 @@ export function AiFeatureShowcase() {
                   }}
                 />
                 <span style={{ fontFamily: "var(--mono)", fontSize: "0.8125rem", color: "#38bdf8" }}>
-                  Plane AI Context Engine
+                  Keel AI Context Engine
                 </span>
               </div>
               <span
@@ -315,7 +315,7 @@ export function AiFeatureShowcase() {
                   }}
                 />
                 <span style={{ fontFamily: "var(--mono)", fontSize: "0.8125rem", color: "#e879f9" }}>
-                  ChatOps: @Plane in Slack #engineering-general
+                  ChatOps: @Keel in Slack #engineering-general
                 </span>
               </div>
               <span
@@ -361,11 +361,11 @@ export function AiFeatureShowcase() {
                     fontSize: "0.8125rem",
                   }}
                 >
-                  P
+                  K
                 </div>
                 <div>
                   <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                    <span style={{ fontWeight: 600, fontSize: "0.875rem", color: "#e4e6e7" }}>Plane App</span>
+                    <span style={{ fontWeight: 600, fontSize: "0.875rem", color: "#e4e6e7" }}>Keel App</span>
                     <span style={{ fontSize: "0.75rem", color: "#94a3b8" }}>BOT · 10:42 AM</span>
                   </div>
                   <div style={{ fontSize: "0.875rem", color: "#cacdce", marginTop: "0.25rem", lineHeight: "1.5" }}>

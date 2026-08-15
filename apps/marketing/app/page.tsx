@@ -29,13 +29,13 @@ export default function Home() {
           </h1>
 
           <p className="hero-subtitle">
-            Plane brings projects, docs, and AI-powered workflows into one unified workspace so teams and agents can
-            plan, execute, and stay aligned.
+            Keel brings work items, cycles, modules, docs, and AI-powered workflows into one unified workspace so teams
+            and agents can plan, execute, and stay aligned.
           </p>
 
           <div className="hero-cta-group">
             <a className="btn btn-inverse btn-lg" href={`${APP}/sign-up`}>
-              Try Plane Business for 14 days
+              Try Keel Pro for 14 days
             </a>
             <Link className="btn btn-secondary btn-lg" href="/contact">
               Talk to a human &rarr;
@@ -100,11 +100,11 @@ export default function Home() {
               </div>
             </Link>
 
-            {/* 3. Plane AI */}
+            {/* 3. Keel AI */}
             <Link href="/features" className="product-bento-card">
               <div className="product-bento-header">
                 <div className="product-tag">
-                  <span>✨</span> Plane AI
+                  <span>✨</span> Keel AI
                 </div>
                 <h3>AI that knows your work, not just your prompts</h3>
                 <p>
@@ -159,15 +159,15 @@ export default function Home() {
             <Link href="/about" className="testimonial-card-story testimonial-card-featured">
               <div style={{ fontSize: "1.1rem", fontWeight: 700, letterSpacing: "0.08em" }}>40AU</div>
               <div>
-                <h3 style={{ fontSize: "1.25rem", color: "#ffffff", marginBottom: "1rem" }}>
-                  Why FortyAU replaced Monday and Trello with Plane for flexible, self-hosted project delivery
+                <h3 style={{ fontSize: "1.25rem", color: "var(--fg)", marginBottom: "1rem" }}>
+                  Why FortyAU replaced Monday and Trello with Keel for flexible, self-hosted project delivery
                 </h3>
                 <span
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "0.4rem",
-                    color: "#38bdf8",
+                    color: "var(--accent)",
                     fontWeight: 500,
                   }}
                 >
@@ -189,7 +189,7 @@ export default function Home() {
                   <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                 </svg>
                 <p style={{ fontSize: "1.35rem", lineHeight: "1.5", margin: 0, color: "var(--fg)", fontWeight: 430 }}>
-                  &ldquo;The Plane team is creating a product that our business has been needing for years. Modern
+                  &ldquo;The Keel team is creating a product that our business has been needing for years. Modern
                   features, flexible workflows, without sacrificing reporting abilities.&rdquo;
                 </p>
               </div>
@@ -214,7 +214,7 @@ export default function Home() {
               <div style={{ fontWeight: 700, color: "var(--fg)" }}>minimalart</div>
               <div>
                 <h4 style={{ color: "var(--fg)", marginBottom: "0.5rem" }}>
-                  Why MinimalArt replaced ClickUp with Plane for simpler project management
+                  Why MinimalArt replaced ClickUp with Keel for simpler project management
                 </h4>
                 <span style={{ fontSize: "0.875rem", color: "var(--accent-brand)", fontWeight: 500 }}>
                   Read customer story &rarr;
@@ -227,7 +227,7 @@ export default function Home() {
               <div style={{ fontWeight: 700, color: "var(--fg)" }}>VATES</div>
               <div>
                 <h4 style={{ color: "var(--fg)", marginBottom: "0.5rem" }}>
-                  Why VATES replaced a Trello alternative with Plane as they scaled
+                  Why VATES replaced a Trello alternative with Keel as they scaled
                 </h4>
                 <span style={{ fontSize: "0.875rem", color: "var(--accent-brand)", fontWeight: 500 }}>
                   Read customer story &rarr;
@@ -240,7 +240,7 @@ export default function Home() {
               <div style={{ fontWeight: 700, color: "var(--fg)" }}>INITS</div>
               <div>
                 <h4 style={{ color: "var(--fg)", marginBottom: "0.5rem" }}>
-                  How INITS built a real-world innovation lab for students with Plane
+                  How INITS built a real-world innovation lab for students with Keel
                 </h4>
                 <span style={{ fontSize: "0.875rem", color: "var(--accent-brand)", fontWeight: 500 }}>
                   Read customer story &rarr;
@@ -251,16 +251,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. PLANE AI DEEP DIVE (DARK SECTION #0F0F10) */}
+      {/* 5. KEEL AI DEEP DIVE */}
       <section aria-label="Insight" className="section-pad section-dark" id="insight">
         <div className="shell">
           <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
             <div style={{ maxWidth: "48rem" }}>
-              <span className="label-badge">PLANE AI</span>
+              <span className="label-badge">KEEL AI</span>
               <h2 className="font-satoshi">AI that works because it knows your context</h2>
               <p className="section-desc">
-                Plane was not retrofitted for AI, it was built around it. Plane AI reads across every project, cycle,
-                doc, and thread in your workspace. Agents take real assignments and do real work.
+                Keel was not retrofitted for AI, it was built around it. Keel AI reads across every project, cycle, doc,
+                and thread in your workspace. Agents take real assignments and do real work.
               </p>
               <div style={{ display: "flex", gap: "1rem", marginTop: "1.75rem", flexWrap: "wrap" }}>
                 <a className="btn btn-inverse" href={`${APP}/sign-up`}>
@@ -285,7 +285,7 @@ export default function Home() {
             <h2 className="font-satoshi">
               Two Fortune 10 companies
               <br />
-              chose Plane for their Jira migration.
+              chose Keel for their Jira migration.
             </h2>
             <p className="section-desc">
               Get out of Jira, Linear, ClickUp, Asana, or Monday without leaving your data behind. Full migration
@@ -410,7 +410,7 @@ export default function Home() {
                 <h2 className="font-satoshi">Flexible features for every project, and all teams</h2>
               </div>
               <p style={{ maxWidth: "34rem", color: "var(--fg-muted)", fontSize: "1.0625rem", margin: 0 }}>
-                Plane is fast to set up and easy to adapt. Multiple views, time-boxed cycles, built-in docs, and
+                Keel is fast to set up and easy to adapt. Multiple views, time-boxed cycles, built-in docs, and
                 real-time dashboards help teams plan and ship without fighting their tools.
               </p>
             </div>
@@ -601,7 +601,7 @@ export default function Home() {
                 </p>
                 <div style={{ display: "flex", gap: "1rem", marginTop: "1.5rem", flexWrap: "wrap" }}>
                   <Link className="btn btn-inverse" href="/docs">
-                    Self-host Plane
+                    Self-host Keel
                   </Link>
                   <Link className="btn btn-secondary" href="/contact">
                     Talk to a human &rarr;
@@ -684,36 +684,36 @@ export default function Home() {
 
               <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
                 <a
-                  href="https://github.com/makeplane/plane"
+                  href="https://github.com/MuhammadRafay7/keel"
                   target="_blank"
                   rel="noreferrer"
                   style={{
-                    background: "#181a1b",
-                    border: "1px solid #2c2e30",
+                    background: "var(--surface-product)",
+                    border: "1px solid var(--line)",
                     borderRadius: "12px",
                     padding: "1rem 1.25rem",
                     display: "flex",
                     alignItems: "center",
                     gap: "0.75rem",
-                    color: "#e4e6e7",
+                    color: "var(--fg)",
                     fontWeight: 500,
                   }}
                 >
                   Download for iOS &rarr;
                 </a>
                 <a
-                  href="https://github.com/makeplane/plane"
+                  href="https://github.com/MuhammadRafay7/keel"
                   target="_blank"
                   rel="noreferrer"
                   style={{
-                    background: "#181a1b",
-                    border: "1px solid #2c2e30",
+                    background: "var(--surface-product)",
+                    border: "1px solid var(--line)",
                     borderRadius: "12px",
                     padding: "1rem 1.25rem",
                     display: "flex",
                     alignItems: "center",
                     gap: "0.75rem",
-                    color: "#e4e6e7",
+                    color: "var(--fg)",
                     fontWeight: 500,
                   }}
                 >
@@ -724,8 +724,8 @@ export default function Home() {
 
             <div
               style={{
-                background: "#181a1b",
-                border: "1px solid #2c2e30",
+                background: "var(--surface-dark-card)",
+                border: "1px solid var(--line-dark)",
                 borderRadius: "20px",
                 padding: "2rem",
                 display: "flex",
@@ -738,16 +738,16 @@ export default function Home() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  borderBottom: "1px solid #2c2e30",
+                  borderBottom: "1px solid var(--line-dark)",
                   paddingBottom: "0.75rem",
                 }}
               >
-                <span style={{ fontWeight: 600, color: "#38bdf8" }}>Plane Mobile Native</span>
+                <span style={{ fontWeight: 600, color: "var(--accent-brand-bright)" }}>Keel Mobile Native</span>
                 <span style={{ fontSize: "0.75rem", color: "#10b981" }}>Sync: Online</span>
               </div>
               <div
                 style={{
-                  background: "#0f0f10",
+                  background: "var(--surface-product)",
                   borderRadius: "10px",
                   padding: "1rem",
                   display: "flex",
@@ -755,16 +755,16 @@ export default function Home() {
                   gap: "0.5rem",
                 }}
               >
-                <span style={{ fontSize: "0.75rem", color: "#94a3b8" }}>Today&apos;s Assigned Work</span>
-                <div style={{ fontWeight: 500, color: "#f8fafc" }}>#ENG-402: Production cluster readiness check</div>
+                <span style={{ fontSize: "0.75rem", color: "var(--fg-muted)" }}>Today&apos;s Assigned Work</span>
+                <div style={{ fontWeight: 500, color: "var(--fg)" }}>#ENG-402: Production cluster readiness check</div>
                 <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.25rem" }}>
                   <span
                     style={{
                       fontSize: "0.6875rem",
-                      background: "#2c2e30",
+                      background: "var(--line)",
                       padding: "0.15rem 0.4rem",
                       borderRadius: "4px",
-                      color: "#38bdf8",
+                      color: "var(--accent-brand)",
                     }}
                   >
                     In Progress
@@ -776,11 +776,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 10. EXTEND PLANE (APPS, AGENTS & MARKETPLACE) */}
+      {/* 10. EXTEND KEEL (APPS, AGENTS & MARKETPLACE) */}
       <section aria-label="Apps" className="section-pad" id="apps">
         <div className="shell">
           <div className="section-header center">
-            <h2 className="font-satoshi">Extend Plane with apps, agents, and your own integrations</h2>
+            <h2 className="font-satoshi">Extend Keel with apps, agents, and your own integrations</h2>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.5rem" }}>
@@ -822,7 +822,7 @@ export default function Home() {
                 <h3 style={{ fontSize: "1.25rem", marginBottom: "0.5rem" }}>Build your own with MCP</h3>
                 <p style={{ color: "var(--fg-muted)", margin: 0, fontSize: "0.95rem" }}>
                   Open API, webhooks, OAuth apps, and a native Model Context Protocol (MCP) server. Build custom AI
-                  agents that work directly inside Plane.
+                  agents that work directly inside Keel.
                 </p>
               </div>
               <Link href="/docs" style={{ color: "var(--accent-brand)", fontWeight: 500, marginTop: "auto" }}>
@@ -855,7 +855,7 @@ export default function Home() {
               <h2 className="font-satoshi">Enterprise-grade security, compliance, and control</h2>
             </div>
             <p style={{ maxWidth: "34rem", color: "var(--fg-muted)", fontSize: "1.0625rem", margin: 0 }}>
-              Plane meets the security and compliance standards your InfoSec team requires, across cloud and self-hosted
+              Keel meets the security and compliance standards your InfoSec team requires, across cloud and self-hosted
               deployments.
             </p>
           </div>
@@ -936,17 +936,17 @@ export default function Home() {
           >
             <div
               style={{
-                background: "#0b1015",
+                background: "var(--surface-product)",
                 borderRadius: "10px",
                 padding: "1.5rem",
                 fontFamily: "var(--mono)",
                 fontSize: "0.8125rem",
-                color: "#38bdf8",
-                border: "1px solid #1e293b",
+                color: "var(--accent-brand)",
+                border: "1px solid var(--line)",
                 lineHeight: "1.6",
               }}
             >
-              <span style={{ color: "#64748b" }}># plane-compose.yaml</span>
+              <span style={{ color: "var(--fg-muted)" }}># keel-compose.yaml</span>
               <br />
               version: &quot;1.0&quot;
               <br />
@@ -969,7 +969,7 @@ export default function Home() {
 
             <div>
               <h3 style={{ fontSize: "1.5rem", color: "var(--fg-dark-primary)", marginBottom: "0.75rem" }}>
-                Plane Compose for Projects-as-Code
+                Keel Compose for Projects-as-Code
               </h3>
               <p
                 style={{
@@ -982,7 +982,7 @@ export default function Home() {
                 Define projects in YAML, version in Git, deploy from your terminal. Start treating project configuration
                 as the infrastructure it is.
               </p>
-              <Link href="/docs" style={{ color: "#38bdf8", fontWeight: 500 }}>
+              <Link href="/docs" style={{ color: "var(--accent-brand)", fontWeight: 500 }}>
                 Learn more about Projects-as-Code &rarr;
               </Link>
             </div>
