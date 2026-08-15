@@ -36,7 +36,7 @@ const EMPTY_PROGRESS: TProgressCounts = {
 };
 
 const VIEW_FIELDS =
-  "id, name, description, filters, display_filters, display_properties, access, " +
+  "id, name, description, filters, rich_filters, display_filters, display_properties, access, " +
   "project_id, workspace_id, owned_by_id, sort_order, logo_props, created_at, updated_at";
 
 /**
@@ -192,7 +192,7 @@ export class SupabasePlanningService {
       p_status: (data.status as string) ?? "planned",
       p_start_date: data.start_date ?? null,
       p_target_date: data.target_date ?? null,
-      p_lead_id: (data.lead as string) ?? null,
+      p_lead_id: data.lead_id ?? null,
     });
 
     if (error) throw new Error(error.message);
@@ -209,7 +209,7 @@ export class SupabasePlanningService {
     for (const key of ["name", "description", "status", "start_date", "target_date", "sort_order"] as const) {
       if (key in patch) payload[key] = patch[key as keyof IModule];
     }
-    if (patch.lead !== undefined) payload.lead_id = patch.lead ?? null;
+    if (patch.lead_id !== undefined) payload.lead_id = patch.lead_id ?? null;
 
     const { data, error } = await getSupabase()
       .from("modules")
@@ -274,7 +274,6 @@ export class SupabasePlanningService {
         updated_at: now,
         name: data.name ?? "",
         description: data.description ?? "",
-        filters: data.filters ?? {},
         display_filters: data.display_filters ?? {},
         display_properties: data.display_properties ?? {},
         access: data.access ?? 1,
@@ -285,10 +284,12 @@ export class SupabasePlanningService {
         updated_by_id: userId,
         sort_order: 65535,
         logo_props: {},
-        // Required columns with no database default: `query` is Django's
-        // legacy filter representation, `rich_filters` its replacement.
+        // `rich_filters` is what the application actually reads and writes;
+        // `query` and `filters` are Django's legacy representation, kept only
+        // because both columns are NOT NULL with no default.
         query: {},
-        rich_filters: {},
+        filters: {},
+        rich_filters: data.rich_filters ?? {},
         is_locked: false,
       })
       .select(VIEW_FIELDS)
@@ -308,7 +309,7 @@ export class SupabasePlanningService {
     for (const key of [
       "name",
       "description",
-      "filters",
+      "rich_filters",
       "display_filters",
       "display_properties",
       "access",

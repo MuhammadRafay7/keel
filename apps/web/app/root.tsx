@@ -153,5 +153,9 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   // the same way entry.client.tsx does instead of just showing the error page.
   if (import.meta.env.PROD && isStaleAssetError(error)) recoverFromStaleAsset();
 
+  // Nothing else records this — no Sentry, no logging — so the console is the
+  // only place the cause survives long enough to be read.
+  console.error("[keel] unhandled route error", error);
+
   return <CustomErrorComponent error={error} />;
 }

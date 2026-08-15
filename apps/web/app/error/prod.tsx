@@ -5,6 +5,7 @@
  */
 
 import { useTheme } from "next-themes";
+import { isRouteErrorResponse } from "react-router";
 // keel imports
 import { Button } from "@keel/propel/button";
 // assets
@@ -31,14 +32,34 @@ const linkMap = [
   },
 ];
 
+/**
+ * The message and stack, when there is one to show.
+ *
+ * There is no error tracking in production, so an error that reaches this page
+ * leaves no trace anywhere. Until that exists, the page itself is the only
+ * report: it stays a friendly wall by default and keeps the detail one click
+ * away, which is the difference between "a lot of pages are broken" and knowing
+ * which call broke them.
+ */
+function errorDetail(error: unknown): string | undefined {
+  if (isRouteErrorResponse(error)) return `${error.status} ${error.statusText}\n${String(error.data ?? "")}`.trim();
+  if (error instanceof Error) return [error.message, error.stack].filter(Boolean).join("\n\n");
+  if (error === undefined || error === null) return undefined;
+  return String(error);
+}
+
 // Production Error Component
 interface ProdErrorComponentProps {
+  error?: unknown;
   onGoHome: () => void;
 }
 
-export function ProdErrorComponent({ onGoHome }: ProdErrorComponentProps) {
+export function ProdErrorComponent({ error, onGoHome }: ProdErrorComponentProps) {
   // hooks
   const { resolvedTheme } = useTheme();
+
+  // derived values
+  const detail = errorDetail(error);
 
   // derived values
   const maintenanceModeImage = resolvedTheme === "dark" ? maintenanceModeDarkModeImage : maintenanceModeLightModeImage;
@@ -84,6 +105,15 @@ export function ProdErrorComponent({ onGoHome }: ProdErrorComponentProps) {
               Go to home
             </Button>
           </div>
+
+          {detail && (
+            <details className="text-left">
+              <summary className="cursor-pointer text-13 text-tertiary hover:text-secondary">Technical details</summary>
+              <div className="mt-2 max-h-64 overflow-auto rounded-md border border-subtle bg-layer-1">
+                <pre className="p-4 font-code text-11 break-words whitespace-pre-wrap text-secondary">{detail}</pre>
+              </div>
+            </details>
+          )}
         </div>
       </div>
     </DefaultLayout>

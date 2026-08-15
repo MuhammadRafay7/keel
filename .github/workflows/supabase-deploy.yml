@@ -1,0 +1,69 @@
+name: Deploy Supabase
+
+# The database and the Edge Functions ship with the code that depends on them.
+# Without this, a merge deploys a frontend that calls RPCs the live project does
+# not have, which is the state the project was in before this workflow existed.
+#
+# Runs only when something under supabase/ actually changed, so an ordinary
+# frontend merge does not touch the database.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "supabase/**"
+      - ".github/workflows/supabase-deploy.yml"
+  workflow_dispatch:
+    inputs:
+      deploy_functions:
+        description: "Also deploy the Edge Functions"
+        required: false
+        type: boolean
+        default: true
+
+# Two runs applying migrations at once would race on the same database.
+concurrency:
+  group: supabase-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Apply migrations and deploy functions
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install the Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Link the project
+        run: supabase link --project-ref "$SUPABASE_PROJECT_REF"
+
+      - name: Show what will be applied
+        run: supabase migration list --linked
+
+      # Every migration in this repository is written to be re-runnable, so a
+      # re-applied file is a no-op rather than a failure. That is what makes an
+      # automatic push safe; keep it true for anything added later.
+      - name: Apply migrations
+        run: supabase db push --include-all
+
+      - name: Deploy Edge Functions
+        if: github.event_name == 'push' || inputs.deploy_functions
+        run: |
+          supabase functions deploy send-workspace-invite --project-ref "$SUPABASE_PROJECT_REF"
+          supabase functions deploy ai-proxy --project-ref "$SUPABASE_PROJECT_REF"
+
+      - name: Confirm the migration history matches the repository
+        run: supabase migration list --linked

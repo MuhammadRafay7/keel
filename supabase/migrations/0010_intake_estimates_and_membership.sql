@@ -163,6 +163,9 @@ grant execute on function public.remove_project_member(uuid, uuid) to authentica
 -- impossible. An admin may edit anyone's; everyone may still edit their own,
 -- because view_props and preferences live on that row.
 drop policy if exists "project members update own" on public.project_members;
+-- The policy this replaces it with has to be dropped too, or a re-run of this
+-- migration fails on the second `create policy`.
+drop policy if exists "project members update" on public.project_members;
 create policy "project members update"
   on public.project_members for update
   to authenticated

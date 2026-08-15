@@ -158,8 +158,7 @@ function main(): void {
 // Run: pnpm run generate:types
 
 export type TTranslationKeys =
-${keyLines}
-  ;
+${keyLines};
 `;
 
   fs.writeFileSync(outputFile, output, "utf-8");

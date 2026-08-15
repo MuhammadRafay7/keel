@@ -24,7 +24,21 @@ export abstract class APIService {
 
   private setupInterceptors() {
     this.axiosInstance.interceptors.response.use(
-      (response) => response,
+      (response) => {
+        // The app is served as a static SPA behind a catch-all rewrite, so an
+        // API path with no backend behind it answers with index.html and a 200
+        // rather than a 404. Left alone, that HTML reaches components as if it
+        // were the payload: `profile.state_distribution` is then undefined on a
+        // string, and the render throws into the error boundary instead of the
+        // request simply failing. Reject it at the source.
+        const contentType = String(response.headers?.["content-type"] ?? "");
+        if (contentType.includes("text/html")) {
+          throw new Error(
+            `${response.config.url ?? "The request"} returned the application shell instead of data — this endpoint has no backend behind it.`
+          );
+        }
+        return response;
+      },
       (error) => {
         if (error.response && error.response.status === 401) {
           const currentPath = window.location.pathname;
