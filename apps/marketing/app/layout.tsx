@@ -2,20 +2,21 @@ import type { Metadata, Viewport } from "next";
 
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://keel.ostenmark.com"),
   title: {
-    default: "Keel — Project management that keeps its course",
+    default: "Keel — Open Source Project Management Platform",
     template: "%s — Keel",
   },
   description:
-    "Keel tracks work: items, cycles, modules, roadmaps and collaborative docs. Open source, built on Postgres.",
+    "Keel tracks work items, cycles, modules, roadmaps, collaborative docs, and triage inbox. Built on Postgres & Supabase.",
   openGraph: {
     title: "Keel",
-    description: "Project management that keeps its course.",
+    description: "Open Source Project Management Platform for Software Teams.",
     url: "https://keel.ostenmark.com",
     siteName: "Keel",
     type: "website",
@@ -24,16 +25,18 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b1116",
+  themeColor: "#0b1015",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <Header />
-        <main>{children}</main>
-        <Footer />
+        <ThemeProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

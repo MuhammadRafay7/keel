@@ -2,30 +2,30 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { useTheme } from "next-themes";
 
 /**
- * The Keel mark in three dimensions: a spine running fore-to-aft with ribs
- * arcing off it to form a hull. Drag to orbit.
- *
- * Written against three.js directly rather than react-three-fiber — this is one
- * scene with no React state in it, so the reconciler would cost two dependencies
- * and a React 19 requirement while buying nothing.
+ * Three.js 3D Hull Scene for Keel Hero:
+ * Interactive wireframe hull with orbiting spine and light/dark theme awareness.
  */
 export function HullScene() {
   const mountRef = useRef<HTMLDivElement>(null);
+  const { resolvedTheme } = useTheme();
 
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
 
+    const isLight = resolvedTheme === "light";
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+    const camera = new THREE.PerspectiveCamera(38, mount.clientWidth / mount.clientHeight, 0.1, 100);
     camera.position.set(6.5, 2.6, 7.5);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(mount.clientWidth, mount.clientHeight);
     mount.appendChild(renderer.domElement);
     renderer.domElement.style.display = "block";
     renderer.domElement.style.touchAction = "pan-y";
@@ -34,10 +34,11 @@ export function HullScene() {
     const hull = new THREE.Group();
     scene.add(hull);
 
-    const ACCENT = new THREE.Color("#4fa8bc");
-    const DIM = new THREE.Color("#2b4954");
+    // Theme-dependent colors
+    const ACCENT = isLight ? new THREE.Color("#0284c7") : new THREE.Color("#38bdf8");
+    const DIM = isLight ? new THREE.Color("#cbd5e1") : new THREE.Color("#1e293b");
 
-    // The spine.
+    // The spine
     const spineCurve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(0, 0.35, -4.6),
       new THREE.Vector3(0, -0.35, -1.6),
@@ -45,15 +46,13 @@ export function HullScene() {
       new THREE.Vector3(0, -0.05, 4.2),
     ]);
     const spine = new THREE.Mesh(
-      new THREE.TubeGeometry(spineCurve, 80, 0.075, 12, false),
+      new THREE.TubeGeometry(spineCurve, 80, 0.07, 12, false),
       new THREE.MeshBasicMaterial({ color: ACCENT })
     );
     hull.add(spine);
 
-    // Ribs, arcing off the spine. Beam tapers toward bow and stern, the way a
-    // real hull narrows — that variation is what reads as a ship rather than a
-    // stack of hoops.
-    const RIB_COUNT = 17;
+    // Ribs arcing off the spine
+    const RIB_COUNT = 18;
     const ribs: THREE.Line[] = [];
     for (let i = 0; i < RIB_COUNT; i++) {
       const t = i / (RIB_COUNT - 1);
@@ -73,14 +72,14 @@ export function HullScene() {
       const mat = new THREE.LineBasicMaterial({
         color: DIM.clone().lerp(ACCENT, taper),
         transparent: true,
-        opacity: 0.35 + taper * 0.5,
+        opacity: isLight ? 0.45 + taper * 0.4 : 0.35 + taper * 0.5,
       });
       const rib = new THREE.Line(geo, mat);
       ribs.push(rib);
       hull.add(rib);
     }
 
-    // Waterline — a faint ellipse the hull sits in.
+    // Waterline ring
     const wl: THREE.Vector3[] = [];
     for (let s = 0; s <= 128; s++) {
       const a = (s / 128) * Math.PI * 2;
@@ -89,11 +88,15 @@ export function HullScene() {
     hull.add(
       new THREE.Line(
         new THREE.BufferGeometry().setFromPoints(wl),
-        new THREE.LineBasicMaterial({ color: ACCENT, transparent: true, opacity: 0.16 })
+        new THREE.LineBasicMaterial({
+          color: ACCENT,
+          transparent: true,
+          opacity: isLight ? 0.25 : 0.18,
+        })
       )
     );
 
-    // Orbit, hand-rolled: two angles, damped. Cheaper than pulling in OrbitControls.
+    // Orbit controls
     let targetAzimuth = 0.35;
     let azimuth = 0.35;
     let targetPolar = 0.28;
@@ -107,7 +110,11 @@ export function HullScene() {
       lastX = e.clientX;
       lastY = e.clientY;
       renderer.domElement.style.cursor = "grabbing";
-      renderer.domElement.setPointerCapture(e.pointerId);
+      try {
+        renderer.domElement.setPointerCapture(e.pointerId);
+      } catch {
+        /* fallback */
+      }
     };
     const onMove = (e: PointerEvent) => {
       if (!dragging) return;
@@ -122,7 +129,7 @@ export function HullScene() {
       try {
         renderer.domElement.releasePointerCapture(e.pointerId);
       } catch {
-        /* pointer already released */
+        /* fallback */
       }
     };
 
@@ -163,13 +170,12 @@ export function HullScene() {
       camera.lookAt(0, -0.1, 0);
 
       if (!prefersReduced) {
-        // A slow swell through the ribs, fore to aft.
         ribs.forEach((rib, i) => {
           const phase = elapsed * 0.9 - i * 0.24;
           const m = rib.material as THREE.LineBasicMaterial;
           const t = i / (RIB_COUNT - 1);
           const taper = Math.sin(Math.PI * t) ** 0.75;
-          m.opacity = 0.3 + taper * 0.45 + Math.sin(phase) * 0.14;
+          m.opacity = (isLight ? 0.35 : 0.3) + taper * 0.45 + Math.sin(phase) * 0.14;
         });
       }
 
@@ -193,7 +199,7 @@ export function HullScene() {
       renderer.dispose();
       if (renderer.domElement.parentNode === mount) mount.removeChild(renderer.domElement);
     };
-  }, []);
+  }, [resolvedTheme]);
 
   return <div ref={mountRef} className="hull-canvas" aria-hidden="true" />;
 }

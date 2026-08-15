@@ -1,6 +1,6 @@
 import Link from "next/link";
-
 import { Mark } from "./Mark";
+import { ThemeToggle } from "./ThemeToggle";
 
 const APP = "https://app.keel.ostenmark.com";
 
@@ -19,6 +19,7 @@ export function Header() {
           <Link href="/about">About</Link>
         </nav>
         <div className="nav-actions">
+          <ThemeToggle />
           <a className="btn btn-quiet" href={APP}>
             Sign in
           </a>
