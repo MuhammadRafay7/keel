@@ -7,6 +7,7 @@
 // services
 import { API_BASE_URL } from "@keel/constants";
 import type { IIntakeState, IState } from "@keel/types";
+import { isSupabaseConfigured, supabaseWorkspaceContentService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 // helpers
 // types
@@ -81,6 +82,7 @@ export class ProjectStateService extends APIService {
   }
 
   async getWorkspaceStates(workspaceSlug: string): Promise<IState[]> {
+    if (isSupabaseConfigured) return supabaseWorkspaceContentService.getWorkspaceStates(workspaceSlug);
     return this.get(`/api/workspaces/${workspaceSlug}/states/`)
       .then((response) => response?.data)
       .catch((error) => {

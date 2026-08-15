@@ -8,6 +8,7 @@ import { API_BASE_URL } from "@keel/constants";
 import type { IFavorite } from "@keel/types";
 // helpers
 // services
+import { isSupabaseConfigured, supabaseWorkspaceContentService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 // types
 
@@ -41,6 +42,7 @@ export class FavoriteService extends APIService {
   }
 
   async getFavorites(workspaceSlug: string): Promise<IFavorite[]> {
+    if (isSupabaseConfigured) return supabaseWorkspaceContentService.getFavorites(workspaceSlug);
     return this.get(`/api/workspaces/${workspaceSlug}/user-favorites/`, {
       params: {
         all: true,

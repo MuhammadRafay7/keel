@@ -28,6 +28,12 @@ import type {
   IWorkspaceUserPropertiesResponse,
 } from "@keel/types";
 // services
+import {
+  isSupabaseConfigured,
+  supabaseMemberService,
+  supabaseWorkspaceContentService,
+  supabaseWorkspaceService,
+} from "@keel/services";
 import { APIService } from "@/services/api.service";
 
 export class WorkspaceService extends APIService {
@@ -36,6 +42,7 @@ export class WorkspaceService extends APIService {
   }
 
   async userWorkspaces(): Promise<IWorkspace[]> {
+    if (isSupabaseConfigured) return supabaseWorkspaceService.userWorkspaces();
     return this.get("/api/users/me/workspaces/")
       .then((response) => response?.data)
       .catch((error) => {
@@ -44,6 +51,7 @@ export class WorkspaceService extends APIService {
   }
 
   async getWorkspace(workspaceSlug: string): Promise<IWorkspace> {
+    if (isSupabaseConfigured) return supabaseWorkspaceService.retrieve(workspaceSlug);
     return this.get(`/api/workspaces/${workspaceSlug}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -52,6 +60,7 @@ export class WorkspaceService extends APIService {
   }
 
   async createWorkspace(data: Partial<IWorkspace>): Promise<IWorkspace> {
+    if (isSupabaseConfigured) return supabaseWorkspaceService.createWorkspace(data);
     return this.post("/api/workspaces/", data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -60,6 +69,7 @@ export class WorkspaceService extends APIService {
   }
 
   async updateWorkspace(workspaceSlug: string, data: Partial<IWorkspace>): Promise<IWorkspace> {
+    if (isSupabaseConfigured) return supabaseWorkspaceService.updateWorkspace(workspaceSlug, data);
     return this.patch(`/api/workspaces/${workspaceSlug}/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -68,6 +78,7 @@ export class WorkspaceService extends APIService {
   }
 
   async deleteWorkspace(workspaceSlug: string): Promise<any> {
+    if (isSupabaseConfigured) return supabaseWorkspaceService.deleteWorkspace(workspaceSlug);
     return this.delete(`/api/workspaces/${workspaceSlug}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -110,6 +121,7 @@ export class WorkspaceService extends APIService {
   }
 
   async userWorkspaceInvitations(): Promise<IWorkspaceMemberInvitation[]> {
+    if (isSupabaseConfigured) return supabaseWorkspaceService.userWorkspaceInvitations();
     return this.get("/api/users/me/workspaces/invitations/")
       .then((response) => response?.data)
       .catch((error) => {
@@ -118,6 +130,7 @@ export class WorkspaceService extends APIService {
   }
 
   async workspaceMemberMe(workspaceSlug: string): Promise<IWorkspaceMemberMe> {
+    if (isSupabaseConfigured) return supabaseMemberService.workspaceMemberMe(workspaceSlug);
     return this.get(`/api/workspaces/${workspaceSlug}/workspace-members/me/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -134,6 +147,7 @@ export class WorkspaceService extends APIService {
   }
 
   async fetchWorkspaceMembers(workspaceSlug: string): Promise<IWorkspaceMember[]> {
+    if (isSupabaseConfigured) return supabaseMemberService.fetchWorkspaceMembers(workspaceSlug);
     return this.get(`/api/workspaces/${workspaceSlug}/members/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -198,6 +212,7 @@ export class WorkspaceService extends APIService {
   }
 
   async workspaceSlugCheck(slug: string): Promise<any> {
+    if (isSupabaseConfigured) return supabaseWorkspaceService.workspaceSlugCheck(slug);
     return this.get(`/api/workspace-slug-check/?slug=${slug}`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -287,6 +302,7 @@ export class WorkspaceService extends APIService {
   }
 
   async getWorkspaceUserProjectsRole(workspaceSlug: string): Promise<IUserProjectsRole> {
+    if (isSupabaseConfigured) return supabaseMemberService.getWorkspaceUserProjectsRole(workspaceSlug);
     return this.get(`/api/users/me/workspaces/${workspaceSlug}/project-roles/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -375,6 +391,7 @@ export class WorkspaceService extends APIService {
   }
 
   async fetchSidebarNavigationPreferences(workspaceSlug: string): Promise<IWorkspaceSidebarNavigation> {
+    if (isSupabaseConfigured) return supabaseWorkspaceContentService.getSidebarPreferences(workspaceSlug);
     return this.get(`/api/workspaces/${workspaceSlug}/sidebar-preferences/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -406,6 +423,10 @@ export class WorkspaceService extends APIService {
   }
 
   async fetchWorkspaceFilters(workspaceSlug: string): Promise<IWorkspaceUserPropertiesResponse> {
+    if (isSupabaseConfigured)
+      return supabaseWorkspaceContentService.getWorkspaceUserProperties(
+        workspaceSlug
+      ) as Promise<IWorkspaceUserPropertiesResponse>;
     return this.get(`/api/workspaces/${workspaceSlug}/user-properties/`)
       .then((response) => response?.data)
       .catch((error) => {

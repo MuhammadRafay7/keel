@@ -13,6 +13,7 @@ import type { TLanguage } from "@keel/i18n";
 import type { IUserTheme, TUserProfile } from "@keel/types";
 import { EStartOfTheWeek } from "@keel/types";
 // services
+import { isSupabaseConfigured, supabaseProfileService } from "@keel/services";
 import { UserService } from "@/services/user.service";
 // store
 import type { CoreRootStore } from "../root.store";
@@ -106,7 +107,9 @@ export class ProfileStore implements IUserProfileStore {
         this.isLoading = true;
         this.error = undefined;
       });
-      const userProfile = await this.userService.getCurrentUserProfile();
+      const userProfile = isSupabaseConfigured
+        ? await supabaseProfileService.profile()
+        : await this.userService.getCurrentUserProfile();
       runInAction(() => {
         this.isLoading = false;
         this.data = userProfile;
@@ -141,7 +144,9 @@ export class ProfileStore implements IUserProfileStore {
       if (data.language) {
         void setLanguage(data.language as TLanguage);
       }
-      const userProfile = await this.userService.updateCurrentUserProfile(data);
+      const userProfile = isSupabaseConfigured
+        ? await supabaseProfileService.updateProfile(data)
+        : await this.userService.updateCurrentUserProfile(data);
       return userProfile;
     } catch {
       if (currentUserProfileData) {
@@ -173,11 +178,17 @@ export class ProfileStore implements IUserProfileStore {
         last_workspace_id: firstWorkspace?.id,
       };
 
-      // update user onboarding steps
-      await this.userService.updateCurrentUserProfile(dataToUpdate);
+      if (isSupabaseConfigured) {
+        // One write rather than two: is_onboarded lives on the same row as the
+        // steps, so Django's separate on-board endpoint has nothing to add.
+        await supabaseProfileService.updateProfile({ ...dataToUpdate, is_onboarded: true });
+      } else {
+        // update user onboarding steps
+        await this.userService.updateCurrentUserProfile(dataToUpdate);
 
-      // update user onboarding status
-      await this.userService.updateUserOnBoard();
+        // update user onboarding status
+        await this.userService.updateUserOnBoard();
+      }
 
       // Wait for user settings to be refreshed with cache-busting before updating onboarding status
       await Promise.all([
@@ -208,7 +219,9 @@ export class ProfileStore implements IUserProfileStore {
     const isUserProfileTourCompleted = this.data.is_tour_completed || false;
     try {
       this.mutateUserProfile({ is_tour_completed: true });
-      const userProfile = await this.userService.updateUserTourCompleted();
+      const userProfile = isSupabaseConfigured
+        ? await supabaseProfileService.updateProfile({ is_tour_completed: true })
+        : await this.userService.updateUserTourCompleted();
       return userProfile;
     } catch (error) {
       runInAction(() => {
@@ -235,9 +248,9 @@ export class ProfileStore implements IUserProfileStore {
           if (this.data.theme) set(this.data.theme, dataKey, data[dataKey]);
         });
       });
-      const userProfile = await this.userService.updateCurrentUserProfile({
-        theme: this.data.theme,
-      });
+      const userProfile = isSupabaseConfigured
+        ? await supabaseProfileService.updateProfile({ theme: this.data.theme })
+        : await this.userService.updateCurrentUserProfile({ theme: this.data.theme });
       return userProfile;
     } catch (error) {
       runInAction(() => {

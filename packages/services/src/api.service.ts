@@ -25,6 +25,20 @@ export abstract class APIService {
       baseURL,
       withCredentials: true,
     });
+
+    // The app is served as a static SPA behind a catch-all rewrite, so any API
+    // path with nothing behind it returns index.html with a 200 rather than a
+    // 404. Left alone, that HTML flows into the stores as if it were data and
+    // fails somewhere far from the cause. Reject it here instead.
+    this.axiosInstance.interceptors.response.use((response) => {
+      const contentType = String(response.headers?.["content-type"] ?? "");
+      if (contentType.includes("text/html")) {
+        throw new Error(
+          `${response.config.url ?? "The request"} returned the application shell instead of data — this endpoint has no backend behind it.`
+        );
+      }
+      return response;
+    });
   }
 
   /**
