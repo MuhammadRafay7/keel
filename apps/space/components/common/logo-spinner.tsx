@@ -17,7 +17,7 @@ export function LogoSpinner() {
         xmlns="http://www.w3.org/2000/svg"
         role="img"
         aria-label="Loading"
-        className="h-6 w-auto sm:h-11"
+        className="h-6 w-6 sm:h-11 sm:w-11"
       >
         <style>{`
           @keyframes keel-rib-pulse {

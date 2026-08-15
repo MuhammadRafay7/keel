@@ -6,6 +6,7 @@
 
 import { observable, action, makeObservable, runInAction } from "mobx";
 // types
+import { isSupabaseConfigured } from "@keel/services";
 import type { IInstance, IInstanceConfig } from "@keel/types";
 // services
 import { InstanceService } from "@/services/instance.service";
@@ -58,6 +59,28 @@ export class InstanceStore implements IInstanceStore {
     try {
       this.isLoading = true;
       this.error = undefined;
+
+      // Supabase provides authentication directly, so there is no instance
+      // endpoint to ask. Report what Supabase Auth actually supports rather
+      // than calling the retired Django API.
+      if (isSupabaseConfigured) {
+        runInAction(() => {
+          this.isLoading = false;
+          this.instance = { is_setup_done: true, is_signup_screen_visited: true } as unknown as IInstance;
+          this.config = {
+            is_email_password_enabled: true,
+            is_magic_login_enabled: false,
+            is_smtp_configured: false,
+            is_google_enabled: false,
+            is_github_enabled: false,
+            is_gitlab_enabled: false,
+            is_gitea_enabled: false,
+            is_signup_disabled: false,
+          } as unknown as IInstanceConfig;
+        });
+        return;
+      }
+
       const instanceInfo = await this.instanceService.getInstanceInfo();
       runInAction(() => {
         this.isLoading = false;
