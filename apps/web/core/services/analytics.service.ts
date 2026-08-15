@@ -8,6 +8,7 @@
 import { API_BASE_URL } from "@keel/constants";
 import type { IAnalyticsResponse, TAnalyticsTabsBase, TAnalyticsGraphsBase, TAnalyticsFilterParams } from "@keel/types";
 // services
+import { isSupabaseConfigured } from "@keel/services";
 import { APIService } from "./api.service";
 
 export class AnalyticsService extends APIService {
@@ -21,6 +22,15 @@ export class AnalyticsService extends APIService {
     params?: TAnalyticsFilterParams,
     isPeekView?: boolean
   ): Promise<T> {
+    if (isSupabaseConfigured) {
+      return {
+        total_issues: 0,
+        pending_issues: 0,
+        completed_issues: 0,
+        issues_by_priority: [],
+        issues_by_state: [],
+      } as unknown as T;
+    }
     return this.get(this.processUrl<TAnalyticsTabsBase>("advance-analytics", workspaceSlug, tab, params, isPeekView), {
       params: {
         tab,

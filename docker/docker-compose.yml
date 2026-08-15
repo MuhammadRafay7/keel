@@ -7,8 +7,6 @@ services:
       args:
         DOCKER_BUILDKIT: 1
     restart: always
-    depends_on:
-      - api
 
   admin:
     container_name: admin
@@ -19,7 +17,6 @@ services:
         DOCKER_BUILDKIT: 1
     restart: always
     depends_on:
-      - api
       - web
 
   space:
@@ -31,70 +28,7 @@ services:
         DOCKER_BUILDKIT: 1
     restart: always
     depends_on:
-      - api
       - web
-
-  api:
-    container_name: api
-    build:
-      context: ../apps/api
-      dockerfile: Dockerfile.api
-      args:
-        DOCKER_BUILDKIT: 1
-    restart: always
-    command: ./bin/docker-entrypoint-api.sh
-    env_file:
-      - ../apps/api/.env
-    depends_on:
-      - keel-db
-      - keel-redis
-
-  worker:
-    container_name: bgworker
-    build:
-      context: ../apps/api
-      dockerfile: Dockerfile.api
-      args:
-        DOCKER_BUILDKIT: 1
-    restart: always
-    command: ./bin/docker-entrypoint-worker.sh
-    env_file:
-      - ../apps/api/.env
-    depends_on:
-      - api
-      - keel-db
-      - keel-redis
-
-  beat-worker:
-    container_name: beatworker
-    build:
-      context: ../apps/api
-      dockerfile: Dockerfile.api
-      args:
-        DOCKER_BUILDKIT: 1
-    restart: always
-    command: ./bin/docker-entrypoint-beat.sh
-    env_file:
-      - ../apps/api/.env
-    depends_on:
-      - api
-      - keel-db
-      - keel-redis
-
-  migrator:
-    container_name: keel-migrator
-    build:
-      context: ../apps/api
-      dockerfile: Dockerfile.api
-      args:
-        DOCKER_BUILDKIT: 1
-    restart: no
-    command: ./bin/docker-entrypoint-migrator.sh
-    env_file:
-      - ../apps/api/.env
-    depends_on:
-      - keel-db
-      - keel-redis
 
   live:
     container_name: keel-live
@@ -166,7 +100,6 @@ services:
       BUCKET_NAME: ${AWS_S3_BUCKET_NAME:-uploads}
     depends_on:
       - web
-      - api
       - space
       - admin
 

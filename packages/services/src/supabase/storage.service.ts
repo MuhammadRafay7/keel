@@ -133,7 +133,7 @@ export class SupabaseStorageService {
     const { data, error } = await getSupabase().storage.from(bucket).createSignedUrls(paths, expiresIn);
 
     if (error) throw new Error(`Failed to prepare those files for viewing: ${error.message}`);
-    return (data ?? []).map((entry) => entry.signedUrl);
+    return (data ?? []).map((entry) => entry.signedUrl).filter((url): url is string => Boolean(url));
   }
 
   // -- Deletion -------------------------------------------------------------

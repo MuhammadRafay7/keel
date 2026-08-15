@@ -4,12 +4,9 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 /**
- * The Keel mark in three dimensions: a spine running fore-to-aft with ribs
- * arcing off it to form a hull. Drag to orbit.
- *
- * Written against three.js directly rather than react-three-fiber — this is one
- * scene with no React state in it, so the reconciler would cost two dependencies
- * and a React 19 requirement while buying nothing.
+ * Three.js 3D Antigravity Hull Scene:
+ * Interactive 3D orbital ring network with starfield particles,
+ * mouse vector deflection, and floating energy nodes.
  */
 export function HullScene() {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -21,83 +18,120 @@ export function HullScene() {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
-    camera.position.set(6.5, 2.6, 7.5);
+    const camera = new THREE.PerspectiveCamera(40, mount.clientWidth / mount.clientHeight, 0.1, 100);
+    camera.position.set(6.5, 2.8, 8.5);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(mount.clientWidth, mount.clientHeight);
     mount.appendChild(renderer.domElement);
     renderer.domElement.style.display = "block";
     renderer.domElement.style.touchAction = "pan-y";
     renderer.domElement.style.cursor = "grab";
 
-    const hull = new THREE.Group();
-    scene.add(hull);
+    const mainGroup = new THREE.Group();
+    scene.add(mainGroup);
 
-    const ACCENT = new THREE.Color("#4fa8bc");
-    const DIM = new THREE.Color("#2b4954");
+    // Color definitions
+    const COLOR_CYAN = new THREE.Color("#38bdf8");
+    const COLOR_INDIGO = new THREE.Color("#818cf8");
+    const COLOR_PURPLE = new THREE.Color("#c084fc");
 
-    // The spine.
+    // 1. Spine curve
     const spineCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(0, 0.35, -4.6),
-      new THREE.Vector3(0, -0.35, -1.6),
-      new THREE.Vector3(0, -0.55, 1.2),
-      new THREE.Vector3(0, -0.05, 4.2),
+      new THREE.Vector3(0, 0.45, -5.0),
+      new THREE.Vector3(0, -0.4, -1.8),
+      new THREE.Vector3(0, -0.65, 1.4),
+      new THREE.Vector3(0, -0.05, 4.8),
     ]);
-    const spine = new THREE.Mesh(
-      new THREE.TubeGeometry(spineCurve, 80, 0.075, 12, false),
-      new THREE.MeshBasicMaterial({ color: ACCENT })
-    );
-    hull.add(spine);
 
-    // Ribs, arcing off the spine. Beam tapers toward bow and stern, the way a
-    // real hull narrows — that variation is what reads as a ship rather than a
-    // stack of hoops.
-    const RIB_COUNT = 17;
+    const spineGeo = new THREE.TubeGeometry(spineCurve, 100, 0.08, 16, false);
+    const spineMat = new THREE.MeshBasicMaterial({
+      color: COLOR_CYAN,
+      wireframe: false,
+    });
+    const spine = new THREE.Mesh(spineGeo, spineMat);
+    mainGroup.add(spine);
+
+    // 2. Ribs network
+    const RIB_COUNT = 22;
     const ribs: THREE.Line[] = [];
     for (let i = 0; i < RIB_COUNT; i++) {
       const t = i / (RIB_COUNT - 1);
-      const z = -4.4 + t * 8.6;
+      const z = -4.8 + t * 9.6;
       const taper = Math.sin(Math.PI * t) ** 0.75;
-      const beam = 0.35 + taper * 2.05;
-      const depth = 0.3 + taper * 1.5;
+      const beam = 0.4 + taper * 2.3;
+      const depth = 0.35 + taper * 1.7;
       const base = spineCurve.getPoint(t).y;
 
       const pts: THREE.Vector3[] = [];
-      const SEG = 44;
+      const SEG = 50;
       for (let s = 0; s <= SEG; s++) {
         const a = (s / SEG) * Math.PI;
-        pts.push(new THREE.Vector3(Math.cos(a) * beam, base + Math.sin(a) * depth * 0.62, z));
+        pts.push(new THREE.Vector3(Math.cos(a) * beam, base + Math.sin(a) * depth * 0.65, z));
       }
       const geo = new THREE.BufferGeometry().setFromPoints(pts);
       const mat = new THREE.LineBasicMaterial({
-        color: DIM.clone().lerp(ACCENT, taper),
+        color: COLOR_INDIGO.clone().lerp(COLOR_CYAN, taper),
         transparent: true,
-        opacity: 0.35 + taper * 0.5,
+        opacity: 0.4 + taper * 0.5,
       });
       const rib = new THREE.Line(geo, mat);
       ribs.push(rib);
-      hull.add(rib);
+      mainGroup.add(rib);
     }
 
-    // Waterline — a faint ellipse the hull sits in.
-    const wl: THREE.Vector3[] = [];
-    for (let s = 0; s <= 128; s++) {
-      const a = (s / 128) * Math.PI * 2;
-      wl.push(new THREE.Vector3(Math.cos(a) * 2.5, -0.62, Math.sin(a) * 4.9));
-    }
-    hull.add(
-      new THREE.Line(
-        new THREE.BufferGeometry().setFromPoints(wl),
-        new THREE.LineBasicMaterial({ color: ACCENT, transparent: true, opacity: 0.16 })
-      )
-    );
+    // 3. Floating Orbital Particle Starfield
+    const PARTICLE_COUNT = 300;
+    const particlePositions = new Float32Array(PARTICLE_COUNT * 3);
+    const particleScales = new Float32Array(PARTICLE_COUNT);
 
-    // Orbit, hand-rolled: two angles, damped. Cheaper than pulling in OrbitControls.
-    let targetAzimuth = 0.35;
-    let azimuth = 0.35;
-    let targetPolar = 0.28;
-    let polar = 0.28;
+    for (let p = 0; p < PARTICLE_COUNT; p++) {
+      const radius = 2.5 + Math.random() * 6.5;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = (Math.random() - 0.5) * Math.PI * 0.8;
+
+      particlePositions[p * 3] = Math.cos(theta) * Math.cos(phi) * radius;
+      particlePositions[p * 3 + 1] = Math.sin(phi) * radius * 0.8;
+      particlePositions[p * 3 + 2] = Math.sin(theta) * Math.cos(phi) * radius;
+
+      particleScales[p] = Math.random() * 0.08 + 0.02;
+    }
+
+    const particleGeo = new THREE.BufferGeometry();
+    particleGeo.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
+
+    const particleMat = new THREE.PointsMaterial({
+      color: COLOR_CYAN,
+      size: 0.08,
+      transparent: true,
+      opacity: 0.7,
+      blending: THREE.AdditiveBlending,
+    });
+    const particles = new THREE.Points(particleGeo, particleMat);
+    mainGroup.add(particles);
+
+    // 4. Floating glowing energy nodes
+    const nodeCount = 8;
+    const nodes: THREE.Mesh[] = [];
+    for (let n = 0; n < nodeCount; n++) {
+      const nodeGeo = new THREE.SphereGeometry(0.12, 16, 16);
+      const nodeMat = new THREE.MeshBasicMaterial({
+        color: n % 2 === 0 ? COLOR_CYAN : COLOR_PURPLE,
+      });
+      const nodeMesh = new THREE.Mesh(nodeGeo, nodeMat);
+      const t = (n + 1) / (nodeCount + 1);
+      const pos = spineCurve.getPoint(t);
+      nodeMesh.position.set(pos.x, pos.y + 0.5, pos.z);
+      nodes.push(nodeMesh);
+      mainGroup.add(nodeMesh);
+    }
+
+    // Interaction state
+    let targetAzimuth = 0.4;
+    let azimuth = 0.4;
+    let targetPolar = 0.25;
+    let polar = 0.25;
     let dragging = false;
     let lastX = 0;
     let lastY = 0;
@@ -107,22 +141,28 @@ export function HullScene() {
       lastX = e.clientX;
       lastY = e.clientY;
       renderer.domElement.style.cursor = "grabbing";
-      renderer.domElement.setPointerCapture(e.pointerId);
+      try {
+        renderer.domElement.setPointerCapture(e.pointerId);
+      } catch {
+        /* fallback */
+      }
     };
+
     const onMove = (e: PointerEvent) => {
       if (!dragging) return;
-      targetAzimuth += (e.clientX - lastX) * 0.006;
-      targetPolar = Math.max(-0.45, Math.min(0.9, targetPolar + (e.clientY - lastY) * 0.004));
+      targetAzimuth += (e.clientX - lastX) * 0.005;
+      targetPolar = Math.max(-0.4, Math.min(0.85, targetPolar + (e.clientY - lastY) * 0.004));
       lastX = e.clientX;
       lastY = e.clientY;
     };
+
     const onUp = (e: PointerEvent) => {
       dragging = false;
       renderer.domElement.style.cursor = "grab";
       try {
         renderer.domElement.releasePointerCapture(e.pointerId);
       } catch {
-        /* pointer already released */
+        /* fallback */
       }
     };
 
@@ -139,42 +179,55 @@ export function HullScene() {
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
     };
+
     resize();
     const ro = new ResizeObserver(resize);
     ro.observe(mount);
 
     let raf = 0;
-    const start = performance.now();
+    const startTime = performance.now();
+
     const tick = () => {
       raf = requestAnimationFrame(tick);
-      const elapsed = (performance.now() - start) / 1000;
+      const elapsed = (performance.now() - startTime) / 1000;
 
-      if (!dragging && !prefersReduced) targetAzimuth += 0.0016;
+      if (!dragging && !prefersReduced) {
+        targetAzimuth += 0.0015;
+      }
 
-      azimuth += (targetAzimuth - azimuth) * 0.07;
-      polar += (targetPolar - polar) * 0.07;
+      azimuth += (targetAzimuth - azimuth) * 0.06;
+      polar += (targetPolar - polar) * 0.06;
 
-      const r = 10.4;
+      const r = 11.0;
       camera.position.set(
         Math.sin(azimuth) * r * Math.cos(polar),
-        1.9 + Math.sin(polar) * r * 0.55,
+        2.0 + Math.sin(polar) * r * 0.5,
         Math.cos(azimuth) * r * Math.cos(polar)
       );
-      camera.lookAt(0, -0.1, 0);
+      camera.lookAt(0, 0, 0);
 
       if (!prefersReduced) {
-        // A slow swell through the ribs, fore to aft.
+        // Pulse ribs
         ribs.forEach((rib, i) => {
-          const phase = elapsed * 0.9 - i * 0.24;
-          const m = rib.material as THREE.LineBasicMaterial;
+          const phase = elapsed * 1.2 - i * 0.22;
+          const mat = rib.material as THREE.LineBasicMaterial;
           const t = i / (RIB_COUNT - 1);
           const taper = Math.sin(Math.PI * t) ** 0.75;
-          m.opacity = 0.3 + taper * 0.45 + Math.sin(phase) * 0.14;
+          mat.opacity = 0.3 + taper * 0.4 + Math.sin(phase) * 0.18;
         });
+
+        // Float energy nodes
+        nodes.forEach((node, i) => {
+          node.position.y += Math.sin(elapsed * 2.0 + i) * 0.0015;
+        });
+
+        // Rotate particles slowly
+        particles.rotation.y = elapsed * 0.05;
       }
 
       renderer.render(scene, camera);
     };
+
     tick();
 
     return () => {
@@ -185,13 +238,19 @@ export function HullScene() {
       renderer.domElement.removeEventListener("pointerup", onUp);
       renderer.domElement.removeEventListener("pointercancel", onUp);
       scene.traverse((o) => {
-        if (o instanceof THREE.Mesh || o instanceof THREE.Line) {
+        if (o instanceof THREE.Mesh || o instanceof THREE.Line || o instanceof THREE.Points) {
           o.geometry.dispose();
-          (o.material as THREE.Material).dispose();
+          if (Array.isArray(o.material)) {
+            o.material.forEach((m) => m.dispose());
+          } else {
+            o.material.dispose();
+          }
         }
       });
       renderer.dispose();
-      if (renderer.domElement.parentNode === mount) mount.removeChild(renderer.domElement);
+      if (renderer.domElement.parentNode === mount) {
+        mount.removeChild(renderer.domElement);
+      }
     };
   }, []);
 

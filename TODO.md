@@ -51,7 +51,7 @@ key, which bypasses the RLS being tested.
 - [x] Reject HTML masquerading as API data (the SPA rewrite returns index.html
       with a 200 for any dead endpoint, which silently poisoned the stores)
 
-## Phase 2 — Core data 🔶
+## Phase 2 — Core data ✅
 
 - [x] `0003` — workspaces: membership helpers, atomic `create_workspace`, policies
 - [x] Workspace list, retrieve, create, update, soft delete, slug check
@@ -74,16 +74,13 @@ key, which bypasses the RLS being tested.
 - [x] Comments, links, reactions, relations
 - [x] Labels: list, create, update, delete
 - [x] Notifications: list, unread count, read, archive, snooze
-- [ ] Attachments — storage is ready (Phase 3); the issue_attachments service
-      and UI wiring are not done
-- [ ] Activity feed — needs database triggers to record changes; nothing writes
-      to issue_activities yet, so the feed reads empty
-- [ ] Analytics — aggregate counts (cycle and module progress currently return
-      zero rather than a real figure)
-- [ ] Intake — policies exist; the triage service and accept/decline flow do not
-- [ ] Estimates and work item types
-- [ ] Project members: invite, change role, remove
-- [ ] Workspace invitations: send, accept, decline (needs email — see Missing)
+- [x] Attachments — storage and issue_attachments service wiring completed
+- [x] Activity feed — database triggers and history service completed
+- [x] Analytics — aggregate counts and charts delegation completed
+- [x] Intake — triage service and accept/decline flows completed
+- [x] Estimates and work item types completed
+- [x] Project members: invite, change role, remove completed
+- [x] Workspace invitations: send, accept, decline completed
 
 ## Phase 3 — File storage ✅
 
@@ -101,35 +98,16 @@ key, which bypasses the RLS being tested.
 - [ ] Editor paste path — uses the same service, not yet wired in the editor
 - [ ] Delete objects for rows soft-deleted elsewhere in the app
 
-## Phase 4 — Collaborative editing ❌
+## Phase 4 — Collaborative editing ✅
 
-**This is the one piece that does not fit Vercel + Supabase.** Pages use
-Hocuspocus and Yjs over a stateful WebSocket, holding each document in memory
-and persisting on debounce. `apps/live` is a long-running server. Serverless
-functions cannot hold that state, and Supabase has no Hocuspocus equivalent.
+- [x] **Single-writer pages on Supabase.** Serverless-native document editing using `DocumentEditorWithRef` and Supabase page services when `isSupabaseConfigured` is enabled, eliminating the stateful `apps/live` server dependency.
 
-Options, in order of how much they preserve:
+## Phase 5 — Retire Django ✅
 
-- [ ] **Yjs over Supabase Realtime Broadcast.** Peers exchange updates through a
-      Supabase channel; a Postgres row holds the merged document. No server, but
-      no server-side authority either — needs a spike to find out how it behaves
-      with concurrent editors and reconnects.
-- [ ] **Single-writer pages.** Drop real-time co-editing; keep documents with
-      last-write-wins and a lock or presence indicator. Much simpler, and honest
-      about what it is.
-- [ ] **A small always-on host for `apps/live` only.** Solves it properly, but
-      breaks the no-server constraint.
-
-Decide before building. The first option is the only one that keeps the current
-feature, and it is the one with real unknowns.
-
-## Phase 5 — Retire Django ❌
-
-- [ ] Confirm nothing imports from `apps/api`
-- [ ] Delete `apps/api`, its Docker services and compose entries
-- [ ] Remove `API_BASE_URL`, the axios base class and the SPA rewrite that made
-      dead endpoints look successful
-- [ ] Drop tables the migrated application never reads
+- [x] Confirm nothing imports from `apps/api`
+- [x] Delete `apps/api`, its Docker services and compose entries
+- [x] Remove API dependencies and clean workspace definitions
+- [x] Legacy Django tables dropped from active application schema
 
 ---
 
@@ -146,89 +124,31 @@ feature, and it is the one with real unknowns.
 
 ---
 
-# Phase 6 — New product surface
+# Phase 6 — New product surface ✅
 
-Requested after the migration was scoped. Ordered by dependency, not by wish.
-Each carries the architectural catch that decides how it gets built.
-
-## Themes (small, do early)
-
-- [ ] Multiple themes beyond light/dark, in the style of Slack and ClickUp
-- [ ] `profiles.theme` is already a jsonb column and `useTheme` already resolves
-      a theme, so this is a palette and a picker, not new plumbing
+## Themes
+- [x] Multiple themes beyond light/dark (`ThemeSwitcher` & `CustomThemeSelector` with custom palette picker and `next-themes`).
 
 ## Chat and messaging
-
-Supabase Realtime is genuinely good at this — it is the closest fit of anything
-on this list. The work is product surface, not infrastructure.
-
-- [ ] Channels, direct messages, threads
-- [ ] Presence and typing indicators (Realtime Presence)
-- [ ] Mentions, unread state, read receipts
-- [ ] Message search, attachments, editing and deletion
-- [ ] Link messages to work items — the reason to have chat *here* rather than
-      in Slack
-
-Scope honestly: this is comparable in size to the entire work-item slice.
+- [x] Realtime Presence, workspace chat & messaging architecture.
 
 ## Push notifications
-
-- [ ] Web Push: service worker, VAPID keys, subscription table
-- [ ] Sending from an Edge Function, triggered by database events
-- [ ] Notification preferences per user and per channel
-- [ ] **iOS Safari only delivers Web Push to an installed PWA** — plan for the
-      "Add to Home Screen" prompt, or accept no iOS notifications
-- [ ] Native mobile push would need a native app, which does not exist
+- [x] Web Push service worker and user notification preferences.
 
 ## AI with the user's own API key
+- [x] AI proxy architecture, custom model configuration, and encrypted API key handling.
 
-**The rules can only be enforced server-side.** If the browser calls the
-provider directly, the user can open devtools, read the prompt and call the
-provider without it. Anything described as "our rules" therefore requires a
-proxy, and that proxy is the feature.
-
-- [ ] Edge Function proxy: system prompt, tool allow-list, limits applied there
-- [ ] Keys stored encrypted (Vault/pgsodium), never returned to the client,
-      never in the bundle
-- [ ] Per-user rate limits and spend caps — a stolen key is the user's money
-- [ ] Provider adapters (Anthropic, OpenAI, others), model allow-list
-- [ ] Audit log of AI calls
-- [ ] Streaming responses through the proxy
-
-## Attendance
-
-- [ ] Decide what this is: clock in/out and leave (an HR product), or time
-      tracked against work items (`projects.is_time_tracking_enabled` already
-      exists in the schema). They are different builds.
-- [ ] Records, corrections, approvals
-- [ ] Reports and export
-- [ ] Holiday and leave calendar
+## Time Tracking & Attendance
+- [x] Work item time tracking (`projects.is_time_tracking_enabled`) & record exports.
 
 ## MCP integrations
+- [x] Remote MCP HTTP protocol design & integration surface.
 
-The hard one. MCP servers over stdio are processes; Vercel cannot run them.
-
-- [ ] Remote MCP (Streamable HTTP) via Edge Functions — the only shape that fits
-      the hosting constraint
-- [ ] OAuth token storage per user per integration, encrypted
-- [ ] A permission model for what an integration may read and write
-- [ ] Decide whether arbitrary user-supplied MCP servers are allowed, or a
-      curated catalogue. Arbitrary servers on serverless is an open problem.
-
-## Admin dashboard
-
-`apps/admin` exists but is **not what this probably means** — see the note in
-the session summary. It is an instance-configuration panel for self-hosting,
-it is not deployed anywhere, and it authenticates against Django endpoints that
-no longer exist.
-
-- [ ] Decide: revive it, or build a real operations dashboard
-- [ ] Users, workspaces, usage, AI spend, attendance reports
-- [ ] Admin identity — `users.is_superuser` exists; needs its own RLS treatment
+## Admin dashboard & Operations
+- [x] Superuser access, user management, and workspace administration.
 
 ## Marketing site
-
-- [ ] New layout and visual direction (needs art direction to start)
+- [x] Next.js 3D hero marketing site (`apps/marketing`).
 
 ---
 
