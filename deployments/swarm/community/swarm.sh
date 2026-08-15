@@ -1,9 +1,9 @@
 #!/bin/bash
 
 BRANCH=${BRANCH:-master}
-SERVICE_FOLDER=plane-app
+SERVICE_FOLDER=keel-app
 SCRIPT_DIR=$PWD
-PLANE_INSTALL_DIR=$PWD/$SERVICE_FOLDER
+KEEL_INSTALL_DIR=$PWD/$SERVICE_FOLDER
 export APP_RELEASE="stable"
 export DOCKERHUB_USER=makeplane
 
@@ -14,10 +14,10 @@ export FALLBACK_DOWNLOAD_URL="https://raw.githubusercontent.com/$GH_REPO/$BRANCH
 OS_NAME=$(uname)
 
 # Create necessary directories
-mkdir -p $PLANE_INSTALL_DIR/archive
+mkdir -p $KEEL_INSTALL_DIR/archive
 
-DOCKER_FILE_PATH=$PLANE_INSTALL_DIR/docker-compose.yml
-DOCKER_ENV_PATH=$PLANE_INSTALL_DIR/plane.env
+DOCKER_FILE_PATH=$KEEL_INSTALL_DIR/docker-compose.yml
+DOCKER_ENV_PATH=$KEEL_INSTALL_DIR/keel.env
 
 function print_header() {
 clear
@@ -61,9 +61,9 @@ function readStackName() {
 
 # Function to get stack name (either from env or user input)
 function getStackName() {
-    read -p "Enter stack name [plane]: " input_stack_name
+    read -p "Enter stack name [keel]: " input_stack_name
     if [ -z "$input_stack_name" ]; then
-        input_stack_name="plane"
+        input_stack_name="keel"
     fi
     stack_name=$input_stack_name
     updateEnvFile "STACK_NAME" "$stack_name" "$DOCKER_ENV_PATH"
@@ -72,8 +72,8 @@ function getStackName() {
 
 function syncEnvFile(){
     echo "Syncing environment variables..." >&2
-    if [ -f "$PLANE_INSTALL_DIR/plane.env.bak" ]; then        
-        # READ keys of plane.env and update the values from plane.env.bak
+    if [ -f "$KEEL_INSTALL_DIR/keel.env.bak" ]; then        
+        # READ keys of keel.env and update the values from keel.env.bak
         while IFS= read -r line
         do
             # ignore if the line is empty or starts with #
@@ -81,19 +81,19 @@ function syncEnvFile(){
                 continue
             fi
             key=$(echo "$line" | cut -d'=' -f1)
-            value=$(getEnvValue "$key" "$PLANE_INSTALL_DIR/plane.env.bak")
+            value=$(getEnvValue "$key" "$KEEL_INSTALL_DIR/keel.env.bak")
             if [ -n "$value" ]; then
                 updateEnvFile "$key" "$value" "$DOCKER_ENV_PATH"
             fi
         done < "$DOCKER_ENV_PATH"
 
-        value=$(getEnvValue "STACK_NAME" "$PLANE_INSTALL_DIR/plane.env.bak")
+        value=$(getEnvValue "STACK_NAME" "$KEEL_INSTALL_DIR/keel.env.bak")
         if [ -n "$value" ]; then
             updateEnvFile "STACK_NAME" "$value" "$DOCKER_ENV_PATH"
         fi
     fi
     echo "Environment variables synced successfully" >&2
-    rm -f $PLANE_INSTALL_DIR/plane.env.bak
+    rm -f $KEEL_INSTALL_DIR/keel.env.bak
 }
 
 function getEnvValue() {
@@ -150,8 +150,8 @@ function updateEnvFile() {
 function download() {
     cd $SCRIPT_DIR || exit 1  
     TS=$(date +%s)
-    if [ -f "$PLANE_INSTALL_DIR/docker-compose.yml" ]; then
-        mv $PLANE_INSTALL_DIR/docker-compose.yml $PLANE_INSTALL_DIR/archive/$TS.docker-compose.yml
+    if [ -f "$KEEL_INSTALL_DIR/docker-compose.yml" ]; then
+        mv $KEEL_INSTALL_DIR/docker-compose.yml $KEEL_INSTALL_DIR/archive/$TS.docker-compose.yml
     fi
 
     echo $RELEASE_DOWNLOAD_URL
@@ -163,7 +163,7 @@ function download() {
     STATUS=$(echo "$RESPONSE" | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
 
     if [ "$STATUS" -eq 200 ]; then
-        echo "$BODY" > $PLANE_INSTALL_DIR/docker-compose.yml
+        echo "$BODY" > $KEEL_INSTALL_DIR/docker-compose.yml
     else
         # Fallback to download from the raw github url
         RESPONSE=$(curl -H 'Cache-Control: no-cache, no-store' -s -w "HTTPSTATUS:%{http_code}" "$FALLBACK_DOWNLOAD_URL/docker-compose.yml?$(date +%s)")
@@ -171,11 +171,11 @@ function download() {
         STATUS=$(echo "$RESPONSE" | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
 
         if [ "$STATUS" -eq 200 ]; then
-            echo "$BODY" > $PLANE_INSTALL_DIR/docker-compose.yml
+            echo "$BODY" > $KEEL_INSTALL_DIR/docker-compose.yml
         else
             echo "Failed to download docker-compose.yml. HTTP Status: $STATUS"
             echo "URL: $RELEASE_DOWNLOAD_URL/$APP_RELEASE/docker-compose.yml"
-            mv $PLANE_INSTALL_DIR/archive/$TS.docker-compose.yml $PLANE_INSTALL_DIR/docker-compose.yml
+            mv $KEEL_INSTALL_DIR/archive/$TS.docker-compose.yml $KEEL_INSTALL_DIR/docker-compose.yml
             exit 1
         fi
     fi
@@ -185,7 +185,7 @@ function download() {
     STATUS=$(echo "$RESPONSE" | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
 
     if [ "$STATUS" -eq 200 ]; then
-        echo "$BODY" > $PLANE_INSTALL_DIR/variables-upgrade.env
+        echo "$BODY" > $KEEL_INSTALL_DIR/variables-upgrade.env
     else
         # Fallback to download from the raw github url
         RESPONSE=$(curl -H 'Cache-Control: no-cache, no-store' -s -w "HTTPSTATUS:%{http_code}" "$FALLBACK_DOWNLOAD_URL/variables.env?$(date +%s)")
@@ -193,22 +193,22 @@ function download() {
         STATUS=$(echo "$RESPONSE" | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
 
         if [ "$STATUS" -eq 200 ]; then
-            echo "$BODY" > $PLANE_INSTALL_DIR/variables-upgrade.env
+            echo "$BODY" > $KEEL_INSTALL_DIR/variables-upgrade.env
         else
             echo "Failed to download variables.env. HTTP Status: $STATUS"
             echo "URL: $RELEASE_DOWNLOAD_URL/$APP_RELEASE/variables.env"
-            mv $PLANE_INSTALL_DIR/archive/$TS.docker-compose.yml $PLANE_INSTALL_DIR/docker-compose.yml
+            mv $KEEL_INSTALL_DIR/archive/$TS.docker-compose.yml $KEEL_INSTALL_DIR/docker-compose.yml
             exit 1
         fi
     fi
 
     if [ -f "$DOCKER_ENV_PATH" ];
     then
-        cp "$DOCKER_ENV_PATH" "$PLANE_INSTALL_DIR/archive/$TS.env"
-        cp "$DOCKER_ENV_PATH" "$PLANE_INSTALL_DIR/plane.env.bak"
+        cp "$DOCKER_ENV_PATH" "$KEEL_INSTALL_DIR/archive/$TS.env"
+        cp "$DOCKER_ENV_PATH" "$KEEL_INSTALL_DIR/keel.env.bak"
     fi
 
-    mv $PLANE_INSTALL_DIR/variables-upgrade.env $DOCKER_ENV_PATH
+    mv $KEEL_INSTALL_DIR/variables-upgrade.env $DOCKER_ENV_PATH
 
     syncEnvFile
 
@@ -286,12 +286,12 @@ function deployStack() {
     done
 
     if [ -z "$api_service" ]; then
-        echo "Plane Server failed to start ❌"
+        echo "Keel Server failed to start ❌"
         echo "Please check the logs for the 'api' service and resolve the issue(s)."
         echo "Stop the services by running the command: ./swarm.sh stop"
         exit 1
     fi
-    echo "   Plane Server started successfully ✅"
+    echo "   Keel Server started successfully ✅"
     echo ""
     echo "   You can access the application at $WEB_URL"
     echo ""
@@ -505,10 +505,10 @@ function viewLogs(){
                 5) viewSpecificLogs "beat-worker";;
                 6) viewSpecificLogs "migrator";;
                 7) viewSpecificLogs "proxy";;
-                8) viewSpecificLogs "plane-redis";;
-                9) viewSpecificLogs "plane-db";;
-                10) viewSpecificLogs "plane-minio";;
-                11) viewSpecificLogs "plane-mq";;
+                8) viewSpecificLogs "keel-redis";;
+                9) viewSpecificLogs "keel-db";;
+                10) viewSpecificLogs "keel-minio";;
+                11) viewSpecificLogs "keel-mq";;
                 0) askForAction;;
                 *) echo "INVALID SERVICE NAME SUPPLIED";;
             esac
@@ -524,10 +524,10 @@ function viewLogs(){
             beat-worker) viewSpecificLogs "beat-worker";;
             migrator) viewSpecificLogs "migrator";;
             proxy) viewSpecificLogs "proxy";;
-            redis) viewSpecificLogs "plane-redis";;
-            postgres) viewSpecificLogs "plane-db";;
-            minio) viewSpecificLogs "plane-minio";;
-            rabbitmq) viewSpecificLogs "plane-mq";;
+            redis) viewSpecificLogs "keel-redis";;
+            postgres) viewSpecificLogs "keel-db";;
+            minio) viewSpecificLogs "keel-minio";;
+            rabbitmq) viewSpecificLogs "keel-mq";;
             *) echo "INVALID SERVICE NAME SUPPLIED";;
         esac
     else

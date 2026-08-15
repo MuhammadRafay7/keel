@@ -9,14 +9,14 @@ import { observer } from "mobx-react";
 import { useParams, useRouter } from "next/navigation";
 import { MoreHorizontal, ArchiveIcon, Settings } from "lucide-react";
 import { Disclosure } from "@headlessui/react";
-// plane imports
-import { EUserPermissionsLevel } from "@plane/constants";
-import { useOutsideClickDetector } from "@plane/hooks";
-import { useTranslation } from "@plane/i18n";
-import { ChevronRightIcon } from "@plane/propel/icons";
-import { EUserWorkspaceRoles } from "@plane/types";
-import { CustomMenu } from "@plane/ui";
-import { cn } from "@plane/utils";
+// keel imports
+import { EUserPermissionsLevel } from "@keel/constants";
+import { useOutsideClickDetector } from "@keel/hooks";
+import { useTranslation } from "@keel/i18n";
+import { ChevronRightIcon } from "@keel/propel/icons";
+import { EUserWorkspaceRoles } from "@keel/types";
+import { CustomMenu } from "@keel/ui";
+import { cn } from "@keel/utils";
 // store hooks
 import { useUserPermissions } from "@/hooks/store/user";
 

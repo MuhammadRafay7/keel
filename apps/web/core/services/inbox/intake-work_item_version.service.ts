@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { API_BASE_URL } from "@plane/constants";
-import type { TDescriptionVersionsListResponse, TDescriptionVersionDetails } from "@plane/types";
+// keel imports
+import { API_BASE_URL } from "@keel/constants";
+import type { TDescriptionVersionsListResponse, TDescriptionVersionDetails } from "@keel/types";
 // helpers
 // services
 import { APIService } from "@/services/api.service";

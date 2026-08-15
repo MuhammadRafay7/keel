@@ -5,11 +5,11 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { CYCLE_STATUS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { CloseIcon } from "@plane/propel/icons";
-import { cn } from "@plane/utils";
+// keel imports
+import { CYCLE_STATUS } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { CloseIcon } from "@keel/propel/icons";
+import { cn } from "@keel/utils";
 
 type Props = {
   handleRemove: (val: string) => void;

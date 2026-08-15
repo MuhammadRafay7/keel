@@ -4,17 +4,17 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { API_BASE_URL } from "@plane/constants";
-import type { TPublicCycle } from "@plane/types";
+// keel imports
+import { API_BASE_URL } from "@keel/constants";
+import type { TPublicCycle } from "@keel/types";
 // api service
 import { APIService } from "../api.service";
 
 /**
- * Service class for managing cycles within plane sites application.
+ * Service class for managing cycles within keel sites application.
  * Extends APIService to handle HTTP requests to the cycle-related endpoints.
  * @extends {APIService}
- * @remarks This service is only available for plane sites
+ * @remarks This service is only available for keel sites
  */
 export class SitesCycleService extends APIService {
   constructor(BASE_URL?: string) {

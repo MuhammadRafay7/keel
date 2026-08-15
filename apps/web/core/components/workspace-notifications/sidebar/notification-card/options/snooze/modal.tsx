@@ -6,13 +6,13 @@
 
 import { useParams } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
-// plane imports
-import { allTimeIn30MinutesInterval12HoursFormat } from "@plane/constants";
-import { Button } from "@plane/propel/button";
-import { CloseIcon } from "@plane/propel/icons";
-import { CustomSelect, EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
+// keel imports
+import { allTimeIn30MinutesInterval12HoursFormat } from "@keel/constants";
+import { Button } from "@keel/propel/button";
+import { CloseIcon } from "@keel/propel/icons";
+import { CustomSelect, EModalPosition, EModalWidth, ModalCore } from "@keel/ui";
 // components
-import { getDate, cn } from "@plane/utils";
+import { getDate, cn } from "@keel/utils";
 import { DateDropdown } from "@/components/dropdowns/date";
 
 type TNotificationSnoozeModal = {

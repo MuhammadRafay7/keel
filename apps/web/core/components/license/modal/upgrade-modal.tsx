@@ -5,19 +5,19 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
+// keel imports
 import {
   BUSINESS_PLAN_FEATURES,
   ENTERPRISE_PLAN_FEATURES,
-  PLANE_COMMUNITY_PRODUCTS,
+  KEEL_COMMUNITY_PRODUCTS,
   PRO_PLAN_FEATURES,
   SUBSCRIPTION_REDIRECTION_URLS,
   SUBSCRIPTION_WEBPAGE_URLS,
   TALK_TO_SALES_URL,
-} from "@plane/constants";
-import { EProductSubscriptionEnum } from "@plane/types";
-import { EModalWidth, ModalCore } from "@plane/ui";
-import { cn } from "@plane/utils";
+} from "@keel/constants";
+import { EProductSubscriptionEnum } from "@keel/types";
+import { EModalWidth, ModalCore } from "@keel/ui";
+import { cn } from "@keel/utils";
 // components
 import { FreePlanCard, PlanUpgradeCard } from "@/components/license";
 import type { TCheckoutParams } from "@/components/license/modal/card/checkout-button";
@@ -38,8 +38,8 @@ export const PaidPlanUpgradeModal = observer(function PaidPlanUpgradeModal(props
   const isTrialAllowed = false;
 
   const handleRedirection = ({ planVariant, priceId }: TCheckoutParams) => {
-    // Get the product and price using plane community constants
-    const product = PLANE_COMMUNITY_PRODUCTS[planVariant];
+    // Get the product and price using keel community constants
+    const product = KEEL_COMMUNITY_PRODUCTS[planVariant];
     // oxlint-disable-next-line no-shadow
     const price = product.prices.find((price) => price.id === priceId);
     const frequency = price?.recurring ?? "year";
@@ -70,7 +70,7 @@ export const PaidPlanUpgradeModal = observer(function PaidPlanUpgradeModal(props
           <div className={cn(COMMON_CARD_CLASSNAME)}>
             <PlanUpgradeCard
               planVariant={EProductSubscriptionEnum.PRO}
-              product={PLANE_COMMUNITY_PRODUCTS[EProductSubscriptionEnum.PRO]}
+              product={KEEL_COMMUNITY_PRODUCTS[EProductSubscriptionEnum.PRO]}
               features={PRO_PLAN_FEATURES}
               verticalFeatureList
               extraFeatures={
@@ -88,7 +88,7 @@ export const PaidPlanUpgradeModal = observer(function PaidPlanUpgradeModal(props
           <div className={cn(COMMON_CARD_CLASSNAME)}>
             <PlanUpgradeCard
               planVariant={EProductSubscriptionEnum.BUSINESS}
-              product={PLANE_COMMUNITY_PRODUCTS[EProductSubscriptionEnum.BUSINESS]}
+              product={KEEL_COMMUNITY_PRODUCTS[EProductSubscriptionEnum.BUSINESS]}
               features={BUSINESS_PLAN_FEATURES}
               verticalFeatureList
               extraFeatures={
@@ -110,7 +110,7 @@ export const PaidPlanUpgradeModal = observer(function PaidPlanUpgradeModal(props
           <div className={cn(COMMON_CARD_CLASSNAME)}>
             <PlanUpgradeCard
               planVariant={EProductSubscriptionEnum.ENTERPRISE}
-              product={PLANE_COMMUNITY_PRODUCTS[EProductSubscriptionEnum.ENTERPRISE]}
+              product={KEEL_COMMUNITY_PRODUCTS[EProductSubscriptionEnum.ENTERPRISE]}
               features={ENTERPRISE_PLAN_FEATURES}
               verticalFeatureList
               extraFeatures={

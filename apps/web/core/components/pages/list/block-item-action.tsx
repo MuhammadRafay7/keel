@@ -6,15 +6,15 @@
 
 import { observer } from "mobx-react";
 import { Earth, Info, Minus } from "lucide-react";
-// plane imports
-import { LockIcon } from "@plane/propel/icons";
-import { Tooltip } from "@plane/propel/tooltip";
-import { Avatar, FavoriteStar } from "@plane/ui";
-import { renderFormattedDate, getFileURL } from "@plane/utils";
+// keel imports
+import { LockIcon } from "@keel/propel/icons";
+import { Tooltip } from "@keel/propel/tooltip";
+import { Avatar, FavoriteStar } from "@keel/ui";
+import { renderFormattedDate, getFileURL } from "@keel/utils";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
 import { usePageOperations } from "@/hooks/use-page-operations";
-// plane web hooks
+// keel web hooks
 import type { EPageStoreType } from "@/hooks/store";
 // store
 import type { TPageInstance } from "@/store/pages/base-page";

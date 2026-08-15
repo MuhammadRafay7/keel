@@ -54,10 +54,10 @@ function restoreData() {
     echo ""
 
     # ask for current install path
-    AIRGAPPED_INSTALL_PATH="$HOME/planeairgapped"
+    AIRGAPPED_INSTALL_PATH="$HOME/keelairgapped"
     read -p "Enter the airgapped instance install path [$AIRGAPPED_INSTALL_PATH]: " AIRGAPPED_INSTALL_PATH
     if [ -z "$AIRGAPPED_INSTALL_PATH" ]; then
-        AIRGAPPED_INSTALL_PATH="$HOME/planeairgapped"
+        AIRGAPPED_INSTALL_PATH="$HOME/keelairgapped"
     fi
 
     # check if the airgapped instance install path exists
@@ -78,13 +78,13 @@ function restoreData() {
 
     local dockerServiceStatus
     if command -v jq &> /dev/null; then
-        dockerServiceStatus=$($COMPOSE_CMD ls --filter name=plane-airgapped --format=json | jq -r .[0].Status)
+        dockerServiceStatus=$($COMPOSE_CMD ls --filter name=keel-airgapped --format=json | jq -r .[0].Status)
     else
-        dockerServiceStatus=$($COMPOSE_CMD ls --filter name=plane-airgapped | grep -o "running" | head -n 1)
+        dockerServiceStatus=$($COMPOSE_CMD ls --filter name=keel-airgapped | grep -o "running" | head -n 1)
     fi
 
     if [[ $dockerServiceStatus == "running" ]]; then
-        echo "Plane Airgapped is running. Please STOP the Plane Airgapped before restoring data."
+        echo "Keel Airgapped is running. Please STOP the Keel Airgapped before restoring data."
         exit 1
     fi
 

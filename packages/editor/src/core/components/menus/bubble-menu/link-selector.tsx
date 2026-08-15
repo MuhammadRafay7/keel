@@ -7,9 +7,9 @@
 import type { Editor } from "@tiptap/core";
 
 import { useCallback, useRef, useState } from "react";
-import { LinkIcon, TrashIcon, CheckIcon } from "@plane/propel/icons";
-// plane imports
-import { cn } from "@plane/utils";
+import { LinkIcon, TrashIcon, CheckIcon } from "@keel/propel/icons";
+// keel imports
+import { cn } from "@keel/utils";
 // constants
 import { CORE_EXTENSIONS } from "@/constants/extension";
 // helpers

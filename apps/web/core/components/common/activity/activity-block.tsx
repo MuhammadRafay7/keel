@@ -7,11 +7,11 @@
 import type { FC, ReactNode } from "react";
 import { Network } from "lucide-react";
 // types
-import { Tooltip } from "@plane/propel/tooltip";
-import type { TWorkspaceBaseActivity } from "@plane/types";
+import { Tooltip } from "@keel/propel/tooltip";
+import type { TWorkspaceBaseActivity } from "@keel/types";
 // ui
 // helpers
-import { renderFormattedTime, renderFormattedDate, calculateTimeAgo } from "@plane/utils";
+import { renderFormattedTime, renderFormattedDate, calculateTimeAgo } from "@keel/utils";
 // hooks
 import { usePlatformOS } from "@/hooks/use-platform-os";
 // local components

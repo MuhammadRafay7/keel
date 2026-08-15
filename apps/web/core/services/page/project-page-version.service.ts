@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
-// plane types
-import { API_BASE_URL } from "@plane/constants";
-import type { TPageVersion } from "@plane/types";
+// keel types
+import { API_BASE_URL } from "@keel/constants";
+import type { TPageVersion } from "@keel/types";
 // helpers
 // services
 import { APIService } from "@/services/api.service";

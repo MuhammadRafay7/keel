@@ -6,10 +6,10 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { CloseIcon } from "@plane/propel/icons";
-import type { IFilterInstance } from "@plane/shared-state";
-import type { TExternalFilter, TFilterProperty } from "@plane/types";
+// keel imports
+import { CloseIcon } from "@keel/propel/icons";
+import type { IFilterInstance } from "@keel/shared-state";
+import type { TExternalFilter, TFilterProperty } from "@keel/types";
 
 interface FilterItemCloseButtonProps<P extends TFilterProperty, E extends TExternalFilter> {
   conditionId: string;

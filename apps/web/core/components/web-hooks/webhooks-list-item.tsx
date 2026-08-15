@@ -6,9 +6,9 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-// Plane imports
-import type { IWebhook } from "@plane/types";
-import { ToggleSwitch } from "@plane/ui";
+// Keel imports
+import type { IWebhook } from "@keel/types";
+import { ToggleSwitch } from "@keel/ui";
 // hooks
 import { useWebhook } from "@/hooks/store/use-webhook";
 

@@ -7,9 +7,9 @@
 import { observer } from "mobx-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-// plane internal packages
-import { Tooltip } from "@plane/propel/tooltip";
-import { cn } from "@plane/utils";
+// keel internal packages
+import { Tooltip } from "@keel/propel/tooltip";
+import { cn } from "@keel/utils";
 // hooks
 import { useTheme } from "@/hooks/store";
 import { useSidebarMenu } from "@/hooks/use-sidebar-menu";

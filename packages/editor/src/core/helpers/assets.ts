@@ -5,13 +5,13 @@
  */
 
 import type { Node as ProseMirrorNode } from "@tiptap/pm/model";
-// plane imports
-import type { ADDITIONAL_EXTENSIONS } from "@plane/utils";
-import { CORE_EXTENSIONS } from "@plane/utils";
+// keel imports
+import type { ADDITIONAL_EXTENSIONS } from "@keel/utils";
+import { CORE_EXTENSIONS } from "@keel/utils";
 // extensions
 import { getImageBlockId } from "@/extensions/custom-image/utils";
-// plane editor imports
-import { ADDITIONAL_ASSETS_META_DATA_RECORD } from "@/plane-editor/constants/assets";
+// keel editor imports
+import { ADDITIONAL_ASSETS_META_DATA_RECORD } from "@/keel-editor/constants/assets";
 // types
 import type { TEditorAsset } from "@/types";
 

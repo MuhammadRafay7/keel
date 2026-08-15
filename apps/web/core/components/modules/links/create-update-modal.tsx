@@ -6,12 +6,12 @@
 
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-// plane types
-import { Button } from "@plane/propel/button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { ILinkDetails, ModuleLink } from "@plane/types";
-// plane ui
-import { Input, ModalCore } from "@plane/ui";
+// keel types
+import { Button } from "@keel/propel/button";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { ILinkDetails, ModuleLink } from "@keel/types";
+// keel ui
+import { Input, ModalCore } from "@keel/ui";
 
 type Props = {
   createLink: (formData: ModuleLink) => Promise<void>;

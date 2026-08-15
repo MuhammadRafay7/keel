@@ -35,6 +35,6 @@ const Card = React.forwardRef(function Card(props: CardProps, ref: React.Forward
   );
 });
 
-Card.displayName = "plane-ui-card";
+Card.displayName = "keel-ui-card";
 
 export { Card, ECardVariant, ECardSpacing, ECardDirection };

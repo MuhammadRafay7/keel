@@ -7,12 +7,12 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react";
 // types
-import { PROJECT_ERROR_MESSAGES } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TIssue } from "@plane/types";
+import { PROJECT_ERROR_MESSAGES } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { TIssue } from "@keel/types";
 // ui
-import { AlertModalCore } from "@plane/ui";
+import { AlertModalCore } from "@keel/ui";
 // constants
 // hooks
 import { useProject } from "@/hooks/store/use-project";

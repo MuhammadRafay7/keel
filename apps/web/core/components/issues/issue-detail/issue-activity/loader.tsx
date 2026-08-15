@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { Loader } from "@plane/ui";
+// keel imports
+import { Loader } from "@keel/ui";
 
 export function IssueActivityLoader() {
   return (

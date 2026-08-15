@@ -18,13 +18,13 @@ import { attachInstruction } from "@atlaskit/pragmatic-drag-and-drop-hitbox/tree
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { createRoot } from "react-dom/client";
-// plane types
-import { useTranslation } from "@plane/i18n";
-import type { InstructionType } from "@plane/types";
-// plane ui
-import { DropIndicator, ToggleSwitch } from "@plane/ui";
-// plane utils
-import { cn } from "@plane/utils";
+// keel types
+import { useTranslation } from "@keel/i18n";
+import type { InstructionType } from "@keel/types";
+// keel ui
+import { DropIndicator, ToggleSwitch } from "@keel/ui";
+// keel utils
+import { cn } from "@keel/utils";
 // hooks
 import { useHome } from "@/hooks/store/use-home";
 import { HOME_WIDGETS_LIST } from "../../home-dashboard-widgets";

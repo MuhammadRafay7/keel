@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { EIssuesStoreType, TWorkItemFilterExpression, TWorkItemFilterProperty } from "@plane/types";
+// keel imports
+import type { EIssuesStoreType, TWorkItemFilterExpression, TWorkItemFilterProperty } from "@keel/types";
 // local imports
 import type { IFilterInstance } from "../rich-filters";
 

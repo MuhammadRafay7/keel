@@ -9,18 +9,18 @@ import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import useSWR, { mutate } from "swr";
 import { CheckCircle } from "lucide-react";
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
-import { Button } from "@plane/propel/button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { Tooltip } from "@plane/propel/tooltip";
-import type { IAppIntegration, IWorkspaceIntegration } from "@plane/types";
+import { EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
+import { Button } from "@keel/propel/button";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import { Tooltip } from "@keel/propel/tooltip";
+import type { IAppIntegration, IWorkspaceIntegration } from "@keel/types";
 // ui
-import { Loader } from "@plane/ui";
+import { Loader } from "@keel/ui";
 // assets
 import GithubLogo from "@/app/assets/services/github.png?url";
 import SlackLogo from "@/app/assets/services/slack.png?url";
 // constants
-import { WORKSPACE_INTEGRATIONS } from "@plane/constants";
+import { WORKSPACE_INTEGRATIONS } from "@keel/constants";
 // hooks
 import { useInstance } from "@/hooks/store/use-instance";
 import { useUserPermissions } from "@/hooks/store/user";
@@ -37,12 +37,12 @@ const integrationDetails: { [key: string]: any } = {
   github: {
     logo: GithubLogo,
     installed: "Activate GitHub on individual projects to sync with specific repositories.",
-    notInstalled: "Connect with GitHub with your Plane workspace to sync project work items.",
+    notInstalled: "Connect with GitHub with your Keel workspace to sync project work items.",
   },
   slack: {
     logo: SlackLogo,
     installed: "Activate Slack on individual projects to sync with specific channels.",
-    notInstalled: "Connect with Slack with your Plane workspace to sync project work items.",
+    notInstalled: "Connect with Slack with your Keel workspace to sync project work items.",
   },
 };
 

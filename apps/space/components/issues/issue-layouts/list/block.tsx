@@ -8,12 +8,12 @@ import { useRef } from "react";
 import { observer } from "mobx-react";
 import { Link } from "react-router";
 import { useParams, useSearchParams } from "next/navigation";
-// plane types
-import { Tooltip } from "@plane/propel/tooltip";
-import type { IIssueDisplayProperties } from "@plane/types";
-// plane ui
-// plane utils
-import { cn } from "@plane/utils";
+// keel types
+import { Tooltip } from "@keel/propel/tooltip";
+import type { IIssueDisplayProperties } from "@keel/types";
+// keel ui
+// keel utils
+import { cn } from "@keel/utils";
 // helpers
 import { queryParamGenerator } from "@/helpers/query-param-generator";
 // hooks

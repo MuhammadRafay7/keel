@@ -18,7 +18,7 @@
     <a href="https://app.plane.so/#gh-light-mode-only" target="_blank">
       <img
         src="https://media.docs.plane.so/GitHub-readme/github-top.webp"
-        alt="Plane Screens"
+        alt="Keel Screens"
         width="100%"
       />
     </a>
@@ -30,19 +30,19 @@ Meet [Plane](https://plane.so/), an open-source project management tool to track
 
 ## 🚀 Installation
 
-Getting started with Plane is simple. Choose the setup that works best for you:
+Getting started with Keel is simple. Choose the setup that works best for you:
 
-- **Plane Cloud**
+- **Keel Cloud**
   Sign up for a free account on [Plane Cloud](https://app.plane.so)—it's the fastest way to get up and running without worrying about infrastructure.
 
-- **Self-host Plane**
+- **Self-host Keel**
   Prefer full control over your data and infrastructure? Install and run Plane on your own servers. Follow our detailed [deployment guides](https://developers.plane.so/self-hosting/overview) to get started.
 
 | Installation methods | Docs link                                                                                                                                                                               |
 | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Docker               | [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://developers.plane.so/self-hosting/methods/docker-compose)         |
 | Kubernetes           | [![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)](https://developers.plane.so/self-hosting/methods/kubernetes) |
-| Managed hosting      | [<img alt="Deploy with Zenith" src="https://cdn.zenith.hosting/buttons/deploy-with-zenith.svg" height="40">](https://zenith.hosting/host/plane) |
+| Managed hosting      | [<img alt="Deploy with Zenith" src="https://cdn.zenith.hosting/buttons/deploy-with-zenith.svg" height="40">](https://zenith.hosting/host/keel) |
 
 `Instance admins` can configure instance settings with [God mode](https://developers.plane.so/self-hosting/govern/instance-admin).
 
@@ -61,10 +61,10 @@ Getting started with Plane is simple. Choose the setup that works best for you:
   Customize your workflow by creating filters to display only the most relevant issues. Save and share these views with ease.
 
 - **Pages**
-  Capture and organize ideas using Plane Pages, complete with AI capabilities and a rich text editor. Format text, insert images, add hyperlinks, or convert your notes into actionable items.
+  Capture and organize ideas using Keel Pages, complete with AI capabilities and a rich text editor. Format text, insert images, add hyperlinks, or convert your notes into actionable items.
 
 - **Analytics**
-  Access real-time insights across all your Plane data. Visualize trends, remove blockers, and keep your projects moving forward.
+  Access real-time insights across all your Keel data. Visualize trends, remove blockers, and keep your projects moving forward.
 
 ## 🛠️ Local development
 
@@ -82,7 +82,7 @@ See [CONTRIBUTING](./CONTRIBUTING.md)
     <a href="https://plane.so" target="_blank">
       <img
         src="https://media.docs.plane.so/GitHub-readme/github-work-items.webp"
-        alt="Plane Views"
+        alt="Keel Views"
         width="100%"
       />
     </a>
@@ -99,7 +99,7 @@ See [CONTRIBUTING](./CONTRIBUTING.md)
     <a href="https://plane.so" target="_blank">
       <img
         src="https://media.docs.plane.so/GitHub-readme/github-modules.webp"
-        alt="Plane Cycles and Modules"
+        alt="Keel Cycles and Modules"
         width="100%"
       />
     </a>
@@ -108,7 +108,7 @@ See [CONTRIBUTING](./CONTRIBUTING.md)
     <a href="https://plane.so" target="_blank">
       <img
         src="https://media.docs.plane.so/GitHub-readme/github-views.webp"
-        alt="Plane Analytics"
+        alt="Keel Analytics"
         width="100%"
       />
     </a>
@@ -117,7 +117,7 @@ See [CONTRIBUTING](./CONTRIBUTING.md)
     <a href="https://plane.so" target="_blank">
       <img
         src="https://media.docs.plane.so/GitHub-readme/github-analytics.webp"
-        alt="Plane Pages"
+        alt="Keel Pages"
         width="100%"
       />
     </a>
@@ -142,7 +142,7 @@ To disclose any security issues, please email us at security@plane.so.
 
 ## 🤝 Contributing
 
-There are many ways you can contribute to Plane:
+There are many ways you can contribute to Keel:
 
 - Report [bugs](https://github.com/makeplane/plane/issues/new?assignees=srinivaspendem%2Cpushya22&labels=%F0%9F%90%9Bbug&projects=&template=--bug-report.yaml&title=%5Bbug%5D%3A+) or submit [feature requests](https://github.com/makeplane/plane/issues/new?assignees=srinivaspendem%2Cpushya22&labels=%E2%9C%A8feature&projects=&template=--feature-request.yaml&title=%5Bfeature%5D%3A+).
 - Review the [documentation](https://docs.plane.so/) and submit [pull requests](https://github.com/makeplane/docs) to improve it—whether it's fixing typos or adding new content.
@@ -164,4 +164,4 @@ Please read [CONTRIBUTING.md](https://github.com/makeplane/plane/blob/master/CON
 ## License
 
 This project is licensed under the [GNU Affero General Public License v3.0](https://github.com/makeplane/plane/blob/master/LICENSE.txt).
-# plane
+# keel

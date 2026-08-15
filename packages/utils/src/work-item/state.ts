@@ -4,10 +4,10 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { TDraggableData } from "@plane/constants";
-import { STATE_GROUPS } from "@plane/constants";
-import type { IState, IStateResponse } from "@plane/types";
+// keel imports
+import type { TDraggableData } from "@keel/constants";
+import { STATE_GROUPS } from "@keel/constants";
+import type { IState, IStateResponse } from "@keel/types";
 
 export const orderStateGroups = (unorderedStateGroups: IStateResponse | undefined): IStateResponse | undefined => {
   if (!unorderedStateGroups) return undefined;

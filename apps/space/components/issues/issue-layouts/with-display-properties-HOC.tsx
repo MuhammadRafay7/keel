@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import type { IIssueDisplayProperties } from "@plane/types";
+// keel imports
+import type { IIssueDisplayProperties } from "@keel/types";
 
 interface IWithDisplayPropertiesHOC {
   displayProperties: IIssueDisplayProperties;

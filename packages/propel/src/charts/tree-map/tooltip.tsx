@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-// plane imports
+// keel imports
 import { Card, ECardSpacing } from "../../card";
 
 interface TreeMapTooltipProps {

@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane types
-import type { TSearchEntities } from "@plane/types";
+// keel types
+import type { TSearchEntities } from "@keel/types";
 
 export type TMentionSuggestion = {
   entity_identifier: string;

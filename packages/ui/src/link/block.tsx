@@ -5,9 +5,9 @@
  */
 
 import React from "react";
-// plane utils
-import { calculateTimeAgo, cn, getIconForLink } from "@plane/utils";
-// plane ui
+// keel utils
+import { calculateTimeAgo, cn, getIconForLink } from "@keel/utils";
+// keel ui
 import type { TContextMenuItem } from "../dropdowns/context-menu/root";
 import { CustomMenu } from "../dropdowns/custom-menu";
 

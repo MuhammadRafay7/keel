@@ -6,10 +6,10 @@
 
 import { observer } from "mobx-react";
 // icons
-import { DATE_AFTER_FILTER_OPTIONS } from "@plane/constants";
-import { CloseIcon } from "@plane/propel/icons";
+import { DATE_AFTER_FILTER_OPTIONS } from "@keel/constants";
+import { CloseIcon } from "@keel/propel/icons";
 // helpers
-import { renderFormattedDate, capitalizeFirstLetter } from "@plane/utils";
+import { renderFormattedDate, capitalizeFirstLetter } from "@keel/utils";
 // constants
 
 type Props = {

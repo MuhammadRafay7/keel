@@ -4,10 +4,10 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { CloseIcon, ModuleIcon, ChevronDownIcon } from "@plane/propel/icons";
-import { Tooltip } from "@plane/propel/tooltip";
-import { cn } from "@plane/utils";
+// keel imports
+import { CloseIcon, ModuleIcon, ChevronDownIcon } from "@keel/propel/icons";
+import { Tooltip } from "@keel/propel/tooltip";
+import { cn } from "@keel/utils";
 // hooks
 import { useModule } from "@/hooks/store/use-module";
 import { usePlatformOS } from "@/hooks/use-platform-os";

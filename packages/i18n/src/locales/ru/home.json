@@ -5,7 +5,7 @@
       "not_right_now": "Не сейчас",
       "create_project": {
         "title": "Создать проект",
-        "description": "Большинство вещей начинаются с проекта в Plane.",
+        "description": "Большинство вещей начинаются с проекта в Keel.",
         "cta": "Начать"
       },
       "invite_team": {
@@ -19,7 +19,7 @@
         "cta": "Настроить"
       },
       "personalize_account": {
-        "title": "Персонализируйте Plane",
+        "title": "Персонализируйте Keel",
         "description": "Выберите изображение, цвета и другие параметры.",
         "cta": "Настроить сейчас"
       },
@@ -52,8 +52,8 @@
         "issues": "Рабочие элементы"
       }
     },
-    "new_at_plane": {
-      "title": "Новое в Plane"
+    "new_at_keel": {
+      "title": "Новое в Keel"
     },
     "quick_tutorial": {
       "title": "Быстрое обучение"

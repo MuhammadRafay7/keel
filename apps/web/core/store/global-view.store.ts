@@ -7,8 +7,8 @@
 import { set, cloneDeep, isEqual } from "lodash-es";
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import { computedFn } from "mobx-utils";
-// plane imports
-import type { IWorkspaceView } from "@plane/types";
+// keel imports
+import type { IWorkspaceView } from "@keel/types";
 // services
 import { WorkspaceService } from "@/services/workspace.service";
 // store

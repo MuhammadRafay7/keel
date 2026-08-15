@@ -5,15 +5,15 @@
  */
 
 import { compact, isEqual, sortBy } from "lodash-es";
-// plane imports
+// keel imports
 import type {
   TFilterConditionNode,
   TFilterExpression,
   TFilterGroupNode,
   TFilterProperty,
   TFilterValue,
-} from "@plane/types";
-import { FILTER_NODE_TYPE } from "@plane/types";
+} from "@keel/types";
+import { FILTER_NODE_TYPE } from "@keel/types";
 // local imports
 import { isConditionNode, isGroupNode } from "../types/core";
 import { processGroupNode } from "../types/shared";

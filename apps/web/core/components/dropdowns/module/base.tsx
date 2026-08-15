@@ -7,11 +7,11 @@
 import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import type { IModule } from "@plane/types";
-import { ComboDropDown } from "@plane/ui";
-import { cn } from "@plane/utils";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import type { IModule } from "@keel/types";
+import { ComboDropDown } from "@keel/ui";
+import { cn } from "@keel/utils";
 // hooks
 import { useDropdown } from "@/hooks/use-dropdown";
 import { usePlatformOS } from "@/hooks/use-platform-os";

@@ -10,11 +10,11 @@ import ts from "highlight.js/lib/languages/typescript";
 import { common, createLowlight } from "lowlight";
 import { CheckIcon } from "lucide-react";
 import { useState } from "react";
-import { CopyIcon } from "@plane/propel/icons";
+import { CopyIcon } from "@keel/propel/icons";
 // ui
-import { Tooltip } from "@plane/propel/tooltip";
-// plane utils
-import { cn } from "@plane/utils";
+import { Tooltip } from "@keel/propel/tooltip";
+// keel utils
+import { cn } from "@keel/utils";
 // types
 import type { TCodeBlockAttributes } from "./types";
 import { ECodeBlockAttributeNames } from "./types";

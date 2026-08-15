@@ -7,13 +7,13 @@
 import { useEffect, useMemo } from "react";
 import { observer } from "mobx-react";
 import { v4 as uuidv4 } from "uuid";
-// plane imports
-import type { TSaveViewOptions, TUpdateViewOptions } from "@plane/constants";
-import type { IWorkItemFilterInstance } from "@plane/shared-state";
-import type { IIssueFilters, TWorkItemFilterExpression } from "@plane/types";
+// keel imports
+import type { TSaveViewOptions, TUpdateViewOptions } from "@keel/constants";
+import type { IWorkItemFilterInstance } from "@keel/shared-state";
+import type { IIssueFilters, TWorkItemFilterExpression } from "@keel/types";
 // store hooks
 import { useWorkItemFilters } from "@/hooks/store/work-item-filters/use-work-item-filters";
-// plane web imports
+// keel web imports
 import type { TWorkItemFiltersEntityProps } from "@/hooks/work-item-filters/use-work-item-filters-config";
 import { useWorkItemFiltersConfig } from "@/hooks/work-item-filters/use-work-item-filters-config";
 // local imports

@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { MAX_FILE_SIZE } from "@plane/constants";
+// keel imports
+import { MAX_FILE_SIZE } from "@keel/constants";
 // hooks
 import { useInstance } from "@/hooks/store/use-instance";
 

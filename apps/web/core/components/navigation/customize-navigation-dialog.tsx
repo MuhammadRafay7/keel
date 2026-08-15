@@ -8,11 +8,11 @@ import { useCallback, useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { GripVertical, X } from "lucide-react";
-// plane imports
-import { WORKSPACE_SIDEBAR_DYNAMIC_NAVIGATION_ITEMS_LINKS, EUserPermissionsLevel } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { Checkbox, EModalPosition, EModalWidth, ModalCore, Sortable } from "@plane/ui";
-import { cn } from "@plane/utils";
+// keel imports
+import { WORKSPACE_SIDEBAR_DYNAMIC_NAVIGATION_ITEMS_LINKS, EUserPermissionsLevel } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { Checkbox, EModalPosition, EModalWidth, ModalCore, Sortable } from "@keel/ui";
+import { cn } from "@keel/utils";
 // hooks
 import { useUserPermissions } from "@/hooks/store/user";
 import {
@@ -23,7 +23,7 @@ import {
 // helpers
 import { getSidebarNavigationItemIcon } from "@/components/workspace/sidebar/helper";
 // types
-import type { TPersonalNavigationItemKey } from "@plane/types";
+import type { TPersonalNavigationItemKey } from "@keel/types";
 
 type TCustomizeNavigationDialogProps = {
   isOpen: boolean;

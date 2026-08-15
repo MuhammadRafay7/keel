@@ -6,10 +6,10 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { DueDatePropertyIcon } from "@plane/propel/icons";
+import { DueDatePropertyIcon } from "@keel/propel/icons";
 // types
-import type { TIssue } from "@plane/types";
-import { cn, getDate, renderFormattedPayloadDate, shouldHighlightIssueDueDate } from "@plane/utils";
+import type { TIssue } from "@keel/types";
+import { cn, getDate, renderFormattedPayloadDate, shouldHighlightIssueDueDate } from "@keel/utils";
 // components
 import { DateDropdown } from "@/components/dropdowns/date";
 // helpers

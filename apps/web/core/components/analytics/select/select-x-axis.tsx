@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
-// plane package imports
-import type { ChartXAxisProperty } from "@plane/types";
-import { CustomSelect } from "@plane/ui";
+// keel package imports
+import type { ChartXAxisProperty } from "@keel/types";
+import { CustomSelect } from "@keel/ui";
 
 type Props = {
   value?: ChartXAxisProperty;

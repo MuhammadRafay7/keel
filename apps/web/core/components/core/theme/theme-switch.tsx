@@ -4,12 +4,12 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { I_THEME_OPTION } from "@plane/constants";
-import { THEME_OPTIONS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
+// keel imports
+import type { I_THEME_OPTION } from "@keel/constants";
+import { THEME_OPTIONS } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
 // constants
-import { CustomSelect } from "@plane/ui";
+import { CustomSelect } from "@keel/ui";
 // ui
 
 type Props = {

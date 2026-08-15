@@ -6,11 +6,11 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { PlusIcon, WorkItemsIcon } from "@plane/propel/icons";
-import type { TIssue, TIssueServiceType } from "@plane/types";
-import { CustomMenu } from "@plane/ui";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import { PlusIcon, WorkItemsIcon } from "@keel/propel/icons";
+import type { TIssue, TIssueServiceType } from "@keel/types";
+import { CustomMenu } from "@keel/ui";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 

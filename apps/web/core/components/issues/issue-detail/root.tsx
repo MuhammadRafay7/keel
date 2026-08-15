@@ -6,12 +6,12 @@
 
 import { useMemo } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { TOAST_TYPE, setPromiseToast, setToast } from "@plane/propel/toast";
-import type { TIssue } from "@plane/types";
-import { EIssuesStoreType } from "@plane/types";
+// keel imports
+import { EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { TOAST_TYPE, setPromiseToast, setToast } from "@keel/propel/toast";
+import type { TIssue } from "@keel/types";
+import { EIssuesStoreType } from "@keel/types";
 // assets
 import emptyIssue from "@/app/assets/empty-state/issue.svg?url";
 // components

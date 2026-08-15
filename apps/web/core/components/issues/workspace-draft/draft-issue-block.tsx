@@ -8,14 +8,14 @@ import React, { useRef, useState } from "react";
 import { omit } from "lodash-es";
 import { observer } from "mobx-react";
 import { SquareStackIcon } from "lucide-react";
-import { CopyIcon, EditIcon, TrashIcon } from "@plane/propel/icons";
-// plane utils
-import { Tooltip } from "@plane/propel/tooltip";
-import type { TWorkspaceDraftIssue } from "@plane/types";
-import { EIssuesStoreType } from "@plane/types";
-import type { TContextMenuItem } from "@plane/ui";
-import { Row } from "@plane/ui";
-import { cn } from "@plane/utils";
+import { CopyIcon, EditIcon, TrashIcon } from "@keel/propel/icons";
+// keel utils
+import { Tooltip } from "@keel/propel/tooltip";
+import type { TWorkspaceDraftIssue } from "@keel/types";
+import { EIssuesStoreType } from "@keel/types";
+import type { TContextMenuItem } from "@keel/ui";
+import { Row } from "@keel/ui";
+import { cn } from "@keel/utils";
 // hooks
 import { useAppTheme } from "@/hooks/store/use-app-theme";
 import { useProject } from "@/hooks/store/use-project";

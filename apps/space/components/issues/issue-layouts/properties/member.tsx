@@ -7,11 +7,11 @@
 import { observer } from "mobx-react";
 // icons
 import type { LucideIcon } from "lucide-react";
-import { MembersPropertyIcon } from "@plane/propel/icons";
-// plane ui
-import { Avatar, AvatarGroup } from "@plane/ui";
-// plane utils
-import { cn } from "@plane/utils";
+import { MembersPropertyIcon } from "@keel/propel/icons";
+// keel ui
+import { Avatar, AvatarGroup } from "@keel/ui";
+// keel utils
+import { cn } from "@keel/utils";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
 //

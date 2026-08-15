@@ -5,8 +5,8 @@
  */
 
 import { sortBy } from "lodash-es";
-// plane imports
-import type { IModule, TModuleDisplayFilters, TModuleFilters, TModuleOrderByOptions } from "@plane/types";
+// keel imports
+import type { IModule, TModuleDisplayFilters, TModuleFilters, TModuleOrderByOptions } from "@keel/types";
 // local imports
 import { getDate } from "./datetime";
 import { satisfiesDateFilter } from "./filter";

@@ -6,11 +6,11 @@
 
 import { useEffect, useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-// plane imports
-import { Button } from "@plane/propel/button";
-import { InstanceService } from "@plane/services";
+// keel imports
+import { Button } from "@keel/propel/button";
+import { InstanceService } from "@keel/services";
 // ui
-import { Input } from "@plane/ui";
+import { Input } from "@keel/ui";
 
 type Props = {
   isOpen: boolean;

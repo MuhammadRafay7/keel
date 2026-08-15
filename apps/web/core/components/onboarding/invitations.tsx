@@ -5,14 +5,14 @@
  */
 
 import { useState } from "react";
-// plane imports
-import { ROLE } from "@plane/constants";
+// keel imports
+import { ROLE } from "@keel/constants";
 // types
-import { Button } from "@plane/propel/button";
-import type { IWorkspaceMemberInvitation } from "@plane/types";
+import { Button } from "@keel/propel/button";
+import type { IWorkspaceMemberInvitation } from "@keel/types";
 // ui
-import { Checkbox, Spinner } from "@plane/ui";
-import { truncateText } from "@plane/utils";
+import { Checkbox, Spinner } from "@keel/ui";
+import { truncateText } from "@keel/utils";
 // constants
 // helpers
 import { WorkspaceLogo } from "@/components/workspace/logo";

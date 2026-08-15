@@ -1,5 +1,5 @@
 {
-  "name": "@plane/utils",
+  "name": "@keel/utils",
   "version": "1.4.1",
   "private": true,
   "description": "Helper functions shared across multiple apps internally",
@@ -23,8 +23,8 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "@plane/constants": "workspace:*",
-    "@plane/types": "workspace:*",
+    "@keel/constants": "workspace:*",
+    "@keel/types": "workspace:*",
     "chroma-js": "catalog:",
     "clsx": "catalog:",
     "date-fns": "catalog:",
@@ -44,7 +44,7 @@
     "uuid": "catalog:"
   },
   "devDependencies": {
-    "@plane/typescript-config": "workspace:*",
+    "@keel/typescript-config": "workspace:*",
     "@types/chroma-js": "catalog:",
     "@types/hast": "catalog:",
     "@types/lodash-es": "catalog:",

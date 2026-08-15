@@ -5,9 +5,9 @@
  */
 
 import { observer } from "mobx-react";
-import { LabelPropertyIcon } from "@plane/propel/icons";
-// plane imports
-import { Tooltip } from "@plane/propel/tooltip";
+import { LabelPropertyIcon } from "@keel/propel/icons";
+// keel imports
+import { Tooltip } from "@keel/propel/tooltip";
 // hooks
 import { useLabel } from "@/hooks/store/use-label";
 

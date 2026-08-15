@@ -8,13 +8,13 @@ import React from "react";
 import { observer } from "mobx-react";
 import type { Control } from "react-hook-form";
 import { Controller } from "react-hook-form";
-import { ETabIndices } from "@plane/constants";
-import { CloseIcon } from "@plane/propel/icons";
-// plane imports
+import { ETabIndices } from "@keel/constants";
+import { CloseIcon } from "@keel/propel/icons";
+// keel imports
 // types
-import type { ISearchIssueResponse, TIssue } from "@plane/types";
+import type { ISearchIssueResponse, TIssue } from "@keel/types";
 // helpers
-import { getTabIndex } from "@plane/utils";
+import { getTabIndex } from "@keel/utils";
 // hooks
 import { usePlatformOS } from "@/hooks/use-platform-os";
 // components

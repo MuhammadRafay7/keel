@@ -5,9 +5,9 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import type { TGroupedIssues, TIssue, TIssueMap, TPaginationData, ICalendarDate, ICalendarWeek } from "@plane/types";
-import { cn, getOrderedDays, renderFormattedPayloadDate } from "@plane/utils";
+// keel imports
+import type { TGroupedIssues, TIssue, TIssueMap, TPaginationData, ICalendarDate, ICalendarWeek } from "@keel/types";
+import { cn, getOrderedDays, renderFormattedPayloadDate } from "@keel/utils";
 // hooks
 import { useUserProfile } from "@/hooks/store/user";
 // types

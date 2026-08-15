@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-// plane utils
-import { cn } from "@plane/utils";
+// keel utils
+import { cn } from "@keel/utils";
 // hooks
 import { useTimeLineChartStore } from "@/hooks/use-timeline-chart";
 //

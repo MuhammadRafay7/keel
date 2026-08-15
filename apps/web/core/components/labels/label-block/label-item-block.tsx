@@ -7,17 +7,17 @@
 import type { MutableRefObject } from "react";
 import { useRef, useState } from "react";
 import type { LucideIcon } from "lucide-react";
-// plane helpers
-import { PROJECT_SETTINGS_TRACKER_ELEMENTS } from "@plane/constants";
-import { useOutsideClickDetector } from "@plane/hooks";
-import type { ISvgIcons } from "@plane/propel/icons";
-import { CloseIcon } from "@plane/propel/icons";
+// keel helpers
+import { PROJECT_SETTINGS_TRACKER_ELEMENTS } from "@keel/constants";
+import { useOutsideClickDetector } from "@keel/hooks";
+import type { ISvgIcons } from "@keel/propel/icons";
+import { CloseIcon } from "@keel/propel/icons";
 // types
-import type { IIssueLabel } from "@plane/types";
+import type { IIssueLabel } from "@keel/types";
 // ui
-import { CustomMenu, DragHandle } from "@plane/ui";
+import { CustomMenu, DragHandle } from "@keel/ui";
 // helpers
-import { cn } from "@plane/utils";
+import { cn } from "@keel/utils";
 // components
 import { LabelName } from "./label-name";
 

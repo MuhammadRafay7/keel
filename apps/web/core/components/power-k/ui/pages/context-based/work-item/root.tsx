@@ -6,8 +6,8 @@
 
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane imports
-import { EIssueServiceType } from "@plane/types";
+// keel imports
+import { EIssueServiceType } from "@keel/types";
 // components
 import type { TPowerKPageType } from "@/components/power-k/core/types";
 // hooks

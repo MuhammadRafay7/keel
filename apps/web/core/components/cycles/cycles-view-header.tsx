@@ -7,13 +7,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { ListFilter } from "lucide-react";
-// plane imports
-import { useOutsideClickDetector } from "@plane/hooks";
-import { IconButton } from "@plane/propel/icon-button";
-import { useTranslation } from "@plane/i18n";
-import { SearchIcon, CloseIcon } from "@plane/propel/icons";
-import type { TCycleFilters } from "@plane/types";
-import { cn, calculateTotalFilters } from "@plane/utils";
+// keel imports
+import { useOutsideClickDetector } from "@keel/hooks";
+import { IconButton } from "@keel/propel/icon-button";
+import { useTranslation } from "@keel/i18n";
+import { SearchIcon, CloseIcon } from "@keel/propel/icons";
+import type { TCycleFilters } from "@keel/types";
+import { cn, calculateTotalFilters } from "@keel/utils";
 // components
 import { FiltersDropdown } from "@/components/issues/issue-layouts/filters";
 // hooks

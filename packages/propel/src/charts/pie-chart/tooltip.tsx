@@ -6,7 +6,7 @@
 
 import React from "react";
 import type { NameType, Payload, ValueType } from "recharts/types/component/DefaultTooltipContent";
-// plane imports
+// keel imports
 import { Card, ECardSpacing } from "../../card";
 
 type Props = {

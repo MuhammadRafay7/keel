@@ -6,8 +6,8 @@
 
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane imports
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
+// keel imports
+import { EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
 // hooks
 import { useUserPermissions } from "@/hooks/store/user";
 // local imports

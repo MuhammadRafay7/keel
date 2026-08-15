@@ -5,9 +5,9 @@
  */
 
 import React from "react";
-// plane package imports
-import { useTranslation } from "@plane/i18n";
-import { cn } from "@plane/utils";
+// keel package imports
+import { useTranslation } from "@keel/i18n";
+import { cn } from "@keel/utils";
 
 type Props = {
   i18nTitle: string;

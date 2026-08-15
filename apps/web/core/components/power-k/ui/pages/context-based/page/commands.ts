@@ -7,15 +7,15 @@
 import { useCallback } from "react";
 import { useParams } from "next/navigation";
 import { ArchiveIcon, ArchiveRestoreIcon, LockKeyhole, LockKeyholeOpen, Star, StarOff } from "lucide-react";
-import { useTranslation } from "@plane/i18n";
-// plane imports
-import { LinkIcon, GlobeIcon, LockIcon } from "@plane/propel/icons";
-import { setToast, TOAST_TYPE } from "@plane/propel/toast";
-import { EPageAccess } from "@plane/types";
-import { copyTextToClipboard } from "@plane/utils";
+import { useTranslation } from "@keel/i18n";
+// keel imports
+import { LinkIcon, GlobeIcon, LockIcon } from "@keel/propel/icons";
+import { setToast, TOAST_TYPE } from "@keel/propel/toast";
+import { EPageAccess } from "@keel/types";
+import { copyTextToClipboard } from "@keel/utils";
 // components
 import type { TPowerKCommandConfig } from "@/components/power-k/core/types";
-// plane web imports
+// keel web imports
 import { EPageStoreType, usePageStore } from "@/hooks/store";
 
 export const usePowerKPageContextBasedActions = (): TPowerKCommandConfig[] => {

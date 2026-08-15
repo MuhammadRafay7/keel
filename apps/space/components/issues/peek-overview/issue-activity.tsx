@@ -8,8 +8,8 @@ import { observer } from "mobx-react";
 import { Link } from "react-router";
 import { usePathname } from "next/navigation";
 import { Lock } from "lucide-react";
-// plane imports
-import { Button } from "@plane/propel/button";
+// keel imports
+import { Button } from "@keel/propel/button";
 // components
 import { AddComment } from "@/components/issues/peek-overview/comment/add-comment";
 import { CommentCard } from "@/components/issues/peek-overview/comment/comment-detail-card";

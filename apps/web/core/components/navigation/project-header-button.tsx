@@ -4,11 +4,11 @@
  * See the LICENSE file for details.
  */
 
-import type { TPartialProject } from "@plane/types";
-// plane propel imports
-import { Logo } from "@plane/propel/emoji-icon-picker";
-import { ChevronDownIcon } from "@plane/propel/icons";
-import { Tooltip } from "@plane/propel/tooltip";
+import type { TPartialProject } from "@keel/types";
+// keel propel imports
+import { Logo } from "@keel/propel/emoji-icon-picker";
+import { ChevronDownIcon } from "@keel/propel/icons";
+import { Tooltip } from "@keel/propel/tooltip";
 
 type TProjectHeaderButtonProps = {
   project: TPartialProject;

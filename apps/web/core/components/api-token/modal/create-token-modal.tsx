@@ -6,14 +6,14 @@
 
 import { useState } from "react";
 import { mutate } from "swr";
-// plane imports
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { APITokenService } from "@plane/services";
-import type { IApiToken } from "@plane/types";
-import { EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
-import { renderFormattedDate, csvDownload } from "@plane/utils";
+// keel imports
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import { APITokenService } from "@keel/services";
+import type { IApiToken } from "@keel/types";
+import { EModalPosition, EModalWidth, ModalCore } from "@keel/ui";
+import { renderFormattedDate, csvDownload } from "@keel/utils";
 // constants
-import { API_TOKENS_LIST } from "@plane/constants";
+import { API_TOKENS_LIST } from "@keel/constants";
 // local imports
 import { CreateApiTokenForm } from "./form";
 import { GeneratedTokenDetails } from "./generated-token-details";

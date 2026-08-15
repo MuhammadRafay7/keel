@@ -5,9 +5,9 @@
  */
 
 import { CircleDot, XCircle } from "lucide-react";
-import { RelatedIcon, DuplicatePropertyIcon } from "@plane/propel/icons";
+import { RelatedIcon, DuplicatePropertyIcon } from "@keel/propel/icons";
 import type { TRelationObject } from "@/components/issues/issue-detail-widgets/relations";
-import type { TIssueRelationTypes } from "@plane/types";
+import type { TIssueRelationTypes } from "@keel/types";
 
 export const ISSUE_RELATION_OPTIONS: Record<TIssueRelationTypes, TRelationObject> = {
   relates_to: {

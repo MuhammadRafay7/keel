@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-// plane admin store
+// keel admin store
 import { StoreContext, rootStore } from "./store-context";
 
 function initializeStore(initialData = {}) {

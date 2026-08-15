@@ -5,9 +5,9 @@
  */
 
 import { Info } from "lucide-react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { CloseIcon } from "@plane/propel/icons";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import { CloseIcon } from "@keel/propel/icons";
 // helpers
 import type React from "react";
 

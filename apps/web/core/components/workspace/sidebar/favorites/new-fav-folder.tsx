@@ -9,13 +9,13 @@ import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import type { SubmitHandler } from "react-hook-form";
 import { Controller, useForm } from "react-hook-form";
-import { useOutsideClickDetector } from "@plane/hooks";
-import { useTranslation } from "@plane/i18n";
-// plane helpers
-// plane ui
-import { FavoriteFolderIcon } from "@plane/propel/icons";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { Input } from "@plane/ui";
+import { useOutsideClickDetector } from "@keel/hooks";
+import { useTranslation } from "@keel/i18n";
+// keel helpers
+// keel ui
+import { FavoriteFolderIcon } from "@keel/propel/icons";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import { Input } from "@keel/ui";
 // hooks
 import { useFavorite } from "@/hooks/store/use-favorite";
 

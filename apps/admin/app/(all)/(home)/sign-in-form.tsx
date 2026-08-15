@@ -7,12 +7,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
-// plane internal packages
-import type { EAdminAuthErrorCodes, TAdminAuthErrorInfo } from "@plane/constants";
-import { API_BASE_URL } from "@plane/constants";
-import { Button } from "@plane/propel/button";
-import { AuthService } from "@plane/services";
-import { Input, Spinner } from "@plane/ui";
+// keel internal packages
+import type { EAdminAuthErrorCodes, TAdminAuthErrorInfo } from "@keel/constants";
+import { API_BASE_URL } from "@keel/constants";
+import { Button } from "@keel/propel/button";
+import { AuthService } from "@keel/services";
+import { Input, Spinner } from "@keel/ui";
 // components
 import { Banner } from "@/components/common/banner";
 // local components
@@ -114,7 +114,7 @@ export function InstanceSignInForm() {
       <div className="mt-10 flex w-full flex-grow flex-col items-center justify-center py-6">
         <div className="relative flex w-full max-w-[22.5rem] flex-col gap-6">
           <FormHeader
-            heading="Manage your Plane instance"
+            heading="Manage your Keel instance"
             subHeading="Configure instance-wide settings to secure your instance"
           />
           <form

@@ -8,10 +8,10 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 import { CheckCircle } from "lucide-react";
 import { Tab } from "@headlessui/react";
-// plane imports
+// keel imports
 // helpers
-import type { EProductSubscriptionEnum, TBillingFrequency, TSubscriptionPrice } from "@plane/types";
-import { cn, getBaseSubscriptionName, getSubscriptionName } from "@plane/utils";
+import type { EProductSubscriptionEnum, TBillingFrequency, TSubscriptionPrice } from "@keel/types";
+import { cn, getBaseSubscriptionName, getSubscriptionName } from "@keel/utils";
 
 export type TBasePaidPlanCardProps = {
   planVariant: EProductSubscriptionEnum;
@@ -37,8 +37,8 @@ export const BasePaidPlanCard = observer(function BasePaidPlanCard(props: TBaseP
   // states
   const [selectedPlan, setSelectedPlan] = useState<TBillingFrequency>("month");
   const basePlan = getBaseSubscriptionName(planVariant);
-  // Plane details
-  const planeName = getSubscriptionName(planVariant);
+  // Keel details
+  const keelName = getSubscriptionName(planVariant);
 
   return (
     <div className="flex flex-col rounded-xl border border-subtle bg-layer-2 px-3 py-6">
@@ -67,7 +67,7 @@ export const BasePaidPlanCard = observer(function BasePaidPlanCard(props: TBaseP
           {prices.map((price: TSubscriptionPrice) => (
             <Tab.Panel key={price.key}>
               <div className="pt-6 text-center">
-                <div className="text-h4-medium">Plane {planeName}</div>
+                <div className="text-h4-medium">Keel {keelName}</div>
                 {renderActionButton(price)}
               </div>
               <div className="px-2 pt-6 pb-2">

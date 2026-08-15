@@ -5,11 +5,11 @@
  */
 
 import { observer } from "mobx-react";
-import { ISSUE_PRIORITIES } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { PriorityIcon, CloseIcon } from "@plane/propel/icons";
-import type { TIssuePriorities } from "@plane/types";
-import { Tag } from "@plane/ui";
+import { ISSUE_PRIORITIES } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { PriorityIcon, CloseIcon } from "@keel/propel/icons";
+import type { TIssuePriorities } from "@keel/types";
+import { Tag } from "@keel/ui";
 // hooks
 import { useProjectInbox } from "@/hooks/store/use-project-inbox";
 

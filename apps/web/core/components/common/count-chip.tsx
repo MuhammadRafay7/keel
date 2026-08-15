@@ -5,7 +5,7 @@
  */
 
 //
-import { cn } from "@plane/utils";
+import { cn } from "@keel/utils";
 
 type TCountChip = {
   count: string | number;

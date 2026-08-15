@@ -6,9 +6,9 @@
 
 import { observer } from "mobx-react";
 import type { LucideIcon } from "lucide-react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { cn } from "@plane/utils";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import { cn } from "@keel/utils";
 // components
 import { ButtonAvatars } from "@/components/dropdowns/member/avatar";
 // hooks

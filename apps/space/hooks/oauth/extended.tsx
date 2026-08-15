@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { TOAuthConfigs } from "@plane/types";
+// keel imports
+import type { TOAuthConfigs } from "@keel/types";
 
 export const useExtendedOAuthConfig = (_oauthActionText: string): TOAuthConfigs => ({
   isOAuthEnabled: false,

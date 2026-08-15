@@ -7,8 +7,8 @@
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 
-// plane ui
-import { RecentStickyIcon, PlusIcon, CloseIcon } from "@plane/propel/icons";
+// keel ui
+import { RecentStickyIcon, PlusIcon, CloseIcon } from "@keel/propel/icons";
 // hooks
 import { useSticky } from "@/hooks/use-stickies";
 // components

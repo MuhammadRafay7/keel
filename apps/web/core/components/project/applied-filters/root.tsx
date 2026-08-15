@@ -4,13 +4,13 @@
  * See the LICENSE file for details.
  */
 
-import { useTranslation } from "@plane/i18n";
-import { CloseIcon } from "@plane/propel/icons";
-// plane imports
-import { Tooltip } from "@plane/propel/tooltip";
-import type { TProjectAppliedDisplayFilterKeys, TProjectFilters } from "@plane/types";
-import { EHeaderVariant, Header, Tag } from "@plane/ui";
-import { replaceUnderscoreIfSnakeCase } from "@plane/utils";
+import { useTranslation } from "@keel/i18n";
+import { CloseIcon } from "@keel/propel/icons";
+// keel imports
+import { Tooltip } from "@keel/propel/tooltip";
+import type { TProjectAppliedDisplayFilterKeys, TProjectFilters } from "@keel/types";
+import { EHeaderVariant, Header, Tag } from "@keel/ui";
+import { replaceUnderscoreIfSnakeCase } from "@keel/utils";
 // local imports
 import { AppliedAccessFilters } from "./access";
 import { AppliedDateFilters } from "./date";

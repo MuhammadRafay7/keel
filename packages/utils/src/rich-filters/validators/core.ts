@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { SingleOrArray, TFilterExpression, TFilterProperty, TFilterValue } from "@plane/types";
+// keel imports
+import type { SingleOrArray, TFilterExpression, TFilterProperty, TFilterValue } from "@keel/types";
 // local imports
 import { getGroupChildren } from "../types";
 import { isConditionNode, isGroupNode } from "../types/core";

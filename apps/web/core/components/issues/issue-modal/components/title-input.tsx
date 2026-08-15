@@ -8,15 +8,15 @@ import React from "react";
 import { observer } from "mobx-react";
 import type { Control, FormState } from "react-hook-form";
 import { Controller } from "react-hook-form";
-// plane imports
-import { ETabIndices } from "@plane/constants";
+// keel imports
+import { ETabIndices } from "@keel/constants";
 // types
-import { useTranslation } from "@plane/i18n";
-import type { TIssue } from "@plane/types";
+import { useTranslation } from "@keel/i18n";
+import type { TIssue } from "@keel/types";
 // ui
-import { Input } from "@plane/ui";
+import { Input } from "@keel/ui";
 // helpers
-import { getTabIndex } from "@plane/utils";
+import { getTabIndex } from "@keel/utils";
 // hooks
 import { usePlatformOS } from "@/hooks/use-platform-os";
 

@@ -5,15 +5,15 @@
  */
 
 import { useCallback } from "react";
-// plane editor
-import type { TMentionSection, TMentionSuggestion } from "@plane/editor";
-// plane types
-import type { TSearchEntities, TSearchEntityRequestPayload, TSearchResponse, TUserSearchResponse } from "@plane/types";
-// plane ui
-import { Avatar } from "@plane/ui";
+// keel editor
+import type { TMentionSection, TMentionSuggestion } from "@keel/editor";
+// keel types
+import type { TSearchEntities, TSearchEntityRequestPayload, TSearchResponse, TUserSearchResponse } from "@keel/types";
+// keel ui
+import { Avatar } from "@keel/ui";
 // helpers
-import { getFileURL } from "@plane/utils";
-// plane web hooks
+import { getFileURL } from "@keel/utils";
+// keel web hooks
 import { useAdditionalEditorMention } from "@/hooks/use-additional-editor-mention";
 
 type TArgs = {

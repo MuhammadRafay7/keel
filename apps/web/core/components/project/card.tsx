@@ -9,18 +9,18 @@ import { observer } from "mobx-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ArchiveRestoreIcon, Settings, UserPlus } from "lucide-react";
-// plane imports
-import { EUserPermissions, EUserPermissionsLevel, IS_FAVORITE_MENU_OPEN } from "@plane/constants";
-import { useLocalStorage } from "@plane/hooks";
-import { Button } from "@plane/propel/button";
-import { Logo } from "@plane/propel/emoji-icon-picker";
-import { LinkIcon, LockIcon, NewTabIcon, TrashIcon, CheckIcon } from "@plane/propel/icons";
-import { setPromiseToast, setToast, TOAST_TYPE } from "@plane/propel/toast";
-import { Tooltip } from "@plane/propel/tooltip";
-import type { IProject } from "@plane/types";
-import type { TContextMenuItem } from "@plane/ui";
-import { Avatar, AvatarGroup, ContextMenu, FavoriteStar } from "@plane/ui";
-import { copyUrlToClipboard, cn, getFileURL, renderFormattedDate } from "@plane/utils";
+// keel imports
+import { EUserPermissions, EUserPermissionsLevel, IS_FAVORITE_MENU_OPEN } from "@keel/constants";
+import { useLocalStorage } from "@keel/hooks";
+import { Button } from "@keel/propel/button";
+import { Logo } from "@keel/propel/emoji-icon-picker";
+import { LinkIcon, LockIcon, NewTabIcon, TrashIcon, CheckIcon } from "@keel/propel/icons";
+import { setPromiseToast, setToast, TOAST_TYPE } from "@keel/propel/toast";
+import { Tooltip } from "@keel/propel/tooltip";
+import type { IProject } from "@keel/types";
+import type { TContextMenuItem } from "@keel/ui";
+import { Avatar, AvatarGroup, ContextMenu, FavoriteStar } from "@keel/ui";
+import { copyUrlToClipboard, cn, getFileURL, renderFormattedDate } from "@keel/utils";
 // components
 // hooks
 import { useMember } from "@/hooks/store/use-member";

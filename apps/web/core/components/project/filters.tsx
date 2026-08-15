@@ -8,10 +8,10 @@ import { useCallback } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { ListFilter } from "lucide-react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import type { TProjectFilters } from "@plane/types";
-import { cn, calculateTotalFilters } from "@plane/utils";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import type { TProjectFilters } from "@keel/types";
+import { cn, calculateTotalFilters } from "@keel/utils";
 // components
 import { FiltersDropdown } from "@/components/issues/issue-layouts/filters";
 // hooks

@@ -7,18 +7,18 @@
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Info } from "lucide-react";
-import { NETWORK_CHOICES } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-// plane imports
-import { Button } from "@plane/propel/button";
-import { EmojiPicker, EmojiIconPickerTypes, Logo } from "@plane/propel/emoji-icon-picker";
-import { LockIcon } from "@plane/propel/icons";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { Tooltip } from "@plane/propel/tooltip";
-import { EFileAssetType } from "@plane/types";
-import type { IProject, IWorkspace } from "@plane/types";
-import { CustomSelect, Input, TextArea } from "@plane/ui";
-import { renderFormattedDate } from "@plane/utils";
+import { NETWORK_CHOICES } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+// keel imports
+import { Button } from "@keel/propel/button";
+import { EmojiPicker, EmojiIconPickerTypes, Logo } from "@keel/propel/emoji-icon-picker";
+import { LockIcon } from "@keel/propel/icons";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import { Tooltip } from "@keel/propel/tooltip";
+import { EFileAssetType } from "@keel/types";
+import type { IProject, IWorkspace } from "@keel/types";
+import { CustomSelect, Input, TextArea } from "@keel/ui";
+import { renderFormattedDate } from "@keel/utils";
 import { CoverImage } from "@/components/common/cover-image";
 import { ImagePickerPopover } from "@/components/core/image-picker-popover";
 import { TimezoneSelect } from "@/components/global";

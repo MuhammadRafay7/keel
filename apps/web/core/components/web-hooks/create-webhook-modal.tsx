@@ -7,13 +7,13 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 // types
-import { useTranslation } from "@plane/i18n";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { IWebhook, IWorkspace, TWebhookEventTypes } from "@plane/types";
+import { useTranslation } from "@keel/i18n";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { IWebhook, IWorkspace, TWebhookEventTypes } from "@keel/types";
 // ui
-import { EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
+import { EModalPosition, EModalWidth, ModalCore } from "@keel/ui";
 // helpers
-import { csvDownload } from "@plane/utils";
+import { csvDownload } from "@keel/utils";
 // hooks
 import useKeypress from "@/hooks/use-keypress";
 // components

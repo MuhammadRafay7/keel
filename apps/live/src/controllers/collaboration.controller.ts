@@ -7,9 +7,9 @@
 import type { Hocuspocus } from "@hocuspocus/server";
 import type { Request } from "express";
 import type WebSocket from "ws";
-// plane imports
-import { Controller, WebSocket as WSDecorator } from "@plane/decorators";
-import { logger } from "@plane/logger";
+// keel imports
+import { Controller, WebSocket as WSDecorator } from "@keel/decorators";
+import { logger } from "@keel/logger";
 
 @Controller("/collaboration")
 export class CollaborationController {

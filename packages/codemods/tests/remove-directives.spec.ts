@@ -153,7 +153,7 @@ describe("remove-directives", () => {
       "use-client";
       import type { FC } from "react";
       // types
-      import type { TDeDupeIssue } from "@plane/types";
+      import type { TDeDupeIssue } from "@keel/types";
 
       type TDuplicateModalRootProps = {
         workspaceSlug: string;
@@ -172,7 +172,7 @@ describe("remove-directives", () => {
     expect(result).toMatchInlineSnapshot(`
       "import type { FC } from "react";
             // types
-            import type { TDeDupeIssue } from "@plane/types";
+            import type { TDeDupeIssue } from "@keel/types";
 
             type TDuplicateModalRootProps = {
               workspaceSlug: string;
@@ -194,8 +194,8 @@ describe("remove-directives", () => {
       'use-client';
       import type { FC } from "react";
       import { useState } from "react";
-      // plane imports
-      import { EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
+      // keel imports
+      import { EModalPosition, EModalWidth, ModalCore } from "@keel/ui";
 
       export function MyComponent() {
         return <div>Hello</div>;
@@ -207,8 +207,8 @@ describe("remove-directives", () => {
     expect(result).toMatchInlineSnapshot(`
       "import type { FC } from "react";
             import { useState } from "react";
-            // plane imports
-            import { EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
+            // keel imports
+            import { EModalPosition, EModalWidth, ModalCore } from "@keel/ui";
 
             export function MyComponent() {
               return <div>Hello</div>;
@@ -247,8 +247,8 @@ describe("remove-directives", () => {
 
       import type { FC } from "react";
       import { useState } from "react";
-      // plane imports
-      import { EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
+      // keel imports
+      import { EModalPosition, EModalWidth, ModalCore } from "@keel/ui";
       // hooks
       import useKeypress from "@/hooks/use-keypress";
       // local imports
@@ -272,8 +272,8 @@ describe("remove-directives", () => {
     expect(result).toMatchInlineSnapshot(`
       "import type { FC } from "react";
             import { useState } from "react";
-            // plane imports
-            import { EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
+            // keel imports
+            import { EModalPosition, EModalWidth, ModalCore } from "@keel/ui";
             // hooks
             import useKeypress from "@/hooks/use-keypress";
             // local imports

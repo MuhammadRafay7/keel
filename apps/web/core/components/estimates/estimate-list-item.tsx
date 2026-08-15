@@ -5,9 +5,9 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { EEstimateSystem } from "@plane/constants";
-import { convertMinutesToHoursMinutesString } from "@plane/utils";
+// keel imports
+import { EEstimateSystem } from "@keel/constants";
+import { convertMinutesToHoursMinutesString } from "@keel/utils";
 // components
 import { EstimateListItemButtons } from "./estimate-list-item-buttons";
 import { SettingsBoxedControlItem } from "@/components/settings/boxed-control-item";

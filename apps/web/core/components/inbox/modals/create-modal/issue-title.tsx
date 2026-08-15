@@ -5,13 +5,13 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { ETabIndices } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import type { TIssue } from "@plane/types";
-import { Input } from "@plane/ui";
+// keel imports
+import { ETabIndices } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import type { TIssue } from "@keel/types";
+import { Input } from "@keel/ui";
 // helpers
-import { getTabIndex } from "@plane/utils";
+import { getTabIndex } from "@keel/utils";
 // hooks
 import { usePlatformOS } from "@/hooks/use-platform-os";
 

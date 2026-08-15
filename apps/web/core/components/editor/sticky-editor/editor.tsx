@@ -5,19 +5,19 @@
  */
 
 import React, { useState } from "react";
-// plane constants
-import type { EIssueCommentAccessSpecifier } from "@plane/constants";
-// plane editor
-import { LiteTextEditorWithRef } from "@plane/editor";
-import type { EditorRefApi, ILiteTextEditorProps, TFileHandler } from "@plane/editor";
+// keel constants
+import type { EIssueCommentAccessSpecifier } from "@keel/constants";
+// keel editor
+import { LiteTextEditorWithRef } from "@keel/editor";
+import type { EditorRefApi, ILiteTextEditorProps, TFileHandler } from "@keel/editor";
 // components
-import type { TSticky } from "@plane/types";
+import type { TSticky } from "@keel/types";
 // helpers
-import { cn } from "@plane/utils";
+import { cn } from "@keel/utils";
 // hooks
 import { useEditorConfig } from "@/hooks/editor";
 import { useParseEditorContent } from "@/hooks/use-parse-editor-content";
-// plane web hooks
+// keel web hooks
 import { useEditorFlagging } from "@/hooks/use-editor-flagging";
 import { StickyEditorToolbar } from "./toolbar";
 

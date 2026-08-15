@@ -11,13 +11,13 @@ import { useParams } from "next/navigation";
 import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
 import { Combobox } from "@headlessui/react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { CheckIcon, SearchIcon, SuspendedUserIcon } from "@plane/propel/icons";
-import { EPillSize, EPillVariant, Pill } from "@plane/propel/pill";
-import type { IUserLite } from "@plane/types";
-import { Avatar } from "@plane/ui";
-import { cn, getFileURL, sortByCurrentUserThenSelected } from "@plane/utils";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import { CheckIcon, SearchIcon, SuspendedUserIcon } from "@keel/propel/icons";
+import { EPillSize, EPillVariant, Pill } from "@keel/propel/pill";
+import type { IUserLite } from "@keel/types";
+import { Avatar } from "@keel/ui";
+import { cn, getFileURL, sortByCurrentUserThenSelected } from "@keel/utils";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
 import { useUser } from "@/hooks/store/user";
@@ -53,7 +53,7 @@ export const MemberOptions = observer(function MemberOptions(props: Props) {
   // states
   const [query, setQuery] = useState("");
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
-  // plane hooks
+  // keel hooks
   const { t } = useTranslation();
   // store hooks
   const { data: currentUser } = useUser();

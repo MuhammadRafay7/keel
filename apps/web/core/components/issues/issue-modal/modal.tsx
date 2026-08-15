@@ -7,8 +7,8 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane imports
-import type { EIssuesStoreType, TIssue } from "@plane/types";
+// keel imports
+import type { EIssuesStoreType, TIssue } from "@keel/types";
 // local imports
 import { CreateUpdateIssueModalBase } from "./base";
 import { IssueModalProvider } from "./provider";

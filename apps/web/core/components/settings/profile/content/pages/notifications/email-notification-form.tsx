@@ -7,11 +7,11 @@
 import { useEffect } from "react";
 import { observer } from "mobx-react";
 import { Controller, useForm } from "react-hook-form";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { IUserEmailNotificationSettings } from "@plane/types";
-import { ToggleSwitch } from "@plane/ui";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { IUserEmailNotificationSettings } from "@keel/types";
+import { ToggleSwitch } from "@keel/ui";
 // components
 import { SettingsControlItem } from "@/components/settings/control-item";
 // services

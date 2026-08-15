@@ -8,11 +8,11 @@ import React from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { Ban } from "lucide-react";
-import { EUserProjectRoles } from "@plane/types";
-// plane ui
-import { Avatar, CustomSearchSelect } from "@plane/ui";
+import { EUserProjectRoles } from "@keel/types";
+// keel ui
+import { Avatar, CustomSearchSelect } from "@keel/ui";
 // helpers
-import { getFileURL } from "@plane/utils";
+import { getFileURL } from "@keel/utils";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
 

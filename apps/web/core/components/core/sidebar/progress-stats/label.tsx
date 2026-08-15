@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
+// keel imports
+import { useTranslation } from "@keel/i18n";
 // assets
 import emptyLabel from "@/app/assets/empty-state/empty_label.svg?url";
 // components

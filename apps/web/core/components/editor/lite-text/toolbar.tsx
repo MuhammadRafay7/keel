@@ -7,20 +7,20 @@
 import React, { useEffect, useState, useCallback } from "react";
 import type { LucideIcon } from "lucide-react";
 
-import { EIssueCommentAccessSpecifier } from "@plane/constants";
+import { EIssueCommentAccessSpecifier } from "@keel/constants";
 // editor
-import type { EditorRefApi } from "@plane/editor";
+import type { EditorRefApi } from "@keel/editor";
 // i18n
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@keel/i18n";
 // ui
-import { Button } from "@plane/propel/button";
-import { GlobeIcon, LockIcon } from "@plane/propel/icons";
-import type { ISvgIcons } from "@plane/propel/icons";
-import { Tooltip } from "@plane/propel/tooltip";
+import { Button } from "@keel/propel/button";
+import { GlobeIcon, LockIcon } from "@keel/propel/icons";
+import type { ISvgIcons } from "@keel/propel/icons";
+import { Tooltip } from "@keel/propel/tooltip";
 // constants
-import { cn } from "@plane/utils";
-import type { ToolbarMenuItem } from "@plane/editor";
-import { TOOLBAR_ITEMS } from "@plane/editor";
+import { cn } from "@keel/utils";
+import type { ToolbarMenuItem } from "@keel/editor";
+import { TOOLBAR_ITEMS } from "@keel/editor";
 // helpers
 
 type Props = {

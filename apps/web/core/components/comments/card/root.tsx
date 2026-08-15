@@ -6,9 +6,9 @@
 
 import { useRef, useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import type { EditorRefApi } from "@plane/editor";
-import type { TIssueComment, TCommentsOperations } from "@plane/types";
+// keel imports
+import type { EditorRefApi } from "@keel/editor";
+import type { TIssueComment, TCommentsOperations } from "@keel/types";
 // local imports
 import { CommentQuickActions } from "../quick-actions";
 import { CommentBlock } from "../comment-block";

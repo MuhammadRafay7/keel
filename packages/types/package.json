@@ -1,5 +1,5 @@
 {
-  "name": "@plane/types",
+  "name": "@keel/types",
   "version": "1.4.1",
   "private": true,
   "license": "AGPL-3.0",
@@ -22,7 +22,7 @@
     "clean": "rm -rf .turbo && rm -rf .next && rm -rf node_modules && rm -rf dist"
   },
   "devDependencies": {
-    "@plane/typescript-config": "workspace:*",
+    "@keel/typescript-config": "workspace:*",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",

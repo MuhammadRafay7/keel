@@ -7,14 +7,14 @@
 import { useState } from "react";
 import { mutate } from "swr";
 // types
-import { useTranslation } from "@plane/i18n";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { APITokenService } from "@plane/services";
-import type { IApiToken } from "@plane/types";
+import { useTranslation } from "@keel/i18n";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import { APITokenService } from "@keel/services";
+import type { IApiToken } from "@keel/types";
 // ui
-import { AlertModalCore } from "@plane/ui";
+import { AlertModalCore } from "@keel/ui";
 // fetch-keys
-import { API_TOKENS_LIST } from "@plane/constants";
+import { API_TOKENS_LIST } from "@keel/constants";
 
 type Props = {
   isOpen: boolean;

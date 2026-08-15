@@ -6,12 +6,12 @@
 
 import { useRef } from "react";
 import { AlertCircle } from "lucide-react";
-// plane imports
-import { ISSUE_ORDER_BY_OPTIONS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import type { TIssueOrderByOptions } from "@plane/types";
+// keel imports
+import { ISSUE_ORDER_BY_OPTIONS } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import type { TIssueOrderByOptions } from "@keel/types";
 // helpers
-import { cn } from "@plane/utils";
+import { cn } from "@keel/utils";
 
 type Props = {
   dragColumnOrientation: "justify-start" | "justify-center" | "justify-end";

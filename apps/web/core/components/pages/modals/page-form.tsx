@@ -8,16 +8,16 @@ import type { FormEvent } from "react";
 import { useState } from "react";
 import type { LucideIcon } from "lucide-react";
 
-// plane imports
-import { ETabIndices, EPageAccess } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import { EmojiPicker, EmojiIconPickerTypes, Logo } from "@plane/propel/emoji-icon-picker";
-import { GlobeIcon, LockIcon, PageIcon } from "@plane/propel/icons";
-import type { ISvgIcons } from "@plane/propel/icons";
-import type { TPage } from "@plane/types";
-import { Input } from "@plane/ui";
-import { getTabIndex } from "@plane/utils";
+// keel imports
+import { ETabIndices, EPageAccess } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { Button } from "@keel/propel/button";
+import { EmojiPicker, EmojiIconPickerTypes, Logo } from "@keel/propel/emoji-icon-picker";
+import { GlobeIcon, LockIcon, PageIcon } from "@keel/propel/icons";
+import type { ISvgIcons } from "@keel/propel/icons";
+import type { TPage } from "@keel/types";
+import { Input } from "@keel/ui";
+import { getTabIndex } from "@keel/utils";
 // components
 import { AccessField } from "@/components/common/access-field";
 // hooks

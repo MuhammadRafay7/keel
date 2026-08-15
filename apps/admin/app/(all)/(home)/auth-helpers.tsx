@@ -5,9 +5,9 @@
  */
 
 import Link from "next/link";
-// plane packages
-import type { TAdminAuthErrorInfo } from "@plane/constants";
-import { SUPPORT_EMAIL, EAdminAuthErrorCodes } from "@plane/constants";
+// keel packages
+import type { TAdminAuthErrorInfo } from "@keel/constants";
+import { SUPPORT_EMAIL, EAdminAuthErrorCodes } from "@keel/constants";
 
 export enum EErrorAlertType {
   BANNER_ALERT = "BANNER_ALERT",

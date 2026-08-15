@@ -4,12 +4,12 @@
  * See the LICENSE file for details.
  */
 
-// plane package imports
-import { Logo } from "@plane/propel/emoji-icon-picker";
-import { ProjectIcon } from "@plane/propel/icons";
-import { Tooltip } from "@plane/propel/tooltip";
-import { cn } from "@plane/utils";
-// plane web hooks
+// keel package imports
+import { Logo } from "@keel/propel/emoji-icon-picker";
+import { ProjectIcon } from "@keel/propel/icons";
+import { Tooltip } from "@keel/propel/tooltip";
+import { cn } from "@keel/utils";
+// keel web hooks
 import { useProject } from "@/hooks/store/use-project";
 
 type Props = {

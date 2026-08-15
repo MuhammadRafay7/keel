@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { Loader } from "@plane/ui";
+// keel imports
+import { Loader } from "@keel/ui";
 // types
 import type { IIssue } from "@/types/issue";
 // local imports

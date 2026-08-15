@@ -9,11 +9,11 @@ import { observer } from "mobx-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import type { TPageVersion } from "@plane/types";
-import { Avatar } from "@plane/ui";
-import { cn, getFileURL, renderFormattedDate, renderFormattedTime } from "@plane/utils";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import type { TPageVersion } from "@keel/types";
+import { Avatar } from "@keel/ui";
+import { cn, getFileURL, renderFormattedDate, renderFormattedTime } from "@keel/utils";
 // components
 import type { TPageRootHandlers } from "@/components/pages/editor/page-root";
 // hooks

@@ -7,15 +7,15 @@
 import { useMemo } from "react";
 import { observer } from "mobx-react";
 import { MoreHorizontal } from "lucide-react";
-// plane imports
-import { EIssueCommentAccessSpecifier } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { IconButton } from "@plane/propel/icon-button";
-import { LinkIcon, GlobeIcon, LockIcon, EditIcon, TrashIcon } from "@plane/propel/icons";
-import type { TIssueComment, TCommentsOperations } from "@plane/types";
-import type { TContextMenuItem } from "@plane/ui";
-import { CustomMenu } from "@plane/ui";
-import { cn } from "@plane/utils";
+// keel imports
+import { EIssueCommentAccessSpecifier } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { IconButton } from "@keel/propel/icon-button";
+import { LinkIcon, GlobeIcon, LockIcon, EditIcon, TrashIcon } from "@keel/propel/icons";
+import type { TIssueComment, TCommentsOperations } from "@keel/types";
+import type { TContextMenuItem } from "@keel/ui";
+import { CustomMenu } from "@keel/ui";
+import { cn } from "@keel/utils";
 // hooks
 import { useUser } from "@/hooks/store/user";
 

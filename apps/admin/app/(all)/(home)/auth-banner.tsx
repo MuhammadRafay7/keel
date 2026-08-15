@@ -5,10 +5,10 @@
  */
 
 import { Info } from "lucide-react";
-// plane constants
-import type { TAdminAuthErrorInfo } from "@plane/constants";
+// keel constants
+import type { TAdminAuthErrorInfo } from "@keel/constants";
 // icons
-import { CloseIcon } from "@plane/propel/icons";
+import { CloseIcon } from "@keel/propel/icons";
 
 type TAuthBanner = {
   bannerData: TAdminAuthErrorInfo | undefined;

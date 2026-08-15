@@ -5,8 +5,8 @@
  */
 
 import { subDays } from "date-fns";
-// plane imports
-import { EPastDurationFilters } from "@plane/constants";
+// keel imports
+import { EPastDurationFilters } from "@keel/constants";
 // local imports
 import { renderFormattedPayloadDate } from "./datetime";
 

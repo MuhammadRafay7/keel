@@ -9,15 +9,15 @@ import { isEmpty } from "lodash-es";
 import { observer } from "mobx-react";
 import { useSearchParams } from "next/navigation";
 import { Disclosure, Transition } from "@headlessui/react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { ChevronUpIcon, ChevronDownIcon } from "@plane/propel/icons";
-import type { ICycle, TCyclePlotType, TProgressSnapshot } from "@plane/types";
-import { EIssuesStoreType } from "@plane/types";
-import { getDate } from "@plane/utils";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import { ChevronUpIcon, ChevronDownIcon } from "@keel/propel/icons";
+import type { ICycle, TCyclePlotType, TProgressSnapshot } from "@keel/types";
+import { EIssuesStoreType } from "@keel/types";
+import { getDate } from "@keel/utils";
 // hooks
 import { useCycle } from "@/hooks/store/use-cycle";
-// plane web components
+// keel web components
 import { useWorkItemFilters } from "@/hooks/store/work-item-filters/use-work-item-filters";
 // local imports
 import { CycleProgressStats } from "./progress-stats";
@@ -63,7 +63,7 @@ export const CycleAnalyticsProgress = observer(function CycleAnalyticsProgress(p
   // router
   const searchParams = useSearchParams();
   const peekCycle = searchParams.get("peekCycle") || undefined;
-  // plane hooks
+  // keel hooks
   const { t } = useTranslation();
   // store hooks
   const { getPlotTypeByCycleId, getEstimateTypeByCycleId, getCycleById } = useCycle();

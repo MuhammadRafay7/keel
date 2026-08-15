@@ -5,10 +5,10 @@
  */
 
 import { observer } from "mobx-react";
-import { useTranslation } from "@plane/i18n";
-import { AnalyticsIcon } from "@plane/propel/icons";
-// plane imports
-import { Breadcrumbs, Header } from "@plane/ui";
+import { useTranslation } from "@keel/i18n";
+import { AnalyticsIcon } from "@keel/propel/icons";
+// keel imports
+import { Breadcrumbs, Header } from "@keel/ui";
 // components
 import { BreadcrumbLink } from "@/components/common/breadcrumb-link";
 

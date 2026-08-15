@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane ui
-import { Loader } from "@plane/ui";
+// keel ui
+import { Loader } from "@keel/ui";
 
 export function StickiesLoader() {
   return (

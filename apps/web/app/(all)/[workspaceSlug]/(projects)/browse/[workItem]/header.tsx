@@ -6,9 +6,9 @@
 
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane imports
-import { Header, Row } from "@plane/ui";
-import { cn } from "@plane/utils";
+// keel imports
+import { Header, Row } from "@keel/ui";
+import { cn } from "@keel/utils";
 // components
 import { AppHeader } from "@/components/core/app-header";
 import { TabNavigationRoot } from "@/components/navigation";

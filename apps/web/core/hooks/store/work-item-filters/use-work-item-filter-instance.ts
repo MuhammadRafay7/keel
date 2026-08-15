@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { IWorkItemFilterInstance } from "@plane/shared-state";
-import type { EIssuesStoreType } from "@plane/types";
+// keel imports
+import type { IWorkItemFilterInstance } from "@keel/shared-state";
+import type { EIssuesStoreType } from "@keel/types";
 // local imports
 import { useWorkItemFilters } from "./use-work-item-filters";
 

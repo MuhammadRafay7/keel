@@ -161,7 +161,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   ChevronUpIcon,
-} from "@plane/propel/icons";
+} from "@keel/propel/icons";
 
 export const MATERIAL_ICONS_LIST = [
   {

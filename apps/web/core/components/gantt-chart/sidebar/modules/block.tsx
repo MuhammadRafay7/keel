@@ -5,10 +5,10 @@
  */
 
 import { observer } from "mobx-react";
-// Plane
-import { Row } from "@plane/ui";
+// Keel
+import { Row } from "@keel/ui";
 // components
-import { cn } from "@plane/utils";
+import { cn } from "@keel/utils";
 import { BLOCK_HEIGHT } from "@/components/gantt-chart/constants";
 import { ModuleGanttSidebarBlock } from "@/components/modules";
 // helpers

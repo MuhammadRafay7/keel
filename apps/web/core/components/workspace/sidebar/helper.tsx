@@ -15,8 +15,8 @@ import {
   ProjectIcon,
   ViewsIcon,
   YourWorkIcon,
-} from "@plane/propel/icons";
-import { cn } from "@plane/utils";
+} from "@keel/propel/icons";
+import { cn } from "@keel/utils";
 
 export const getSidebarNavigationItemIcon = (key: string, className: string = "") => {
   switch (key) {

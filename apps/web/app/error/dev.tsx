@@ -4,12 +4,12 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
+// keel imports
 import { isRouteErrorResponse } from "react-router";
-import { Banner } from "@plane/propel/banner";
-import { Button } from "@plane/propel/button";
-import { Card, ECardVariant } from "@plane/propel/card";
-import { InfoFillIcon } from "@plane/propel/icons";
+import { Banner } from "@keel/propel/banner";
+import { Button } from "@keel/propel/button";
+import { Card, ECardVariant } from "@keel/propel/card";
+import { InfoFillIcon } from "@keel/propel/icons";
 
 interface ErrorActionsProps {
   onGoHome: () => void;

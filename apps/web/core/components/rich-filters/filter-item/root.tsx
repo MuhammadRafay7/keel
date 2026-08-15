@@ -6,8 +6,8 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-// plane imports
-import type { IFilterInstance } from "@plane/shared-state";
+// keel imports
+import type { IFilterInstance } from "@keel/shared-state";
 import type {
   SingleOrArray,
   TExternalFilter,
@@ -15,9 +15,9 @@ import type {
   TFilterValue,
   TFilterConditionNodeForDisplay,
   TAllAvailableOperatorsForDisplay,
-} from "@plane/types";
-import { CustomSearchSelect } from "@plane/ui";
-import { cn, getOperatorForPayload } from "@plane/utils";
+} from "@keel/types";
+import { CustomSearchSelect } from "@keel/ui";
+import { cn, getOperatorForPayload } from "@keel/utils";
 // local imports
 import { FilterValueInput } from "../filter-value-input/root";
 import { COMMON_FILTER_ITEM_BORDER_CLASSNAME } from "../shared";

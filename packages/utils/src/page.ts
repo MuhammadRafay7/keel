@@ -5,14 +5,14 @@
  */
 
 import { sortBy } from "lodash-es";
-// plane imports
+// keel imports
 import type {
   TPage,
   TPageFilterProps,
   TPageFiltersSortBy,
   TPageFiltersSortKey,
   TPageNavigationTabs,
-} from "@plane/types";
+} from "@keel/types";
 // local imports
 import { getDate } from "./datetime";
 import { satisfiesDateFilter } from "./filter";

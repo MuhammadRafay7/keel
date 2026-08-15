@@ -7,13 +7,13 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane imports
-import { EUserPermissionsLevel } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { EmptyStateDetailed } from "@plane/propel/empty-state";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { ISearchIssueResponse } from "@plane/types";
-import { EIssuesStoreType, EUserProjectRoles } from "@plane/types";
+// keel imports
+import { EUserPermissionsLevel } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { EmptyStateDetailed } from "@keel/propel/empty-state";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { ISearchIssueResponse } from "@keel/types";
+import { EIssuesStoreType, EUserProjectRoles } from "@keel/types";
 // components
 import { ExistingIssuesListModal } from "@/components/core/modals/existing-issues-list-modal";
 // hooks
@@ -30,7 +30,7 @@ export const ModuleEmptyState = observer(function ModuleEmptyState() {
   const moduleId = routerModuleId ? routerModuleId.toString() : undefined;
   // states
   const [moduleIssuesListModal, setModuleIssuesListModal] = useState(false);
-  // plane hooks
+  // keel hooks
   const { t } = useTranslation();
   // store hooks
   const { issues } = useIssues(EIssuesStoreType.MODULE);

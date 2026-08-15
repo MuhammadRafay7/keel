@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { Loader } from "@plane/ui";
+// keel imports
+import { Loader } from "@keel/ui";
 // store hooks
 import { usePublish } from "@/hooks/store/publish";
 // types

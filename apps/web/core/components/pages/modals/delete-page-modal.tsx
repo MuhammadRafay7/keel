@@ -8,11 +8,11 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 // ui
 import { useParams } from "next/navigation";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { AlertModalCore } from "@plane/ui";
-import { getPageName } from "@plane/utils";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import { AlertModalCore } from "@keel/ui";
+import { getPageName } from "@keel/utils";
 // constants
-// plane web hooks
+// keel web hooks
 import { useAppRouter } from "@/hooks/use-app-router";
 import type { EPageStoreType } from "@/hooks/store";
 import { usePageStore } from "@/hooks/store";

@@ -6,13 +6,13 @@
 
 import { useEffect, useState } from "react";
 // constants
-import type { EPageAccess } from "@plane/constants";
-import type { TPage } from "@plane/types";
+import type { EPageAccess } from "@keel/constants";
+import type { TPage } from "@keel/types";
 // ui
-import { EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
+import { EModalPosition, EModalWidth, ModalCore } from "@keel/ui";
 // hooks
 import { useAppRouter } from "@/hooks/use-app-router";
-// plane web hooks
+// keel web hooks
 import type { EPageStoreType } from "@/hooks/store";
 import { usePageStore } from "@/hooks/store";
 // local imports

@@ -5,7 +5,7 @@
  */
 
 import type { Request, Response } from "express";
-import { Controller, Get } from "@plane/decorators";
+import { Controller, Get } from "@keel/decorators";
 import { env } from "@/env";
 
 @Controller("/health")

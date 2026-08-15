@@ -5,8 +5,8 @@
  */
 
 import type { ReactNode } from "react";
-// plane imports
-import { cn } from "@plane/utils";
+// keel imports
+import { cn } from "@keel/utils";
 
 type TPageWrapperProps = {
   children: ReactNode;

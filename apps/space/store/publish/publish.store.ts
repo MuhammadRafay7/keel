@@ -12,7 +12,7 @@ import type {
   TPublishEntityType,
   TProjectPublishSettings,
   TProjectPublishViewProps,
-} from "@plane/types";
+} from "@keel/types";
 // store
 import type { RootStore } from "../root.store";
 

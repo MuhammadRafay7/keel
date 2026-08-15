@@ -13,15 +13,15 @@ import { Popover, Transition } from "@headlessui/react";
 // hooks
 // ui
 // icons
-import type { TSupportedFilterTypeForUpdate } from "@plane/constants";
-import { EIssueFilterType } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { CheckIcon, ChevronUpIcon } from "@plane/propel/icons";
-import type { TCalendarLayouts, TSupportedFilterForUpdate } from "@plane/types";
-import { ToggleSwitch } from "@plane/ui";
+import type { TSupportedFilterTypeForUpdate } from "@keel/constants";
+import { EIssueFilterType } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { CheckIcon, ChevronUpIcon } from "@keel/propel/icons";
+import type { TCalendarLayouts, TSupportedFilterForUpdate } from "@keel/types";
+import { ToggleSwitch } from "@keel/ui";
 // types
 // constants
-import { CALENDAR_LAYOUTS } from "@plane/constants";
+import { CALENDAR_LAYOUTS } from "@keel/constants";
 import { useCalendarView } from "@/hooks/store/use-calendar-view";
 import useSize from "@/hooks/use-window-size";
 import type { ICycleIssuesFilter } from "@/store/issue/cycle";

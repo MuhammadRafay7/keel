@@ -4,10 +4,10 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { Tabs } from "@plane/propel/tabs";
-// plane web components
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import { Tabs } from "@keel/propel/tabs";
+// keel web components
 import { ORDERED_PAGE_NAVIGATION_TABS_LIST } from "@/components/pages/navigation-pane/tab-panels";
 
 export function PageNavigationPaneTabsList() {

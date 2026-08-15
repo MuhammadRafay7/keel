@@ -5,11 +5,11 @@
  */
 
 import { forwardRef } from "react";
-// plane imports
-import { DocumentEditorWithRef } from "@plane/editor";
-import type { IEditorPropsExtended, EditorRefApi, IDocumentEditorProps, TFileHandler } from "@plane/editor";
-import type { MakeOptional, TSearchEntityRequestPayload, TSearchResponse } from "@plane/types";
-import { cn } from "@plane/utils";
+// keel imports
+import { DocumentEditorWithRef } from "@keel/editor";
+import type { IEditorPropsExtended, EditorRefApi, IDocumentEditorProps, TFileHandler } from "@keel/editor";
+import type { MakeOptional, TSearchEntityRequestPayload, TSearchResponse } from "@keel/types";
+import { cn } from "@keel/utils";
 // hooks
 import { useEditorConfig, useEditorMention } from "@/hooks/editor";
 import { useMember } from "@/hooks/store/use-member";

@@ -6,13 +6,13 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
+import { EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
 // ui
-import { Button } from "@plane/propel/button";
-import { DraftIcon } from "@plane/propel/icons";
-import { EIssuesStoreType } from "@plane/types";
-import { Breadcrumbs, Header } from "@plane/ui";
+import { Button } from "@keel/propel/button";
+import { DraftIcon } from "@keel/propel/icons";
+import { EIssuesStoreType } from "@keel/types";
+import { Breadcrumbs, Header } from "@keel/ui";
 // components
 import { BreadcrumbLink } from "@/components/common/breadcrumb-link";
 import { CountChip } from "@/components/common/count-chip";

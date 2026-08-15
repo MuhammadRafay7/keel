@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { Tooltip } from "@plane/propel/tooltip";
+// keel imports
+import { Tooltip } from "@keel/propel/tooltip";
 // hooks
 import useOnlineStatus from "@/hooks/use-online-status";
 // store

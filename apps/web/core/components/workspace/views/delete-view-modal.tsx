@@ -7,11 +7,11 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// Plane Imports
-import { useTranslation } from "@plane/i18n";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { IWorkspaceView } from "@plane/types";
-import { AlertModalCore } from "@plane/ui";
+// Keel Imports
+import { useTranslation } from "@keel/i18n";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { IWorkspaceView } from "@keel/types";
+import { AlertModalCore } from "@keel/ui";
 // hooks
 import { useGlobalView } from "@/hooks/store/use-global-view";
 

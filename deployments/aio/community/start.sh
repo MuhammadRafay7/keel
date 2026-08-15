@@ -3,7 +3,7 @@
 print_header(){
     clear
     echo "------------------------------------------------"
-    echo "Plane Community (All-In-One)"
+    echo "Keel Community (All-In-One)"
     echo "------------------------------------------------"
     echo ""
     echo "You are required to pass below environment variables to the script"
@@ -49,20 +49,20 @@ update_env_value(){
     local value="$2"
 
     # check if the file exists
-    if [ ! -f "plane.env" ]; then
-        echo "plane.env file not found"
+    if [ ! -f "keel.env" ]; then
+        echo "keel.env file not found"
         exit 1
     fi
 
     # check if the key exists and add it if it doesn't
-    if ! grep -q "^$key=.*" plane.env; then
-        echo "${key}=${value}" >> plane.env
+    if ! grep -q "^$key=.*" keel.env; then
+        echo "${key}=${value}" >> keel.env
         return 0
     fi
 
     # if key and value are not empty, update the value
     if [ -n "$key" ] && [ -n "$value" ]; then
-        sed -i "s|^$key=.*|$key=$value|" plane.env
+        sed -i "s|^$key=.*|$key=$value|" keel.env
         return 0
     fi
 
@@ -72,13 +72,13 @@ check_pre_requisites(){
     check_required_env
 
     # check if the file exists
-    if [ ! -f "plane.env" ]; then
-        echo "plane.env file not found"
+    if [ ! -f "keel.env" ]; then
+        echo "keel.env file not found"
         exit 1
     fi
     # add a new line to the end of the file
-    echo "" >> plane.env
-    echo "" >> plane.env
+    echo "" >> keel.env
+    echo "" >> keel.env
     echo "✅ Pre-requisites checked"
     echo ""
     
@@ -146,13 +146,13 @@ update_env_file(){
 
     # Optional environment variables
     # SECRET_KEY: if absent or set to a known placeholder/insecure value, preserve whatever
-    # is already stored in plane.env (survives restarts), or generate a fresh random value on
-    # first boot. Never write a publicly-known or placeholder value into plane.env.
+    # is already stored in keel.env (survives restarts), or generate a fresh random value on
+    # first boot. Never write a publicly-known or placeholder value into keel.env.
     local _insecure_sk="60gp0byfz2dvffa45cxl20p1scy9xbpf6d8c5y0geejgkyp1b5"
     local _placeholder_sk="change-this-key-on-deployment"
     if [ -z "$SECRET_KEY" ] || [ "$SECRET_KEY" = "$_insecure_sk" ] || [ "$SECRET_KEY" = "$_placeholder_sk" ]; then
         local _stored_sk
-        _stored_sk=$(grep "^SECRET_KEY=" plane.env 2>/dev/null | cut -d'=' -f2-)
+        _stored_sk=$(grep "^SECRET_KEY=" keel.env 2>/dev/null | cut -d'=' -f2-)
         if [ -n "$_stored_sk" ] && [ "$_stored_sk" != "$_insecure_sk" ] && [ "$_stored_sk" != "$_placeholder_sk" ]; then
             SECRET_KEY="$_stored_sk"
         else
@@ -166,7 +166,7 @@ update_env_file(){
     local _placeholder_lssk="change-this-key-on-deployment"
     if [ -z "$LIVE_SERVER_SECRET_KEY" ] || [ "$LIVE_SERVER_SECRET_KEY" = "$_insecure_lssk" ] || [ "$LIVE_SERVER_SECRET_KEY" = "$_placeholder_lssk" ]; then
         local _stored_lssk
-        _stored_lssk=$(grep "^LIVE_SERVER_SECRET_KEY=" plane.env 2>/dev/null | cut -d'=' -f2-)
+        _stored_lssk=$(grep "^LIVE_SERVER_SECRET_KEY=" keel.env 2>/dev/null | cut -d'=' -f2-)
         if [ -n "$_stored_lssk" ] && [ "$_stored_lssk" != "$_insecure_lssk" ] && [ "$_stored_lssk" != "$_placeholder_lssk" ]; then
             LIVE_SERVER_SECRET_KEY="$_stored_lssk"
         else
@@ -186,8 +186,8 @@ main(){
     check_pre_requisites
     update_env_file
 
-    # load plane.env as exported variables
-    export $(grep -v '^#' plane.env | xargs)
+    # load keel.env as exported variables
+    export $(grep -v '^#' keel.env | xargs)
 
     /usr/local/bin/supervisord -c /etc/supervisor/conf.d/supervisor.conf
 }

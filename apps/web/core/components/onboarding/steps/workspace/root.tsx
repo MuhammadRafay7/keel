@@ -6,9 +6,9 @@
 
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import type { IWorkspaceMemberInvitation } from "@plane/types";
-import { ECreateOrJoinWorkspaceViews, EOnboardingSteps } from "@plane/types";
+// keel imports
+import type { IWorkspaceMemberInvitation } from "@keel/types";
+import { ECreateOrJoinWorkspaceViews, EOnboardingSteps } from "@keel/types";
 // hooks
 import { useUser } from "@/hooks/store/user";
 // local components

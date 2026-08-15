@@ -5,10 +5,10 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { CalendarLayoutIcon } from "@plane/propel/icons";
-import { cn, renderFormattedDate, getDate } from "@plane/utils";
+// keel imports
+import { useTranslation } from "@keel/i18n";
+import { CalendarLayoutIcon } from "@keel/propel/icons";
+import { cn, renderFormattedDate, getDate } from "@keel/utils";
 
 export type TReadonlyDateProps = {
   className?: string;

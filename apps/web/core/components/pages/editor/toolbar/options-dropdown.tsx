@@ -7,14 +7,14 @@
 import { useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import { ArrowUpToLine, Clipboard, History } from "lucide-react";
-// plane imports
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { ToggleSwitch } from "@plane/ui";
+// keel imports
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import { ToggleSwitch } from "@keel/ui";
 // hooks
 import { useAppRouter } from "@/hooks/use-app-router";
 import { usePageFilters } from "@/hooks/use-page-filters";
 import { useQueryParams } from "@/hooks/use-query-params";
-// plane web imports
+// keel web imports
 import type { TPageNavigationPaneTab } from "@/components/pages/navigation-pane/tab-panels";
 import type { EPageStoreType } from "@/hooks/store";
 // store

@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { EUserProjectRoles } from "@plane/types";
-import type { TProjectSettingsItem, TProjectSettingsTabs } from "@plane/types";
+// keel imports
+import { EUserProjectRoles } from "@keel/types";
+import type { TProjectSettingsItem, TProjectSettingsTabs } from "@keel/types";
 
 export enum PROJECT_SETTINGS_CATEGORY {
   GENERAL = "general",

@@ -1,4 +1,4 @@
-ARG PLANE_VERSION=v0.27.1
+ARG KEEL_VERSION=v0.27.1
 FROM --platform=$BUILDPLATFORM tonistiigi/binfmt AS binfmt
 
 # **************************************************
@@ -51,7 +51,7 @@ RUN pip install supervisor
 RUN mkdir -p /etc/supervisor/conf.d
 
 COPY start.sh /app/start.sh
-COPY dist/plane.env /app/plane.env
+COPY dist/keel.env /app/keel.env
 COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
 
 RUN mkdir -p /app/logs/access && \

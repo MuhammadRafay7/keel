@@ -7,8 +7,8 @@
 import React from "react";
 import { Command } from "cmdk";
 import { observer } from "mobx-react";
-// plane imports
-import { SUPPORTED_LANGUAGES } from "@plane/i18n";
+// keel imports
+import { SUPPORTED_LANGUAGES } from "@keel/i18n";
 // local imports
 import { PowerKModalCommandItem } from "../../modal/command-item";
 

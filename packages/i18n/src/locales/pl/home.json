@@ -5,7 +5,7 @@
       "not_right_now": "Nie teraz",
       "create_project": {
         "title": "Utwórz projekt",
-        "description": "Większość rzeczy zaczyna się od projektu w Plane.",
+        "description": "Większość rzeczy zaczyna się od projektu w Keel.",
         "cta": "Zacznij"
       },
       "invite_team": {
@@ -19,7 +19,7 @@
         "cta": "Skonfiguruj tę przestrzeń"
       },
       "personalize_account": {
-        "title": "Spersonalizuj Plane.",
+        "title": "Spersonalizuj Keel.",
         "description": "Wybierz zdjęcie, kolory i inne.",
         "cta": "Dostosuj teraz"
       },
@@ -52,8 +52,8 @@
         "issues": "Elementy pracy"
       }
     },
-    "new_at_plane": {
-      "title": "Co nowego w Plane"
+    "new_at_keel": {
+      "title": "Co nowego w Keel"
     },
     "quick_tutorial": {
       "title": "Szybki samouczek"

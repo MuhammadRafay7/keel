@@ -6,22 +6,22 @@
 
 import { useCallback, useRef } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import type { EditorRefApi } from "@plane/editor";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import { CopyIcon, ChevronLeftIcon, ChevronRightIcon } from "@plane/propel/icons";
-import { setToast, TOAST_TYPE } from "@plane/propel/toast";
-import { Tooltip } from "@plane/propel/tooltip";
-import type { TDescriptionVersion } from "@plane/types";
-import { Avatar, EModalPosition, EModalWidth, Loader, ModalCore } from "@plane/ui";
-import { calculateTimeAgo, cn, getFileURL } from "@plane/utils";
+// keel imports
+import type { EditorRefApi } from "@keel/editor";
+import { useTranslation } from "@keel/i18n";
+import { Button } from "@keel/propel/button";
+import { CopyIcon, ChevronLeftIcon, ChevronRightIcon } from "@keel/propel/icons";
+import { setToast, TOAST_TYPE } from "@keel/propel/toast";
+import { Tooltip } from "@keel/propel/tooltip";
+import type { TDescriptionVersion } from "@keel/types";
+import { Avatar, EModalPosition, EModalWidth, Loader, ModalCore } from "@keel/ui";
+import { calculateTimeAgo, cn, getFileURL } from "@keel/utils";
 // components
 import { RichTextEditor } from "@/components/editor/rich-text";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
 import { useWorkspace } from "@/hooks/store/use-workspace";
-import { IconButton } from "@plane/propel/icon-button";
+import { IconButton } from "@keel/propel/icon-button";
 
 type Props = {
   activeVersionDescription: string | undefined;

@@ -5,9 +5,9 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { EIconSize } from "@plane/constants";
-import { CloseIcon, StateGroupIcon } from "@plane/propel/icons";
+// keel imports
+import { EIconSize } from "@keel/constants";
+import { CloseIcon, StateGroupIcon } from "@keel/propel/icons";
 // hooks
 import { useStates } from "@/hooks/store/use-state";
 

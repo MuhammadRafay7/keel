@@ -4,12 +4,12 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { ISSUE_LAYOUTS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { Tooltip } from "@plane/propel/tooltip";
-import type { EIssueLayoutTypes } from "@plane/types";
-import { cn } from "@plane/utils";
+// keel imports
+import { ISSUE_LAYOUTS } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { Tooltip } from "@keel/propel/tooltip";
+import type { EIssueLayoutTypes } from "@keel/types";
+import { cn } from "@keel/utils";
 // components
 import { IssueLayoutIcon } from "@/components/issues/issue-layouts/layout-icon";
 // hooks

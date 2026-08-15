@@ -5,11 +5,11 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { START_OF_THE_WEEK_OPTIONS } from "@plane/constants";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { EStartOfTheWeek } from "@plane/types";
-import { CustomSelect } from "@plane/ui";
+// keel imports
+import { START_OF_THE_WEEK_OPTIONS } from "@keel/constants";
+import { TOAST_TYPE, setToast } from "@keel/propel/toast";
+import type { EStartOfTheWeek } from "@keel/types";
+import { CustomSelect } from "@keel/ui";
 // components
 import { SettingsControlItem } from "@/components/settings/control-item";
 // hooks

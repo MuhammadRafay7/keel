@@ -9,15 +9,15 @@ import type { LucideIcon } from "lucide-react";
 import { Bell, CircleUser, KeyRound, LockIcon, Settings2 } from "lucide-react";
 import { observer } from "mobx-react";
 import { useParams } from "react-router";
-// plane imports
+// keel imports
 import {
   GROUPED_PROFILE_SETTINGS,
   PROFILE_SETTINGS_CATEGORIES,
   PROFILE_SETTINGS_CATEGORY_LABELS,
-} from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import type { ISvgIcons } from "@plane/propel/icons";
-import type { TProfileSettingsTabs } from "@plane/types";
+} from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import type { ISvgIcons } from "@keel/propel/icons";
+import type { TProfileSettingsTabs } from "@keel/types";
 // local imports
 import { SettingsSidebarItem } from "../../sidebar/item";
 import { ProfileSettingsSidebarWorkspaceOptions } from "./workspace-options";

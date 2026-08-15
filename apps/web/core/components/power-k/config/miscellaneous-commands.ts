@@ -6,11 +6,11 @@
 
 import { useCallback } from "react";
 import { PanelLeft } from "lucide-react";
-import { useTranslation } from "@plane/i18n";
-import { LinkIcon, SearchIcon } from "@plane/propel/icons";
-// plane imports
-import { setToast, TOAST_TYPE } from "@plane/propel/toast";
-import { copyTextToClipboard } from "@plane/utils";
+import { useTranslation } from "@keel/i18n";
+import { LinkIcon, SearchIcon } from "@keel/propel/icons";
+// keel imports
+import { setToast, TOAST_TYPE } from "@keel/propel/toast";
+import { copyTextToClipboard } from "@keel/utils";
 // components
 import type { TPowerKCommandConfig } from "@/components/power-k/core/types";
 // hooks

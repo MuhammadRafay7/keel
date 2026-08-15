@@ -6,11 +6,11 @@
 
 import { Command } from "cmdk";
 import { observer } from "mobx-react";
-// plane imports
-import { MODULE_STATUS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { ModuleStatusIcon } from "@plane/propel/icons";
-import type { TModuleStatus } from "@plane/types";
+// keel imports
+import { MODULE_STATUS } from "@keel/constants";
+import { useTranslation } from "@keel/i18n";
+import { ModuleStatusIcon } from "@keel/propel/icons";
+import type { TModuleStatus } from "@keel/types";
 // local imports
 import { PowerKModalCommandItem } from "../../../modal/command-item";
 
