@@ -15,6 +15,7 @@ import type {
   TProgressSnapshot,
   TCycleEstimateDistribution,
 } from "@keel/types";
+import { isSupabaseConfigured, supabasePlanningService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 
 export class CycleService extends APIService {
@@ -87,6 +88,7 @@ export class CycleService extends APIService {
   }
 
   async createCycle(workspaceSlug: string, projectId: string, data: any): Promise<ICycle> {
+    if (isSupabaseConfigured) return supabasePlanningService.createCycle(workspaceSlug, projectId, data);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/cycles/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -95,6 +97,7 @@ export class CycleService extends APIService {
   }
 
   async getCyclesWithParams(workspaceSlug: string, projectId: string, cycleType?: "current"): Promise<ICycle[]> {
+    if (isSupabaseConfigured) return supabasePlanningService.getCycles(workspaceSlug, projectId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/cycles/`, {
       params: {
         cycle_view: cycleType,
@@ -107,6 +110,7 @@ export class CycleService extends APIService {
   }
 
   async getCycleDetails(workspaceSlug: string, projectId: string, cycleId: string): Promise<ICycle> {
+    if (isSupabaseConfigured) return supabasePlanningService.getCycleDetails(workspaceSlug, projectId, cycleId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/cycles/${cycleId}/`)
       .then((res) => res?.data)
       .catch((err) => {
@@ -135,6 +139,7 @@ export class CycleService extends APIService {
   }
 
   async patchCycle(workspaceSlug: string, projectId: string, cycleId: string, data: Partial<ICycle>): Promise<any> {
+    if (isSupabaseConfigured) return supabasePlanningService.patchCycle(workspaceSlug, projectId, cycleId, data);
     return this.patch(`/api/workspaces/${workspaceSlug}/projects/${projectId}/cycles/${cycleId}/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -143,6 +148,7 @@ export class CycleService extends APIService {
   }
 
   async deleteCycle(workspaceSlug: string, projectId: string, cycleId: string): Promise<any> {
+    if (isSupabaseConfigured) return supabasePlanningService.deleteCycle(workspaceSlug, projectId, cycleId);
     return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/cycles/${cycleId}/`)
       .then((response) => response?.data)
       .catch((error) => {

@@ -12,6 +12,7 @@ import type { EFileAssetType, TFileEntityInfo, TFileSignedURLResponse } from "@k
 import { getAssetIdFromUrl } from "@keel/utils";
 // helpers
 // services
+import { isSupabaseConfigured, supabaseStorageService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 import { FileUploadService } from "@/services/file-upload.service";
 
@@ -75,6 +76,14 @@ export class FileService extends APIService {
     file: File,
     uploadProgressHandler?: AxiosRequestConfig["onUploadProgress"]
   ): Promise<TFileSignedURLResponse> {
+    if (isSupabaseConfigured) {
+      const result = await supabaseStorageService.uploadWorkspaceAsset(workspaceSlug, file, data?.entity_type);
+      return {
+        asset_id: result.asset_id,
+        asset_url: result.url,
+        upload_data: { url: result.url, fields: {} },
+      } as unknown as TFileSignedURLResponse;
+    }
     const fileMetaData = await getFileMetaDataForUpload(file);
     return this.post(`/api/assets/v2/workspaces/${workspaceSlug}/`, {
       ...data,
@@ -152,6 +161,17 @@ export class FileService extends APIService {
     file: File,
     uploadProgressHandler?: AxiosRequestConfig["onUploadProgress"]
   ): Promise<TFileSignedURLResponse> {
+    if (isSupabaseConfigured) {
+      const result = await supabaseStorageService.uploadProjectAsset(workspaceSlug, projectId, file, {
+        entityType: data?.entity_type,
+        issueId: data?.entity_identifier,
+      });
+      return {
+        asset_id: result.asset_id,
+        asset_url: result.url,
+        upload_data: { url: result.url, fields: {} },
+      } as unknown as TFileSignedURLResponse;
+    }
     const fileMetaData = await getFileMetaDataForUpload(file);
     return this.post(`/api/assets/v2/workspaces/${workspaceSlug}/projects/${projectId}/`, {
       ...data,
@@ -182,6 +202,14 @@ export class FileService extends APIService {
   }
 
   async uploadUserAsset(data: TFileEntityInfo, file: File): Promise<TFileSignedURLResponse> {
+    if (isSupabaseConfigured) {
+      const result = await supabaseStorageService.uploadUserAsset(file, data?.entity_type);
+      return {
+        asset_id: result.asset_id,
+        asset_url: result.url,
+        upload_data: { url: result.url, fields: {} },
+      } as unknown as TFileSignedURLResponse;
+    }
     const fileMetaData = await getFileMetaDataForUpload(file);
     return this.post(`/api/assets/v2/user-assets/`, {
       ...data,

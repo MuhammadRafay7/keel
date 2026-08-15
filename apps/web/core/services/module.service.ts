@@ -8,6 +8,7 @@
 import { API_BASE_URL } from "@keel/constants";
 import type { IModule, ILinkDetails, ModuleLink, TIssuesResponse } from "@keel/types";
 // services
+import { isSupabaseConfigured, supabasePlanningService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 
 export class ModuleService extends APIService {
@@ -24,6 +25,7 @@ export class ModuleService extends APIService {
   }
 
   async getModules(workspaceSlug: string, projectId: string): Promise<IModule[]> {
+    if (isSupabaseConfigured) return supabasePlanningService.getModules(workspaceSlug, projectId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/modules/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -32,6 +34,7 @@ export class ModuleService extends APIService {
   }
 
   async createModule(workspaceSlug: string, projectId: string, data: any): Promise<IModule> {
+    if (isSupabaseConfigured) return supabasePlanningService.createModule(workspaceSlug, projectId, data);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/modules/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -48,6 +51,7 @@ export class ModuleService extends APIService {
   }
 
   async getModuleDetails(workspaceSlug: string, projectId: string, moduleId: string): Promise<IModule> {
+    if (isSupabaseConfigured) return supabasePlanningService.getModuleDetails(workspaceSlug, projectId, moduleId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/modules/${moduleId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -61,6 +65,7 @@ export class ModuleService extends APIService {
     moduleId: string,
     data: Partial<IModule>
   ): Promise<IModule> {
+    if (isSupabaseConfigured) return supabasePlanningService.patchModule(workspaceSlug, projectId, moduleId, data);
     return this.patch(`/api/workspaces/${workspaceSlug}/projects/${projectId}/modules/${moduleId}/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -69,6 +74,7 @@ export class ModuleService extends APIService {
   }
 
   async deleteModule(workspaceSlug: string, projectId: string, moduleId: string): Promise<any> {
+    if (isSupabaseConfigured) return supabasePlanningService.deleteModule(workspaceSlug, projectId, moduleId);
     return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/modules/${moduleId}/`)
       .then((response) => response?.data)
       .catch((error) => {

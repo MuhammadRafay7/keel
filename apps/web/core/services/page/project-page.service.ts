@@ -9,6 +9,7 @@ import { API_BASE_URL } from "@keel/constants";
 import type { TDocumentPayload, TPage } from "@keel/types";
 // helpers
 // services
+import { isSupabaseConfigured, supabasePageService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 import { FileUploadService } from "@/services/file-upload.service";
 
@@ -22,6 +23,7 @@ export class ProjectPageService extends APIService {
   }
 
   async fetchAll(workspaceSlug: string, projectId: string): Promise<TPage[]> {
+    if (isSupabaseConfigured) return supabasePageService.getProjectPages(workspaceSlug, projectId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/pages/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -30,6 +32,7 @@ export class ProjectPageService extends APIService {
   }
 
   async fetchById(workspaceSlug: string, projectId: string, pageId: string, trackVisit: boolean): Promise<TPage> {
+    if (isSupabaseConfigured) return supabasePageService.getPageDetails(workspaceSlug, pageId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/pages/${pageId}/`, {
       params: {
         track_visit: trackVisit,
@@ -42,6 +45,7 @@ export class ProjectPageService extends APIService {
   }
 
   async create(workspaceSlug: string, projectId: string, data: Partial<TPage>): Promise<TPage> {
+    if (isSupabaseConfigured) return supabasePageService.createPage(workspaceSlug, data, projectId);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/pages/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -50,6 +54,7 @@ export class ProjectPageService extends APIService {
   }
 
   async update(workspaceSlug: string, projectId: string, pageId: string, data: Partial<TPage>): Promise<TPage> {
+    if (isSupabaseConfigured) return supabasePageService.updatePage(workspaceSlug, pageId, data);
     return this.patch(`/api/workspaces/${workspaceSlug}/projects/${projectId}/pages/${pageId}/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -71,6 +76,7 @@ export class ProjectPageService extends APIService {
   }
 
   async remove(workspaceSlug: string, projectId: string, pageId: string): Promise<void> {
+    if (isSupabaseConfigured) return supabasePageService.deletePage(workspaceSlug, pageId);
     return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/pages/${pageId}/`)
       .then((response) => response?.data)
       .catch((error) => {

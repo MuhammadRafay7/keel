@@ -6,11 +6,7 @@
 
 import { observer } from "mobx-react";
 // keel imports
-import {
-  SUBSCRIPTION_REDIRECTION_URLS,
-  SUBSCRIPTION_WITH_BILLING_FREQUENCY,
-  TALK_TO_SALES_URL,
-} from "@keel/constants";
+import { SUBSCRIPTION_REDIRECTION_URLS, SUBSCRIPTION_WITH_BILLING_FREQUENCY, TALK_TO_SALES_URL } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";
 import { Button } from "@keel/propel/button";
 import type { TBillingFrequency } from "@keel/types";

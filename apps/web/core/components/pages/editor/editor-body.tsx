@@ -8,7 +8,8 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import { observer } from "mobx-react";
 // keel imports
 import { LIVE_BASE_PATH, LIVE_BASE_URL } from "@keel/constants";
-import { CollaborativeDocumentEditorWithRef } from "@keel/editor";
+import { CollaborativeDocumentEditorWithRef, DocumentEditorWithRef } from "@keel/editor";
+import { isSupabaseConfigured } from "@keel/services";
 import type {
   CollaborationState,
   EditorRefApi,
@@ -272,39 +273,65 @@ export const PageEditorBody = observer(function PageEditorBody(props: Props) {
               <PageEditorHeaderRoot page={page} projectId={projectId} />
             </div>
           </div>
-          <CollaborativeDocumentEditorWithRef
-            editable={isContentEditable}
-            id={pageId}
-            fileHandler={config.fileHandler}
-            handleEditorReady={handleEditorReady}
-            ref={editorForwardRef}
-            titleRef={titleEditorRef}
-            containerClassName="h-full p-0 pb-64"
-            displayConfig={displayConfig}
-            getEditorMetaData={getEditorMetaData}
-            mentionHandler={{
-              searchCallback: async (query) => {
-                const res = await fetchMentions(query);
-                if (!res) throw new Error("Failed in fetching mentions");
-                return res;
-              },
-              // oxlint-disable-next-line no-shadow
-              renderComponent: (props) => <EditorMentionsRoot {...props} />,
-              getMentionedEntityDetails: (id: string) => ({ display_name: getUserDetails(id)?.display_name ?? "" }),
-            }}
-            updatePageProperties={updatePageProperties}
-            realtimeConfig={realtimeConfig}
-            serverHandler={serverHandler}
-            user={userConfig}
-            disabledExtensions={documentEditorExtensions.disabled}
-            flaggedExtensions={documentEditorExtensions.flagged}
-            aiHandler={{
-              menu: getAIMenu,
-            }}
-            onAssetChange={updateAssetsList}
-            extendedEditorProps={extendedEditorProps}
-            isFetchingFallbackBinary={isFetchingFallbackBinary}
-          />
+          {isSupabaseConfigured ? (
+            <DocumentEditorWithRef
+              editable={isContentEditable}
+              id={pageId}
+              fileHandler={config.fileHandler}
+              handleEditorReady={handleEditorReady}
+              ref={editorForwardRef}
+              containerClassName="h-full p-0 pb-64"
+              displayConfig={displayConfig}
+              getEditorMetaData={getEditorMetaData}
+              mentionHandler={{
+                searchCallback: async (query) => {
+                  const res = await fetchMentions(query);
+                  if (!res) throw new Error("Failed in fetching mentions");
+                  return res;
+                },
+                renderComponent: (mentionProps) => <EditorMentionsRoot {...mentionProps} />,
+                getMentionedEntityDetails: (id: string) => ({ display_name: getUserDetails(id)?.display_name ?? "" }),
+              }}
+              user={userConfig}
+              disabledExtensions={documentEditorExtensions.disabled}
+              flaggedExtensions={documentEditorExtensions.flagged}
+              extendedEditorProps={extendedEditorProps}
+            />
+          ) : (
+            <CollaborativeDocumentEditorWithRef
+              editable={isContentEditable}
+              id={pageId}
+              fileHandler={config.fileHandler}
+              handleEditorReady={handleEditorReady}
+              ref={editorForwardRef}
+              titleRef={titleEditorRef}
+              containerClassName="h-full p-0 pb-64"
+              displayConfig={displayConfig}
+              getEditorMetaData={getEditorMetaData}
+              mentionHandler={{
+                searchCallback: async (query) => {
+                  const res = await fetchMentions(query);
+                  if (!res) throw new Error("Failed in fetching mentions");
+                  return res;
+                },
+                // oxlint-disable-next-line no-shadow
+                renderComponent: (props) => <EditorMentionsRoot {...props} />,
+                getMentionedEntityDetails: (id: string) => ({ display_name: getUserDetails(id)?.display_name ?? "" }),
+              }}
+              updatePageProperties={updatePageProperties}
+              realtimeConfig={realtimeConfig}
+              serverHandler={serverHandler}
+              user={userConfig}
+              disabledExtensions={documentEditorExtensions.disabled}
+              flaggedExtensions={documentEditorExtensions.flagged}
+              aiHandler={{
+                menu: getAIMenu,
+              }}
+              onAssetChange={updateAssetsList}
+              extendedEditorProps={extendedEditorProps}
+              isFetchingFallbackBinary={isFetchingFallbackBinary}
+            />
+          )}
         </div>
       </div>
     </Row>

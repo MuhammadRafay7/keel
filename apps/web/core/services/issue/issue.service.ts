@@ -19,6 +19,7 @@ import type {
   TIssueSubIssues,
 } from "@keel/types";
 // services
+import { isSupabaseConfigured, supabaseWorkItemService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 
 export class IssueService extends APIService {
@@ -30,6 +31,7 @@ export class IssueService extends APIService {
   }
 
   async createIssue(workspaceSlug: string, projectId: string, data: Partial<TIssue>): Promise<TIssue> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.createIssue(workspaceSlug, projectId, data);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -111,6 +113,7 @@ export class IssueService extends APIService {
   }
 
   async retrieve(workspaceSlug: string, projectId: string, issueId: string, queries?: any): Promise<TIssue> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.retrieve(workspaceSlug, projectId, issueId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/`, {
       params: queries,
     })
@@ -224,6 +227,7 @@ export class IssueService extends APIService {
   }
 
   async patchIssue(workspaceSlug: string, projectId: string, issueId: string, data: Partial<TIssue>): Promise<any> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.updateIssue(workspaceSlug, projectId, issueId, data);
     return this.patch(`/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -232,6 +236,7 @@ export class IssueService extends APIService {
   }
 
   async deleteIssue(workspaceSlug: string, projectId: string, issuesId: string): Promise<any> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.deleteIssue(workspaceSlug, projectId, issuesId);
     return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issuesId}/`)
       .then((response) => response?.data)
       .catch((error) => {
