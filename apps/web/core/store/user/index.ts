@@ -8,6 +8,7 @@ import { cloneDeep, set } from "lodash-es";
 import { action, makeObservable, observable, runInAction, computed } from "mobx";
 // keel imports
 import { EUserPermissions, API_BASE_URL } from "@keel/constants";
+import { isSupabaseConfigured, supabaseUserService } from "@keel/services";
 import type { IUser, TUserPermissions } from "@keel/types";
 // keel web imports
 import type { RootStore } from "@/store/root.store";
@@ -115,13 +116,30 @@ export class UserStore implements IUserStore {
         this.isLoading = true;
         this.error = undefined;
       });
-      const user = await this.userService.currentUser();
+      // Supabase Auth is the source of truth once configured. A null result
+      // means signed out, which is an ordinary state rather than a failure.
+      const user = isSupabaseConfigured
+        ? ((await supabaseUserService.currentUser()) as IUser | null)
+        : await this.userService.currentUser();
+
       if (user && user?.id) {
-        await Promise.all([
+        // Profile, settings and workspaces still read from the retired Django
+        // API (phases 2-4). Their failure must not undo a valid session, so
+        // they are awaited but not allowed to reject the sign-in.
+        const secondaryFetches = Promise.all([
           this.userProfile.fetchUserProfile(),
           this.userSettings.fetchCurrentUserSettings(),
           this.store.workspaceRoot.fetchWorkspaces(),
         ]);
+
+        if (isSupabaseConfigured) {
+          await secondaryFetches.catch((error) => {
+            console.warn("Secondary user data is not migrated to Supabase yet:", error);
+          });
+        } else {
+          await secondaryFetches;
+        }
+
         runInAction(() => {
           this.data = user;
           this.isLoading = false;
@@ -133,7 +151,9 @@ export class UserStore implements IUserStore {
           this.isLoading = false;
           this.isAuthenticated = false;
         });
-      return user;
+      // Signed-out yields null from Supabase; callers already treat a falsy
+      // user as "not authenticated", so the signature stays unchanged.
+      return user as IUser;
     } catch (error) {
       runInAction(() => {
         this.isLoading = false;
