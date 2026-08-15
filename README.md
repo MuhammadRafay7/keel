@@ -99,12 +99,8 @@ Two long-lived branches: `staging` for integration, `main` for production. Every
 | [brand.md](./docs/brand.md)                   | Identity — mark, wordmark, usage           |
 | [linting.md](./docs/linting.md)               | Lint and format tooling                    |
 
-## Origin and licence
+## Licence
 
-Keel is a fork of **[Plane](https://github.com/makeplane/plane)** by Plane Software, Inc., used under the GNU Affero General Public License v3.0. Plane is an excellent piece of software and this project would not exist without it.
+Keel is licensed under **[AGPL-3.0-only](./LICENSE.txt)**.
 
-Keel is not affiliated with, endorsed by, or supported by Plane Software, Inc.
-
-This project remains licensed under **[AGPL-3.0-only](./LICENSE.txt)**. Upstream copyright notices are preserved throughout the source.
-
-Because Keel is served over a network, AGPL §13 obliges us to offer users the complete corresponding source of this modified version — which is this repository.
+Because Keel is served over a network, AGPL §13 entitles its users to the complete corresponding source of this version — which is this repository.

@@ -1,10 +1,10 @@
 # Brand
 
-Keel — a fork of Plane, deployed at `keel.ostenmark.com`.
+Keel — project management, deployed at `keel.ostenmark.com`.
 
 ## The name
 
-A keel is the structural backbone running the length of a hull. It is what keeps a ship steady and holds its course. The name sits alongside the parent brand Ostenmark, which reads Nordic (*osten*, east + *mark*, land).
+A keel is the structural backbone running the length of a hull. It is what keeps a ship steady and holds its course. The name sits alongside the parent brand Ostenmark, which reads Nordic (_osten_, east + _mark_, land).
 
 Short, lowercase-safe, and one syllable — which matters practically, because the name has to work as `@keel/ui`, `keel-api`, and a Docker tag.
 
@@ -35,11 +35,11 @@ The differing rib lengths are load-bearing, not decoration — they are what pro
 
 ## Components
 
-| Component | File | Use |
-| --- | --- | --- |
-| `KeelLogo` | `keel-logo.tsx` | The mark alone — favicons, avatars, tight spaces |
-| `KeelWordmark` | `keel-wordmark.tsx` | The name alone |
-| `KeelLockup` | `keel-lockup.tsx` | Mark and wordmark together — headers, login, marketing |
+| Component      | File                | Use                                                    |
+| -------------- | ------------------- | ------------------------------------------------------ |
+| `KeelLogo`     | `keel-logo.tsx`     | The mark alone — favicons, avatars, tight spaces       |
+| `KeelWordmark` | `keel-wordmark.tsx` | The name alone                                         |
+| `KeelLockup`   | `keel-lockup.tsx`   | Mark and wordmark together — headers, login, marketing |
 
 All three take `color` defaulting to `currentColor`, matching the `ISvgIcons` contract in `packages/propel/src/icons/type.ts`.
 
@@ -65,5 +65,5 @@ The identity is currently monochrome by design: the mark takes the color of what
 
 ## Outstanding
 
-- **Raster assets are still Plane's artwork.** The PWA icons, `keel-takeoff.png`, and `keel-instance-not-ready.webp` were renamed but their pixels are unchanged. They need regenerating from the SVG.
+- **Some raster assets are still upstream artwork.** The PWA icons, `keel-takeoff.png`, and `keel-instance-not-ready.webp` were renamed but their pixels are unchanged. They need regenerating from the SVG.
 - **Illustrations** should follow the mark: same stroke weight, round caps, `currentColor`, so artwork and icons read as one system.
