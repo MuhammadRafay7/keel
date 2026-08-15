@@ -25,7 +25,7 @@ The migration is therefore **almost entirely a coordinated third-party dependenc
 
 ## Execution status — verified ✅
 
-Executed on branch `chore/django-5.2-upgrade` and verified in the containerized test harness (`docker-compose-test.yml`: `python:3.12.5-alpine`, Postgres 15.7, Valkey, RabbitMQ, MinIO).
+Executed on branch `chore/django-5.2-upgrade` and verified in the containerized test harness (`docker/docker-compose-test.yml`: `python:3.12.5-alpine`, Postgres 15.7, Valkey, RabbitMQ, MinIO).
 
 **Verification results (Django 5.2.15):**
 
@@ -166,7 +166,7 @@ Policy: **latest stable**, with **evidence-based safe overrides** where "latest"
    `python -W error::DeprecationWarning -W error::PendingDeprecationWarning -m pytest` (or via `pytest.ini` `filterwarnings`). Triage anything that surfaces (expected: clean, given the audit).
 10. **Full test suite:** `cd apps/api && ./run_tests.sh` (or `pytest`). All green is the gate.
 11. **Regenerate OpenAPI schema** (drf-spectacular 0.29.0) and commit the diff: `python manage.py spectacular --file <committed schema path>` (match the repo's existing schema-generation command). Review for unintended changes.
-12. **Manual smoke** of each entrypoint against a local stack (`docker-compose-local.yml`): **api** (boot + a few endpoints incl. one S3/file-upload path and one webhook), **worker** (enqueue+run a task), **beat** (scheduler starts, periodic task fires), **migrator** (runs to completion). Confirm `check --deploy` is clean: `python manage.py check --deploy`.
+12. **Manual smoke** of each entrypoint against a local stack (`docker/docker-compose-local.yml`): **api** (boot + a few endpoints incl. one S3/file-upload path and one webhook), **worker** (enqueue+run a task), **beat** (scheduler starts, periodic task fires), **migrator** (runs to completion). Confirm `check --deploy` is clean: `python manage.py check --deploy`.
 13. **Update docs:** mark this plan as executed; note any deviations.
 14. **Open PR** to `preview` with the migration summary, test evidence, and schema diff.
 

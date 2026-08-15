@@ -14,8 +14,8 @@ interface TermsAndConditionsProps {
 
 // Constants for better maintainability
 const LEGAL_LINKS = {
-  termsOfService: "https://plane.so/legals/terms-and-conditions",
-  privacyPolicy: "https://plane.so/legals/privacy-policy",
+  termsOfService: "https://keel.ostenmark.com/terms",
+  privacyPolicy: "https://keel.ostenmark.com/privacy",
 } as const;
 
 const MESSAGES = {

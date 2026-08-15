@@ -126,7 +126,7 @@ export const InboxIssueListItem = observer(function InboxIssueListItem(props: In
               )}
             </div>
             {/* created by */}
-            {createdByDetails && createdByDetails.email?.includes("intake@plane.so") ? (
+            {createdByDetails && createdByDetails.email?.includes("intake@ostenmark.com") ? (
               <Avatar src={getFileURL("")} name={"Keel"} size="md" showTooltip />
             ) : createdByDetails ? (
               <ButtonAvatars showTooltip={false} userIds={createdByDetails?.id} />

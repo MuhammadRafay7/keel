@@ -53,11 +53,8 @@ function WorkspaceInvitationPage() {
         token: token,
       })
       .then(() => {
-        if (invitationDetail.email === currentUser?.email) {
-          router.push(`/${invitationDetail.workspace.slug}`);
-        } else {
-          router.push("/");
-        }
+        router.push(invitationDetail.email === currentUser?.email ? `/${invitationDetail.workspace.slug}` : "/");
+        return undefined;
       })
       .catch((err: unknown) => console.error(err));
   };
@@ -71,6 +68,7 @@ function WorkspaceInvitationPage() {
       })
       .then(() => {
         router.push("/");
+        return undefined;
       })
       .catch((err: unknown) => console.error(err));
   };
@@ -115,7 +113,7 @@ function WorkspaceInvitationPage() {
               <EmptySpaceItem
                 Icon={Share2}
                 title="Join our community of active creators"
-                href="https://forum.plane.so"
+                href="https://github.com/MuhammadRafay7/keel/discussions"
               />
             </EmptySpace>
           )
