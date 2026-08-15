@@ -8,11 +8,8 @@
 import { API_BASE_URL } from "@keel/constants";
 import type { AI_EDITOR_TASKS } from "@keel/constants";
 // services
+import { isSupabaseConfigured, supabaseAIService } from "@keel/services";
 import { APIService } from "@/services/api.service";
-// types
-// FIXME:
-// import { IGptResponse } from "@keel/types";
-// helpers
 
 export type TTaskPayload = {
   casual_score?: number;
@@ -27,6 +24,9 @@ export class AIService extends APIService {
   }
 
   async createGptTask(workspaceSlug: string, data: { prompt: string; task: string }): Promise<any> {
+    if (isSupabaseConfigured) {
+      return supabaseAIService.prompt(data);
+    }
     return this.post(`/api/workspaces/${workspaceSlug}/ai-assistant/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -40,6 +40,9 @@ export class AIService extends APIService {
   ): Promise<{
     response: string;
   }> {
+    if (isSupabaseConfigured) {
+      return supabaseAIService.prompt({ prompt: data.text_input, task: data.task });
+    }
     return this.post(`/api/workspaces/${workspaceSlug}/rephrase-grammar/`, data)
       .then((res) => res?.data)
       .catch((error) => {

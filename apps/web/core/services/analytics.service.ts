@@ -8,7 +8,7 @@
 import { API_BASE_URL } from "@keel/constants";
 import type { IAnalyticsResponse, TAnalyticsTabsBase, TAnalyticsGraphsBase, TAnalyticsFilterParams } from "@keel/types";
 // services
-import { isSupabaseConfigured } from "@keel/services";
+import { isSupabaseConfigured, supabaseAnalyticsService } from "@keel/services";
 import { APIService } from "./api.service";
 
 export class AnalyticsService extends APIService {
@@ -22,15 +22,7 @@ export class AnalyticsService extends APIService {
     params?: TAnalyticsFilterParams,
     isPeekView?: boolean
   ): Promise<T> {
-    if (isSupabaseConfigured) {
-      return {
-        total_issues: 0,
-        pending_issues: 0,
-        completed_issues: 0,
-        issues_by_priority: [],
-        issues_by_state: [],
-      } as unknown as T;
-    }
+    if (isSupabaseConfigured) return supabaseAnalyticsService.getAdvanceAnalytics(workspaceSlug, params) as Promise<T>;
     return this.get(this.processUrl<TAnalyticsTabsBase>("advance-analytics", workspaceSlug, tab, params, isPeekView), {
       params: {
         tab,
@@ -49,6 +41,8 @@ export class AnalyticsService extends APIService {
     params?: TAnalyticsFilterParams,
     isPeekView?: boolean
   ): Promise<T> {
+    if (isSupabaseConfigured)
+      return supabaseAnalyticsService.getAdvanceAnalyticsStats(workspaceSlug, params) as Promise<T>;
     const processedUrl = this.processUrl<Exclude<TAnalyticsTabsBase, "overview">>(
       "advance-analytics-stats",
       workspaceSlug,
@@ -74,6 +68,15 @@ export class AnalyticsService extends APIService {
     params?: TAnalyticsFilterParams,
     isPeekView?: boolean
   ): Promise<T> {
+    // Charts are not migrated. They cross every x-axis property with every
+    // y-axis metric, which is a real aggregation layer rather than one more
+    // count, and it has not been built.
+    //
+    // This throws rather than returning an empty series on purpose: an empty
+    // chart looks like a workspace with no data, which is indistinguishable
+    // from the truth and impossible to report as a bug.
+    if (isSupabaseConfigured)
+      throw new Error("Analytics charts are not available yet — this view has not been migrated to Supabase.");
     const processedUrl = this.processUrl<TAnalyticsGraphsBase>(
       "advance-analytics-charts",
       workspaceSlug,

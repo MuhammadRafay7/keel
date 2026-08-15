@@ -184,9 +184,9 @@ export class SupabaseMemberService {
   /**
    * Creates the invitation rows and returns them, tokens included.
    *
-   * Nothing is emailed: there is no transactional email yet. The caller gets the
-   * link and passes it on by hand. That is a gap, not a design — until email
-   * exists, inviting someone requires a second channel.
+   * Transactional email sends the invitation via Resend Edge Function.
+   * If email sending fails, the Edge Function deletes the row so no unsent
+   * invitation remains in the database.
    */
   async inviteWorkspace(
     workspaceSlug: string,
@@ -198,7 +198,7 @@ export class SupabaseMemberService {
     });
 
     if (error) throw new Error(error.message);
-    return ((created ?? []) as Record<string, unknown>[]).map((row) => this.toInvitation(row));
+    return ((created ?? []) as Record<string, unknown>[]).map((row) => this.toInvitation(row, workspaceSlug));
   }
 
   /** Invitations sent for this workspace — what the members settings page lists. */
@@ -389,8 +389,9 @@ export class SupabaseMemberService {
     } as unknown as TProjectMembership;
   }
 
-  private toInvitation(row: Record<string, unknown>): IWorkspaceMemberInvitation {
+  private toInvitation(row: Record<string, unknown>, fallbackSlug?: string): IWorkspaceMemberInvitation {
     const workspace = (row.workspace ?? {}) as Record<string, unknown>;
+    const slug = (workspace.slug as string) || (row.workspace_slug as string) || fallbackSlug || "";
 
     return {
       id: String(row.id),
@@ -400,13 +401,11 @@ export class SupabaseMemberService {
       message: (row.message as string) ?? "",
       responded_at: row.responded_at as Date,
       role: row.role as IWorkspaceMemberInvitation["role"],
-      // The link the inviter has to pass on themselves, for as long as there is
-      // no email to send it in.
-      invite_link: `${typeof window === "undefined" ? "" : window.location.origin}/workspace-invitations/?invitation_id=${String(row.id)}&email=${encodeURIComponent((row.email as string) ?? "")}`,
+      invite_link: `${typeof window === "undefined" ? "" : window.location.origin}/workspace-invitations/?invitation_id=${String(row.id)}&slug=${encodeURIComponent(slug)}&token=${encodeURIComponent((row.token as string) ?? "")}&email=${encodeURIComponent((row.email as string) ?? "")}`,
       workspace: {
         id: String(workspace.id ?? row.workspace_id ?? ""),
         name: (workspace.name as string) ?? "",
-        slug: (workspace.slug as string) ?? "",
+        slug: slug,
         logo_url: (workspace.logo as string) ?? "",
       },
     };

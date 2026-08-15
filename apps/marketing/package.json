@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "next": "16.3.0",
+    "next-themes": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "three": "0.185.1"

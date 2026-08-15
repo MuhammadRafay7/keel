@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import type { TPage } from "@keel/types";
+import type { TDocumentPayload, TPage } from "@keel/types";
 
 import { getSupabase } from "./client";
 
@@ -105,6 +105,33 @@ export class SupabasePageService {
 
     if (error) throw new Error(`Failed to save that page: ${error.message}`);
     return data as unknown as TPage;
+  }
+
+  /**
+   * The document body, saved from the editor.
+   *
+   * This is the write that makes single-writer pages real. The collaborative
+   * path persisted through Hocuspocus, which is not running here, so without
+   * this every keystroke was discarded.
+   *
+   * `description_binary` is a Yjs snapshot and is deliberately not stored: there
+   * is no Yjs document in this path, and writing a stale or empty binary would
+   * be worse than writing none — the collaborative editor would later load it in
+   * preference to the HTML and show an empty page.
+   */
+  async updateDescription(workspaceSlug: string, pageId: string, data: TDocumentPayload): Promise<void> {
+    const { now } = await this.context();
+
+    const { error } = await getSupabase()
+      .from("pages")
+      .update({
+        description_html: data.description_html ?? "<p></p>",
+        description_json: data.description_json ?? {},
+        updated_at: now,
+      })
+      .eq("id", pageId);
+
+    if (error) throw new Error(`Failed to save this page: ${error.message}`);
   }
 
   async deletePage(workspaceSlug: string, pageId: string): Promise<void> {

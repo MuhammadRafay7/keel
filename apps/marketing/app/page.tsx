@@ -1,272 +1,1007 @@
-"use client";
-
-import { useState } from "react";
+import Link from "next/link";
 import { HullScene } from "@/components/HullScene";
-import { Reveal } from "@/components/Reveal";
+import { LogoCloud } from "@/components/LogoCloud";
+import { AiFeatureShowcase } from "@/components/AiFeatureShowcase";
+import {
+  HeroDashboardMockup,
+  ProjectsBentoVisual,
+  WikiBentoVisual,
+  AiBentoVisual,
+  DeskBentoVisual,
+} from "@/components/ProductMockups";
 
 const APP = "https://app.keel.ostenmark.com";
-const REPO = "https://github.com/MuhammadRafay7/keel";
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<"loop" | "workspaces" | "realtime" | "analytics">("loop");
-
   return (
     <>
-      {/* Background Ambient Glows */}
-      <div className="ambient-glow-1" />
-      <div className="ambient-glow-2" />
-
-      {/* Hero Section */}
-      <section className="hero">
+      {/* 1. HERO SECTION WITH ANTIGRAVITY 3D INTERACTIVE CANVAS & 3D MOCKUP */}
+      <section aria-label="Hero section" className="hero-section" id="hero">
         <HullScene />
+
+        <div className="shell hero-content">
+          <div className="hero-eyebrow">Cloud, self-hosted and air-gapped ready</div>
+
+          <h1 className="hero-title font-satoshi">
+            Project management and knowledge
+            <br />
+            management for teams and agents
+          </h1>
+
+          <p className="hero-subtitle">
+            Keel brings work items, cycles, modules, docs, and AI-powered workflows into one unified workspace so teams
+            and agents can plan, execute, and stay aligned.
+          </p>
+
+          <div className="hero-cta-group">
+            <a className="btn btn-inverse btn-lg" href={`${APP}/sign-up`}>
+              Try Keel Pro for 14 days
+            </a>
+            <Link className="btn btn-secondary btn-lg" href="/contact">
+              Talk to a human &rarr;
+            </Link>
+          </div>
+        </div>
+
+        {/* 3D Dashboard Preview Mockup */}
+        <div className="hero-dashboard-preview shell">
+          <div className="hero-dashboard-wrapper">
+            <HeroDashboardMockup />
+          </div>
+        </div>
+      </section>
+
+      {/* 2. LOGO CLOUD (ENTERPRISE SOCIAL PROOF) */}
+      <LogoCloud />
+
+      {/* 3. THE PLATFORM (FOUR PRODUCTS IN ONE WORKSPACE) */}
+      <section aria-label="Products" className="section-pad" id="products">
         <div className="shell">
-          <div className="hero-inner">
-            <p className="eyebrow">
-              <span className="dot" /> ANTIGRAVITY ENGINE 2.0 • AGENTIC WORKSPACE
-            </p>
-            <h1>
-              Build, Orchestrate, and Scale{" "}
-              <span className="gradient-text">at the Speed of Thought.</span>
-            </h1>
-            <p className="lede">
-              Keel seamlessly unites work items, cycles, roadmaps, and collaborative documents into an open-source, serverless-native suite powered by Postgres.
-            </p>
-            <div className="cta-row">
-              <a className="btn btn-accent" href={APP}>
-                Launch Application <span>→</span>
-              </a>
-              <a className="btn btn-outline" href={REPO}>
-                Explore Repository
-              </a>
-            </div>
-            <ul className="capabilities">
-              <li>• Work Items & Sub-tasks</li>
-              <li>• Time-boxed Cycles</li>
-              <li>• Cross-cutting Modules</li>
-              <li>• Realtime Collaborative Pages</li>
-              <li>• Intake Triage Inbox</li>
-              <li>• Advanced Analytics</li>
-            </ul>
+          <div className="section-header center">
+            <span className="label-badge">THE PLATFORM</span>
+            <h2 className="font-satoshi">
+              Four products in one workspace
+              <br />
+              for your whole org
+            </h2>
           </div>
 
-          {/* Interactive Live App Preview */}
-          <Reveal delay={100}>
-            <div className="preview-wrapper">
-              <div className="preview-header">
-                <div className="dots">
-                  <div className="dot-control dot-red" />
-                  <div className="dot-control dot-yellow" />
-                  <div className="dot-control dot-green" />
+          <div className="products-bento">
+            {/* 1. Projects */}
+            <Link href="/features" className="product-bento-card">
+              <div className="product-bento-header">
+                <div className="product-tag">
+                  <span>⚡️</span> Projects
                 </div>
-                <div className="preview-tabs">
-                  <button
-                    type="button"
-                    className={`preview-tab ${activeTab === "loop" ? "active" : ""}`}
-                    onClick={() => setActiveTab("loop")}
-                  >
-                    ⚡ Autonomous Agent Loop
-                  </button>
-                  <button
-                    type="button"
-                    className={`preview-tab ${activeTab === "workspaces" ? "active" : ""}`}
-                    onClick={() => setActiveTab("workspaces")}
-                  >
-                    📂 Workspaces & Cycles
-                  </button>
-                  <button
-                    type="button"
-                    className={`preview-tab ${activeTab === "realtime" ? "active" : ""}`}
-                    onClick={() => setActiveTab("realtime")}
-                  >
-                    📝 Collaborative Pages
-                  </button>
-                  <button
-                    type="button"
-                    className={`preview-tab ${activeTab === "analytics" ? "active" : ""}`}
-                    onClick={() => setActiveTab("analytics")}
-                  >
-                    📊 Workspace Analytics
-                  </button>
-                </div>
-                <div style={{ width: "60px" }} />
+                <h3>Project management that matches how your team works</h3>
+                <p>
+                  Initiatives set the direction. Projects, epics, and cycles break it down. Progress connects across
+                  every layer.
+                </p>
               </div>
+              <div className="product-bento-visual">
+                <ProjectsBentoVisual />
+              </div>
+            </Link>
 
-              <div className="preview-content">
-                {activeTab === "loop" && (
-                  <div style={{ fontFamily: "var(--mono)", fontSize: "0.9rem", color: "#e2e8f0" }}>
-                    <div style={{ color: "#38bdf8", marginBottom: "0.75rem" }}>
-                      &gt; Initializing Antigravity Agentic Planner v2.0...
-                    </div>
-                    <div style={{ color: "#94a3b8" }}>
-                      [INFO] Connecting to Supabase database clusters... Connected.
-                      <br />
-                      [INFO] RLS security verification passed: 110 tables secured.
-                      <br />
-                      [INFO] Syncing work item sequence allocation for project KEEL-01...
-                      <br />
-                      [STATUS] All background cycles and intake triage triggers active.
-                    </div>
-                    <div style={{ marginTop: "1rem", color: "#34d399" }}>
-                      ✓ Task Execution Ready — Zero latency serverless architecture deployed on Vercel.
-                    </div>
-                  </div>
-                )}
+            {/* 2. Wiki */}
+            <Link href="/docs" className="product-bento-card">
+              <div className="product-bento-header">
+                <div className="product-tag">
+                  <span>📖</span> Wiki
+                </div>
+                <h3>Documentation built in for tribal knowledge</h3>
+                <p>
+                  Company knowledge in one place. Tied directly to the work that created it. Never stale, never lost.
+                </p>
+              </div>
+              <div className="product-bento-visual">
+                <WikiBentoVisual />
+              </div>
+            </Link>
 
-                {activeTab === "workspaces" && (
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
-                    <div style={{ padding: "1.25rem", borderRadius: "8px", background: "rgba(30, 41, 59, 0.6)", border: "1px solid var(--line)" }}>
-                      <div style={{ color: "#38bdf8", fontWeight: 600, fontSize: "0.95rem" }}>Sprint Cycle 14</div>
-                      <div style={{ color: "#94a3b8", fontSize: "0.85rem", marginTop: "0.25rem" }}>18 items • 82% complete</div>
-                      <div style={{ height: "6px", width: "100%", background: "#1e293b", borderRadius: "999px", marginTop: "0.75rem", overflow: "hidden" }}>
-                        <div style={{ width: "82%", height: "100%", background: "linear-gradient(90deg, #38bdf8, #818cf8)" }} />
-                      </div>
-                    </div>
-                    <div style={{ padding: "1.25rem", borderRadius: "8px", background: "rgba(30, 41, 59, 0.6)", border: "1px solid var(--line)" }}>
-                      <div style={{ color: "#818cf8", fontWeight: 600, fontSize: "0.95rem" }}>Module: Engine v2</div>
-                      <div style={{ color: "#94a3b8", fontSize: "0.85rem", marginTop: "0.25rem" }}>6 work items linked</div>
-                      <div style={{ height: "6px", width: "100%", background: "#1e293b", borderRadius: "999px", marginTop: "0.75rem", overflow: "hidden" }}>
-                        <div style={{ width: "100%", height: "100%", background: "linear-gradient(90deg, #818cf8, #c084fc)" }} />
-                      </div>
-                    </div>
-                  </div>
-                )}
+            {/* 3. Keel AI */}
+            <Link href="/features" className="product-bento-card">
+              <div className="product-bento-header">
+                <div className="product-tag">
+                  <span>✨</span> Keel AI
+                </div>
+                <h3>AI that knows your work, not just your prompts</h3>
+                <p>
+                  Assign agents to work items. Summarize progress across projects. Triage, draft, and act using the full
+                  context of your workspace.
+                </p>
+              </div>
+              <div className="product-bento-visual">
+                <AiBentoVisual />
+              </div>
+            </Link>
 
-                {activeTab === "realtime" && (
-                  <div style={{ color: "#e2e8f0" }}>
-                    <div style={{ fontSize: "1.25rem", fontWeight: 600, color: "#f8fafc", marginBottom: "0.5rem" }}>
-                      Architecture RFC: Serverless Document Storage
-                    </div>
-                    <p style={{ color: "#94a3b8", fontSize: "0.95rem", lineHeight: 1.6 }}>
-                      Document pages support single-writer autosave and collaborative TipTap rich-text editing with TipTap extensions, code blocks, callouts, and inline mentions.
-                    </p>
+            {/* 4. Desk */}
+            <div className="product-bento-card">
+              <div className="product-bento-header">
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
+                  <div className="product-tag" style={{ marginBottom: 0 }}>
+                    <span>📥</span> Desk
                   </div>
-                )}
-
-                {activeTab === "analytics" && (
-                  <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ color: "#38bdf8", fontSize: "1.5rem", fontWeight: 700 }}>110 Tables</div>
-                      <div style={{ color: "#94a3b8", fontSize: "0.875rem" }}>RLS Security Enabled</div>
-                    </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ color: "#34d399", fontSize: "1.5rem", fontWeight: "700" }}>100% Serverless</div>
-                      <div style={{ color: "#94a3b8", fontSize: "0.875rem" }}>Hosted on Vercel + Supabase</div>
-                    </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ color: "#c084fc", fontSize: "1.5rem", fontWeight: "700" }}>0ms Latency</div>
-                      <div style={{ color: "#94a3b8", fontSize: "0.875rem" }}>Direct Postgres Edge Access</div>
-                    </div>
-                  </div>
-                )}
+                  <span
+                    style={{
+                      fontSize: "0.6875rem",
+                      fontWeight: 600,
+                      background: "rgba(100, 116, 139, 0.2)",
+                      padding: "0.15rem 0.5rem",
+                      borderRadius: "999px",
+                      textTransform: "uppercase",
+                      color: "var(--fg-muted)",
+                    }}
+                  >
+                    Coming Soon
+                  </span>
+                </div>
+                <h3>Customer support that lives where your work does</h3>
+                <p>
+                  Turn requests into trackable work items. Route to the right team and close the loop automatically.
+                </p>
+              </div>
+              <div className="product-bento-visual">
+                <DeskBentoVisual />
               </div>
             </div>
-          </Reveal>
+          </div>
         </div>
-        <p className="hero-hint">Drag orbital hull to inspect</p>
       </section>
 
-      {/* Feature Showcase Grid */}
-      <section className="pad">
-        <div className="shell two">
-          <Reveal>
-            <div>
-              <p className="label">The Work Engine</p>
-              <h2>Everything hangs off a work item.</h2>
-              <p className="section-lede">
-                State, priority, assignees, labels, estimates, and target dates. Items nest into sub-items and link to each other seamlessly.
+      {/* 4. TESTIMONIALS & CASE STUDIES BENTO GRID */}
+      <section className="section-pad" style={{ background: "var(--surface-product)" }}>
+        <div className="shell">
+          <div className="testimonial-grid">
+            {/* Featured Duane Arnett FortyAU Story */}
+            <Link href="/about" className="testimonial-card-story testimonial-card-featured">
+              <div style={{ fontSize: "1.1rem", fontWeight: 700, letterSpacing: "0.08em" }}>40AU</div>
+              <div>
+                <h3 style={{ fontSize: "1.25rem", color: "var(--fg)", marginBottom: "1rem" }}>
+                  Why FortyAU replaced Monday and Trello with Keel for flexible, self-hosted project delivery
+                </h3>
+                <span
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.4rem",
+                    color: "var(--accent)",
+                    fontWeight: 500,
+                  }}
+                >
+                  Read customer story &rarr;
+                </span>
+              </div>
+            </Link>
+
+            {/* Duane Arnett Quote Block */}
+            <div className="testimonial-card-main">
+              <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="var(--accent-brand-bright)"
+                  style={{ opacity: 0.8 }}
+                >
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                </svg>
+                <p style={{ fontSize: "1.35rem", lineHeight: "1.5", margin: 0, color: "var(--fg)", fontWeight: 430 }}>
+                  &ldquo;The Keel team is creating a product that our business has been needing for years. Modern
+                  features, flexible workflows, without sacrificing reporting abilities.&rdquo;
+                </p>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "1rem",
+                  borderTop: "1px solid var(--line)",
+                  paddingTop: "1.25rem",
+                }}
+              >
+                <div>
+                  <div style={{ fontWeight: 600, color: "var(--fg)" }}>Duane Arnett</div>
+                  <div style={{ fontSize: "0.8125rem", color: "var(--fg-muted)" }}>FortyAU</div>
+                </div>
+              </div>
+            </div>
+
+            {/* MinimalArt Story */}
+            <Link href="/about" className="testimonial-card-story">
+              <div style={{ fontWeight: 700, color: "var(--fg)" }}>minimalart</div>
+              <div>
+                <h4 style={{ color: "var(--fg)", marginBottom: "0.5rem" }}>
+                  Why MinimalArt replaced ClickUp with Keel for simpler project management
+                </h4>
+                <span style={{ fontSize: "0.875rem", color: "var(--accent-brand)", fontWeight: 500 }}>
+                  Read customer story &rarr;
+                </span>
+              </div>
+            </Link>
+
+            {/* VATES Story */}
+            <Link href="/about" className="testimonial-card-story">
+              <div style={{ fontWeight: 700, color: "var(--fg)" }}>VATES</div>
+              <div>
+                <h4 style={{ color: "var(--fg)", marginBottom: "0.5rem" }}>
+                  Why VATES replaced a Trello alternative with Keel as they scaled
+                </h4>
+                <span style={{ fontSize: "0.875rem", color: "var(--accent-brand)", fontWeight: 500 }}>
+                  Read customer story &rarr;
+                </span>
+              </div>
+            </Link>
+
+            {/* INITS Story */}
+            <Link href="/about" className="testimonial-card-story">
+              <div style={{ fontWeight: 700, color: "var(--fg)" }}>INITS</div>
+              <div>
+                <h4 style={{ color: "var(--fg)", marginBottom: "0.5rem" }}>
+                  How INITS built a real-world innovation lab for students with Keel
+                </h4>
+                <span style={{ fontSize: "0.875rem", color: "var(--accent-brand)", fontWeight: 500 }}>
+                  Read customer story &rarr;
+                </span>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. KEEL AI DEEP DIVE */}
+      <section aria-label="Insight" className="section-pad section-dark" id="insight">
+        <div className="shell">
+          <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
+            <div style={{ maxWidth: "48rem" }}>
+              <span className="label-badge">KEEL AI</span>
+              <h2 className="font-satoshi">AI that works because it knows your context</h2>
+              <p className="section-desc">
+                Keel was not retrofitted for AI, it was built around it. Keel AI reads across every project, cycle, doc,
+                and thread in your workspace. Agents take real assignments and do real work.
+              </p>
+              <div style={{ display: "flex", gap: "1rem", marginTop: "1.75rem", flexWrap: "wrap" }}>
+                <a className="btn btn-inverse" href={`${APP}/sign-up`}>
+                  Get started free
+                </a>
+                <Link className="btn btn-secondary" href="/contact">
+                  Talk to a human &rarr;
+                </Link>
+              </div>
+            </div>
+
+            {/* Interactive Tab Showcase Component */}
+            <AiFeatureShowcase />
+          </div>
+        </div>
+      </section>
+
+      {/* 6. JIRA & LINEAR MIGRATION SECTION */}
+      <section aria-label="Migrate" className="section-pad" id="migrate">
+        <div className="shell">
+          <div className="section-header center">
+            <h2 className="font-satoshi">
+              Two Fortune 10 companies
+              <br />
+              chose Keel for their Jira migration.
+            </h2>
+            <p className="section-desc">
+              Get out of Jira, Linear, ClickUp, Asana, or Monday without leaving your data behind. Full migration
+              support from day one, whether you&apos;re moving 50 people or 10,000.
+            </p>
+            <div
+              style={{ display: "flex", gap: "1rem", justifyContent: "center", marginTop: "1.75rem", flexWrap: "wrap" }}
+            >
+              <a className="btn btn-inverse" href={`${APP}/sign-up`}>
+                Get started free
+              </a>
+              <Link className="btn btn-secondary" href="/contact">
+                Talk to a migration expert &rarr;
+              </Link>
+            </div>
+          </div>
+
+          {/* 3-Week Timeline */}
+          <div className="migration-timeline">
+            {/* Week 1 */}
+            <div className="timeline-step">
+              <div>
+                <span className="timeline-week">WEEK 1</span>
+                <h3>Discovery and set-up.</h3>
+              </div>
+              <ul>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M20 6L9 17l-5-5" />
+                  </svg>
+                  <span>We run discovery scripts on your existing setup</span>
+                </li>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M20 6L9 17l-5-5" />
+                  </svg>
+                  <span>We map every issue, attachment, comment, and automation</span>
+                </li>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M20 6L9 17l-5-5" />
+                  </svg>
+                  <span>You get a migration plan tailored to your organization</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Week 2 */}
+            <div className="timeline-step">
+              <div>
+                <span className="timeline-week">WEEK 2</span>
+                <h3>Run in parallel</h3>
+              </div>
+              <ul>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M20 6L9 17l-5-5" />
+                  </svg>
+                  <span>Define workflows that match how your team actually works</span>
+                </li>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M20 6L9 17l-5-5" />
+                  </svg>
+                  <span>Connect to Slack, GitHub, Figma, and 50+ tools</span>
+                </li>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M20 6L9 17l-5-5" />
+                  </svg>
+                  <span>Set up initiatives, cycles, and team structures</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Week 3 */}
+            <div className="timeline-step">
+              <div>
+                <span className="timeline-week">WEEK 3</span>
+                <h3>Cut over and onboard</h3>
+              </div>
+              <ul>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M20 6L9 17l-5-5" />
+                  </svg>
+                  <span>Experience a tool that moves as fast as you do</span>
+                </li>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M20 6L9 17l-5-5" />
+                  </svg>
+                  <span>AI already knows your projects, your blockers, your priorities</span>
+                </li>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M20 6L9 17l-5-5" />
+                  </svg>
+                  <span>No more fighting your software to get work done</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. CORE CAPABILITIES SECTION */}
+      <section aria-label="Core Capabilities" className="section-pad" style={{ background: "var(--surface-product)" }}>
+        <div className="shell">
+          <div style={{ display: "flex", flexDirection: "column", gap: "3.5rem" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+                flexWrap: "wrap",
+                gap: "1.5rem",
+              }}
+            >
+              <div style={{ maxWidth: "38rem" }}>
+                <span className="label-badge">CORE CAPABILITIES</span>
+                <h2 className="font-satoshi">Flexible features for every project, and all teams</h2>
+              </div>
+              <p style={{ maxWidth: "34rem", color: "var(--fg-muted)", fontSize: "1.0625rem", margin: 0 }}>
+                Keel is fast to set up and easy to adapt. Multiple views, time-boxed cycles, built-in docs, and
+                real-time dashboards help teams plan and ship without fighting their tools.
               </p>
             </div>
-          </Reveal>
-          <Reveal delay={80}>
-            <div className="cards c2" style={{ marginTop: 0 }}>
-              <div className="card">
-                <svg className="icon" viewBox="0 0 48 48" fill="none">
-                  <circle cx="24" cy="24" r="15" stroke="currentColor" strokeWidth="3" />
-                  <path d="M24 14v10l7 4" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-                </svg>
-                <h3>Cycles</h3>
-                <p>Time-boxed sprints with burn-down tracking and automated archive routines.</p>
+
+            {/* 2 Large Showcase Cards */}
+            <div
+              style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.5rem" }}
+            >
+              {/* Multi-view card */}
+              <div
+                style={{
+                  background: "var(--surface)",
+                  border: "1px solid var(--line)",
+                  borderRadius: "16px",
+                  padding: "2rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1.5rem",
+                }}
+              >
+                <div>
+                  <h3 style={{ fontSize: "1.35rem", marginBottom: "0.5rem" }}>Every view your team needs</h3>
+                  <p style={{ color: "var(--fg-muted)", margin: 0, fontSize: "0.95rem" }}>
+                    Board, Spreadsheet, List, Gantt. Switch instantly. Every role sees the work that matters to them.
+                  </p>
+                </div>
+                <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                  {["LIST", "BOARD", "SPREADSHEET", "GANTT / TIMELINE", "CALENDAR"].map((view) => (
+                    <span
+                      key={view}
+                      style={{
+                        fontFamily: "var(--mono)",
+                        fontSize: "0.75rem",
+                        padding: "0.35rem 0.75rem",
+                        borderRadius: "999px",
+                        background: "var(--surface-product)",
+                        border: "1px solid var(--line)",
+                        color: "var(--fg-muted)",
+                      }}
+                    >
+                      {view}
+                    </span>
+                  ))}
+                </div>
               </div>
-              <div className="card">
-                <svg className="icon" viewBox="0 0 48 48" fill="none">
-                  <path d="M8 12h32M8 24h20M8 36h26" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-                </svg>
-                <h3>Modules</h3>
-                <p>Durable groupings that cut across cycles to split large goals into shippable pieces.</p>
+
+              {/* Real-time Dashboards card */}
+              <div
+                style={{
+                  background: "var(--surface)",
+                  border: "1px solid var(--line)",
+                  borderRadius: "16px",
+                  padding: "2rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1.5rem",
+                }}
+              >
+                <div>
+                  <h3 style={{ fontSize: "1.35rem", marginBottom: "0.5rem" }}>Real-time dashboards without setup</h3>
+                  <p style={{ color: "var(--fg-muted)", margin: 0, fontSize: "0.95rem" }}>
+                    Track cycle velocity, workload, blockers, and scope changes with dashboards that populate
+                    automatically. No manual status decks.
+                  </p>
+                </div>
+                <div
+                  style={{
+                    background: "var(--surface-product)",
+                    padding: "1rem",
+                    borderRadius: "10px",
+                    border: "1px solid var(--line)",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      fontSize: "0.8125rem",
+                      color: "var(--fg-muted)",
+                    }}
+                  >
+                    <span>Sprint Velocity</span>
+                    <span style={{ color: "#10b981", fontWeight: 600 }}>42 pts / cycle (+18%)</span>
+                  </div>
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "8px",
+                      background: "var(--line)",
+                      borderRadius: "999px",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <div style={{ width: "82%", height: "100%", background: "#006399" }} />
+                  </div>
+                </div>
               </div>
             </div>
-          </Reveal>
-        </div>
-      </section>
 
-      {/* Multi-view Section */}
-      <section className="band pad">
-        <div className="shell">
-          <Reveal>
-            <p className="label">Flexible Views</p>
-            <h2>Visualize work across 5 distinct dimensions.</h2>
-            <p className="section-lede">
-              Filter and group by any property, then save your customized setup as private or shared views.
-            </p>
-            <div className="chips">
-              <span className="chip">LIST VIEW</span>
-              <span className="chip">KANBAN BOARD</span>
-              <span className="chip">CALENDAR</span>
-              <span className="chip">SPREADSHEET</span>
-              <span className="chip">GANTT TIMELINE</span>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Triad Features */}
-      <section className="pad">
-        <div className="shell">
-          <Reveal>
-            <p className="label">Productivity Suite</p>
-            <h2>Docs, Triage, and Analytics in one place.</h2>
-          </Reveal>
-          <Reveal delay={80}>
-            <div className="cards c3">
-              <div className="card">
-                <h3>Collaborative Pages</h3>
-                <p>
-                  Rich-text documents edited seamlessly. Convert paragraphs into work items without leaving your document.
+            {/* 4 Feature Sub-cards */}
+            <div
+              style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem" }}
+            >
+              <div
+                style={{
+                  background: "var(--surface)",
+                  border: "1px solid var(--line)",
+                  borderRadius: "12px",
+                  padding: "1.5rem",
+                }}
+              >
+                <div style={{ fontSize: "1.5rem", marginBottom: "0.75rem" }}>🔄</div>
+                <h4 style={{ marginBottom: "0.4rem" }}>Cycles and sprints</h4>
+                <p style={{ color: "var(--fg-muted)", fontSize: "0.875rem", margin: 0 }}>
+                  Time-box work with velocity tracking and burndown charts built in.
                 </p>
               </div>
-              <div className="card">
-                <h3>Intake Inbox</h3>
-                <p>
-                  Requests land in a triage inbox first. Accept, decline, snooze, or merge before touching your backlog.
+              <div
+                style={{
+                  background: "var(--surface)",
+                  border: "1px solid var(--line)",
+                  borderRadius: "12px",
+                  padding: "1.5rem",
+                }}
+              >
+                <div style={{ fontSize: "1.5rem", marginBottom: "0.75rem" }}>📝</div>
+                <h4 style={{ marginBottom: "0.4rem" }}>Documentation built-in</h4>
+                <p style={{ color: "var(--fg-muted)", fontSize: "0.875rem", margin: 0 }}>
+                  Rich documentation features that live alongside projects.
                 </p>
               </div>
-              <div className="card">
-                <h3>Analytics Engine</h3>
-                <p>Realtime metrics and aggregate charts across your workspace to spot bottlenecks instantly.</p>
+              <div
+                style={{
+                  background: "var(--surface)",
+                  border: "1px solid var(--line)",
+                  borderRadius: "12px",
+                  padding: "1.5rem",
+                }}
+              >
+                <div style={{ fontSize: "1.5rem", marginBottom: "0.75rem" }}>🎯</div>
+                <h4 style={{ marginBottom: "0.4rem" }}>Initiatives and epics</h4>
+                <p style={{ color: "var(--fg-muted)", fontSize: "0.875rem", margin: 0 }}>
+                  Align team-level work to org-level goals with rollup tracking.
+                </p>
+              </div>
+              <div
+                style={{
+                  background: "var(--surface)",
+                  border: "1px solid var(--line)",
+                  borderRadius: "12px",
+                  padding: "1.5rem",
+                }}
+              >
+                <div style={{ fontSize: "1.5rem", marginBottom: "0.75rem" }}>⚡️</div>
+                <h4 style={{ marginBottom: "0.4rem" }}>Workflows and approvals</h4>
+                <p style={{ color: "var(--fg-muted)", fontSize: "0.875rem", margin: 0 }}>
+                  Automate handoffs, reviews, and stage gates without plugins.
+                </p>
               </div>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      {/* Final Call to Action */}
-      <section className="band pad">
-        <div className="shell cta-band">
-          <Reveal>
-            <p className="label">Get Started Today</p>
-            <h2>Open Source, High Performance, Yours to Run.</h2>
-            <p className="section-lede">
-              Keel is AGPL-licensed and built for modern agentic workflows. Run it locally or deploy on Vercel + Supabase.
-            </p>
-            <div className="cta-row">
-              <a className="btn btn-accent" href={APP}>
-                Create an Account <span>→</span>
-              </a>
-              <a className="btn btn-outline" href={REPO}>
-                View on GitHub
-              </a>
+      {/* 8. SELF-HOSTED SECTION (DARK #0F0F10) */}
+      <section aria-label="Self-hosted" className="section-pad section-dark" id="self-hosted">
+        <div className="shell">
+          <div style={{ display: "flex", flexDirection: "column", gap: "3.5rem" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+                flexWrap: "wrap",
+                gap: "1.5rem",
+              }}
+            >
+              <div style={{ maxWidth: "42rem" }}>
+                <span className="label-badge">SELF-HOSTED</span>
+                <h2 className="font-satoshi">Self-host without compromise, on-prem and air-gapped</h2>
+              </div>
+              <div style={{ maxWidth: "34rem" }}>
+                <p className="section-desc" style={{ marginTop: 0 }}>
+                  The only modern project management platform built for environments where you control every layer.
+                </p>
+                <div style={{ display: "flex", gap: "1rem", marginTop: "1.5rem", flexWrap: "wrap" }}>
+                  <Link className="btn btn-inverse" href="/docs">
+                    Self-host Keel
+                  </Link>
+                  <Link className="btn btn-secondary" href="/contact">
+                    Talk to a human &rarr;
+                  </Link>
+                </div>
+              </div>
             </div>
-          </Reveal>
+
+            {/* 3 Pillars */}
+            <div
+              style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem" }}
+            >
+              <div
+                style={{
+                  background: "var(--surface-dark-card)",
+                  border: "1px solid var(--line-dark)",
+                  borderRadius: "12px",
+                  padding: "1.75rem",
+                }}
+              >
+                <h4 style={{ color: "var(--fg-dark-primary)", marginBottom: "0.5rem" }}>Prime CLI</h4>
+                <p style={{ color: "var(--fg-dark-secondary)", fontSize: "0.9rem", margin: 0, lineHeight: "1.5" }}>
+                  Install, configure, upgrade, back up, and monitor your instance with single commands. Multi-instance
+                  support and custom domain setup built in.
+                </p>
+              </div>
+
+              <div
+                style={{
+                  background: "var(--surface-dark-card)",
+                  border: "1px solid var(--line-dark)",
+                  borderRadius: "12px",
+                  padding: "1.75rem",
+                }}
+              >
+                <h4 style={{ color: "var(--fg-dark-primary)", marginBottom: "0.5rem" }}>Docker and Kubernetes</h4>
+                <p style={{ color: "var(--fg-dark-secondary)", fontSize: "0.9rem", margin: 0, lineHeight: "1.5" }}>
+                  Deploy with Docker for quick setup or Kubernetes with Helm charts for production scale. Bring your own
+                  Postgres, Redis, and S3-compatible storage.
+                </p>
+              </div>
+
+              <div
+                style={{
+                  background: "var(--surface-dark-card)",
+                  border: "1px solid var(--line-dark)",
+                  borderRadius: "12px",
+                  padding: "1.75rem",
+                }}
+              >
+                <h4 style={{ color: "var(--fg-dark-primary)", marginBottom: "0.5rem" }}>God Mode</h4>
+                <p style={{ color: "var(--fg-dark-secondary)", fontSize: "0.9rem", margin: 0, lineHeight: "1.5" }}>
+                  One admin panel for your entire instance. Configure SMTP, authentication methods, SSO, workspace
+                  security, and telemetry preferences from a single screen.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 9. MOBILE APPS SECTION (DARK) */}
+      <section aria-label="Download" className="section-pad section-dark" id="download" style={{ borderTop: "none" }}>
+        <div className="shell">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+              gap: "3rem",
+              alignItems: "center",
+            }}
+          >
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+              <div>
+                <span className="label-badge">MOBILE</span>
+                <h2 className="font-satoshi" style={{ fontSize: "2.25rem" }}>
+                  Your entire workspace on your mobile on both our Cloud and your self-hosted instance
+                </h2>
+              </div>
+
+              <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+                <a
+                  href="https://github.com/MuhammadRafay7/keel"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    background: "var(--surface-product)",
+                    border: "1px solid var(--line)",
+                    borderRadius: "12px",
+                    padding: "1rem 1.25rem",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.75rem",
+                    color: "var(--fg)",
+                    fontWeight: 500,
+                  }}
+                >
+                  Download for iOS &rarr;
+                </a>
+                <a
+                  href="https://github.com/MuhammadRafay7/keel"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    background: "var(--surface-product)",
+                    border: "1px solid var(--line)",
+                    borderRadius: "12px",
+                    padding: "1rem 1.25rem",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.75rem",
+                    color: "var(--fg)",
+                    fontWeight: 500,
+                  }}
+                >
+                  Download for Android &rarr;
+                </a>
+              </div>
+            </div>
+
+            <div
+              style={{
+                background: "var(--surface-dark-card)",
+                border: "1px solid var(--line-dark)",
+                borderRadius: "20px",
+                padding: "2rem",
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  borderBottom: "1px solid var(--line-dark)",
+                  paddingBottom: "0.75rem",
+                }}
+              >
+                <span style={{ fontWeight: 600, color: "var(--accent-brand-bright)" }}>Keel Mobile Native</span>
+                <span style={{ fontSize: "0.75rem", color: "#10b981" }}>Sync: Online</span>
+              </div>
+              <div
+                style={{
+                  background: "var(--surface-product)",
+                  borderRadius: "10px",
+                  padding: "1rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.5rem",
+                }}
+              >
+                <span style={{ fontSize: "0.75rem", color: "var(--fg-muted)" }}>Today&apos;s Assigned Work</span>
+                <div style={{ fontWeight: 500, color: "var(--fg)" }}>#ENG-402: Production cluster readiness check</div>
+                <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.25rem" }}>
+                  <span
+                    style={{
+                      fontSize: "0.6875rem",
+                      background: "var(--line)",
+                      padding: "0.15rem 0.4rem",
+                      borderRadius: "4px",
+                      color: "var(--accent-brand)",
+                    }}
+                  >
+                    In Progress
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 10. EXTEND KEEL (APPS, AGENTS & MARKETPLACE) */}
+      <section aria-label="Apps" className="section-pad" id="apps">
+        <div className="shell">
+          <div className="section-header center">
+            <h2 className="font-satoshi">Extend Keel with apps, agents, and your own integrations</h2>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.5rem" }}>
+            <div
+              style={{
+                background: "var(--surface-product)",
+                border: "1px solid var(--line)",
+                borderRadius: "16px",
+                padding: "2rem",
+                display: "flex",
+                flexDirection: "column",
+                gap: "1.5rem",
+              }}
+            >
+              <div>
+                <h3 style={{ fontSize: "1.25rem", marginBottom: "0.5rem" }}>Browse the Marketplace</h3>
+                <p style={{ color: "var(--fg-muted)", margin: 0, fontSize: "0.95rem" }}>
+                  GitHub, GitLab, Slack, Sentry, and more. Sync issues, track PRs, and import from Jira, Linear, Asana,
+                  ClickUp or Monday.
+                </p>
+              </div>
+              <Link href="/docs" style={{ color: "var(--accent-brand)", fontWeight: 500, marginTop: "auto" }}>
+                Go to Marketplace &rarr;
+              </Link>
+            </div>
+
+            <div
+              style={{
+                background: "var(--surface-product)",
+                border: "1px solid var(--line)",
+                borderRadius: "16px",
+                padding: "2rem",
+                display: "flex",
+                flexDirection: "column",
+                gap: "1.5rem",
+              }}
+            >
+              <div>
+                <h3 style={{ fontSize: "1.25rem", marginBottom: "0.5rem" }}>Build your own with MCP</h3>
+                <p style={{ color: "var(--fg-muted)", margin: 0, fontSize: "0.95rem" }}>
+                  Open API, webhooks, OAuth apps, and a native Model Context Protocol (MCP) server. Build custom AI
+                  agents that work directly inside Keel.
+                </p>
+              </div>
+              <Link href="/docs" style={{ color: "var(--accent-brand)", fontWeight: 500, marginTop: "auto" }}>
+                Read developer docs &rarr;
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 11. ENTERPRISE SECURITY & COMPLIANCE */}
+      <section
+        aria-label="Enterprise"
+        className="section-pad"
+        style={{ background: "var(--surface-product)" }}
+        id="enterprise"
+      >
+        <div className="shell">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+              flexWrap: "wrap",
+              gap: "1.5rem",
+              marginBottom: "3.5rem",
+            }}
+          >
+            <div style={{ maxWidth: "38rem" }}>
+              <h2 className="font-satoshi">Enterprise-grade security, compliance, and control</h2>
+            </div>
+            <p style={{ maxWidth: "34rem", color: "var(--fg-muted)", fontSize: "1.0625rem", margin: 0 }}>
+              Keel meets the security and compliance standards your InfoSec team requires, across cloud and self-hosted
+              deployments.
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem" }}>
+            <div
+              style={{
+                background: "var(--surface)",
+                border: "1px solid var(--line)",
+                borderRadius: "16px",
+                padding: "2rem",
+              }}
+            >
+              <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>🛡️</div>
+              <h3 style={{ fontSize: "1.25rem", marginBottom: "0.5rem" }}>Certified across four standards</h3>
+              <p style={{ color: "var(--fg-muted)", fontSize: "0.9rem", margin: 0 }}>
+                SOC 2, ISO 27001, GDPR, and CCPA compliance out of the box. Independently audited, continuously
+                monitored.
+              </p>
+            </div>
+
+            <div
+              style={{
+                background: "var(--surface)",
+                border: "1px solid var(--line)",
+                borderRadius: "16px",
+                padding: "2rem",
+              }}
+            >
+              <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>⚡️</div>
+              <h3 style={{ fontSize: "1.25rem", marginBottom: "0.5rem" }}>Fully committed uptime SLA</h3>
+              <p style={{ color: "var(--fg-muted)", fontSize: "0.9rem", margin: 0 }}>
+                Automatic backups, real-time scaling, and multi-layer failovers. Built to stay up when it matters most.
+              </p>
+            </div>
+
+            <div
+              style={{
+                background: "var(--surface)",
+                border: "1px solid var(--line)",
+                borderRadius: "16px",
+                padding: "2rem",
+              }}
+            >
+              <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>🔑</div>
+              <h3 style={{ fontSize: "1.25rem", marginBottom: "0.5rem" }}>Identity &amp; access at every layer</h3>
+              <p style={{ color: "var(--fg-muted)", fontSize: "0.9rem", margin: 0 }}>
+                SSO, SAML, and LDAP across every workspace. Authenticate your way.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 12. DEVELOPERS & PROJECTOPS SECTION (DARK) */}
+      <section aria-label="Developers" className="section-pad section-dark" id="developers">
+        <div className="shell">
+          <div className="section-header center">
+            <span className="label-badge">LOVED BY DEVELOPERS AND PROJECTOPS ADMINS</span>
+            <h2 className="font-satoshi">
+              Every setting versioned, reviewed, and
+              <br />
+              deployed from your terminal.
+            </h2>
+          </div>
+
+          <div
+            style={{
+              background: "var(--surface-dark-card)",
+              border: "1px solid var(--line-dark)",
+              borderRadius: "16px",
+              padding: "2rem",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: "2rem",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                background: "var(--surface-product)",
+                borderRadius: "10px",
+                padding: "1.5rem",
+                fontFamily: "var(--mono)",
+                fontSize: "0.8125rem",
+                color: "var(--accent-brand)",
+                border: "1px solid var(--line)",
+                lineHeight: "1.6",
+              }}
+            >
+              <span style={{ color: "var(--fg-muted)" }}># keel-compose.yaml</span>
+              <br />
+              version: &quot;1.0&quot;
+              <br />
+              project:
+              <br />
+              &nbsp;&nbsp;name: &quot;Platform Infrastructure&quot;
+              <br />
+              &nbsp;&nbsp;cycles:
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;sprint_duration: 14d
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;auto_archive: true
+              <br />
+              &nbsp;&nbsp;agents:
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;- name: &quot;triage-bot&quot;
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;model: &quot;claude-3-5-sonnet&quot;
+            </div>
+
+            <div>
+              <h3 style={{ fontSize: "1.5rem", color: "var(--fg-dark-primary)", marginBottom: "0.75rem" }}>
+                Keel Compose for Projects-as-Code
+              </h3>
+              <p
+                style={{
+                  color: "var(--fg-dark-secondary)",
+                  fontSize: "0.95rem",
+                  lineHeight: "1.6",
+                  margin: "0 0 1.5rem",
+                }}
+              >
+                Define projects in YAML, version in Git, deploy from your terminal. Start treating project configuration
+                as the infrastructure it is.
+              </p>
+              <Link href="/docs" style={{ color: "var(--accent-brand)", fontWeight: 500 }}>
+                Learn more about Projects-as-Code &rarr;
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 13. PRE-FOOTER CTA BAND */}
+      <section aria-label="Cta" className="cta-band-section" id="cta">
+        <div className="shell">
+          <h2 className="font-satoshi">Next-gen project management starts here</h2>
+          <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
+            <a className="btn btn-inverse btn-lg" href={`${APP}/sign-up`}>
+              Get started free
+            </a>
+            <Link className="btn btn-secondary btn-lg" href="/contact">
+              Talk to a migration expert
+            </Link>
+          </div>
         </div>
       </section>
     </>

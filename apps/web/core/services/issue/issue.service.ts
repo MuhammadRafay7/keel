@@ -45,6 +45,8 @@ export class IssueService extends APIService {
     queries?: any,
     config = {}
   ): Promise<TIssuesResponse> {
+    if (isSupabaseConfigured)
+      return supabaseWorkItemService.getIssuesFromServer(workspaceSlug, projectId, queries, config);
     const path =
       (queries.expand as string)?.includes("issue_relation") && !queries.group_by
         ? `/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}-detail/`
@@ -68,6 +70,8 @@ export class IssueService extends APIService {
     queries?: any,
     config = {}
   ): Promise<TIssuesResponse> {
+    if (isSupabaseConfigured)
+      return supabaseWorkItemService.getIssuesForSync(workspaceSlug, projectId, queries, config);
     return this.get(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/v2/${this.serviceType}/`,
       { params: queries },
@@ -85,10 +89,12 @@ export class IssueService extends APIService {
     queries?: Partial<Record<TIssueParams, string | boolean>>,
     config = {}
   ): Promise<TIssuesResponse> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.getIssues(workspaceSlug, projectId, queries);
     return this.getIssuesFromServer(workspaceSlug, projectId, queries, config);
   }
 
   async getDeletedIssues(workspaceSlug: string, projectId: string, queries?: any): Promise<TIssuesResponse> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.getDeletedIssues(workspaceSlug, projectId, queries);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/deleted-issues/`, {
       params: queries,
     })
@@ -103,6 +109,7 @@ export class IssueService extends APIService {
     projectId: string,
     queries?: any
   ): Promise<TIssue[] | { [key: string]: TIssue[] }> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.getIssuesWithParams(workspaceSlug, projectId, queries);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/`, {
       params: queries,
     })
@@ -130,6 +137,7 @@ export class IssueService extends APIService {
   }
 
   async retrieveIssues(workspaceSlug: string, projectId: string, issueIds: string[]): Promise<TIssue[]> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.retrieveIssues(workspaceSlug, projectId, issueIds);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/list/`, {
       params: { issues: issueIds.join(",") },
     })
@@ -140,6 +148,7 @@ export class IssueService extends APIService {
   }
 
   async getIssueActivities(workspaceSlug: string, projectId: string, issueId: string): Promise<TIssueActivity[]> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.getIssueActivities(workspaceSlug, projectId, issueId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/history/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -155,6 +164,7 @@ export class IssueService extends APIService {
       issues: string[];
     }
   ) {
+    if (isSupabaseConfigured) return supabaseWorkItemService.addIssueToCycle(workspaceSlug, projectId, cycleId, data);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/cycles/${cycleId}/cycle-issues/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -163,6 +173,8 @@ export class IssueService extends APIService {
   }
 
   async removeIssueFromCycle(workspaceSlug: string, projectId: string, cycleId: string, bridgeId: string) {
+    if (isSupabaseConfigured)
+      return supabaseWorkItemService.removeIssueFromCycle(workspaceSlug, projectId, cycleId, bridgeId);
     return this.delete(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/cycles/${cycleId}/cycle-issues/${bridgeId}/`
     )
@@ -184,6 +196,8 @@ export class IssueService extends APIService {
       relation?: "blocking" | null;
     }
   ) {
+    if (isSupabaseConfigured)
+      return supabaseWorkItemService.createIssueRelation(workspaceSlug, projectId, issueId, data);
     return this.post(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/issue-relation/`,
       data
@@ -195,6 +209,8 @@ export class IssueService extends APIService {
   }
 
   async deleteIssueRelation(workspaceSlug: string, projectId: string, issueId: string, relationId: string) {
+    if (isSupabaseConfigured)
+      return supabaseWorkItemService.deleteIssueRelation(workspaceSlug, projectId, issueId, relationId);
     return this.delete(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/issue-relation/${relationId}/`
     )
@@ -205,6 +221,7 @@ export class IssueService extends APIService {
   }
 
   async getIssueDisplayProperties(workspaceSlug: string, projectId: string): Promise<any> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.getIssueDisplayProperties(workspaceSlug, projectId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/issue-display-properties/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -217,6 +234,8 @@ export class IssueService extends APIService {
     projectId: string,
     data: IIssueDisplayProperties
   ): Promise<any> {
+    if (isSupabaseConfigured)
+      return supabaseWorkItemService.updateIssueDisplayProperties(workspaceSlug, projectId, data);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/issue-display-properties/`, {
       properties: data,
     })
@@ -249,6 +268,7 @@ export class IssueService extends APIService {
     projectId: string,
     updates: { id: string; start_date?: string; target_date?: string }[]
   ): Promise<void> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.updateIssueDates(workspaceSlug, projectId, updates);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/issue-dates/`, { updates })
       .then((response) => response?.data)
       .catch((error) => {
@@ -262,6 +282,7 @@ export class IssueService extends APIService {
     issueId: string,
     queries?: Partial<Record<TIssueParams, string | boolean>>
   ): Promise<TIssueSubIssues> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.subIssues(workspaceSlug, projectId, issueId, queries);
     return this.get(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/${this.serviceType === EIssueServiceType.EPICS ? "issues" : "sub-issues"}/`,
       { params: queries }
@@ -278,6 +299,7 @@ export class IssueService extends APIService {
     issueId: string,
     data: { sub_issue_ids: string[] }
   ): Promise<TIssueSubIssues> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.addSubIssues(workspaceSlug, projectId, issueId, data);
     return this.post(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/${this.serviceType === EIssueServiceType.EPICS ? "issues" : "sub-issues"}/`,
       data
@@ -289,6 +311,7 @@ export class IssueService extends APIService {
   }
 
   async fetchIssueLinks(workspaceSlug: string, projectId: string, issueId: string): Promise<TIssueLink[]> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.fetchIssueLinks(workspaceSlug, projectId, issueId);
     return this.get(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/${this.serviceType === EIssueServiceType.EPICS ? "links" : "issue-links"}/`
     )
@@ -304,6 +327,7 @@ export class IssueService extends APIService {
     issueId: string,
     data: Partial<TIssueLink>
   ): Promise<TIssueLink> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.createIssueLink(workspaceSlug, projectId, issueId, data);
     return this.post(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/${this.serviceType === EIssueServiceType.EPICS ? "links" : "issue-links"}/`,
       data
@@ -321,6 +345,8 @@ export class IssueService extends APIService {
     linkId: string,
     data: Partial<TIssueLink>
   ): Promise<TIssueLink> {
+    if (isSupabaseConfigured)
+      return supabaseWorkItemService.updateIssueLink(workspaceSlug, projectId, issueId, linkId, data);
     return this.patch(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/${this.serviceType === EIssueServiceType.EPICS ? "links" : "issue-links"}/${linkId}/`,
       data
@@ -332,6 +358,7 @@ export class IssueService extends APIService {
   }
 
   async deleteIssueLink(workspaceSlug: string, projectId: string, issueId: string, linkId: string): Promise<any> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.deleteIssueLink(workspaceSlug, projectId, issueId, linkId);
     return this.delete(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/${this.serviceType === EIssueServiceType.EPICS ? "links" : "issue-links"}/${linkId}/`
     )
@@ -342,6 +369,7 @@ export class IssueService extends APIService {
   }
 
   async bulkOperations(workspaceSlug: string, projectId: string, data: TBulkOperationsPayload): Promise<any> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.bulkOperations(workspaceSlug, projectId, data);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/bulk-operation-issues/`, data)
       .then(async (response) => response?.data)
       .catch((error) => {
@@ -356,6 +384,7 @@ export class IssueService extends APIService {
       issue_ids: string[];
     }
   ): Promise<any> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.bulkDeleteIssues(workspaceSlug, projectId, data);
     return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/bulk-delete-issues/`, data)
       .then(async (response) => response?.data)
       .catch((error) => {
@@ -372,6 +401,7 @@ export class IssueService extends APIService {
   ): Promise<{
     archived_at: string;
   }> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.bulkArchiveIssues(workspaceSlug, projectId, data);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/bulk-archive-issues/`, data)
       .then(async (response) => response?.data)
       .catch((error) => {
@@ -387,6 +417,8 @@ export class IssueService extends APIService {
   ): Promise<{
     subscribed: boolean;
   }> {
+    if (isSupabaseConfigured)
+      return supabaseWorkItemService.getIssueNotificationSubscriptionStatus(workspaceSlug, projectId, issueId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/subscribe/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -395,6 +427,8 @@ export class IssueService extends APIService {
   }
 
   async unsubscribeFromIssueNotifications(workspaceSlug: string, projectId: string, issueId: string): Promise<any> {
+    if (isSupabaseConfigured)
+      return supabaseWorkItemService.unsubscribeFromIssueNotifications(workspaceSlug, projectId, issueId);
     return this.delete(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/subscribe/`
     )
@@ -405,6 +439,8 @@ export class IssueService extends APIService {
   }
 
   async subscribeToIssueNotifications(workspaceSlug: string, projectId: string, issueId: string): Promise<any> {
+    if (isSupabaseConfigured)
+      return supabaseWorkItemService.subscribeToIssueNotifications(workspaceSlug, projectId, issueId);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/subscribe/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -419,6 +455,7 @@ export class IssueService extends APIService {
       issue_ids: string[];
     }
   ): Promise<any> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.bulkSubscribeIssues(workspaceSlug, projectId, data);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/bulk-subscribe-issues/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -434,6 +471,7 @@ export class IssueService extends APIService {
     project_identifier: string;
     sequence_id: string;
   }> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.getIssueMetaFromURL(workspaceSlug, projectId, issueId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/issues/${issueId}/meta/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -447,6 +485,8 @@ export class IssueService extends APIService {
     issue_sequence: string,
     queries?: any
   ): Promise<TIssue> {
+    if (isSupabaseConfigured)
+      return supabaseWorkItemService.retrieveWithIdentifier(workspaceSlug, project_identifier, issue_sequence, queries);
     return this.get(`/api/workspaces/${workspaceSlug}/work-items/${project_identifier}-${issue_sequence}/`, {
       params: queries,
     })
