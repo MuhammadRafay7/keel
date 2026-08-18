@@ -59,10 +59,29 @@ jobs:
       - name: Apply migrations
         run: supabase db push --include-all
 
+      # The email triggers dispatch through pg_net, which reads the target URL
+      # and key from database settings. Unset, they fall back to localhost and
+      # every send silently goes nowhere — the failure mode is no error and no
+      # email, so this is set on every deploy rather than once by hand.
+      - name: Point the email triggers at this project
+        env:
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "SUPABASE_ANON_KEY secret is not set — email triggers would dispatch to localhost." >&2
+            exit 1
+          fi
+          PGPASSWORD="$SUPABASE_DB_PASSWORD" psql \
+            "postgresql://postgres.$SUPABASE_PROJECT_REF@aws-0-us-east-1.pooler.supabase.com:5432/postgres" \
+            -v ON_ERROR_STOP=1 \
+            -c "alter database postgres set app.settings.supabase_url = 'https://$SUPABASE_PROJECT_REF.supabase.co';" \
+            -c "alter database postgres set app.settings.supabase_anon_key = '$SUPABASE_ANON_KEY';"
+
       - name: Deploy Edge Functions
         if: github.event_name == 'push' || inputs.deploy_functions
         run: |
           supabase functions deploy send-workspace-invite --project-ref "$SUPABASE_PROJECT_REF"
+          supabase functions deploy send-notification-email --project-ref "$SUPABASE_PROJECT_REF"
           supabase functions deploy ai-proxy --project-ref "$SUPABASE_PROJECT_REF"
 
       - name: Confirm the migration history matches the repository

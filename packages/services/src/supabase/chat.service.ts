@@ -131,7 +131,8 @@ export class ChatService {
     projectId: string,
     channelId: string,
     messageText: string,
-    senderName: string = "User"
+    senderName: string = "User",
+    mentions: string[] = []
   ): Promise<IChatMessage> {
     const supabase = getSupabase();
     const workspaceId = await this.getWorkspaceId(projectId);
@@ -148,6 +149,7 @@ export class ChatService {
           sender_id: user?.id ?? null,
           sender_name: senderName,
           sender_avatar: "",
+          mentions,
         },
       ])
       .select()

@@ -23,5 +23,7 @@ export interface IChatMessage {
   sender_id?: string | null;
   sender_name?: string | null;
   sender_avatar?: string | null;
+  /** Ids of the people named in this message; drives mention notifications. */
+  mentions?: string[];
   created_at?: string;
 }

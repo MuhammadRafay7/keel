@@ -36,7 +36,23 @@ export const ClickUpChatView = observer(function ClickUpChatView() {
   const [isLoadingChannels, setIsLoadingChannels] = useState(true);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const [newChannelName, setNewChannelName] = useState("");
+  // Names typed into the box are matched back to ids on send, so a mention
+  // only notifies someone who is actually on the project.
+  const [mentionQuery, setMentionQuery] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  const members = (projectMemberIds ?? [])
+    .map((id) => {
+      const member = getUserDetails(id);
+      return member ? { id, name: member.display_name || member.first_name || member.email || "Member" } : null;
+    })
+    .filter((member): member is { id: string; name: string } => Boolean(member));
+
+  const mentionMatches =
+    mentionQuery === null
+      ? []
+      : members.filter((member) => member.name.toLowerCase().includes(mentionQuery.toLowerCase())).slice(0, 5);
 
   // Load channels on mount
   useEffect(() => {
@@ -120,7 +136,14 @@ export const ClickUpChatView = observer(function ClickUpChatView() {
 
     const textToSend = inputMessage.trim();
     setInputMessage("");
+    setMentionQuery(null);
     setIsSending(true);
+
+    // Longest names first, so "@Ann Lee" is not matched as "@Ann".
+    const mentionedIds = members
+      .toSorted((a, b) => b.name.length - a.name.length)
+      .filter((member) => textToSend.includes(`@${member.name}`))
+      .map((member) => member.id);
 
     const userName = currentUser?.display_name || currentUser?.first_name || currentUser?.email?.split("@")[0] || "You";
 
@@ -143,7 +166,8 @@ export const ClickUpChatView = observer(function ClickUpChatView() {
         projectId.toString(),
         activeChannel.id,
         textToSend,
-        userName
+        userName,
+        mentionedIds
       );
 
       // The realtime stream may have delivered the same row first.
@@ -379,15 +403,46 @@ export const ClickUpChatView = observer(function ClickUpChatView() {
         </div>
 
         {/* ClickUp Chat Input Bar */}
-        <div className="border-t border-subtle bg-surface-1 p-4">
+        <div className="relative border-t border-subtle bg-surface-1 p-4">
+          {mentionMatches.length > 0 && (
+            <div className="shadow-lg absolute bottom-full left-4 z-10 mb-1 w-64 overflow-hidden rounded-lg border border-subtle bg-surface-1">
+              {mentionMatches.map((member) => (
+                <button
+                  key={member.id}
+                  type="button"
+                  onClick={() => {
+                    setInputMessage((current) => current.replace(/@[\w ]{0,30}$/, `@${member.name} `));
+                    setMentionQuery(null);
+                    inputRef.current?.focus();
+                  }}
+                  className="flex w-full items-center gap-2 px-3 py-2 text-left text-13 text-secondary transition-all hover:bg-surface-2 hover:text-primary"
+                >
+                  <div className="bg-surface-3 flex size-5 flex-shrink-0 items-center justify-center rounded-full text-10 font-bold text-primary">
+                    {member.name[0]?.toUpperCase()}
+                  </div>
+                  <span className="truncate">{member.name}</span>
+                </button>
+              ))}
+            </div>
+          )}
           <form
             onSubmit={handleSendMessage}
             className="focus-within:border-accent-primary shadow-xs flex flex-col rounded-xl border border-subtle bg-surface-2/70 p-2 transition-all"
           >
             <textarea
+              ref={inputRef}
               rows={2}
               value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                setInputMessage(value);
+
+                // Only offer the picker while the caret is still inside the
+                // word that started with "@".
+                const upToCaret = value.slice(0, e.target.selectionStart ?? value.length);
+                const match = /@([\w ]{0,30})$/.exec(upToCaret);
+                setMentionQuery(match ? match[1] : null);
+              }}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
@@ -405,7 +460,16 @@ export const ClickUpChatView = observer(function ClickUpChatView() {
                 <button type="button" className="rounded-md p-1 transition-all hover:bg-surface-1 hover:text-primary">
                   <Smile className="size-4" />
                 </button>
-                <button type="button" className="rounded-md p-1 transition-all hover:bg-surface-1 hover:text-primary">
+                <button
+                  type="button"
+                  title="Mention someone"
+                  onClick={() => {
+                    setInputMessage((current) => `${current}@`);
+                    setMentionQuery("");
+                    inputRef.current?.focus();
+                  }}
+                  className="rounded-md p-1 transition-all hover:bg-surface-1 hover:text-primary"
+                >
                   <AtSign className="size-4" />
                 </button>
               </div>

@@ -103,6 +103,61 @@ export class SupabaseNotificationService {
     if (error) throw new Error(`Failed to mark notifications read: ${error.message}`);
   }
 
+  /** Unread totals for the header badge, split out by mention. */
+  async getUnreadCounts(workspaceSlug: string): Promise<{ total: number; mentions: number }> {
+    const supabase = getSupabase();
+    const userId = await this.currentUserId();
+
+    const unread = () =>
+      supabase
+        .from("notifications")
+        .select("id, workspace:workspaces!inner(slug)", { count: "exact", head: true })
+        .eq("workspace.slug", workspaceSlug)
+        .eq("receiver_id", userId)
+        .is("read_at", null)
+        .is("archived_at", null)
+        .is("deleted_at", null);
+
+    const [total, mentions] = await Promise.all([unread(), unread().eq("entity_name", "issue_mention")]);
+
+    if (total.error) throw new Error(`Failed to count notifications: ${total.error.message}`);
+    if (mentions.error) throw new Error(`Failed to count notifications: ${mentions.error.message}`);
+
+    return { total: total.count ?? 0, mentions: mentions.count ?? 0 };
+  }
+
+  /** Applies an arbitrary field update — snoozing, mainly. */
+  async update(notificationId: string, payload: Record<string, unknown>): Promise<void> {
+    await this.patch(notificationId, payload, "update that notification");
+  }
+
+  /**
+   * Streams new notifications for the signed-in person.
+   *
+   * Requires notifications to be in the supabase_realtime publication — see
+   * migration 0017. Returns the unsubscribe handle for effect cleanup.
+   */
+  subscribeToNotifications(onNotification: (notification: Record<string, unknown>) => void): () => void {
+    const supabase = getSupabase();
+
+    const channel = supabase
+      .channel("notifications:self")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "notifications" }, (payload) => {
+        // The publication is workspace-wide; RLS filters reads but realtime
+        // delivers by table, so the receiver check happens here.
+        void supabase.auth.getUser().then(({ data }) => {
+          const row = payload.new as Record<string, unknown>;
+          if (data.user?.id && row.receiver_id === data.user.id) onNotification(row);
+          return undefined;
+        });
+      })
+      .subscribe();
+
+    return () => {
+      void supabase.removeChannel(channel);
+    };
+  }
+
   private async patch(notificationId: string, payload: Record<string, unknown>, action: string): Promise<void> {
     const { error } = await getSupabase()
       .from("notifications")
