@@ -76,15 +76,20 @@ export class SupabaseWorkItemService {
   async createIssue(workspaceSlug: string, projectId: string, data: Partial<TIssue>): Promise<TIssue> {
     const supabase = getSupabase();
 
+    const stateId = data.state_id && data.state_id.trim() !== "" ? data.state_id : null;
+    const parentId = data.parent_id && data.parent_id.trim() !== "" ? data.parent_id : null;
+    const startDate = data.start_date && data.start_date.trim() !== "" ? data.start_date : null;
+    const targetDate = data.target_date && data.target_date.trim() !== "" ? data.target_date : null;
+
     const { data: created, error } = await supabase.rpc("create_work_item", {
       p_project_id: projectId,
       p_name: data.name ?? "",
       p_description_html: data.description_html ?? "<p></p>",
       p_priority: data.priority ?? "none",
-      p_state_id: data.state_id ?? null,
-      p_parent_id: data.parent_id ?? null,
-      p_start_date: data.start_date ?? null,
-      p_target_date: data.target_date ?? null,
+      p_state_id: stateId,
+      p_parent_id: parentId,
+      p_start_date: startDate,
+      p_target_date: targetDate,
       p_assignees: data.assignee_ids ?? [],
       p_labels: data.label_ids ?? [],
     });
