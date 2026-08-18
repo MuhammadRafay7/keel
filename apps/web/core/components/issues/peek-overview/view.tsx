@@ -120,12 +120,12 @@ export const IssueView = observer(function IssueView(props: IIssueView) {
 
   const peekOverviewIssueClassName = cn(
     !embedIssue
-      ? "absolute z-[25] flex flex-col overflow-hidden rounded-sm border border-subtle bg-surface-1 transition-all duration-300"
+      ? "shadow-2xl absolute z-[25] flex flex-col overflow-hidden border border-subtle bg-surface-1/95 backdrop-blur-xl transition-all duration-300"
       : `h-full w-full`,
     !embedIssue && {
-      "top-0 right-0 bottom-0 w-full border-0 border-l md:w-[50%]": peekMode === "side-peek",
-      "top-[8.33%] left-[8.33%] size-5/6": peekMode === "modal",
-      "absolute inset-0 m-4": peekMode === "full-screen",
+      "top-0 right-0 bottom-0 w-full border-0 border-l border-subtle md:w-[52%] lg:w-[48%]": peekMode === "side-peek",
+      "shadow-glass-lg top-[6%] left-[10%] h-[88%] w-[80%] rounded-3xl border border-subtle": peekMode === "modal",
+      "shadow-glass-lg absolute inset-0 m-3 rounded-2xl border border-subtle": peekMode === "full-screen",
     }
   );
 

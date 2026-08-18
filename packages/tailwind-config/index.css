@@ -201,3 +201,47 @@ body {
     @apply text-placeholder;
   }
 }
+
+/* ---------- Apple/iOS Glassmorphism & Squircle Utilities ---------- */
+@utility glass-panel {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background-color: color-mix(in srgb, var(--background-color-surface-1) 85%, transparent);
+  border: 1px solid var(--border-color-subtle);
+}
+
+@utility glass-card {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background-color: color-mix(in srgb, var(--background-color-surface-2) 80%, transparent);
+  border: 1px solid var(--border-color-subtle);
+  border-radius: 1rem;
+}
+
+@utility glass-pill {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background-color: color-mix(in srgb, var(--background-color-surface-1) 85%, transparent);
+  border: 1px solid var(--border-color-subtle);
+  border-radius: 9999px;
+}
+
+@utility glass-header {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  background-color: color-mix(in srgb, var(--background-color-canvas) 80%, transparent);
+  border-bottom: 1px solid var(--border-color-subtle);
+}
+
+@utility specular-border {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+@utility squircle-card {
+  border-radius: 1.25rem;
+}
+
+@utility squircle-modal {
+  border-radius: 1.5rem;
+}
+
