@@ -95,14 +95,17 @@ jobs:
             exit 1
           fi
 
-          # Sent over the Management API rather than psql. A direct database
-          # connection from CI has to survive both the password (which may
-          # contain characters that break a connection URI) and the host (whose
-          # pooler name is region-dependent, while the direct name resolves to
-          # IPv6 that GitHub runners cannot reach). HTTPS has neither problem.
-          #
-          SQL="alter database postgres set app.settings.supabase_url = 'https://$SUPABASE_PROJECT_REF.supabase.co';"
-          SQL="$SQL alter database postgres set app.settings.supabase_anon_key = '$ANON_KEY';"
+          # Written as a row rather than a database setting. ALTER DATABASE
+          # ... SET is refused on Supabase — the postgres role is not a
+          # superuser — so 0018 moved these into public.app_settings, which
+          # ordinary DML can reach. Sent over the Management API because a
+          # direct connection from CI has to survive a password that may break
+          # a connection URI and a hostname that is either region-dependent or
+          # IPv6-only.
+          SQL="insert into public.app_settings (key, value, updated_at) values"
+          SQL="$SQL ('supabase_url', 'https://$SUPABASE_PROJECT_REF.supabase.co', now()),"
+          SQL="$SQL ('supabase_anon_key', '$ANON_KEY', now())"
+          SQL="$SQL on conflict (key) do update set value = excluded.value, updated_at = now();"
 
           # jq handles the JSON escaping; the key is a JWT, so it carries
           # nothing that would break out of the SQL string literal.

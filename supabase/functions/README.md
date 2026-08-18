@@ -66,13 +66,19 @@ supabase/
 
 ## Database settings the email triggers require
 
-Both email triggers dispatch through `pg_net`, and both read the target URL and key from Postgres settings. Without these the triggers run, find no usable URL, and silently send nothing — no error, no email.
+Both email triggers dispatch through `pg_net`, and both read the target URL and key from `public.app_settings`. Without those rows the triggers run, find no target, and return quietly — no error, no email.
 
-**In production these are set for you.** The `Deploy Supabase` workflow applies them on every deploy, reading the anon key from the project itself via `supabase projects api-keys` rather than from a secret — so a fresh project or a rotated key cannot leave the triggers pointing at localhost, and there is no extra secret to keep in sync. Set them by hand only for local development:
+They originally read Postgres GUCs via `current_setting`, which cannot work on Supabase: setting one needs `ALTER DATABASE ... SET`, and the `postgres` role is not a superuser, so the statement is refused with `permission denied to set parameter`. Migration 0018 moved them into a table, which ordinary DML can write.
+
+**In production these are set for you.** The `Deploy Supabase` workflow upserts them on every deploy, reading the anon key from the project itself via `supabase projects api-keys` rather than from a secret — so a fresh project or a rotated key cannot leave the triggers unconfigured, and there is no extra secret to keep in sync.
+
+For a local stack, either insert the rows or set the GUCs — `app_setting()` falls back to `current_setting` when the table has no row, and a local Postgres does allow `ALTER DATABASE`:
 
 ```sql
-alter database postgres set app.settings.supabase_url = 'https://<project-ref>.supabase.co';
-alter database postgres set app.settings.supabase_anon_key = '<anon-key>';
+insert into public.app_settings (key, value) values
+  ('supabase_url', 'http://127.0.0.1:54321'),
+  ('supabase_anon_key', '<local-anon-key>')
+on conflict (key) do update set value = excluded.value;
 ```
 
 Verify a trigger actually dispatched:
