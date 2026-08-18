@@ -11,9 +11,10 @@ import { Hash, Plus, Send, Paperclip, Smile, AtSign, Search, MessageSquare, User
 // keel imports
 import { Button } from "@keel/propel/button";
 import { setToast, TOAST_TYPE } from "@keel/propel/toast";
+import type { IChatChannel, IChatMessage } from "@keel/types";
 import { cn } from "@keel/utils";
 // services & hooks
-import { supabaseChatService, IChatChannel, IChatMessage } from "@keel/services";
+import { supabaseChatService } from "@keel/services";
 import { useUser } from "@/hooks/store/user";
 
 export const ClickUpChatView = observer(function ClickUpChatView() {
