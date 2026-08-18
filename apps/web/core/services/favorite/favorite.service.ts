@@ -18,6 +18,7 @@ export class FavoriteService extends APIService {
   }
 
   async addFavorite(workspaceSlug: string, data: Partial<IFavorite>): Promise<IFavorite> {
+    if (isSupabaseConfigured) return supabaseWorkspaceContentService.addFavorite(workspaceSlug, data);
     return this.post(`/api/workspaces/${workspaceSlug}/user-favorites/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -26,6 +27,7 @@ export class FavoriteService extends APIService {
   }
 
   async updateFavorite(workspaceSlug: string, favoriteId: string, data: Partial<IFavorite>): Promise<IFavorite> {
+    if (isSupabaseConfigured) return supabaseWorkspaceContentService.updateFavorite(favoriteId, data);
     return this.patch(`/api/workspaces/${workspaceSlug}/user-favorites/${favoriteId}/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -34,6 +36,7 @@ export class FavoriteService extends APIService {
   }
 
   async deleteFavorite(workspaceSlug: string, favoriteId: string): Promise<void> {
+    if (isSupabaseConfigured) return supabaseWorkspaceContentService.deleteFavorite(favoriteId);
     return this.delete(`/api/workspaces/${workspaceSlug}/user-favorites/${favoriteId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -55,6 +58,7 @@ export class FavoriteService extends APIService {
   }
 
   async getGroupedFavorites(workspaceSlug: string, favoriteId: string): Promise<IFavorite[]> {
+    if (isSupabaseConfigured) return supabaseWorkspaceContentService.getGroupedFavorites(workspaceSlug, favoriteId);
     return this.get(`/api/workspaces/${workspaceSlug}/user-favorites/${favoriteId}/group/`)
       .then((response) => response?.data)
       .catch((error) => {

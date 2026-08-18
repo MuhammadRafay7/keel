@@ -7,6 +7,7 @@
 // helpers
 import { API_BASE_URL } from "@keel/constants";
 // services
+import { isSupabaseConfigured, supabaseProjectService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 
 export class ProjectArchiveService extends APIService {
@@ -20,6 +21,7 @@ export class ProjectArchiveService extends APIService {
   ): Promise<{
     archived_at: string;
   }> {
+    if (isSupabaseConfigured) return supabaseProjectService.setProjectArchived(projectId, true);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/archive/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -28,6 +30,10 @@ export class ProjectArchiveService extends APIService {
   }
 
   async restoreProject(workspaceSlug: string, projectId: string): Promise<void> {
+    if (isSupabaseConfigured) {
+      await supabaseProjectService.setProjectArchived(projectId, false);
+      return;
+    }
     return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/archive/`)
       .then((response) => response?.data)
       .catch((error) => {

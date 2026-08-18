@@ -106,6 +106,7 @@ export class FileService extends APIService {
   }
 
   async deleteWorkspaceAsset(workspaceSlug: string, assetId: string): Promise<void> {
+    if (isSupabaseConfigured) return supabaseStorageService.deleteAssetById(assetId);
     return this.delete(`/api/assets/v2/workspaces/${workspaceSlug}/${assetId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -132,6 +133,9 @@ export class FileService extends APIService {
       asset_ids: string[];
     }
   ): Promise<void> {
+    // Supabase uploads are complete when the upload call returns, so there is
+    // no separate status to confirm.
+    if (isSupabaseConfigured) return;
     return this.post(`/api/assets/v2/workspaces/${workspaceSlug}/${entityId}/bulk/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -147,6 +151,7 @@ export class FileService extends APIService {
       asset_ids: string[];
     }
   ): Promise<void> {
+    if (isSupabaseConfigured) return;
     return this.post(`/api/assets/v2/workspaces/${workspaceSlug}/projects/${projectId}/${entityId}/bulk/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -228,6 +233,7 @@ export class FileService extends APIService {
   }
 
   async deleteUserAsset(assetId: string): Promise<void> {
+    if (isSupabaseConfigured) return supabaseStorageService.deleteAssetById(assetId);
     return this.delete(`/api/assets/v2/user-assets/${assetId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -244,6 +250,7 @@ export class FileService extends APIService {
   }
 
   async deleteOldWorkspaceAsset(workspaceId: string, src: string): Promise<any> {
+    if (isSupabaseConfigured) return supabaseStorageService.deleteAssetBySrc(src);
     const assetKey = getAssetIdFromUrl(src);
     return this.delete(`/api/workspaces/file-assets/${workspaceId}/${assetKey}/`)
       .then((response) => response?.status)
@@ -253,6 +260,7 @@ export class FileService extends APIService {
   }
 
   async deleteOldUserAsset(src: string): Promise<any> {
+    if (isSupabaseConfigured) return supabaseStorageService.deleteAssetBySrc(src);
     const assetKey = getAssetIdFromUrl(src);
     return this.delete(`/api/users/file-assets/${assetKey}/`)
       .then((response) => response?.status)
@@ -262,6 +270,7 @@ export class FileService extends APIService {
   }
 
   async restoreNewAsset(workspaceSlug: string, src: string): Promise<void> {
+    if (isSupabaseConfigured) return supabaseStorageService.restoreAsset(src);
     // remove the last slash and get the asset id
     const assetId = getAssetIdFromUrl(src);
     return this.post(`/api/assets/v2/workspaces/${workspaceSlug}/restore/${assetId}/`)
@@ -277,6 +286,7 @@ export class FileService extends APIService {
   ): Promise<{
     exists: boolean;
   }> {
+    if (isSupabaseConfigured) return supabaseStorageService.assetExists(assetId);
     return this.get(`/api/assets/v2/workspaces/${workspaceSlug}/check/${assetId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -285,6 +295,7 @@ export class FileService extends APIService {
   }
 
   async restoreOldEditorAsset(workspaceId: string, src: string): Promise<void> {
+    if (isSupabaseConfigured) return supabaseStorageService.restoreAsset(src);
     const assetKey = getAssetIdFromUrl(src);
     return this.post(`/api/workspaces/file-assets/${workspaceId}/${assetKey}/restore/`)
       .then((response) => response?.data)
@@ -298,6 +309,9 @@ export class FileService extends APIService {
   }
 
   async getUnsplashImages(query?: string): Promise<UnSplashImage[]> {
+    // Unsplash needs a server-side key, which this stack has nowhere to keep.
+    // An empty list makes the picker show its upload tab instead of erroring.
+    if (isSupabaseConfigured) return [];
     return this.get(`/api/unsplash/`, {
       params: {
         query,
@@ -318,6 +332,7 @@ export class FileService extends APIService {
       project_id?: string;
     }
   ): Promise<{ asset_id: string }> {
+    if (isSupabaseConfigured) return supabaseStorageService.duplicateAsset(assetId);
     return this.post(`/api/assets/v2/workspaces/${workspaceSlug}/duplicate-assets/${assetId}/`, data)
       .then((response) => response?.data)
       .catch((error) => {

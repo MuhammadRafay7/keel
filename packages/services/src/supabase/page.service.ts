@@ -173,6 +173,82 @@ export class SupabasePageService {
     const { error } = await getSupabase().from("pages").update({ archived_at: null }).eq("id", pageId);
     if (error) throw new Error(`Failed to restore that page: ${error.message}`);
   }
+
+  /** Locking a page keeps it readable but stops edits. */
+  async setPageLocked(pageId: string, locked: boolean): Promise<void> {
+    const { error } = await getSupabase()
+      .from("pages")
+      .update({ is_locked: locked, updated_at: new Date().toISOString() })
+      .eq("id", pageId);
+
+    if (error) throw new Error(`Failed to ${locked ? "lock" : "unlock"} that page: ${error.message}`);
+  }
+
+  async setPageAccess(pageId: string, access: number): Promise<void> {
+    const { error } = await getSupabase()
+      .from("pages")
+      .update({ access, updated_at: new Date().toISOString() })
+      .eq("id", pageId);
+
+    if (error) throw new Error(`Failed to change who can see that page: ${error.message}`);
+  }
+
+  /** Copies a page's content into a new one in the same project. */
+  async duplicatePage(workspaceSlug: string, pageId: string): Promise<TPage> {
+    const supabase = getSupabase();
+    const { userId, now } = await this.context();
+
+    const { data: source, error: readError } = await supabase.from("pages").select("*").eq("id", pageId).single();
+
+    if (readError || !source) throw new Error(`Failed to copy that page: ${readError?.message ?? pageId}`);
+
+    const original = source as Record<string, unknown>;
+
+    const { data, error } = await supabase
+      .from("pages")
+      .insert([
+        {
+          name: `${(original.name as string) ?? "Page"} (copy)`,
+          description_html: original.description_html ?? "<p></p>",
+          description_json: original.description_json ?? {},
+          access: original.access ?? 0,
+          color: original.color ?? "",
+          logo_props: original.logo_props ?? {},
+          project_id: original.project_id ?? null,
+          workspace_id: original.workspace_id,
+          created_at: now,
+          updated_at: now,
+          created_by_id: userId,
+          updated_by_id: userId,
+          owned_by_id: userId,
+        },
+      ])
+      .select()
+      .single();
+
+    if (error || !data) throw new Error(`Failed to copy that page: ${error?.message ?? "unknown error"}`);
+
+    return data as unknown as TPage;
+  }
+
+  /** Moves a page to another project. */
+  async movePage(pageId: string, newProjectId: string): Promise<void> {
+    const { error } = await getSupabase()
+      .from("pages")
+      .update({ project_id: newProjectId, updated_at: new Date().toISOString() })
+      .eq("id", pageId);
+
+    if (error) throw new Error(`Failed to move that page: ${error.message}`);
+  }
+
+  /**
+   * The collaborative editor asks for a binary snapshot. Nothing writes one in
+   * this stack yet, so an empty buffer tells the editor to build its document
+   * from description_html instead.
+   */
+  async fetchDescriptionBinary(): Promise<ArrayBuffer> {
+    return new ArrayBuffer(0);
+  }
 }
 
 export const supabasePageService = new SupabasePageService();

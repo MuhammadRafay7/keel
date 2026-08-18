@@ -7,6 +7,7 @@
 import { API_BASE_URL } from "@keel/constants";
 import type { TIssue, TIssueServiceType } from "@keel/types";
 import { EIssueServiceType } from "@keel/types";
+import { isSupabaseConfigured, supabaseWorkItemService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 // types
 // constants
@@ -20,6 +21,7 @@ export class IssueArchiveService extends APIService {
   }
 
   async getArchivedIssues(workspaceSlug: string, projectId: string, queries?: any, config = {}): Promise<any> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.getArchivedIssues(workspaceSlug, projectId, queries);
     return this.get(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/archived-issues/`,
       {
@@ -40,6 +42,7 @@ export class IssueArchiveService extends APIService {
   ): Promise<{
     archived_at: string;
   }> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.archiveIssue(projectId, issueId);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/archive/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -48,6 +51,7 @@ export class IssueArchiveService extends APIService {
   }
 
   async restoreIssue(workspaceSlug: string, projectId: string, issueId: string): Promise<any> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.restoreIssue(projectId, issueId);
     return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/archive/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -61,6 +65,7 @@ export class IssueArchiveService extends APIService {
     issueId: string,
     queries?: any
   ): Promise<TIssue> {
+    if (isSupabaseConfigured) return supabaseWorkItemService.retrieveArchivedIssue(workspaceSlug, projectId, issueId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/archive/`, {
       params: queries,
     })

@@ -15,7 +15,7 @@ import type {
   TProgressSnapshot,
   TCycleEstimateDistribution,
 } from "@keel/types";
-import { isSupabaseConfigured, supabasePlanningService } from "@keel/services";
+import { supabaseWorkspaceContentService, isSupabaseConfigured, supabasePlanningService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 
 export class CycleService extends APIService {
@@ -29,6 +29,7 @@ export class CycleService extends APIService {
     cycleId: string,
     analytic_type: string = "points"
   ): Promise<TCycleDistribution | TCycleEstimateDistribution> {
+    if (isSupabaseConfigured) return supabasePlanningService.cycleDistribution(projectId, cycleId) as never;
     return this.get(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/cycles/${cycleId}/analytics?type=${analytic_type}`
     )
@@ -43,6 +44,7 @@ export class CycleService extends APIService {
     projectId: string,
     cycleId: string
   ): Promise<TProgressSnapshot> {
+    if (isSupabaseConfigured) return supabasePlanningService.cycleProgressSnapshot(projectId, cycleId) as never;
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/cycles/${cycleId}/progress/`)
       .then((res) => res?.data)
       .catch((err) => {
@@ -80,6 +82,7 @@ export class CycleService extends APIService {
   }
 
   async getWorkspaceCycles(workspaceSlug: string): Promise<ICycle[]> {
+    if (isSupabaseConfigured) return supabasePlanningService.getWorkspaceCycles(workspaceSlug);
     return this.get(`/api/workspaces/${workspaceSlug}/cycles/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -125,6 +128,7 @@ export class CycleService extends APIService {
     queries?: any,
     config = {}
   ): Promise<TIssuesResponse> {
+    if (isSupabaseConfigured) return supabasePlanningService.getCycleIssues(workspaceSlug, projectId, cycleId, queries);
     return this.get(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/cycles/${cycleId}/cycle-issues/`,
       {
@@ -157,6 +161,11 @@ export class CycleService extends APIService {
   }
 
   async cycleDateCheck(workspaceSlug: string, projectId: string, data: CycleDateCheckData): Promise<any> {
+    if (isSupabaseConfigured)
+      return supabasePlanningService.cycleDateCheck(
+        projectId,
+        data as unknown as { start_date: string; end_date: string }
+      );
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/cycles/date-check/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -171,6 +180,8 @@ export class CycleService extends APIService {
       cycle: string;
     }
   ): Promise<any> {
+    if (isSupabaseConfigured)
+      return supabaseWorkspaceContentService.addEntityFavorite(workspaceSlug, "cycle", data.cycle, projectId);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/user-favorite-cycles/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -186,6 +197,7 @@ export class CycleService extends APIService {
       new_cycle_id: string;
     }
   ): Promise<any> {
+    if (isSupabaseConfigured) return supabasePlanningService.transferIssues(projectId, cycleId, data.new_cycle_id);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/cycles/${cycleId}/transfer-issues/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -194,6 +206,8 @@ export class CycleService extends APIService {
   }
 
   async removeCycleFromFavorites(workspaceSlug: string, projectId: string, cycleId: string): Promise<any> {
+    if (isSupabaseConfigured)
+      return supabaseWorkspaceContentService.removeEntityFavorite(workspaceSlug, "cycle", cycleId) as never;
     return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/user-favorite-cycles/${cycleId}/`)
       .then((response) => response?.data)
       .catch((error) => {

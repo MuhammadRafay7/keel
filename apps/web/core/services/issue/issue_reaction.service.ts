@@ -8,6 +8,7 @@ import { API_BASE_URL } from "@keel/constants";
 import { EIssueServiceType } from "@keel/types";
 import type { TIssueCommentReaction, TIssueReaction, TIssueServiceType } from "@keel/types";
 // services
+import { isSupabaseConfigured, supabaseWorkItemDetailService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 // types
 
@@ -25,6 +26,8 @@ export class IssueReactionService extends APIService {
     issueId: string,
     data: Partial<TIssueReaction>
   ): Promise<any> {
+    if (isSupabaseConfigured)
+      return supabaseWorkItemDetailService.createIssueReaction(workspaceSlug, projectId, issueId, data.reaction ?? "");
     return this.post(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/reactions/`,
       data
@@ -36,6 +39,10 @@ export class IssueReactionService extends APIService {
   }
 
   async listIssueReactions(workspaceSlug: string, projectId: string, issueId: string): Promise<TIssueReaction[]> {
+    if (isSupabaseConfigured)
+      return supabaseWorkItemDetailService.listIssueReactions(workspaceSlug, projectId, issueId) as Promise<
+        TIssueReaction[]
+      >;
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/reactions/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -44,6 +51,8 @@ export class IssueReactionService extends APIService {
   }
 
   async deleteIssueReaction(workspaceSlug: string, projectId: string, issueId: string, reaction: string): Promise<any> {
+    if (isSupabaseConfigured)
+      return supabaseWorkItemDetailService.deleteIssueReaction(workspaceSlug, projectId, issueId, reaction);
     return this.delete(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${issueId}/reactions/${reaction}/`
     )
@@ -59,6 +68,8 @@ export class IssueReactionService extends APIService {
     commentId: string,
     data: Partial<TIssueCommentReaction>
   ): Promise<any> {
+    if (isSupabaseConfigured)
+      return supabaseWorkItemDetailService.createCommentReaction(projectId, commentId, data.reaction ?? "");
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/comments/${commentId}/reactions/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -71,6 +82,10 @@ export class IssueReactionService extends APIService {
     projectId: string,
     commentId: string
   ): Promise<TIssueCommentReaction[]> {
+    if (isSupabaseConfigured)
+      return supabaseWorkItemDetailService.listCommentReactions(workspaceSlug, projectId, commentId) as Promise<
+        TIssueCommentReaction[]
+      >;
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/comments/${commentId}/reactions/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -84,6 +99,7 @@ export class IssueReactionService extends APIService {
     commentId: string,
     reaction: string
   ): Promise<any> {
+    if (isSupabaseConfigured) return supabaseWorkItemDetailService.deleteCommentReaction(commentId, reaction);
     return this.delete(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/comments/${commentId}/reactions/${reaction}/`
     )

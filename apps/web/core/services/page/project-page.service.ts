@@ -9,7 +9,7 @@ import { API_BASE_URL } from "@keel/constants";
 import type { TDocumentPayload, TPage } from "@keel/types";
 // helpers
 // services
-import { isSupabaseConfigured, supabasePageService } from "@keel/services";
+import { supabaseWorkspaceContentService, isSupabaseConfigured, supabasePageService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 import { FileUploadService } from "@/services/file-upload.service";
 
@@ -68,6 +68,7 @@ export class ProjectPageService extends APIService {
     pageId: string,
     data: Pick<TPage, "access">
   ): Promise<void> {
+    if (isSupabaseConfigured) return supabasePageService.setPageAccess(pageId, data.access as number);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/pages/${pageId}/access/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -93,6 +94,8 @@ export class ProjectPageService extends APIService {
   }
 
   async addToFavorites(workspaceSlug: string, projectId: string, pageId: string): Promise<void> {
+    if (isSupabaseConfigured)
+      return supabaseWorkspaceContentService.addEntityFavorite(workspaceSlug, "page", pageId, projectId) as never;
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/favorite-pages/${pageId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -101,6 +104,8 @@ export class ProjectPageService extends APIService {
   }
 
   async removeFromFavorites(workspaceSlug: string, projectId: string, pageId: string): Promise<void> {
+    if (isSupabaseConfigured)
+      return supabaseWorkspaceContentService.removeEntityFavorite(workspaceSlug, "page", pageId) as never;
     return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/favorite-pages/${pageId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -123,6 +128,10 @@ export class ProjectPageService extends APIService {
   ): Promise<{
     archived_at: string;
   }> {
+    if (isSupabaseConfigured) {
+      await supabasePageService.archivePage(workspaceSlug, pageId);
+      return { archived_at: new Date().toISOString() };
+    }
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/pages/${pageId}/archive/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -131,6 +140,7 @@ export class ProjectPageService extends APIService {
   }
 
   async restore(workspaceSlug: string, projectId: string, pageId: string): Promise<void> {
+    if (isSupabaseConfigured) return supabasePageService.restorePage(workspaceSlug, pageId);
     return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/pages/${pageId}/archive/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -139,6 +149,7 @@ export class ProjectPageService extends APIService {
   }
 
   async lock(workspaceSlug: string, projectId: string, pageId: string): Promise<void> {
+    if (isSupabaseConfigured) return supabasePageService.setPageLocked(pageId, true);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/pages/${pageId}/lock/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -147,6 +158,7 @@ export class ProjectPageService extends APIService {
   }
 
   async unlock(workspaceSlug: string, projectId: string, pageId: string): Promise<void> {
+    if (isSupabaseConfigured) return supabasePageService.setPageLocked(pageId, false);
     return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/pages/${pageId}/lock/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -155,6 +167,7 @@ export class ProjectPageService extends APIService {
   }
 
   async fetchDescriptionBinary(workspaceSlug: string, projectId: string, pageId: string): Promise<any> {
+    if (isSupabaseConfigured) return supabasePageService.fetchDescriptionBinary();
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/pages/${pageId}/description/`, {
       headers: {
         "Content-Type": "application/octet-stream",
@@ -182,6 +195,7 @@ export class ProjectPageService extends APIService {
   }
 
   async duplicate(workspaceSlug: string, projectId: string, pageId: string): Promise<TPage> {
+    if (isSupabaseConfigured) return supabasePageService.duplicatePage(workspaceSlug, pageId);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/pages/${pageId}/duplicate/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -190,6 +204,7 @@ export class ProjectPageService extends APIService {
   }
 
   async move(workspaceSlug: string, projectId: string, pageId: string, newProjectId: string): Promise<void> {
+    if (isSupabaseConfigured) return supabasePageService.movePage(pageId, newProjectId);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/pages/${pageId}/move/`, {
       new_project_id: newProjectId,
     })

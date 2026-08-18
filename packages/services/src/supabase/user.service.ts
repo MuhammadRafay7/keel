@@ -99,6 +99,55 @@ export class SupabaseUserService {
       theme: {} as IUser["theme"],
     };
   }
+
+  /**
+   * Changing the email on the account.
+   *
+   * Supabase Auth owns this flow: updateUser sends a confirmation code to the
+   * new address, and verifyOtp confirms it. There is no separate "generate"
+   * and "verify" pair on our side — the first call is the generate step.
+   */
+  async sendEmailChangeCode(email: string): Promise<void> {
+    const { error } = await getSupabase().auth.updateUser({ email });
+
+    if (error) throw new Error(`Failed to send that code: ${error.message}`);
+  }
+
+  async verifyEmailChangeCode(email: string, code: string): Promise<void> {
+    const supabase = getSupabase();
+
+    const { error } = await supabase.auth.verifyOtp({ email, token: code, type: "email_change" });
+
+    if (error) throw new Error(`That code did not work: ${error.message}`);
+
+    // public.users mirrors auth.users, and the trigger in 0001 only fires on
+    // the auth side, so the profile row is brought along here.
+    const { data } = await supabase.auth.getUser();
+    if (data.user?.id) {
+      await supabase.from("users").update({ email, updated_at: new Date().toISOString() }).eq("id", data.user.id);
+    }
+  }
+
+  /**
+   * Deactivating marks the account and signs out. The rows the person created
+   * stay put — deleting them would tear holes in everyone else's history.
+   */
+  async deactivateAccount(): Promise<void> {
+    const supabase = getSupabase();
+
+    const { data } = await supabase.auth.getUser();
+    const userId = data.user?.id;
+    if (!userId) throw new Error("Not signed in.");
+
+    const { error } = await supabase
+      .from("users")
+      .update({ is_active: false, last_logout_time: new Date().toISOString() })
+      .eq("id", userId);
+
+    if (error) throw new Error(`Failed to deactivate your account: ${error.message}`);
+
+    await supabase.auth.signOut();
+  }
 }
 
 export const supabaseUserService = new SupabaseUserService();
