@@ -15,11 +15,16 @@ import type { IChatChannel, IChatMessage } from "@keel/types";
 import { cn } from "@keel/utils";
 // services & hooks
 import { supabaseChatService } from "@keel/services";
+import { useMember } from "@/hooks/store/use-member";
 import { useUser } from "@/hooks/store/user";
 
 export const ClickUpChatView = observer(function ClickUpChatView() {
   const { workspaceSlug, projectId } = useParams();
   const { data: currentUser } = useUser();
+  const {
+    getUserDetails,
+    project: { projectMemberIds },
+  } = useMember();
 
   // states
   const [channels, setChannels] = useState<IChatChannel[]>([]);
@@ -28,6 +33,8 @@ export const ClickUpChatView = observer(function ClickUpChatView() {
   const [inputMessage, setInputMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [isCreatingChannel, setIsCreatingChannel] = useState(false);
+  const [isLoadingChannels, setIsLoadingChannels] = useState(true);
+  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const [newChannelName, setNewChannelName] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -35,53 +42,72 @@ export const ClickUpChatView = observer(function ClickUpChatView() {
   useEffect(() => {
     if (!workspaceSlug || !projectId) return;
 
+    let cancelled = false;
+
     const loadChannels = async () => {
-      const fetchedChannels = await supabaseChatService.getChannels(workspaceSlug.toString(), projectId.toString());
-      setChannels(fetchedChannels);
-      if (fetchedChannels.length > 0) {
-        setActiveChannel(fetchedChannels[0]);
+      setIsLoadingChannels(true);
+      try {
+        const fetchedChannels = await supabaseChatService.getChannels(workspaceSlug.toString(), projectId.toString());
+        if (cancelled) return;
+        setChannels(fetchedChannels);
+        setActiveChannel((current) => current ?? fetchedChannels[0] ?? null);
+      } catch (_err) {
+        if (cancelled) return;
+        setToast({
+          type: TOAST_TYPE.ERROR,
+          title: "Chat unavailable",
+          message: "Could not load channels for this project.",
+        });
+      } finally {
+        if (!cancelled) setIsLoadingChannels(false);
       }
     };
 
     void loadChannels();
+
+    return () => {
+      cancelled = true;
+    };
   }, [workspaceSlug, projectId]);
 
-  // Load messages when active channel changes
+  // Load messages when the active channel changes, then stream new ones
   useEffect(() => {
-    if (!activeChannel || !projectId) return;
+    const channelId = activeChannel?.id;
+    if (!channelId) return;
+
+    let cancelled = false;
 
     const loadMessages = async () => {
-      const fetchedMessages = await supabaseChatService.getMessages(activeChannel.id, projectId.toString());
-
-      if (fetchedMessages.length === 0) {
-        // Initial sample welcome messages for ClickUp Chat
-        setMessages([
-          {
-            id: "msg-1",
-            channel_id: activeChannel.id,
-            project_id: projectId.toString(),
-            workspace_id: workspaceSlug?.toString() || "",
-            message: `Welcome to #${activeChannel.name}! 🚀 This is your team's dedicated ClickUp 3.0 Chat space.`,
-            sender_name: "Keel System",
-            created_at: new Date(Date.now() - 3600000).toISOString(),
-          },
-          {
-            id: "msg-2",
-            channel_id: activeChannel.id,
-            project_id: projectId.toString(),
-            workspace_id: workspaceSlug?.toString() || "",
-            message: "Share updates, link tasks with #, attach files, or brainstorm in real-time!",
-            sender_name: "ClickUp AI Assistant",
-            created_at: new Date(Date.now() - 1800000).toISOString(),
-          },
-        ]);
-      } else {
-        setMessages(fetchedMessages);
+      setIsLoadingMessages(true);
+      try {
+        const fetchedMessages = await supabaseChatService.getMessages(channelId);
+        if (!cancelled) setMessages(fetchedMessages);
+      } catch (_err) {
+        if (cancelled) return;
+        setMessages([]);
+        setToast({
+          type: TOAST_TYPE.ERROR,
+          title: "Chat unavailable",
+          message: "Could not load messages for this channel.",
+        });
+      } finally {
+        if (!cancelled) setIsLoadingMessages(false);
       }
     };
 
     void loadMessages();
-  }, [activeChannel, projectId, workspaceSlug]);
+
+    // Realtime inserts — de-duplicated against messages this tab already added.
+    const unsubscribe = supabaseChatService.subscribeToMessages(channelId, (message) => {
+      if (cancelled) return;
+      setMessages((prev) => (prev.some((m) => m.id === message.id) ? prev : [...prev, message]));
+    });
+
+    return () => {
+      cancelled = true;
+      unsubscribe();
+    };
+  }, [activeChannel?.id]);
 
   // Scroll to bottom when messages update
   useEffect(() => {
@@ -103,8 +129,9 @@ export const ClickUpChatView = observer(function ClickUpChatView() {
       id: `temp-${Date.now()}`,
       channel_id: activeChannel.id,
       project_id: projectId.toString(),
-      workspace_id: workspaceSlug?.toString() || "",
+      workspace_id: activeChannel.workspace_id,
       message: textToSend,
+      sender_id: currentUser?.id,
       sender_name: userName,
       created_at: new Date().toISOString(),
     };
@@ -119,8 +146,14 @@ export const ClickUpChatView = observer(function ClickUpChatView() {
         userName
       );
 
-      setMessages((prev) => prev.map((m) => (m.id === tempMsg.id ? created : m)));
+      // The realtime stream may have delivered the same row first.
+      setMessages((prev) => {
+        const withoutTemp = prev.filter((m) => m.id !== tempMsg.id);
+        return withoutTemp.some((m) => m.id === created.id) ? withoutTemp : [...withoutTemp, created];
+      });
     } catch (_err) {
+      setMessages((prev) => prev.filter((m) => m.id !== tempMsg.id));
+      setInputMessage(textToSend);
       setToast({
         type: TOAST_TYPE.ERROR,
         title: "Send Failed",
@@ -205,6 +238,12 @@ export const ClickUpChatView = observer(function ClickUpChatView() {
               <Users className="size-3" />
             </div>
             <div className="space-y-0.5">
+              {isLoadingChannels && channels.length === 0 && (
+                <div className="px-2.5 py-1.5 text-12 text-tertiary">Loading channels…</div>
+              )}
+              {!isLoadingChannels && channels.length === 0 && (
+                <div className="px-2.5 py-1.5 text-12 text-tertiary">No channels yet. Create one to start talking.</div>
+              )}
               {channels.map((channel) => {
                 const isActive = activeChannel?.id === channel.id;
                 return (
@@ -236,24 +275,30 @@ export const ClickUpChatView = observer(function ClickUpChatView() {
               <User className="size-3" />
             </div>
             <div className="space-y-0.5">
-              {[
-                { name: "Rafay (You)", status: "bg-emerald-500" },
-                { name: "ClickUp Assistant", status: "bg-emerald-500" },
-                { name: "Product Design", status: "bg-amber-500" },
-              ].map((dm) => (
-                <div
-                  key={dm.name}
-                  className="flex cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5 text-13 text-secondary transition-all hover:bg-surface-1/80 hover:text-primary"
-                >
-                  <div className="bg-surface-3 relative flex size-5 flex-shrink-0 items-center justify-center rounded-full text-10 font-bold text-primary">
-                    {dm.name[0]}
-                    <span
-                      className={cn("ring-surface-2 absolute right-0 bottom-0 size-1.5 rounded-full ring-2", dm.status)}
-                    />
+              {(projectMemberIds ?? []).length === 0 && (
+                <div className="px-2.5 py-1.5 text-12 text-tertiary">No teammates on this project yet.</div>
+              )}
+              {(projectMemberIds ?? []).map((memberId) => {
+                const member = getUserDetails(memberId);
+                if (!member) return null;
+                const memberName = member.display_name || member.first_name || member.email || "Member";
+                const isCurrentUser = memberId === currentUser?.id;
+                return (
+                  <div
+                    key={memberId}
+                    title="Direct messages are coming soon"
+                    className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-13 text-secondary"
+                  >
+                    <div className="bg-surface-3 relative flex size-5 flex-shrink-0 items-center justify-center rounded-full text-10 font-bold text-primary">
+                      {memberName[0]?.toUpperCase()}
+                    </div>
+                    <span className="truncate">
+                      {memberName}
+                      {isCurrentUser ? " (You)" : ""}
+                    </span>
                   </div>
-                  <span className="truncate">{dm.name}</span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -288,8 +333,20 @@ export const ClickUpChatView = observer(function ClickUpChatView() {
 
         {/* Message History List */}
         <div className="flex-1 space-y-4 overflow-y-auto p-6">
+          {isLoadingMessages && messages.length === 0 && (
+            <div className="flex h-full items-center justify-center text-13 text-tertiary">Loading messages…</div>
+          )}
+          {!isLoadingMessages && messages.length === 0 && (
+            <div className="flex h-full flex-col items-center justify-center gap-1 text-center">
+              <MessageSquare className="size-6 text-tertiary" />
+              <p className="text-13 font-semibold text-primary">
+                {activeChannel ? `This is the start of #${activeChannel.name}` : "Select a channel"}
+              </p>
+              <p className="text-12 text-tertiary">Send the first message to get the conversation going.</p>
+            </div>
+          )}
           {messages.map((msg) => {
-            const isSelf = msg.sender_name === "You" || msg.sender_name === currentUser?.display_name;
+            const isSelf = Boolean(currentUser?.id) && msg.sender_id === currentUser?.id;
             return (
               <div key={msg.id} className="group flex gap-3">
                 <div className="flex size-8 flex-shrink-0 items-center justify-center rounded-full bg-accent-subtle text-12 font-bold text-accent-primary">

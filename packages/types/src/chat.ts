@@ -7,7 +7,7 @@
 export interface IChatChannel {
   id: string;
   name: string;
-  description?: string;
+  description?: string | null;
   is_private?: boolean;
   project_id: string;
   workspace_id: string;
@@ -20,8 +20,8 @@ export interface IChatMessage {
   project_id: string;
   workspace_id: string;
   message: string;
-  sender_id?: string;
-  sender_name?: string;
-  sender_avatar?: string;
+  sender_id?: string | null;
+  sender_name?: string | null;
+  sender_avatar?: string | null;
   created_at?: string;
 }

@@ -62,8 +62,8 @@ export const ISSUE_LAYOUT_MAP: TIssueLayoutMap = {
   },
   [EIssueLayoutTypes.CHAT]: {
     key: EIssueLayoutTypes.CHAT,
-    i18n_title: "Chat",
-    i18n_label: "Chat",
+    i18n_title: "issue.layouts.title.chat",
+    i18n_label: "issue.layouts.chat",
   },
 };
 

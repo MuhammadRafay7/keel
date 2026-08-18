@@ -14,13 +14,8 @@ import { useTranslation } from "@keel/i18n";
 // icons
 import { ChevronDownIcon } from "@keel/propel/icons";
 // types
-import type {
-  IIssueDisplayFilterOptions,
-  IIssueDisplayProperties,
-  TIssueLayouts,
-  EIssueLayoutTypes,
-} from "@keel/types";
-import { EIssuesStoreType } from "@keel/types";
+import type { IIssueDisplayFilterOptions, IIssueDisplayProperties } from "@keel/types";
+import { EIssueLayoutTypes, EIssuesStoreType } from "@keel/types";
 // ui
 import { CustomMenu } from "@keel/ui";
 // components
@@ -42,13 +37,13 @@ export const ProfileIssuesMobileHeader = observer(function ProfileIssuesMobileHe
   const activeLayout = issueFilters?.displayFilters?.layout;
 
   const handleLayoutChange = useCallback(
-    (layout: TIssueLayouts) => {
+    (layout: EIssueLayoutTypes) => {
       if (!workspaceSlug || !userId) return;
       updateFilters(
         workspaceSlug.toString(),
         undefined,
         EIssueFilterType.DISPLAY_FILTERS,
-        { layout: layout as EIssueLayoutTypes | undefined },
+        { layout },
         userId.toString()
       );
     },
@@ -99,10 +94,11 @@ export const ProfileIssuesMobileHeader = observer(function ProfileIssuesMobileHe
         closeOnSelect
       >
         {ISSUE_LAYOUTS.map((layout, index) => {
-          if (layout.key === "spreadsheet" || layout.key === "gantt_chart" || layout.key === "calendar") return;
+          // Profile work items only render as a list or a board.
+          if (layout.key !== EIssueLayoutTypes.LIST && layout.key !== EIssueLayoutTypes.KANBAN) return;
           return (
             <CustomMenu.MenuItem
-              key={index}
+              key={layout.key}
               onClick={() => {
                 handleLayoutChange(ISSUE_LAYOUTS[index].key);
               }}
