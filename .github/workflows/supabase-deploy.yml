@@ -59,30 +59,47 @@ jobs:
       - name: Apply migrations
         run: supabase db push --include-all
 
-      # The email triggers dispatch through pg_net, which reads the target URL
-      # and key from database settings. Unset, they fall back to localhost and
-      # every send silently goes nowhere — the failure mode is no error and no
-      # email, so this is set on every deploy rather than once by hand.
-      - name: Point the email triggers at this project
-        env:
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-        run: |
-          if [ -z "$SUPABASE_ANON_KEY" ]; then
-            echo "SUPABASE_ANON_KEY secret is not set — email triggers would dispatch to localhost." >&2
-            exit 1
-          fi
-          PGPASSWORD="$SUPABASE_DB_PASSWORD" psql \
-            "postgresql://postgres.$SUPABASE_PROJECT_REF@aws-0-us-east-1.pooler.supabase.com:5432/postgres" \
-            -v ON_ERROR_STOP=1 \
-            -c "alter database postgres set app.settings.supabase_url = 'https://$SUPABASE_PROJECT_REF.supabase.co';" \
-            -c "alter database postgres set app.settings.supabase_anon_key = '$SUPABASE_ANON_KEY';"
-
       - name: Deploy Edge Functions
         if: github.event_name == 'push' || inputs.deploy_functions
         run: |
           supabase functions deploy send-workspace-invite --project-ref "$SUPABASE_PROJECT_REF"
           supabase functions deploy send-notification-email --project-ref "$SUPABASE_PROJECT_REF"
           supabase functions deploy ai-proxy --project-ref "$SUPABASE_PROJECT_REF"
+
+      # The email triggers dispatch through pg_net, which reads the target URL
+      # and key from database settings. Unset, they fall back to localhost and
+      # every send silently goes nowhere — no error raised, no email sent — so
+      # this is applied on every deploy rather than set once by hand.
+      #
+      # Runs after the functions deploy on purpose: if this step fails, the
+      # rest of the deploy has already landed, and the only thing missing is
+      # the email dispatch it configures.
+      #
+      # The anon key is read from the project rather than a secret, because
+      # SUPABASE_ACCESS_TOKEN is already here and one fewer secret to rotate is
+      # one fewer way for this to quietly stop working.
+      - name: Point the email triggers at this project
+        run: |
+          # -o and --output have swapped between CLI versions; try both
+          # rather than pin a version this workflow does not otherwise care
+          # about.
+          KEYS_JSON="$(supabase projects api-keys --project-ref "$SUPABASE_PROJECT_REF" -o json 2>/dev/null \
+            || supabase projects api-keys --project-ref "$SUPABASE_PROJECT_REF" --output json 2>/dev/null \
+            || echo '')"
+
+          ANON_KEY="$(printf '%s' "$KEYS_JSON" | jq -r '.[]? | select(.name == "anon") | .api_key' 2>/dev/null | head -1)"
+
+          if [ -z "$ANON_KEY" ] || [ "$ANON_KEY" = "null" ]; then
+            echo "Could not read the anon key for $SUPABASE_PROJECT_REF." >&2
+            echo "The email triggers will keep dispatching to localhost until this is fixed." >&2
+            exit 1
+          fi
+
+          PGPASSWORD="$SUPABASE_DB_PASSWORD" psql \
+            "postgresql://postgres:$SUPABASE_DB_PASSWORD@db.$SUPABASE_PROJECT_REF.supabase.co:5432/postgres" \
+            -v ON_ERROR_STOP=1 \
+            -c "alter database postgres set app.settings.supabase_url = 'https://$SUPABASE_PROJECT_REF.supabase.co';" \
+            -c "alter database postgres set app.settings.supabase_anon_key = '$ANON_KEY';"
 
       - name: Confirm the migration history matches the repository
         run: supabase migration list --linked
