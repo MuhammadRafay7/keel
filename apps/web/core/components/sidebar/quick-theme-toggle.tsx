@@ -4,14 +4,20 @@
  * See the LICENSE file for details.
  */
 
+import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { useTheme } from "next-themes";
 import { Sun, Moon, Monitor } from "lucide-react";
 import { useUserProfile } from "@/hooks/store/user";
 
 export const QuickThemeToggle = observer(function QuickThemeToggle() {
+  const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
   const { updateUserTheme } = useUserProfile();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleThemeSwitch = (newTheme: "light" | "dark" | "system") => {
     setTheme(newTheme);
@@ -27,7 +33,7 @@ export const QuickThemeToggle = observer(function QuickThemeToggle() {
   return (
     <div className="flex items-center rounded-lg border border-subtle bg-surface-2 p-0.5 text-tertiary">
       {options.map(({ value, icon: Icon, label }) => {
-        const isActive = theme === value;
+        const isActive = mounted && theme === value;
         return (
           <button
             key={value}
