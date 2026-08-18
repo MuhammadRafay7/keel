@@ -68,7 +68,7 @@ supabase/
 
 Both email triggers dispatch through `pg_net`, and both read the target URL and key from Postgres settings. Without these the triggers run, find no usable URL, and silently send nothing — no error, no email.
 
-**In production these are set for you.** The `Deploy Supabase` workflow applies them on every deploy from the `SUPABASE_PROJECT_REF` and `SUPABASE_ANON_KEY` secrets, so a fresh project or a rotated key cannot leave the triggers pointing at localhost. Set them by hand only for local development:
+**In production these are set for you.** The `Deploy Supabase` workflow applies them on every deploy, reading the anon key from the project itself via `supabase projects api-keys` rather than from a secret — so a fresh project or a rotated key cannot leave the triggers pointing at localhost, and there is no extra secret to keep in sync. Set them by hand only for local development:
 
 ```sql
 alter database postgres set app.settings.supabase_url = 'https://<project-ref>.supabase.co';
