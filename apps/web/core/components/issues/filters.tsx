@@ -194,7 +194,7 @@ export const HeaderFilters: React.FC<Props> = observer(function HeaderFilters(pr
         projectDetails={currentProjectDetails ?? undefined}
         isEpic={storeType === EIssuesStoreType.EPIC}
       />
-      <div className="hidden items-center gap-2 @4xl:flex">
+      <div className="hidden items-center gap-2 md:flex">
         <LayoutSelection
           layouts={LAYOUTS}
           onChange={(layout) => handleLayoutChange(layout)}
@@ -225,7 +225,7 @@ export const HeaderFilters: React.FC<Props> = observer(function HeaderFilters(pr
           <span>{isSeeding ? "Seeding..." : "Seed Data"}</span>
         </button>
       </div>
-      <div className="flex @4xl:hidden">
+      <div className="flex md:hidden">
         <MobileLayoutSelection
           layouts={LAYOUTS}
           onChange={(layout) => handleLayoutChange(layout)}
