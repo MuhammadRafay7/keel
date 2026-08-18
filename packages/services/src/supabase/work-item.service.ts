@@ -25,6 +25,58 @@ const ISSUE_FIELDS =
 
 const ISSUE_SELECT = `${ISSUE_FIELDS}, issue_assignees(assignee_id), issue_labels(label_id)`;
 
+/**
+ * A rich filter expression, as the header and filter row serialise it:
+ * `{ and: [{ "assignee_id__in": "id-1,id-2" }] }`, or a bare condition object
+ * when only one filter is applied. Multi-value operators carry their values
+ * comma-joined in a single string.
+ */
+type TFilterCondition = Record<string, string | number | boolean>;
+
+/** Flattens an expression down to the conditions it contains. */
+const flattenFilterConditions = (expression: unknown): TFilterCondition[] => {
+  let parsed: unknown = expression;
+  if (typeof expression === "string") {
+    try {
+      parsed = JSON.parse(expression);
+    } catch {
+      return [];
+    }
+  }
+
+  if (!parsed || typeof parsed !== "object") return [];
+
+  const group = (parsed as { and?: unknown }).and;
+  if (Array.isArray(group)) return group.flatMap((entry) => flattenFilterConditions(entry));
+
+  return Object.keys(parsed as object).length > 0 ? [parsed as TFilterCondition] : [];
+};
+
+const splitFilterValue = (value: string | number | boolean): string[] =>
+  String(value)
+    .split(",")
+    .map((v) => v.trim())
+    .filter((v) => v.length > 0);
+
+/** Groups conditions by property, so `assignee_id__in` is reachable by name. */
+const collectFilterValues = (expression: unknown): Record<string, string[]> => {
+  const collected: Record<string, string[]> = {};
+
+  for (const condition of flattenFilterConditions(expression)) {
+    for (const [key, value] of Object.entries(condition)) {
+      const separator = key.lastIndexOf("__");
+      if (separator < 0) continue;
+      const property = key.slice(0, separator);
+      collected[property] = [...(collected[property] ?? []), ...splitFilterValue(value)];
+    }
+  }
+
+  return collected;
+};
+
+/** A uuid nothing will match, so an empty result set stays empty. */
+const NO_MATCH_UUID = "00000000-0000-0000-0000-000000000000";
+
 const DEFAULT_DISPLAY_PROPERTIES: IIssueDisplayProperties = {
   assignee: true,
   start_date: true,
@@ -130,6 +182,48 @@ export class SupabaseWorkItemService {
       query = query.eq("priority", queries.priority);
     }
 
+    const filterValues = collectFilterValues(queries?.filters);
+
+    if (filterValues.state_id?.length) query = query.in("state_id", filterValues.state_id);
+    if (filterValues.priority?.length) query = query.in("priority", filterValues.priority);
+    if (filterValues.created_by_id?.length) query = query.in("created_by_id", filterValues.created_by_id);
+    if (filterValues.state_group?.length) {
+      const stateIds = await this.stateIdsForGroups(projectId, filterValues.state_group);
+      query = query.in("state_id", stateIds.length > 0 ? stateIds : [NO_MATCH_UUID]);
+    }
+
+    // Dates arrive as `from,to` for a range and a single value for an exact match.
+    for (const column of ["start_date", "target_date"] as const) {
+      const values = filterValues[column];
+      if (!values?.length) continue;
+
+      if (values.length === 1) {
+        query = query.eq(column, values[0]);
+        continue;
+      }
+
+      const [from, to] = values;
+      if (from) query = query.gte(column, from);
+      if (to) query = query.lte(column, to);
+    }
+
+    // Assignees and labels live in join tables. Resolving the matching work
+    // item ids first keeps the embedded arrays whole — an inner join would
+    // trim them to just the values being filtered on.
+    const [assigneeMatches, labelMatches] = await Promise.all([
+      filterValues.assignee_id?.length
+        ? this.issueIdsByLink(projectId, "issue_assignees", "assignee_id", filterValues.assignee_id)
+        : null,
+      filterValues.label_id?.length
+        ? this.issueIdsByLink(projectId, "issue_labels", "label_id", filterValues.label_id)
+        : null,
+    ]);
+
+    for (const matches of [assigneeMatches, labelMatches]) {
+      if (matches === null) continue;
+      query = query.in("id", matches.length > 0 ? matches : [NO_MATCH_UUID]);
+    }
+
     const { data, error } = await query.order("sort_order", { ascending: true });
 
     if (error) throw new Error(`Failed to load work items: ${error.message}`);
@@ -149,6 +243,37 @@ export class SupabaseWorkItemService {
       results: issues,
       total_results: issues.length,
     };
+  }
+
+  /** Work item ids that have one of `values` in a join table. */
+  private async issueIdsByLink(
+    projectId: string,
+    table: "issue_assignees" | "issue_labels",
+    column: "assignee_id" | "label_id",
+    values: string[]
+  ): Promise<string[]> {
+    const supabase = getSupabase();
+
+    const { data, error } = await supabase
+      .from(table)
+      .select("issue_id")
+      .eq("project_id", projectId)
+      .in(column, values);
+
+    if (error) throw new Error(`Failed to apply the ${column} filter: ${error.message}`);
+
+    return Array.from(new Set((data ?? []).map((row) => (row as { issue_id: string }).issue_id)));
+  }
+
+  /** State ids belonging to any of the given state groups. */
+  private async stateIdsForGroups(projectId: string, groups: string[]): Promise<string[]> {
+    const supabase = getSupabase();
+
+    const { data, error } = await supabase.from("states").select("id").eq("project_id", projectId).in("group", groups);
+
+    if (error) throw new Error(`Failed to apply the state filter: ${error.message}`);
+
+    return (data ?? []).map((row) => (row as { id: string }).id);
   }
 
   async getIssuesForSync(
