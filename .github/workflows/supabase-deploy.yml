@@ -95,11 +95,32 @@ jobs:
             exit 1
           fi
 
-          PGPASSWORD="$SUPABASE_DB_PASSWORD" psql \
-            "postgresql://postgres:$SUPABASE_DB_PASSWORD@db.$SUPABASE_PROJECT_REF.supabase.co:5432/postgres" \
-            -v ON_ERROR_STOP=1 \
-            -c "alter database postgres set app.settings.supabase_url = 'https://$SUPABASE_PROJECT_REF.supabase.co';" \
-            -c "alter database postgres set app.settings.supabase_anon_key = '$ANON_KEY';"
+          # Sent over the Management API rather than psql. A direct database
+          # connection from CI has to survive both the password (which may
+          # contain characters that break a connection URI) and the host (whose
+          # pooler name is region-dependent, while the direct name resolves to
+          # IPv6 that GitHub runners cannot reach). HTTPS has neither problem.
+          #
+          SQL="alter database postgres set app.settings.supabase_url = 'https://$SUPABASE_PROJECT_REF.supabase.co';"
+          SQL="$SQL alter database postgres set app.settings.supabase_anon_key = '$ANON_KEY';"
+
+          # jq handles the JSON escaping; the key is a JWT, so it carries
+          # nothing that would break out of the SQL string literal.
+          PAYLOAD="$(jq -n --arg q "$SQL" '{query: $q}')"
+
+          HTTP_CODE="$(curl -sS -o /tmp/settings-response.json -w '%{http_code}' \
+            -X POST "https://api.supabase.com/v1/projects/$SUPABASE_PROJECT_REF/database/query" \
+            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD")"
+
+          if [ "$HTTP_CODE" -ge 300 ]; then
+            echo "Setting the email dispatch target failed with HTTP $HTTP_CODE:" >&2
+            cat /tmp/settings-response.json >&2
+            exit 1
+          fi
+
+          echo "Email triggers now dispatch to https://$SUPABASE_PROJECT_REF.supabase.co"
 
       - name: Confirm the migration history matches the repository
         run: supabase migration list --linked
