@@ -198,3 +198,27 @@
     0 0 4px --alpha(var(--background-color-accent-primary) / 40%) !important;
   will-change: transform, opacity;
 }
+
+/* ClickUp-Inspired Visual Enhancements */
+.clickup-card {
+  @apply rounded-xl border border-subtle bg-surface-1 shadow-sm transition-all duration-200 hover:shadow-md hover:border-subtle-1;
+}
+
+.clickup-badge {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-12 font-medium tracking-wide transition-colors;
+}
+
+.clickup-pill-active {
+  @apply bg-accent-subtle text-accent-primary font-medium rounded-lg transition-all;
+}
+
+.clickup-glass {
+  @apply backdrop-blur-md bg-surface-1/80 border-b border-subtle sticky top-0 z-20;
+}
+
+/* Smooth Theme Transitions */
+html {
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
