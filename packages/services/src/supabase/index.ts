@@ -24,3 +24,4 @@ export * from "./intake.service";
 export * from "./estimate.service";
 export * from "./analytics.service";
 export * from "./ai.service";
+export * from "./chat.service";

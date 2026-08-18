@@ -45,6 +45,7 @@ const LAYOUTS = [
   EIssueLayoutTypes.CALENDAR,
   EIssueLayoutTypes.SPREADSHEET,
   EIssueLayoutTypes.GANTT,
+  EIssueLayoutTypes.CHAT,
 ];
 
 export const HeaderFilters: React.FC<Props> = observer(function HeaderFilters(props: Props) {
