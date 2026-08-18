@@ -6,7 +6,7 @@
 
 import { useCallback, useState } from "react";
 import { observer } from "mobx-react";
-import { ChartNoAxesColumn, SlidersHorizontal } from "lucide-react";
+import { ChartNoAxesColumn, SlidersHorizontal, User } from "lucide-react";
 // keel imports
 import { EIssueFilterType, ISSUE_STORE_TO_FILTERS_MAP } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";
@@ -15,6 +15,8 @@ import type { IIssueDisplayFilterOptions, IIssueDisplayProperties } from "@keel/
 import { EIssueLayoutTypes, EIssuesStoreType } from "@keel/types";
 // hooks
 import { useIssues } from "@/hooks/store/use-issues";
+import { useUser } from "@/hooks/store/user";
+import { cn } from "@keel/utils";
 // keel web imports
 import type { TProject } from "@keel/types";
 // local imports
@@ -55,12 +57,24 @@ export const HeaderFilters = observer(function HeaderFilters(props: Props) {
   // states
   const [analyticsModal, setAnalyticsModal] = useState(false);
   // store hooks
+  const { data: currentUser } = useUser();
   const {
     issuesFilter: { issueFilters, updateFilters },
   } = useIssues(storeType);
   // derived values
   const activeLayout = issueFilters?.displayFilters?.layout;
   const layoutDisplayFiltersOptions = ISSUE_STORE_TO_FILTERS_MAP[storeType]?.layoutOptions[activeLayout];
+
+  const currentAssignees = (issueFilters?.displayFilters?.assignees as string[]) || [];
+  const isMeModeActive = currentUser?.id ? currentAssignees.includes(currentUser.id) : false;
+
+  const handleMeModeToggle = () => {
+    if (!workspaceSlug || !projectId || !currentUser?.id) return;
+    const assignees = (issueFilters?.displayFilters?.assignees as string[]) || [];
+    const isMeActive = assignees.includes(currentUser.id);
+    const newAssignees = isMeActive ? assignees.filter((id) => id !== currentUser.id) : [...assignees, currentUser.id];
+    handleDisplayFilters({ assignees: newAssignees });
+  };
 
   const handleLayoutChange = useCallback(
     (layout: EIssueLayoutTypes) => {
@@ -94,12 +108,26 @@ export const HeaderFilters = observer(function HeaderFilters(props: Props) {
         projectDetails={currentProjectDetails ?? undefined}
         isEpic={storeType === EIssuesStoreType.EPIC}
       />
-      <div className="hidden @4xl:flex">
+      <div className="hidden items-center gap-2 @4xl:flex">
         <LayoutSelection
           layouts={LAYOUTS}
           onChange={(layout) => handleLayoutChange(layout)}
           selectedLayout={activeLayout}
         />
+        <button
+          type="button"
+          onClick={handleMeModeToggle}
+          title="Filter tasks assigned to me"
+          className={cn(
+            "flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-12 font-medium transition-all duration-150",
+            isMeModeActive
+              ? "shadow-xs border-accent-subtle bg-accent-subtle font-semibold text-accent-primary"
+              : "border-subtle bg-surface-2 text-secondary hover:bg-surface-1/80 hover:text-primary"
+          )}
+        >
+          <User className="size-3.5 flex-shrink-0" />
+          <span>Me Mode</span>
+        </button>
       </div>
       <div className="flex @4xl:hidden">
         <MobileLayoutSelection
