@@ -90,34 +90,37 @@ export const HeaderGroupByCard = observer(function HeaderGroupByCard(props: IHea
 
   return (
     <>
-      <div className="group/list-header flex w-full flex-shrink-0 items-center gap-2 py-1.5">
-        {canSelectIssues && (
-          <div className="absolute left-1 flex w-3.5 flex-shrink-0 items-center">
-            <MultipleSelectGroupAction
-              className={cn(
-                "pointer-events-none size-3.5 opacity-0 !outline-none group-hover/list-header:pointer-events-auto group-hover/list-header:opacity-100",
-                {
-                  "pointer-events-auto opacity-100": !isGroupSelectionEmpty,
-                }
-              )}
-              groupID={groupID}
-              selectionHelpers={selectionHelpers}
-              disabled={count === 0}
-            />
+      <div className="group/list-header flex w-full flex-shrink-0 items-center justify-between gap-2 rounded-lg border border-subtle/70 bg-surface-2/60 px-2.5 py-1.5 transition-all hover:bg-surface-2">
+        <div className="flex items-center gap-2 overflow-hidden">
+          {canSelectIssues && (
+            <div className="flex w-3.5 flex-shrink-0 items-center">
+              <MultipleSelectGroupAction
+                className={cn(
+                  "pointer-events-none size-3.5 opacity-0 !outline-none group-hover/list-header:pointer-events-auto group-hover/list-header:opacity-100",
+                  {
+                    "pointer-events-auto opacity-100": !isGroupSelectionEmpty,
+                  }
+                )}
+                groupID={groupID}
+                selectionHelpers={selectionHelpers}
+                disabled={count === 0}
+              />
+            </div>
+          )}
+          <div className="grid flex-shrink-0 place-items-center overflow-hidden">
+            {icon ?? <CircleDashed className="size-3.5 text-accent-primary" strokeWidth={2} />}
           </div>
-        )}
-        <div className="grid flex-shrink-0 place-items-center overflow-hidden">
-          {icon ?? <CircleDashed className="size-3.5" strokeWidth={2} />}
-        </div>
 
-        {/* eslint-disable-next-line jsx_a11y/click-events-have-key-events eslint-disable-next-line jsx_a11y/no-static-element-interactions */}
-        <div
-          className="relative flex w-full cursor-pointer flex-row items-center gap-1 overflow-hidden"
-          onClick={() => handleCollapsedGroups(groupID)}
-        >
-          <div className="line-clamp-1 inline-block truncate font-medium text-primary">{title}</div>
-          <div className="pl-2 text-13 font-medium text-tertiary">{count || 0}</div>
-          <div className="px-2.5"></div>
+          {/* eslint-disable-next-line jsx_a11y/click-events-have-key-events eslint-disable-next-line jsx_a11y/no-static-element-interactions */}
+          <div
+            className="relative flex cursor-pointer flex-row items-center gap-2 overflow-hidden"
+            onClick={() => handleCollapsedGroups(groupID)}
+          >
+            <div className="line-clamp-1 text-13 font-semibold tracking-wide text-primary uppercase">{title}</div>
+            <span className="flex items-center justify-center rounded-full bg-accent-subtle px-2 py-0.5 text-11 font-bold text-accent-primary">
+              {count || 0}
+            </span>
+          </div>
         </div>
 
         {!disableIssueCreation &&

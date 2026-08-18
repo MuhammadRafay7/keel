@@ -39,6 +39,7 @@ export enum EIssueFilterType {
 }
 
 export type TSupportedFilterTypeForUpdate =
+  | EIssueFilterType.FILTERS
   | EIssueFilterType.DISPLAY_FILTERS
   | EIssueFilterType.DISPLAY_PROPERTIES
   | EIssueFilterType.KANBAN_FILTERS;
@@ -353,9 +354,9 @@ export const filterActivityOnSelectedFilters = (
   activity: TIssueActivityComment[],
   filters: TActivityFilters[]
 ): TIssueActivityComment[] =>
-  activity.filter((activity) => {
-    if (activity.activity_type === EActivityFilterType.DEFAULT) return true;
-    return filters.includes(activity.activity_type as TActivityFilters);
+  activity.filter((item) => {
+    if (item.activity_type === EActivityFilterType.DEFAULT) return true;
+    return filters.includes(item.activity_type as TActivityFilters);
   });
 
 export const ENABLE_ISSUE_DEPENDENCIES = false;

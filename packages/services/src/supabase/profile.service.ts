@@ -34,6 +34,13 @@ const WRITABLE = [
  * it expects the row to exist, and says so plainly if it does not.
  */
 export class SupabaseProfileService {
+  private async currentUserId(): Promise<string> {
+    const { data } = await getSupabase().auth.getSession();
+    const id = data.session?.user.id;
+    if (!id) throw new Error("Not signed in.");
+    return id;
+  }
+
   async profile(): Promise<TUserProfile> {
     const supabase = getSupabase();
 
@@ -163,6 +170,46 @@ export class SupabaseProfileService {
       updated_at: (row.updated_at as string) ?? "",
       start_of_the_week: (row.start_of_the_week as EStartOfTheWeek) ?? EStartOfTheWeek.SUNDAY,
     };
+  }
+
+  /**
+   * Email notification preferences.
+   *
+   * Nothing sends these emails in this stack yet, so the row is stored but
+   * only read back by this screen. A missing row means the defaults.
+   */
+  async emailNotificationSettings(): Promise<Record<string, boolean>> {
+    const defaults = {
+      property_change: true,
+      state_change: true,
+      comment: true,
+      mention: true,
+      issue_completed: true,
+    };
+
+    try {
+      const { data } = await getSupabase()
+        .from("user_notification_preferences")
+        .select("*")
+        .eq("user_id", await this.currentUserId())
+        .maybeSingle();
+
+      return { ...defaults, ...((data ?? {}) as Record<string, boolean>) };
+    } catch {
+      return defaults;
+    }
+  }
+
+  async updateEmailNotificationSettings(patch: Record<string, boolean>): Promise<Record<string, boolean>> {
+    const userId = await this.currentUserId();
+
+    const { error } = await getSupabase()
+      .from("user_notification_preferences")
+      .upsert({ user_id: userId, ...patch, updated_at: new Date().toISOString() }, { onConflict: "user_id" });
+
+    if (error) throw new Error(`Failed to save those preferences: ${error.message}`);
+
+    return this.emailNotificationSettings();
   }
 }
 

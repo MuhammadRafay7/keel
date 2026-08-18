@@ -8,6 +8,7 @@ import { API_BASE_URL } from "@keel/constants";
 import type { TIssue, TWorkspaceDraftIssue, TWorkspaceDraftPaginationInfo } from "@keel/types";
 // helpers
 // services
+import { isSupabaseConfigured, supabaseDraftService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 
 export class WorkspaceDraftService extends APIService {
@@ -19,6 +20,7 @@ export class WorkspaceDraftService extends APIService {
     workspaceSlug: string,
     query: object = {}
   ): Promise<TWorkspaceDraftPaginationInfo<TWorkspaceDraftIssue> | undefined> {
+    if (isSupabaseConfigured) return supabaseDraftService.getIssues(workspaceSlug);
     return this.get(`/api/workspaces/${workspaceSlug}/draft-issues/`, { params: { ...query } })
       .then((response) => response?.data)
       .catch((error) => {
@@ -27,6 +29,7 @@ export class WorkspaceDraftService extends APIService {
   }
 
   async getIssueById(workspaceSlug: string, issueId: string): Promise<TWorkspaceDraftIssue | undefined> {
+    if (isSupabaseConfigured) return supabaseDraftService.getIssueById(workspaceSlug, issueId);
     return this.get(`/api/workspaces/${workspaceSlug}/draft-issues/${issueId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -38,6 +41,7 @@ export class WorkspaceDraftService extends APIService {
     workspaceSlug: string,
     payload: Partial<TWorkspaceDraftIssue | TIssue>
   ): Promise<TWorkspaceDraftIssue | undefined> {
+    if (isSupabaseConfigured) return supabaseDraftService.createIssue(workspaceSlug, payload);
     return this.post(`/api/workspaces/${workspaceSlug}/draft-issues/`, payload)
       .then((response) => response?.data)
       .catch((error) => {
@@ -50,6 +54,7 @@ export class WorkspaceDraftService extends APIService {
     issueId: string,
     payload: Partial<TWorkspaceDraftIssue | TIssue>
   ): Promise<TWorkspaceDraftIssue | undefined> {
+    if (isSupabaseConfigured) return supabaseDraftService.updateIssue(workspaceSlug, issueId, payload);
     return this.patch(`/api/workspaces/${workspaceSlug}/draft-issues/${issueId}/`, payload)
       .then((response) => response?.data)
       .catch((error) => {
@@ -58,6 +63,7 @@ export class WorkspaceDraftService extends APIService {
   }
 
   async deleteIssue(workspaceSlug: string, issueId: string): Promise<void> {
+    if (isSupabaseConfigured) return supabaseDraftService.deleteIssue(workspaceSlug, issueId);
     return this.delete(`/api/workspaces/${workspaceSlug}/draft-issues/${issueId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -66,6 +72,7 @@ export class WorkspaceDraftService extends APIService {
   }
 
   async moveIssue(workspaceSlug: string, issueId: string, payload: Partial<TWorkspaceDraftIssue>): Promise<TIssue> {
+    if (isSupabaseConfigured) return supabaseDraftService.moveIssue(workspaceSlug, issueId, payload);
     return this.post(`/api/workspaces/${workspaceSlug}/draft-to-issue/${issueId}/`, payload)
       .then((response) => response?.data)
       .catch((error) => {

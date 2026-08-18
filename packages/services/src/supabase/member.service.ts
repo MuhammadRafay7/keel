@@ -374,6 +374,36 @@ export class SupabaseMemberService {
     if (error) throw new Error(error.message);
   }
 
+  // -- Leaving and joining ----------------------------------------------------
+  // Leaving is removing your own membership, which the same RPCs already do —
+  // they check that the caller may remove that member, and you always may
+  // remove yourself.
+
+  async leaveWorkspace(workspaceSlug: string): Promise<void> {
+    await this.deleteWorkspaceMember(workspaceSlug, await this.currentUserId());
+  }
+
+  async leaveProject(workspaceSlug: string, projectId: string): Promise<void> {
+    await this.deleteProjectMember(workspaceSlug, projectId, await this.currentUserId());
+  }
+
+  /** Joining public projects the person picked from the browser. */
+  async joinProjects(workspaceSlug: string, projectIds: string[]): Promise<void> {
+    const userId = await this.currentUserId();
+
+    const results = await Promise.all(
+      projectIds.map((projectId) =>
+        getSupabase().rpc("add_project_members", {
+          p_project_id: projectId,
+          p_members: [{ member_id: userId, role: 15 }],
+        })
+      )
+    );
+
+    const failure = results.find((result) => result.error);
+    if (failure?.error) throw new Error(`Failed to join that project: ${failure.error.message}`);
+  }
+
   // -- Mapping --------------------------------------------------------------
 
   private toProjectMembership(row: Record<string, unknown>): TProjectMembership {

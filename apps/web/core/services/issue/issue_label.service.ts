@@ -7,7 +7,7 @@
 import { API_BASE_URL } from "@keel/constants";
 import type { IIssueLabel } from "@keel/types";
 // services
-import { isSupabaseConfigured, supabaseProjectService } from "@keel/services";
+import { supabaseWorkspaceContentService, isSupabaseConfigured, supabaseProjectService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 // types
 
@@ -17,6 +17,7 @@ export class IssueLabelService extends APIService {
   }
 
   async getWorkspaceIssueLabels(workspaceSlug: string): Promise<IIssueLabel[]> {
+    if (isSupabaseConfigured) return supabaseWorkspaceContentService.getWorkspaceLabels(workspaceSlug) as never;
     return this.get(`/api/workspaces/${workspaceSlug}/labels/`)
       .then((response) => response?.data)
       .catch((error) => {

@@ -4,6 +4,7 @@
  * See the LICENSE file for details.
  */
 
+import { MessageSquare } from "lucide-react";
 import {
   ListLayoutIcon,
   BoardLayoutIcon,
@@ -35,6 +36,8 @@ export function IssueLayoutIcon({
       return <SheetLayoutIcon {...iconProps} />;
     case EIssueLayoutTypes.GANTT:
       return <TimelineLayoutIcon {...iconProps} />;
+    case EIssueLayoutTypes.CHAT:
+      return <MessageSquare {...iconProps} className={props.className || "size-3.5"} />;
     default:
       return null;
   }

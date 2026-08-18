@@ -7,13 +7,10 @@
 // keel imports
 import { ISSUE_LAYOUTS } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";
-import { Tooltip } from "@keel/propel/tooltip";
 import type { EIssueLayoutTypes } from "@keel/types";
 import { cn } from "@keel/utils";
 // components
 import { IssueLayoutIcon } from "@/components/issues/issue-layouts/layout-icon";
-// hooks
-import { usePlatformOS } from "@/hooks/use-platform-os";
 
 type Props = {
   layouts: EIssueLayoutTypes[];
@@ -23,7 +20,6 @@ type Props = {
 
 export function LayoutSelection(props: Props) {
   const { layouts, onChange, selectedLayout } = props;
-  const { isMobile } = usePlatformOS();
   const { t } = useTranslation();
   const handleOnChange = (layoutKey: EIssueLayoutTypes) => {
     if (selectedLayout !== layoutKey) {
@@ -32,16 +28,18 @@ export function LayoutSelection(props: Props) {
   };
 
   return (
-    <div className="flex items-center gap-1 rounded-md bg-layer-3 p-1">
-      {ISSUE_LAYOUTS.filter((l) => layouts.includes(l.key)).map((layout) => (
-        <Tooltip key={layout.key} tooltipContent={t(layout.i18n_title)} isMobile={isMobile}>
+    <div className="flex items-center gap-1 rounded-lg border border-subtle bg-surface-2 p-1 text-12 font-medium">
+      {ISSUE_LAYOUTS.filter((l) => layouts.includes(l.key)).map((layout) => {
+        const isSelected = selectedLayout === layout.key;
+        return (
           <button
+            key={layout.key}
             type="button"
             className={cn(
-              "group grid h-5.5 w-7 place-items-center overflow-hidden rounded-sm transition-all hover:bg-layer-transparent-hover",
-              {
-                "bg-layer-transparent-active hover:bg-layer-transparent-active": selectedLayout === layout.key,
-              }
+              "flex items-center gap-1.5 rounded-md px-2.5 py-1 whitespace-nowrap transition-all duration-150",
+              isSelected
+                ? "shadow-xs border border-subtle bg-surface-1 font-semibold text-accent-primary"
+                : "text-secondary hover:bg-surface-1/60 hover:text-primary"
             )}
             onClick={() => handleOnChange(layout.key)}
           >
@@ -49,11 +47,12 @@ export function LayoutSelection(props: Props) {
               layout={layout.key}
               size={14}
               strokeWidth={2}
-              className={`size-3.5 ${selectedLayout == layout.key ? "text-primary" : "text-secondary"}`}
+              className={cn("size-3.5 flex-shrink-0", isSelected ? "text-accent-primary" : "text-tertiary")}
             />
+            <span className="capitalize">{t(layout.i18n_title)}</span>
           </button>
-        </Tooltip>
-      ))}
+        );
+      })}
     </div>
   );
 }

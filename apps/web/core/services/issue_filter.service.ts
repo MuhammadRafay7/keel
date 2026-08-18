@@ -7,6 +7,7 @@
 // services
 import { API_BASE_URL } from "@keel/constants";
 import type { IIssueFiltersResponse } from "@keel/types";
+import { isSupabaseConfigured, supabaseProjectService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 // types
 
@@ -36,6 +37,8 @@ export class IssueFiltersService extends APIService {
 
   // epic issue filters
   async fetchProjectEpicFilters(workspaceSlug: string, projectId: string): Promise<IIssueFiltersResponse> {
+    if (isSupabaseConfigured)
+      return supabaseProjectService.getEntityUserProperties("project_epic_user_properties", "project_id", projectId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/epics-user-properties/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -47,6 +50,14 @@ export class IssueFiltersService extends APIService {
     projectId: string,
     data: Partial<IIssueFiltersResponse>
   ): Promise<any> {
+    if (isSupabaseConfigured)
+      return supabaseProjectService.updateEntityUserProperties(
+        "project_epic_user_properties",
+        "project_id",
+        projectId,
+        projectId,
+        data
+      );
     return this.patch(`/api/workspaces/${workspaceSlug}/projects/${projectId}/epics-user-properties/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -60,6 +71,8 @@ export class IssueFiltersService extends APIService {
     projectId: string,
     cycleId: string
   ): Promise<IIssueFiltersResponse> {
+    if (isSupabaseConfigured)
+      return supabaseProjectService.getEntityUserProperties("cycle_user_properties", "cycle_id", cycleId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/cycles/${cycleId}/user-properties/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -72,6 +85,14 @@ export class IssueFiltersService extends APIService {
     cycleId: string,
     data: Partial<IIssueFiltersResponse>
   ): Promise<any> {
+    if (isSupabaseConfigured)
+      return supabaseProjectService.updateEntityUserProperties(
+        "cycle_user_properties",
+        "cycle_id",
+        cycleId,
+        projectId,
+        data
+      );
     return this.patch(`/api/workspaces/${workspaceSlug}/projects/${projectId}/cycles/${cycleId}/user-properties/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -85,6 +106,8 @@ export class IssueFiltersService extends APIService {
     projectId: string,
     moduleId: string
   ): Promise<IIssueFiltersResponse> {
+    if (isSupabaseConfigured)
+      return supabaseProjectService.getEntityUserProperties("module_user_properties", "module_id", moduleId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/modules/${moduleId}/user-properties/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -97,6 +120,14 @@ export class IssueFiltersService extends APIService {
     moduleId: string,
     data: Partial<IIssueFiltersResponse>
   ): Promise<any> {
+    if (isSupabaseConfigured)
+      return supabaseProjectService.updateEntityUserProperties(
+        "module_user_properties",
+        "module_id",
+        moduleId,
+        projectId,
+        data
+      );
     return this.patch(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/modules/${moduleId}/user-properties/`,
       data

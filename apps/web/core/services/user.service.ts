@@ -19,7 +19,13 @@ import type {
   TUserProfile,
   IEmailCheckResponse,
 } from "@keel/types";
-import { isSupabaseConfigured, supabaseProfileService } from "@keel/services";
+import {
+  isSupabaseConfigured,
+  supabaseMemberService,
+  supabaseProfileService,
+  supabaseUserService,
+  supabaseUserWorkItemService,
+} from "@keel/services";
 import { APIService } from "@/services/api.service";
 // types
 // helpers
@@ -104,6 +110,7 @@ export class UserService extends APIService {
   }
 
   async currentUserEmailNotificationSettings(): Promise<IUserEmailNotificationSettings> {
+    if (isSupabaseConfigured) return supabaseProfileService.emailNotificationSettings() as never;
     return this.get("/api/users/me/notification-preferences/")
       .then((response) => response?.data)
       .catch((error) => {
@@ -140,6 +147,7 @@ export class UserService extends APIService {
   }
 
   async updateCurrentUserEmailNotificationSettings(data: Partial<IUserEmailNotificationSettings>): Promise<any> {
+    if (isSupabaseConfigured) return supabaseProfileService.updateEmailNotificationSettings(data as never);
     return this.patch("/api/users/me/notification-preferences/", data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -160,6 +168,7 @@ export class UserService extends APIService {
   }
 
   async getUserProfileData(workspaceSlug: string, userId: string): Promise<IUserProfileData> {
+    if (isSupabaseConfigured) return supabaseUserWorkItemService.getUserProfileData(workspaceSlug, userId);
     return this.get(`/api/workspaces/${workspaceSlug}/user-stats/${userId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -171,6 +180,8 @@ export class UserService extends APIService {
     workspaceSlug: string,
     userId: string
   ): Promise<IUserProfileProjectSegregation> {
+    if (isSupabaseConfigured)
+      return supabaseUserWorkItemService.getUserProfileProjectsSegregation(workspaceSlug, userId);
     return this.get(`/api/workspaces/${workspaceSlug}/user-profile/${userId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -186,6 +197,7 @@ export class UserService extends APIService {
       cursor?: string;
     }
   ): Promise<IUserActivityResponse> {
+    if (isSupabaseConfigured) return supabaseUserWorkItemService.getUserProfileActivity(workspaceSlug, userId, params);
     return this.get(`/api/workspaces/${workspaceSlug}/user-activity/${userId}/`, {
       params,
     })
@@ -202,6 +214,18 @@ export class UserService extends APIService {
       date: string;
     }
   ): Promise<any> {
+    if (isSupabaseConfigured) {
+      const { csv, rows } = await supabaseUserWorkItemService.exportProfileActivityCsv(workspaceSlug, userId);
+
+      const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `activity-${data.date || new Date().toISOString().split("T")[0]}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+
+      return { message: `Exported ${rows} activity records.` };
+    }
     return this.post(`/api/workspaces/${workspaceSlug}/user-activity/${userId}/export/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -215,6 +239,8 @@ export class UserService extends APIService {
     params: any,
     config = {}
   ): Promise<TIssuesResponse> {
+    if (isSupabaseConfigured)
+      return supabaseUserWorkItemService.getUserProfileIssues(workspaceSlug, userId, params, config);
     return this.get(
       `/api/workspaces/${workspaceSlug}/user-issues/${userId}/`,
       {
@@ -229,6 +255,7 @@ export class UserService extends APIService {
   }
 
   async deactivateAccount() {
+    if (isSupabaseConfigured) return supabaseUserService.deactivateAccount();
     return this.delete(`/api/users/me/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -237,6 +264,7 @@ export class UserService extends APIService {
   }
 
   async leaveWorkspace(workspaceSlug: string) {
+    if (isSupabaseConfigured) return supabaseMemberService.leaveWorkspace(workspaceSlug);
     return this.post(`/api/workspaces/${workspaceSlug}/members/leave/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -245,6 +273,7 @@ export class UserService extends APIService {
   }
 
   async joinProject(workspaceSlug: string, project_ids: string[]): Promise<any> {
+    if (isSupabaseConfigured) return supabaseMemberService.joinProjects(workspaceSlug, project_ids);
     return this.post(`/api/users/me/workspaces/${workspaceSlug}/projects/invitations/`, { project_ids })
       .then((response) => response?.data)
       .catch((error) => {
@@ -253,6 +282,7 @@ export class UserService extends APIService {
   }
 
   async leaveProject(workspaceSlug: string, projectId: string) {
+    if (isSupabaseConfigured) return supabaseMemberService.leaveProject(workspaceSlug, projectId);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/members/leave/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -277,6 +307,7 @@ export class UserService extends APIService {
   }
 
   async generateEmailCode(data: { email: string }): Promise<any> {
+    if (isSupabaseConfigured) return supabaseUserService.sendEmailChangeCode(data.email);
     return this.post("/api/users/me/email/generate-code/", data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -285,6 +316,7 @@ export class UserService extends APIService {
   }
 
   async verifyEmailCode(data: { email: string; code: string }): Promise<any> {
+    if (isSupabaseConfigured) return supabaseUserService.verifyEmailChangeCode(data.email, data.code);
     return this.patch("/api/users/me/email/", data)
       .then((response) => response?.data)
       .catch((error) => {

@@ -145,6 +145,14 @@ export const createIssuePayload: (projectId: string, formData: Partial<TIssue>) 
   projectId: string,
   formData: Partial<TIssue>
 ) => {
+  const cleanFormData = { ...formData };
+
+  if (cleanFormData.state_id === "") cleanFormData.state_id = undefined;
+  if (cleanFormData.parent_id === "") cleanFormData.parent_id = undefined;
+  if (cleanFormData.start_date === "") cleanFormData.start_date = undefined;
+  if (cleanFormData.target_date === "") cleanFormData.target_date = undefined;
+  if (cleanFormData.cycle_id === "") cleanFormData.cycle_id = undefined;
+
   const payload: TIssue = {
     id: uuidv4(),
     project_id: projectId,
@@ -157,7 +165,7 @@ export const createIssuePayload: (projectId: string, formData: Partial<TIssue>) 
     // tempId is used for optimistic updates. It is not a part of the API response.
     tempId: uuidv4(),
     // to be overridden by the form data
-    ...formData,
+    ...cleanFormData,
   } as TIssue;
 
   return payload;

@@ -17,7 +17,12 @@ import type {
 // keel web types
 import type { TProject, TPartialProject } from "@keel/types";
 // services
-import { isSupabaseConfigured, supabaseProjectService } from "@keel/services";
+import {
+  isSupabaseConfigured,
+  supabaseProjectService,
+  supabaseSearchService,
+  supabaseWorkspaceContentService,
+} from "@keel/services";
 import { APIService } from "@/services/api.service";
 
 export class ProjectService extends APIService {
@@ -78,6 +83,7 @@ export class ProjectService extends APIService {
     workspaceSlug: string,
     params?: TProjectAnalyticsCountParams
   ): Promise<TProjectAnalyticsCount[]> {
+    if (isSupabaseConfigured) return supabaseProjectService.getProjectAnalyticsCount(workspaceSlug) as never;
     return this.get(`/api/workspaces/${workspaceSlug}/project-stats/`, {
       params,
     })
@@ -107,6 +113,7 @@ export class ProjectService extends APIService {
 
   // User Properties
   async getProjectUserProperties(workspaceSlug: string, projectId: string): Promise<IProjectUserPropertiesResponse> {
+    if (isSupabaseConfigured) return supabaseProjectService.getProjectUserProperties(workspaceSlug, projectId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/user-properties/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -119,6 +126,7 @@ export class ProjectService extends APIService {
     projectId: string,
     data: Partial<IProjectUserPropertiesResponse>
   ): Promise<IProjectUserPropertiesResponse> {
+    if (isSupabaseConfigured) return supabaseProjectService.updateProjectUserProperties(workspaceSlug, projectId, data);
     return this.patch(`/api/workspaces/${workspaceSlug}/projects/${projectId}/user-properties/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -177,6 +185,8 @@ export class ProjectService extends APIService {
   }
 
   async addProjectToFavorites(workspaceSlug: string, project: string): Promise<any> {
+    if (isSupabaseConfigured)
+      return supabaseWorkspaceContentService.addEntityFavorite(workspaceSlug, "project", project, project);
     return this.post(`/api/workspaces/${workspaceSlug}/user-favorite-projects/`, { project })
       .then((response) => response?.data)
       .catch((error) => {
@@ -185,6 +195,8 @@ export class ProjectService extends APIService {
   }
 
   async removeProjectFromFavorites(workspaceSlug: string, projectId: string): Promise<any> {
+    if (isSupabaseConfigured)
+      return supabaseWorkspaceContentService.removeEntityFavorite(workspaceSlug, "project", projectId);
     return this.delete(`/api/workspaces/${workspaceSlug}/user-favorite-projects/${projectId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -197,6 +209,7 @@ export class ProjectService extends APIService {
     projectId: string,
     params: TProjectIssuesSearchParams
   ): Promise<ISearchIssueResponse[]> {
+    if (isSupabaseConfigured) return supabaseSearchService.projectIssuesSearch(workspaceSlug, projectId, params);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/search-issues/`, {
       params,
     })

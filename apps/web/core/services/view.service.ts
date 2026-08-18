@@ -6,7 +6,7 @@
 
 import { API_BASE_URL } from "@keel/constants";
 import type { IProjectView } from "@keel/types";
-import { isSupabaseConfigured, supabasePlanningService } from "@keel/services";
+import { supabaseWorkspaceContentService, isSupabaseConfigured, supabasePlanningService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 // types
 // helpers
@@ -62,6 +62,7 @@ export class ViewService extends APIService {
   }
 
   async getViewIssues(workspaceSlug: string, projectId: string, viewId: string): Promise<any> {
+    if (isSupabaseConfigured) return supabasePlanningService.getViewIssues(workspaceSlug, projectId, viewId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/views/${viewId}/issues/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -76,6 +77,8 @@ export class ViewService extends APIService {
       view: string;
     }
   ): Promise<any> {
+    if (isSupabaseConfigured)
+      return supabaseWorkspaceContentService.addEntityFavorite(workspaceSlug, "view", data.view, projectId);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/user-favorite-views/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -84,6 +87,8 @@ export class ViewService extends APIService {
   }
 
   async removeViewFromFavorites(workspaceSlug: string, projectId: string, viewId: string): Promise<any> {
+    if (isSupabaseConfigured)
+      return supabaseWorkspaceContentService.removeEntityFavorite(workspaceSlug, "view", viewId) as never;
     return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/user-favorite-views/${viewId}/`)
       .then((response) => response?.data)
       .catch((error) => {

@@ -10,6 +10,7 @@ import type {
   TIssue,
   TIssueActivity,
   TIssueLink,
+  TIssueRelationTypes,
   TIssuesResponse,
   TIssueSubIssues,
   TSubIssuesStateDistribution,
@@ -23,7 +24,67 @@ const ISSUE_FIELDS =
   "start_date, target_date, completed_at, archived_at, is_draft, estimate_point_id, type_id, " +
   "created_at, updated_at, created_by_id, updated_by_id";
 
-const ISSUE_SELECT = `${ISSUE_FIELDS}, issue_assignees(assignee_id), issue_labels(label_id)`;
+export const ISSUE_SELECT = `${ISSUE_FIELDS}, issue_assignees(assignee_id), issue_labels(label_id)`;
+
+/**
+ * A rich filter expression, as the header and filter row serialise it:
+ * `{ and: [{ "assignee_id__in": "id-1,id-2" }] }`, or a bare condition object
+ * when only one filter is applied. Multi-value operators carry their values
+ * comma-joined in a single string.
+ */
+type TFilterCondition = Record<string, string | number | boolean>;
+
+/** Flattens an expression down to the conditions it contains. */
+const flattenFilterConditions = (expression: unknown): TFilterCondition[] => {
+  let parsed: unknown = expression;
+  if (typeof expression === "string") {
+    try {
+      parsed = JSON.parse(expression);
+    } catch {
+      return [];
+    }
+  }
+
+  if (!parsed || typeof parsed !== "object") return [];
+
+  const group = (parsed as { and?: unknown }).and;
+  if (Array.isArray(group)) return group.flatMap((entry) => flattenFilterConditions(entry));
+
+  return Object.keys(parsed as object).length > 0 ? [parsed as TFilterCondition] : [];
+};
+
+const splitFilterValue = (value: string | number | boolean): string[] =>
+  String(value)
+    .split(",")
+    .map((v) => v.trim())
+    .filter((v) => v.length > 0);
+
+/** Groups conditions by property, so `assignee_id__in` is reachable by name. */
+const collectFilterValues = (expression: unknown): Record<string, string[]> => {
+  const collected: Record<string, string[]> = {};
+
+  for (const condition of flattenFilterConditions(expression)) {
+    for (const [key, value] of Object.entries(condition)) {
+      const separator = key.lastIndexOf("__");
+      if (separator < 0) continue;
+      const property = key.slice(0, separator);
+      collected[property] = [...(collected[property] ?? []), ...splitFilterValue(value)];
+    }
+  }
+
+  return collected;
+};
+
+/** A uuid nothing will match, so an empty result set stays empty. */
+const escapeCsv = (value: unknown): string => {
+  const text = value === null || value === undefined ? "" : String(value);
+  return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+};
+
+/** An embedded one-to-one comes back as an object or a single-element array. */
+const firstOf = <T>(value: T | T[] | undefined): T | undefined => (Array.isArray(value) ? value[0] : value);
+
+const NO_MATCH_UUID = "00000000-0000-0000-0000-000000000000";
 
 const DEFAULT_DISPLAY_PROPERTIES: IIssueDisplayProperties = {
   assignee: true,
@@ -76,15 +137,20 @@ export class SupabaseWorkItemService {
   async createIssue(workspaceSlug: string, projectId: string, data: Partial<TIssue>): Promise<TIssue> {
     const supabase = getSupabase();
 
+    const stateId = data.state_id && data.state_id.trim() !== "" ? data.state_id : null;
+    const parentId = data.parent_id && data.parent_id.trim() !== "" ? data.parent_id : null;
+    const startDate = data.start_date && data.start_date.trim() !== "" ? data.start_date : null;
+    const targetDate = data.target_date && data.target_date.trim() !== "" ? data.target_date : null;
+
     const { data: created, error } = await supabase.rpc("create_work_item", {
       p_project_id: projectId,
       p_name: data.name ?? "",
       p_description_html: data.description_html ?? "<p></p>",
       p_priority: data.priority ?? "none",
-      p_state_id: data.state_id ?? null,
-      p_parent_id: data.parent_id ?? null,
-      p_start_date: data.start_date ?? null,
-      p_target_date: data.target_date ?? null,
+      p_state_id: stateId,
+      p_parent_id: parentId,
+      p_start_date: startDate,
+      p_target_date: targetDate,
       p_assignees: data.assignee_ids ?? [],
       p_labels: data.label_ids ?? [],
     });
@@ -125,6 +191,48 @@ export class SupabaseWorkItemService {
       query = query.eq("priority", queries.priority);
     }
 
+    const filterValues = collectFilterValues(queries?.filters);
+
+    if (filterValues.state_id?.length) query = query.in("state_id", filterValues.state_id);
+    if (filterValues.priority?.length) query = query.in("priority", filterValues.priority);
+    if (filterValues.created_by_id?.length) query = query.in("created_by_id", filterValues.created_by_id);
+    if (filterValues.state_group?.length) {
+      const stateIds = await this.stateIdsForGroups(projectId, filterValues.state_group);
+      query = query.in("state_id", stateIds.length > 0 ? stateIds : [NO_MATCH_UUID]);
+    }
+
+    // Dates arrive as `from,to` for a range and a single value for an exact match.
+    for (const column of ["start_date", "target_date"] as const) {
+      const values = filterValues[column];
+      if (!values?.length) continue;
+
+      if (values.length === 1) {
+        query = query.eq(column, values[0]);
+        continue;
+      }
+
+      const [from, to] = values;
+      if (from) query = query.gte(column, from);
+      if (to) query = query.lte(column, to);
+    }
+
+    // Assignees and labels live in join tables. Resolving the matching work
+    // item ids first keeps the embedded arrays whole — an inner join would
+    // trim them to just the values being filtered on.
+    const [assigneeMatches, labelMatches] = await Promise.all([
+      filterValues.assignee_id?.length
+        ? this.issueIdsByLink(projectId, "issue_assignees", "assignee_id", filterValues.assignee_id)
+        : null,
+      filterValues.label_id?.length
+        ? this.issueIdsByLink(projectId, "issue_labels", "label_id", filterValues.label_id)
+        : null,
+    ]);
+
+    for (const matches of [assigneeMatches, labelMatches]) {
+      if (matches === null) continue;
+      query = query.in("id", matches.length > 0 ? matches : [NO_MATCH_UUID]);
+    }
+
     const { data, error } = await query.order("sort_order", { ascending: true });
 
     if (error) throw new Error(`Failed to load work items: ${error.message}`);
@@ -144,6 +252,37 @@ export class SupabaseWorkItemService {
       results: issues,
       total_results: issues.length,
     };
+  }
+
+  /** Work item ids that have one of `values` in a join table. */
+  private async issueIdsByLink(
+    projectId: string,
+    table: "issue_assignees" | "issue_labels",
+    column: "assignee_id" | "label_id",
+    values: string[]
+  ): Promise<string[]> {
+    const supabase = getSupabase();
+
+    const { data, error } = await supabase
+      .from(table)
+      .select("issue_id")
+      .eq("project_id", projectId)
+      .in(column, values);
+
+    if (error) throw new Error(`Failed to apply the ${column} filter: ${error.message}`);
+
+    return Array.from(new Set((data ?? []).map((row) => (row as { issue_id: string }).issue_id)));
+  }
+
+  /** State ids belonging to any of the given state groups. */
+  private async stateIdsForGroups(projectId: string, groups: string[]): Promise<string[]> {
+    const supabase = getSupabase();
+
+    const { data, error } = await supabase.from("states").select("id").eq("project_id", projectId).in("group", groups);
+
+    if (error) throw new Error(`Failed to apply the state filter: ${error.message}`);
+
+    return (data ?? []).map((row) => (row as { id: string }).id);
   }
 
   async getIssuesForSync(
@@ -294,6 +433,81 @@ export class SupabaseWorkItemService {
     if (error) throw new Error(`Failed to remove issue from cycle: ${error.message}`);
 
     return { message: "Issue removed from cycle successfully" };
+  }
+
+  /**
+   * Relations grouped the way the detail panel reads them.
+   *
+   * A row is directional, and this work item can sit on either end, so the far
+   * side is whichever id is not ours — and when we are the far side the type
+   * inverts: their "blocking" is our "blocked_by".
+   */
+  async listIssueRelations(
+    workspaceSlug: string,
+    projectId: string,
+    issueId: string
+  ): Promise<Record<TIssueRelationTypes, TIssue[]>> {
+    const supabase = getSupabase();
+
+    const { data, error } = await supabase
+      .from("issue_relations")
+      .select("relation_type, issue_id, related_issue_id")
+      .or(`issue_id.eq.${issueId},related_issue_id.eq.${issueId}`)
+      .is("deleted_at", null);
+
+    if (error) throw new Error(`Failed to load related work items: ${error.message}`);
+
+    const inverse: Record<string, TIssueRelationTypes> = {
+      blocking: "blocked_by",
+      blocked_by: "blocking",
+      duplicate: "duplicate",
+      relates_to: "relates_to",
+    };
+
+    const idsByType: Record<TIssueRelationTypes, string[]> = {
+      blocking: [],
+      blocked_by: [],
+      duplicate: [],
+      relates_to: [],
+    };
+
+    for (const row of (data ?? []) as {
+      relation_type: TIssueRelationTypes;
+      issue_id: string;
+      related_issue_id: string;
+    }[]) {
+      const isOrigin = row.issue_id === issueId;
+      const otherId = isOrigin ? row.related_issue_id : row.issue_id;
+      const type = isOrigin ? row.relation_type : (inverse[row.relation_type] ?? row.relation_type);
+      if (idsByType[type]) idsByType[type].push(otherId);
+    }
+
+    const allIds = Object.values(idsByType).flat();
+    const issues = await this.retrieveIssues(workspaceSlug, projectId, Array.from(new Set(allIds)));
+    const issueById = new Map(issues.map((issue) => [issue.id, issue]));
+
+    return {
+      blocking: idsByType.blocking.map((id) => issueById.get(id)).filter((i): i is TIssue => Boolean(i)),
+      blocked_by: idsByType.blocked_by.map((id) => issueById.get(id)).filter((i): i is TIssue => Boolean(i)),
+      duplicate: idsByType.duplicate.map((id) => issueById.get(id)).filter((i): i is TIssue => Boolean(i)),
+      relates_to: idsByType.relates_to.map((id) => issueById.get(id)).filter((i): i is TIssue => Boolean(i)),
+    };
+  }
+
+  /** Removes a link regardless of which end this work item sits on. */
+  async removeIssueRelation(projectId: string, issueId: string, relatedIssueId: string): Promise<void> {
+    const supabase = getSupabase();
+
+    const { error } = await supabase
+      .from("issue_relations")
+      .delete()
+      .eq("project_id", projectId)
+      .or(
+        `and(issue_id.eq.${issueId},related_issue_id.eq.${relatedIssueId}),` +
+          `and(issue_id.eq.${relatedIssueId},related_issue_id.eq.${issueId})`
+      );
+
+    if (error) throw new Error(`Failed to unlink those work items: ${error.message}`);
   }
 
   async createIssueRelation(
@@ -638,6 +852,120 @@ export class SupabaseWorkItemService {
     if (error) throw new Error(`Bulk archive failed: ${error.message}`);
 
     return { archived_at: now };
+  }
+
+  /**
+   * Exports work items as a CSV the browser downloads directly.
+   *
+   * Django queued a job and emailed a link. There is no queue here, and the
+   * data is small enough to build in the page, so the file is produced and
+   * handed to the browser instead.
+   */
+  async exportIssuesCsv(projectIds: string[]): Promise<{ csv: string; rows: number }> {
+    const supabase = getSupabase();
+
+    const { data, error } = await supabase
+      .from("issues")
+      .select(
+        "id, name, description_stripped, priority, sequence_id, start_date, target_date, created_at, " +
+          "project:projects(name, identifier), state:states(name)"
+      )
+      .in("project_id", projectIds)
+      .is("deleted_at", null)
+      .order("created_at", { ascending: false });
+
+    if (error) throw new Error(`Failed to export those work items: ${error.message}`);
+
+    const headers = ["ID", "Project", "Title", "Description", "State", "Priority", "Start date", "Due date", "Created"];
+
+    const lines = ((data ?? []) as unknown as Record<string, unknown>[]).map((row) => {
+      const project = firstOf(row.project as { name?: string; identifier?: string });
+      const state = firstOf(row.state as { name?: string });
+
+      return [
+        `${project?.identifier ?? ""}-${row.sequence_id ?? ""}`,
+        project?.name ?? "",
+        row.name,
+        row.description_stripped,
+        state?.name ?? "",
+        row.priority,
+        row.start_date,
+        row.target_date,
+        row.created_at,
+      ]
+        .map(escapeCsv)
+        .join(",");
+    });
+
+    return { csv: [headers.join(","), ...lines].join("\n"), rows: lines.length };
+  }
+
+  // -- Archiving --------------------------------------------------------------
+
+  /** Archived work items are hidden from every normal query by archived_at. */
+  async getArchivedIssues(workspaceSlug: string, projectId: string, queries?: any): Promise<TIssuesResponse> {
+    const { data, error } = await getSupabase()
+      .from("issues")
+      .select(ISSUE_SELECT)
+      .eq("project_id", projectId)
+      .not("archived_at", "is", null)
+      .is("deleted_at", null)
+      .order("archived_at", { ascending: false });
+
+    if (error) throw new Error(`Failed to load archived work items: ${error.message}`);
+
+    const issues = (data ?? []).map((row) => this.toIssue(row as unknown as Record<string, unknown>));
+
+    return {
+      grouped_by: queries?.group_by ?? "",
+      next_cursor: "",
+      prev_cursor: "",
+      next_page_results: false,
+      prev_page_results: false,
+      total_count: issues.length,
+      count: issues.length,
+      total_pages: 1,
+      extra_stats: null,
+      results: issues,
+      total_results: issues.length,
+    };
+  }
+
+  async archiveIssue(projectId: string, issueId: string): Promise<{ archived_at: string }> {
+    const now = new Date().toISOString();
+
+    const { error } = await getSupabase()
+      .from("issues")
+      .update({ archived_at: now })
+      .eq("project_id", projectId)
+      .eq("id", issueId);
+
+    if (error) throw new Error(`Failed to archive that work item: ${error.message}`);
+
+    return { archived_at: now };
+  }
+
+  async restoreIssue(projectId: string, issueId: string): Promise<void> {
+    const { error } = await getSupabase()
+      .from("issues")
+      .update({ archived_at: null })
+      .eq("project_id", projectId)
+      .eq("id", issueId);
+
+    if (error) throw new Error(`Failed to restore that work item: ${error.message}`);
+  }
+
+  async retrieveArchivedIssue(workspaceSlug: string, projectId: string, issueId: string): Promise<TIssue> {
+    const { data, error } = await getSupabase()
+      .from("issues")
+      .select(ISSUE_SELECT)
+      .eq("project_id", projectId)
+      .eq("id", issueId)
+      .single();
+
+    if (error || !data) throw new Error(`Failed to load that work item: ${error?.message ?? issueId}`);
+
+    return this.toIssue(data as unknown as Record<string, unknown>);
   }
 
   async getIssueNotificationSubscriptionStatus(

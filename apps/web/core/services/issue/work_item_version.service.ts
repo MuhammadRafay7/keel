@@ -10,6 +10,7 @@ import { EIssueServiceType } from "@keel/types";
 import type { TDescriptionVersionsListResponse, TDescriptionVersionDetails, TIssueServiceType } from "@keel/types";
 // helpers
 // services
+import { isSupabaseConfigured, supabaseVersionService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 
 export class WorkItemVersionService extends APIService {
@@ -25,6 +26,7 @@ export class WorkItemVersionService extends APIService {
     projectId: string,
     workItemId: string
   ): Promise<TDescriptionVersionsListResponse> {
+    if (isSupabaseConfigured) return supabaseVersionService.listDescriptionVersions(workItemId);
     return this.get(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${workItemId}/description-versions/`
     )
@@ -40,6 +42,7 @@ export class WorkItemVersionService extends APIService {
     workItemId: string,
     versionId: string
   ): Promise<TDescriptionVersionDetails> {
+    if (isSupabaseConfigured) return supabaseVersionService.retrieveDescriptionVersion(versionId);
     return this.get(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/${this.serviceType}/${workItemId}/description-versions/${versionId}/`
     )

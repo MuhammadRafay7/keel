@@ -8,7 +8,7 @@
 import { API_BASE_URL } from "@keel/constants";
 import type { IModule, ILinkDetails, ModuleLink, TIssuesResponse } from "@keel/types";
 // services
-import { isSupabaseConfigured, supabasePlanningService } from "@keel/services";
+import { supabaseWorkspaceContentService, isSupabaseConfigured, supabasePlanningService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 
 export class ModuleService extends APIService {
@@ -17,6 +17,7 @@ export class ModuleService extends APIService {
   }
 
   async getWorkspaceModules(workspaceSlug: string): Promise<IModule[]> {
+    if (isSupabaseConfigured) return supabasePlanningService.getWorkspaceModules(workspaceSlug);
     return this.get(`/api/workspaces/${workspaceSlug}/modules/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -89,6 +90,8 @@ export class ModuleService extends APIService {
     queries?: any,
     config = {}
   ): Promise<TIssuesResponse> {
+    if (isSupabaseConfigured)
+      return supabasePlanningService.getModuleIssues(workspaceSlug, projectId, moduleId, queries);
     return this.get(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/modules/${moduleId}/issues/`,
       {
@@ -108,6 +111,7 @@ export class ModuleService extends APIService {
     moduleId: string,
     data: { issues: string[] }
   ): Promise<void> {
+    if (isSupabaseConfigured) return supabasePlanningService.addIssuesToModule(projectId, moduleId, data.issues);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/modules/${moduleId}/issues/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -121,6 +125,8 @@ export class ModuleService extends APIService {
     issueId: string,
     data: { modules: string[]; removed_modules?: string[] }
   ): Promise<void> {
+    if (isSupabaseConfigured)
+      return supabasePlanningService.setIssueModules(projectId, issueId, data.modules, data.removed_modules ?? []);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/issues/${issueId}/modules/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -134,6 +140,7 @@ export class ModuleService extends APIService {
     moduleId: string,
     issueIds: string[]
   ): Promise<void> {
+    if (isSupabaseConfigured) return supabasePlanningService.removeIssuesFromModule(moduleId, issueIds);
     const promiseDataUrls: any = [];
     issueIds.forEach((issueId) => {
       promiseDataUrls.push(
@@ -172,6 +179,7 @@ export class ModuleService extends APIService {
     moduleId: string,
     data: Partial<ModuleLink>
   ): Promise<ILinkDetails> {
+    if (isSupabaseConfigured) return supabasePlanningService.createModuleLink(projectId, moduleId, data) as never;
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/modules/${moduleId}/module-links/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -186,6 +194,7 @@ export class ModuleService extends APIService {
     linkId: string,
     data: Partial<ModuleLink>
   ): Promise<ILinkDetails> {
+    if (isSupabaseConfigured) return supabasePlanningService.updateModuleLink(linkId, data) as never;
     return this.patch(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/modules/${moduleId}/module-links/${linkId}/`,
       data
@@ -197,6 +206,7 @@ export class ModuleService extends APIService {
   }
 
   async deleteModuleLink(workspaceSlug: string, projectId: string, moduleId: string, linkId: string): Promise<any> {
+    if (isSupabaseConfigured) return supabasePlanningService.deleteModuleLink(linkId);
     return this.delete(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/modules/${moduleId}/module-links/${linkId}/`
     )
@@ -213,6 +223,8 @@ export class ModuleService extends APIService {
       module: string;
     }
   ): Promise<any> {
+    if (isSupabaseConfigured)
+      return supabaseWorkspaceContentService.addEntityFavorite(workspaceSlug, "module", data.module, projectId);
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/user-favorite-modules/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -221,6 +233,8 @@ export class ModuleService extends APIService {
   }
 
   async removeModuleFromFavorites(workspaceSlug: string, projectId: string, moduleId: string): Promise<any> {
+    if (isSupabaseConfigured)
+      return supabaseWorkspaceContentService.removeEntityFavorite(workspaceSlug, "module", moduleId) as never;
     return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/user-favorite-modules/${moduleId}/`)
       .then((response) => response?.data)
       .catch((error) => {

@@ -9,6 +9,7 @@ import { API_BASE_URL } from "@keel/constants";
 import type { TDescriptionVersionsListResponse, TDescriptionVersionDetails } from "@keel/types";
 // helpers
 // services
+import { isSupabaseConfigured, supabaseVersionService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 
 export class IntakeWorkItemVersionService extends APIService {
@@ -21,6 +22,7 @@ export class IntakeWorkItemVersionService extends APIService {
     projectId: string,
     intakeWorkItemId: string
   ): Promise<TDescriptionVersionsListResponse> {
+    if (isSupabaseConfigured) return supabaseVersionService.listDescriptionVersions(intakeWorkItemId);
     return this.get(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/intake-work-items/${intakeWorkItemId}/description-versions/`
     )
@@ -36,6 +38,7 @@ export class IntakeWorkItemVersionService extends APIService {
     intakeWorkItemId: string,
     versionId: string
   ): Promise<TDescriptionVersionDetails> {
+    if (isSupabaseConfigured) return supabaseVersionService.retrieveDescriptionVersion(versionId);
     return this.get(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/intake-work-items/${intakeWorkItemId}/description-versions/${versionId}/`
     )

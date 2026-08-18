@@ -6,15 +6,22 @@
 
 import { useCallback, useState } from "react";
 import { observer } from "mobx-react";
-import { ChartNoAxesColumn, SlidersHorizontal } from "lucide-react";
+import { ChartNoAxesColumn, SlidersHorizontal, User } from "lucide-react";
 // keel imports
 import { EIssueFilterType, ISSUE_STORE_TO_FILTERS_MAP } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";
 import { Button } from "@keel/propel/button";
-import type { IIssueDisplayFilterOptions, IIssueDisplayProperties } from "@keel/types";
+import type {
+  IIssueDisplayFilterOptions,
+  IIssueDisplayProperties,
+  TWorkItemFilterConditionData,
+  TWorkItemFilterExpression,
+} from "@keel/types";
 import { EIssueLayoutTypes, EIssuesStoreType } from "@keel/types";
 // hooks
 import { useIssues } from "@/hooks/store/use-issues";
+import { useUser } from "@/hooks/store/user";
+import { cn } from "@keel/utils";
 // keel web imports
 import type { TProject } from "@keel/types";
 // local imports
@@ -34,15 +41,25 @@ type Props = {
   canUserCreateIssue: boolean | undefined;
   storeType?: EIssuesStoreType.PROJECT | EIssuesStoreType.EPIC;
 };
+const ME_MODE_CONDITION_KEY = "assignee_id__in";
+
+/** Flattens a rich filter expression to the conditions it holds. */
+const toConditions = (expression: TWorkItemFilterExpression | undefined): TWorkItemFilterConditionData[] => {
+  if (!expression || Object.keys(expression).length === 0) return [];
+  if ("and" in expression && Array.isArray(expression.and)) return expression.and;
+  return [expression as TWorkItemFilterConditionData];
+};
+
 const LAYOUTS = [
   EIssueLayoutTypes.LIST,
   EIssueLayoutTypes.KANBAN,
   EIssueLayoutTypes.CALENDAR,
   EIssueLayoutTypes.SPREADSHEET,
   EIssueLayoutTypes.GANTT,
+  EIssueLayoutTypes.CHAT,
 ];
 
-export const HeaderFilters = observer(function HeaderFilters(props: Props) {
+export const HeaderFilters: React.FC<Props> = observer(function HeaderFilters(props: Props) {
   const {
     currentProjectDetails,
     projectId,
@@ -55,12 +72,41 @@ export const HeaderFilters = observer(function HeaderFilters(props: Props) {
   // states
   const [analyticsModal, setAnalyticsModal] = useState(false);
   // store hooks
+  const { data: currentUser } = useUser();
   const {
-    issuesFilter: { issueFilters, updateFilters },
+    issuesFilter: { issueFilters, updateFilters, updateFilterExpression },
   } = useIssues(storeType);
+
   // derived values
   const activeLayout = issueFilters?.displayFilters?.layout;
   const layoutDisplayFiltersOptions = ISSUE_STORE_TO_FILTERS_MAP[storeType]?.layoutOptions[activeLayout];
+
+  // Me Mode rides on the same rich filter expression the filter row edits, so
+  // the two stay in sync instead of writing to competing filter shapes.
+  const conditions = toConditions(issueFilters?.richFilters);
+  const assigneeCondition = conditions.find((condition) => ME_MODE_CONDITION_KEY in condition);
+  const currentAssignees = String(assigneeCondition?.[ME_MODE_CONDITION_KEY] ?? "")
+    .split(",")
+    .map((id) => id.trim())
+    .filter(Boolean);
+  const isMeModeActive = currentUser?.id ? currentAssignees.includes(currentUser.id) : false;
+
+  const handleMeModeToggle = () => {
+    if (!workspaceSlug || !projectId || !currentUser?.id) return;
+
+    const nextAssignees = isMeModeActive
+      ? currentAssignees.filter((id) => id !== currentUser.id)
+      : [...currentAssignees, currentUser.id];
+
+    const others = conditions.filter((condition) => !(ME_MODE_CONDITION_KEY in condition));
+    const nextConditions: TWorkItemFilterConditionData[] =
+      nextAssignees.length > 0 ? [...others, { [ME_MODE_CONDITION_KEY]: nextAssignees.join(",") }] : others;
+
+    const expression: TWorkItemFilterExpression =
+      nextConditions.length > 0 ? { and: nextConditions } : ({} as TWorkItemFilterExpression);
+
+    void updateFilterExpression(workspaceSlug, projectId, expression);
+  };
 
   const handleLayoutChange = useCallback(
     (layout: EIssueLayoutTypes) => {
@@ -94,14 +140,28 @@ export const HeaderFilters = observer(function HeaderFilters(props: Props) {
         projectDetails={currentProjectDetails ?? undefined}
         isEpic={storeType === EIssuesStoreType.EPIC}
       />
-      <div className="hidden @4xl:flex">
+      <div className="hidden items-center gap-2 md:flex">
         <LayoutSelection
           layouts={LAYOUTS}
           onChange={(layout) => handleLayoutChange(layout)}
           selectedLayout={activeLayout}
         />
+        <button
+          type="button"
+          onClick={handleMeModeToggle}
+          title="Filter tasks assigned to me"
+          className={cn(
+            "flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-12 font-medium transition-all duration-150",
+            isMeModeActive
+              ? "shadow-xs border-accent-subtle bg-accent-subtle font-semibold text-accent-primary"
+              : "border-subtle bg-surface-2 text-secondary hover:bg-surface-1/80 hover:text-primary"
+          )}
+        >
+          <User className="size-3.5 flex-shrink-0" />
+          <span>Me Mode</span>
+        </button>
       </div>
-      <div className="flex @4xl:hidden">
+      <div className="flex md:hidden">
         <MobileLayoutSelection
           layouts={LAYOUTS}
           onChange={(layout) => handleLayoutChange(layout)}

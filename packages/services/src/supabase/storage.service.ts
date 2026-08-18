@@ -157,6 +157,97 @@ export class SupabaseStorageService {
     }
   }
 
+  /**
+   * Deletes by asset id, looking the object path up first.
+   *
+   * The screens that delete an attachment or an editor image only ever hold
+   * the id, so resolving the bucket and path is this service's job.
+   */
+  async deleteAssetById(assetId: string): Promise<void> {
+    const supabase = getSupabase();
+
+    const { data } = await supabase.from("file_assets").select("asset, bucket").eq("id", assetId).maybeSingle();
+
+    const row = data as { asset?: string; bucket?: string } | null;
+
+    if (row?.asset) {
+      await supabase.storage.from(row.bucket ?? STORAGE_BUCKETS.workspace).remove([row.asset]);
+    }
+
+    const { error } = await supabase
+      .from("file_assets")
+      .update({ is_deleted: true, deleted_at: new Date().toISOString() })
+      .eq("id", assetId);
+
+    if (error) throw new Error(`Failed to delete that file: ${error.message}`);
+  }
+
+  /** Deletes by the src the editor holds, which ends in the asset id. */
+  async deleteAssetBySrc(src: string): Promise<void> {
+    const assetId = this.assetIdFromSrc(src);
+    if (assetId) await this.deleteAssetById(assetId);
+  }
+
+  /** Undoes a soft delete — the editor restores an image when an edit is undone. */
+  async restoreAsset(src: string): Promise<void> {
+    const assetId = this.assetIdFromSrc(src);
+    if (!assetId) return;
+
+    const { error } = await getSupabase()
+      .from("file_assets")
+      .update({ is_deleted: false, deleted_at: null })
+      .eq("id", assetId);
+
+    if (error) throw new Error(`Failed to restore that file: ${error.message}`);
+  }
+
+  async assetExists(assetId: string): Promise<{ exists: boolean }> {
+    const { data } = await getSupabase().from("file_assets").select("id").eq("id", assetId).maybeSingle();
+
+    return { exists: Boolean(data) };
+  }
+
+  /**
+   * Duplicating a page or work item copies its images so the copy does not
+   * share storage objects with the original.
+   */
+  async duplicateAsset(assetId: string): Promise<{ asset_id: string }> {
+    const supabase = getSupabase();
+
+    const { data, error } = await supabase.from("file_assets").select("*").eq("id", assetId).single();
+
+    if (error || !data) throw new Error(`Failed to copy that file: ${error?.message ?? assetId}`);
+
+    const source = data as Record<string, unknown>;
+    const bucket = (source.bucket as string) ?? STORAGE_BUCKETS.workspace;
+    const path = source.asset as string;
+    const copyPath = `${path}-copy-${Date.now()}`;
+
+    const { error: copyError } = await supabase.storage.from(bucket).copy(path, copyPath);
+    if (copyError) throw new Error(`Failed to copy that file: ${copyError.message}`);
+
+    const { id, created_at, updated_at, ...rest } = source;
+    void id;
+    void created_at;
+    void updated_at;
+
+    const { data: created, error: insertError } = await supabase
+      .from("file_assets")
+      .insert({ ...rest, asset: copyPath, created_at: new Date().toISOString() })
+      .select("id")
+      .single();
+
+    if (insertError || !created) throw new Error(`Failed to copy that file: ${insertError?.message ?? "unknown"}`);
+
+    return { asset_id: (created as { id: string }).id };
+  }
+
+  /** Asset srcs end in the asset id, whatever prefix the editor stored. */
+  private assetIdFromSrc(src: string): string | null {
+    const parts = src.split("/").filter(Boolean);
+    return parts.length > 0 ? parts[parts.length - 1].split("?")[0] : null;
+  }
+
   // -- Internals ------------------------------------------------------------
 
   private async put(bucket: string, path: string, file: File): Promise<void> {

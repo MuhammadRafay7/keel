@@ -9,6 +9,7 @@ import { API_BASE_URL } from "@keel/constants";
 import type { TPageVersion } from "@keel/types";
 // helpers
 // services
+import { isSupabaseConfigured, supabaseVersionService } from "@keel/services";
 import { APIService } from "@/services/api.service";
 
 export class ProjectPageVersionService extends APIService {
@@ -17,6 +18,7 @@ export class ProjectPageVersionService extends APIService {
   }
 
   async fetchAllVersions(workspaceSlug: string, projectId: string, pageId: string): Promise<TPageVersion[]> {
+    if (isSupabaseConfigured) return supabaseVersionService.listPageVersions(pageId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/pages/${pageId}/versions/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -30,6 +32,7 @@ export class ProjectPageVersionService extends APIService {
     pageId: string,
     versionId: string
   ): Promise<TPageVersion> {
+    if (isSupabaseConfigured) return supabaseVersionService.retrievePageVersion(versionId);
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/pages/${pageId}/versions/${versionId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -38,6 +41,7 @@ export class ProjectPageVersionService extends APIService {
   }
 
   async restoreVersion(workspaceSlug: string, projectId: string, pageId: string, versionId: string): Promise<void> {
+    if (isSupabaseConfigured) return supabaseVersionService.restorePageVersion(pageId, versionId);
     return this.post(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/pages/${pageId}/versions/${versionId}/restore/`
     )

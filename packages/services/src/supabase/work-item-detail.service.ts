@@ -246,6 +246,82 @@ export class SupabaseWorkItemDetailService {
     if (error) throw new Error(`Failed to remove that reaction: ${error.message}`);
   }
 
+  /**
+   * Reactions are returned with `actor` and `issue` rather than the *_id column
+   * names, because that is the shape the reaction store groups on.
+   */
+  async listIssueReactions(workspaceSlug: string, projectId: string, issueId: string): Promise<unknown[]> {
+    const { data, error } = await getSupabase()
+      .from("issue_reactions")
+      .select("id, reaction, actor_id, issue_id")
+      .eq("issue_id", issueId)
+      .order("created_at", { ascending: true });
+
+    if (error) throw new Error(`Failed to load reactions: ${error.message}`);
+
+    return (data ?? []).map((row) => {
+      const reaction = row as { id: string; reaction: string; actor_id: string; issue_id: string };
+      return {
+        id: reaction.id,
+        reaction: reaction.reaction,
+        actor: reaction.actor_id,
+        issue: reaction.issue_id,
+      };
+    });
+  }
+
+  async listCommentReactions(workspaceSlug: string, projectId: string, commentId: string): Promise<unknown[]> {
+    const { data, error } = await getSupabase()
+      .from("comment_reactions")
+      .select("id, reaction, actor_id, comment_id")
+      .eq("comment_id", commentId)
+      .order("created_at", { ascending: true });
+
+    if (error) throw new Error(`Failed to load reactions: ${error.message}`);
+
+    return (data ?? []).map((row) => {
+      const reaction = row as { id: string; reaction: string; actor_id: string; comment_id: string };
+      return {
+        id: reaction.id,
+        reaction: reaction.reaction,
+        actor: reaction.actor_id,
+        comment: reaction.comment_id,
+      };
+    });
+  }
+
+  async createCommentReaction(projectId: string, commentId: string, reaction: string): Promise<void> {
+    const { userId, workspaceId, now } = await this.context(projectId);
+
+    const { error } = await getSupabase().from("comment_reactions").insert({
+      created_at: now,
+      updated_at: now,
+      reaction,
+      actor_id: userId,
+      comment_id: commentId,
+      project_id: projectId,
+      workspace_id: workspaceId,
+      created_by_id: userId,
+      updated_by_id: userId,
+    });
+
+    if (error) throw new Error(`Failed to add that reaction: ${error.message}`);
+  }
+
+  async deleteCommentReaction(commentId: string, reaction: string): Promise<void> {
+    const supabase = getSupabase();
+    const { data: sessionData } = await supabase.auth.getSession();
+
+    const { error } = await supabase
+      .from("comment_reactions")
+      .delete()
+      .eq("comment_id", commentId)
+      .eq("reaction", reaction)
+      .eq("actor_id", sessionData.session?.user.id);
+
+    if (error) throw new Error(`Failed to remove that reaction: ${error.message}`);
+  }
+
   // -- Relations ------------------------------------------------------------
 
   async getIssueRelations(workspaceSlug: string, projectId: string, issueId: string): Promise<unknown[]> {

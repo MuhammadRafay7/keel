@@ -108,30 +108,30 @@ export const HeaderGroupByCard = observer(function HeaderGroupByCard(props: IHea
         />
       )}
       <div
-        className={`relative flex flex-shrink-0 gap-1 py-1.5 ${
-          verticalAlignPosition ? `w-[44px] flex-col items-center` : `w-full flex-row items-center`
+        className={`shadow-xs relative flex flex-shrink-0 gap-2 rounded-lg border border-subtle/80 bg-surface-2/80 px-2.5 py-1.5 transition-all ${
+          verticalAlignPosition ? `w-[44px] flex-col items-center` : `w-full flex-row items-center justify-between`
         }`}
       >
-        <div className="flex size-5 flex-shrink-0 items-center justify-center overflow-hidden rounded-xs">
-          {icon ? icon : <Circle width={14} strokeWidth={2} />}
-        </div>
+        <div className="flex items-center gap-2 overflow-hidden">
+          <div className="flex size-5 flex-shrink-0 items-center justify-center overflow-hidden rounded-xs text-accent-primary">
+            {icon ? icon : <Circle width={14} strokeWidth={2} />}
+          </div>
 
-        <div
-          className={`relative flex gap-1 ${
-            verticalAlignPosition ? `flex-col items-center` : `w-full flex-row items-baseline overflow-hidden`
-          }`}
-        >
           <div
-            className={`line-clamp-1 inline-block truncate overflow-hidden font-medium text-primary ${
-              verticalAlignPosition ? `max-h-[400px] vertical-lr` : ``
+            className={`relative flex gap-2 ${
+              verticalAlignPosition ? `flex-col items-center` : `w-full flex-row items-center overflow-hidden`
             }`}
           >
-            {title}
-          </div>
-          <div
-            className={`flex-shrink-0 text-13 font-medium text-tertiary ${verticalAlignPosition ? `pr-0.5` : `pl-2`}`}
-          >
-            {count || 0}
+            <div
+              className={`line-clamp-1 inline-block truncate overflow-hidden text-13 font-semibold tracking-wide text-primary uppercase ${
+                verticalAlignPosition ? `max-h-[400px] vertical-lr` : ``
+              }`}
+            >
+              {title}
+            </div>
+            <span className="flex items-center justify-center rounded-full bg-accent-subtle px-2 py-0.5 text-11 font-bold text-accent-primary">
+              {count || 0}
+            </span>
           </div>
         </div>
 

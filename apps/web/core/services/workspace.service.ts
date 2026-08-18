@@ -29,6 +29,8 @@ import type {
 } from "@keel/types";
 // services
 import {
+  supabasePlanningService,
+  supabaseSearchService,
   isSupabaseConfigured,
   supabaseMemberService,
   supabaseWorkspaceContentService,
@@ -238,6 +240,7 @@ export class WorkspaceService extends APIService {
       workspace_search: boolean;
     }
   ): Promise<IWorkspaceSearchResults> {
+    if (isSupabaseConfigured) return supabaseSearchService.searchWorkspace(workspaceSlug, params);
     return this.get(`/api/workspaces/${workspaceSlug}/search/`, {
       params,
     })
@@ -255,6 +258,7 @@ export class WorkspaceService extends APIService {
   }
 
   async createView(workspaceSlug: string, data: Partial<IWorkspaceView>): Promise<IWorkspaceView> {
+    if (isSupabaseConfigured) return supabasePlanningService.createWorkspaceView(workspaceSlug, data as never) as never;
     return this.post(`/api/workspaces/${workspaceSlug}/views/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -263,6 +267,7 @@ export class WorkspaceService extends APIService {
   }
 
   async updateView(workspaceSlug: string, viewId: string, data: Partial<IWorkspaceView>): Promise<IWorkspaceView> {
+    if (isSupabaseConfigured) return supabasePlanningService.updateWorkspaceView(viewId, data as never) as never;
     return this.patch(`/api/workspaces/${workspaceSlug}/views/${viewId}/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -271,6 +276,7 @@ export class WorkspaceService extends APIService {
   }
 
   async deleteView(workspaceSlug: string, viewId: string): Promise<any> {
+    if (isSupabaseConfigured) return supabasePlanningService.deleteWorkspaceView(viewId);
     return this.delete(`/api/workspaces/${workspaceSlug}/views/${viewId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -279,6 +285,7 @@ export class WorkspaceService extends APIService {
   }
 
   async getAllViews(workspaceSlug: string): Promise<IWorkspaceView[]> {
+    if (isSupabaseConfigured) return supabasePlanningService.getWorkspaceViews(workspaceSlug) as never;
     return this.get(`/api/workspaces/${workspaceSlug}/views/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -287,6 +294,7 @@ export class WorkspaceService extends APIService {
   }
 
   async getViewDetails(workspaceSlug: string, viewId: string): Promise<IWorkspaceView> {
+    if (isSupabaseConfigured) return supabasePlanningService.getWorkspaceViewDetails(viewId) as never;
     return this.get(`/api/workspaces/${workspaceSlug}/views/${viewId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -295,6 +303,7 @@ export class WorkspaceService extends APIService {
   }
 
   async getViewIssues(workspaceSlug: string, params: any, config = {}): Promise<TIssuesResponse> {
+    if (isSupabaseConfigured) return supabasePlanningService.getWorkspaceViewIssues(workspaceSlug, params);
     const path = params.expand?.includes("issue_relation")
       ? `/api/workspaces/${workspaceSlug}/issues-detail/`
       : `/api/workspaces/${workspaceSlug}/issues/`;
@@ -322,6 +331,7 @@ export class WorkspaceService extends APIService {
 
   // quicklinks
   async fetchWorkspaceLinks(workspaceSlug: string): Promise<TLink[]> {
+    if (isSupabaseConfigured) return supabaseWorkspaceContentService.getWorkspaceLinks(workspaceSlug) as never;
     return this.get(`/api/workspaces/${workspaceSlug}/quick-links/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -330,6 +340,8 @@ export class WorkspaceService extends APIService {
   }
 
   async createWorkspaceLink(workspaceSlug: string, data: Partial<TLink>): Promise<TLink> {
+    if (isSupabaseConfigured)
+      return supabaseWorkspaceContentService.createWorkspaceLink(workspaceSlug, data as never) as never;
     return this.post(`/api/workspaces/${workspaceSlug}/quick-links/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -338,6 +350,8 @@ export class WorkspaceService extends APIService {
   }
 
   async updateWorkspaceLink(workspaceSlug: string, linkId: string, data: Partial<TLink>): Promise<TLink> {
+    if (isSupabaseConfigured)
+      return supabaseWorkspaceContentService.updateWorkspaceLink(linkId, data as never) as never;
     return this.patch(`/api/workspaces/${workspaceSlug}/quick-links/${linkId}/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -346,6 +360,7 @@ export class WorkspaceService extends APIService {
   }
 
   async deleteWorkspaceLink(workspaceSlug: string, linkId: string): Promise<void> {
+    if (isSupabaseConfigured) return supabaseWorkspaceContentService.deleteWorkspaceLink(linkId);
     return this.delete(`/api/workspaces/${workspaceSlug}/quick-links/${linkId}/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -354,6 +369,7 @@ export class WorkspaceService extends APIService {
   }
 
   async searchEntity(workspaceSlug: string, params: TSearchEntityRequestPayload): Promise<TSearchResponse> {
+    if (isSupabaseConfigured) return supabaseSearchService.searchEntity(workspaceSlug, params);
     return this.get(`/api/workspaces/${workspaceSlug}/entity-search/`, {
       params: {
         ...params,
@@ -368,6 +384,10 @@ export class WorkspaceService extends APIService {
 
   // recents
   async fetchWorkspaceRecents(workspaceSlug: string, entity_name?: string): Promise<TActivityEntityData[]> {
+    if (isSupabaseConfigured)
+      return supabaseWorkspaceContentService.getRecentVisits(workspaceSlug, entity_name) as Promise<
+        TActivityEntityData[]
+      >;
     return this.get(`/api/workspaces/${workspaceSlug}/recent-visits/`, {
       params: {
         entity_name,
@@ -381,6 +401,8 @@ export class WorkspaceService extends APIService {
 
   // widgets
   async fetchWorkspaceWidgets(workspaceSlug: string): Promise<TWidgetEntityData[]> {
+    if (isSupabaseConfigured)
+      return supabaseWorkspaceContentService.getHomeWidgets(workspaceSlug) as Promise<TWidgetEntityData[]>;
     return this.get(`/api/workspaces/${workspaceSlug}/home-preferences/`)
       .then((response) => response?.data)
       .catch((error) => {
@@ -393,6 +415,12 @@ export class WorkspaceService extends APIService {
     widgetKey: string,
     data: Partial<TWidgetEntityData>
   ): Promise<TWidgetEntityData> {
+    if (isSupabaseConfigured)
+      return supabaseWorkspaceContentService.updateHomePreference(
+        workspaceSlug,
+        widgetKey,
+        data
+      ) as unknown as Promise<TWidgetEntityData>;
     return this.patch(`/api/workspaces/${workspaceSlug}/home-preferences/${widgetKey}/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -414,6 +442,12 @@ export class WorkspaceService extends APIService {
     key: string,
     data: Partial<IWorkspaceSidebarNavigationItem>
   ): Promise<IWorkspaceSidebarNavigationItem> {
+    if (isSupabaseConfigured)
+      return supabaseWorkspaceContentService.updateHomePreference(
+        workspaceSlug,
+        key,
+        data
+      ) as unknown as Promise<IWorkspaceSidebarNavigationItem>;
     return this.patch(`/api/workspaces/${workspaceSlug}/sidebar-preferences/${key}/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -425,6 +459,11 @@ export class WorkspaceService extends APIService {
     workspaceSlug: string,
     data: Array<{ key: string; is_pinned: boolean; sort_order: number }>
   ): Promise<IWorkspaceSidebarNavigation> {
+    if (isSupabaseConfigured)
+      return supabaseWorkspaceContentService.updateHomePreferences(
+        workspaceSlug,
+        data
+      ) as Promise<IWorkspaceSidebarNavigation>;
     return this.patch(`/api/workspaces/${workspaceSlug}/sidebar-preferences/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -448,6 +487,8 @@ export class WorkspaceService extends APIService {
     workspaceSlug: string,
     data: Partial<IWorkspaceUserPropertiesResponse>
   ): Promise<IWorkspaceUserPropertiesResponse> {
+    if (isSupabaseConfigured)
+      return supabaseWorkspaceContentService.updateWorkspaceUserProperties(workspaceSlug, data as never) as never;
     return this.patch(`/api/workspaces/${workspaceSlug}/user-properties/`, data)
       .then((response) => response?.data)
       .catch((error) => {

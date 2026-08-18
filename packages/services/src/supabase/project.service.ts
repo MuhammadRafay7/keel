@@ -4,7 +4,15 @@
  * See the LICENSE file for details.
  */
 
-import type { IIssueLabel, TPartialProject, TProject } from "@keel/types";
+import type {
+  IIntakeState,
+  IIssueFiltersResponse,
+  IIssueLabel,
+  IProjectUserPropertiesResponse,
+  IState,
+  TPartialProject,
+  TProject,
+} from "@keel/types";
 
 import { getSupabase } from "./client";
 
@@ -25,6 +33,16 @@ const PROJECT_FIELDS =
  * the whole workspace, a private one only by its members. That test lives in
  * the RLS policy, so it cannot be forgotten at a call site.
  */
+/** Counts rows per project id. */
+const tally = (rows: unknown, key = "project_id"): Map<string, number> => {
+  const counts = new Map<string, number>();
+  for (const row of (rows ?? []) as Record<string, string>[]) {
+    const id = row[key];
+    if (id) counts.set(id, (counts.get(id) ?? 0) + 1);
+  }
+  return counts;
+};
+
 export class SupabaseProjectService {
   private async currentUserId(): Promise<string> {
     const { data } = await getSupabase().auth.getSession();
@@ -143,6 +161,391 @@ export class SupabaseProjectService {
       .eq("id", projectId);
 
     if (error) throw new Error(`Failed to delete the project: ${error.message}`);
+  }
+
+  /**
+   * The counts on the project cards. Counted per table rather than through a
+   * view, because there is no aggregate view for these and the numbers are
+   * small enough that five counting queries per workspace is cheaper than
+   * maintaining one.
+   */
+  async getProjectAnalyticsCount(workspaceSlug: string): Promise<Record<string, unknown>[]> {
+    const supabase = getSupabase();
+
+    const { data: workspace } = await supabase.from("workspaces").select("id").eq("slug", workspaceSlug).single();
+    const workspaceId = (workspace as { id?: string } | null)?.id;
+    if (!workspaceId) throw new Error("That workspace does not exist.");
+
+    const [projects, issues, cycles, modules, members, states] = await Promise.all([
+      supabase.from("projects").select("id").eq("workspace_id", workspaceId).is("deleted_at", null),
+      supabase
+        .from("issues")
+        .select("project_id, state_id")
+        .eq("workspace_id", workspaceId)
+        .is("deleted_at", null)
+        .is("archived_at", null),
+      supabase.from("cycles").select("project_id").eq("workspace_id", workspaceId).is("deleted_at", null),
+      supabase.from("modules").select("project_id").eq("workspace_id", workspaceId).is("deleted_at", null),
+      supabase.from("project_members").select("project_id").eq("workspace_id", workspaceId).eq("is_active", true),
+      supabase.from("states").select("id, group").eq("workspace_id", workspaceId),
+    ]);
+
+    const completedStates = new Set(
+      ((states.data ?? []) as { id: string; group: string }[])
+        .filter((state) => state.group === "completed")
+        .map((state) => state.id)
+    );
+
+    const issueCounts = tally(issues.data);
+    const cycleCounts = tally(cycles.data);
+    const moduleCounts = tally(modules.data);
+    const memberCounts = tally(members.data);
+
+    const completedCounts = new Map<string, number>();
+    for (const row of (issues.data ?? []) as { project_id: string; state_id: string | null }[]) {
+      if (row.state_id && completedStates.has(row.state_id)) {
+        completedCounts.set(row.project_id, (completedCounts.get(row.project_id) ?? 0) + 1);
+      }
+    }
+
+    return ((projects.data ?? []) as { id: string }[]).map((project) => ({
+      id: project.id,
+      total_issues: issueCounts.get(project.id) ?? 0,
+      completed_issues: completedCounts.get(project.id) ?? 0,
+      total_cycles: cycleCounts.get(project.id) ?? 0,
+      total_modules: moduleCounts.get(project.id) ?? 0,
+      total_members: memberCounts.get(project.id) ?? 0,
+    }));
+  }
+
+  /** Archiving a project hides it from the sidebar without deleting anything. */
+  async setProjectArchived(projectId: string, archived: boolean): Promise<{ archived_at: string }> {
+    const archivedAt = archived ? new Date().toISOString() : null;
+
+    const { error } = await getSupabase().from("projects").update({ archived_at: archivedAt }).eq("id", projectId);
+
+    if (error) throw new Error(`Failed to ${archived ? "archive" : "restore"} that project: ${error.message}`);
+
+    return { archived_at: archivedAt as string };
+  }
+
+  // -- Per-user project preferences -----------------------------------------
+  // The REST endpoint this replaces returned one object stitched from two
+  // tables, and the callers still send it back that way: the filters and
+  // display settings belong to project_user_properties (RLS in 0012), while
+  // sort_order and the navigation preferences belong to the member row.
+
+  private static readonly USER_PROPERTY_COLUMNS = ["rich_filters", "display_filters", "display_properties"] as const;
+
+  private static readonly MEMBER_COLUMNS = ["sort_order", "preferences"] as const;
+
+  private static readonly EMPTY_USER_PROPERTIES: IProjectUserPropertiesResponse = {
+    rich_filters: {},
+    display_filters: {},
+    display_properties: {},
+    sort_order: 0,
+    preferences: {
+      pages: { block_display: false },
+      navigation: {},
+    },
+  } as IProjectUserPropertiesResponse;
+
+  async getProjectUserProperties(workspaceSlug: string, projectId: string): Promise<IProjectUserPropertiesResponse> {
+    const supabase = getSupabase();
+    const userId = await this.currentUserId();
+
+    // Selected whole rather than by column list: both tables came across from
+    // Django, and naming a column that is not there fails the whole request
+    // instead of falling back to a default.
+    const [properties, member] = await Promise.all([
+      supabase
+        .from("project_user_properties")
+        .select("*")
+        .eq("project_id", projectId)
+        .eq("user_id", userId)
+        .maybeSingle(),
+      supabase.from("project_members").select("*").eq("project_id", projectId).eq("member_id", userId).maybeSingle(),
+    ]);
+
+    if (properties.error) throw new Error(`Failed to load your project preferences: ${properties.error.message}`);
+
+    const propertyRow = (properties.data ?? {}) as Partial<IProjectUserPropertiesResponse>;
+    const memberRow = (member.data ?? {}) as Partial<IProjectUserPropertiesResponse>;
+    const defaults = SupabaseProjectService.EMPTY_USER_PROPERTIES;
+
+    return {
+      ...defaults,
+      rich_filters: propertyRow.rich_filters ?? defaults.rich_filters,
+      display_filters: propertyRow.display_filters ?? defaults.display_filters,
+      display_properties: propertyRow.display_properties ?? defaults.display_properties,
+      sort_order: memberRow.sort_order ?? defaults.sort_order,
+      preferences: memberRow.preferences ?? defaults.preferences,
+    };
+  }
+
+  async updateProjectUserProperties(
+    workspaceSlug: string,
+    projectId: string,
+    patch: Partial<IProjectUserPropertiesResponse>
+  ): Promise<IProjectUserPropertiesResponse> {
+    const supabase = getSupabase();
+    const userId = await this.currentUserId();
+    const now = new Date().toISOString();
+
+    const pick = (keys: readonly string[]): Record<string, unknown> =>
+      Object.fromEntries(
+        Object.entries(patch).filter(([key, value]) => keys.includes(key) && value !== undefined)
+      ) as Record<string, unknown>;
+
+    const propertyPatch = pick(SupabaseProjectService.USER_PROPERTY_COLUMNS);
+    const memberPatch = pick(SupabaseProjectService.MEMBER_COLUMNS);
+
+    if (Object.keys(propertyPatch).length > 0) {
+      const { data: project } = await supabase.from("projects").select("workspace_id").eq("id", projectId).single();
+      const workspaceId = (project as { workspace_id?: string } | null)?.workspace_id;
+
+      if (!workspaceId) throw new Error("That project does not exist.");
+
+      const { error } = await supabase.from("project_user_properties").upsert(
+        {
+          project_id: projectId,
+          workspace_id: workspaceId,
+          user_id: userId,
+          ...propertyPatch,
+          updated_at: now,
+          created_by_id: userId,
+          updated_by_id: userId,
+        },
+        { onConflict: "project_id,user_id" }
+      );
+
+      if (error) throw new Error(`Failed to save your project preferences: ${error.message}`);
+    }
+
+    if (Object.keys(memberPatch).length > 0) {
+      const { error } = await supabase
+        .from("project_members")
+        .update({ ...memberPatch, updated_at: now, updated_by_id: userId })
+        .eq("project_id", projectId)
+        .eq("member_id", userId);
+
+      if (error) throw new Error(`Failed to save your project preferences: ${error.message}`);
+    }
+
+    return this.getProjectUserProperties(workspaceSlug, projectId);
+  }
+
+  // -- Per-entity filters ----------------------------------------------------
+  // Cycles, modules and epics each keep their own filter set per user, in
+  // tables that mirror project_user_properties. If one of those tables is not
+  // present the screen should still open with default filters rather than
+  // fail to load, so reads fall back and only writes surface the error.
+
+  async getEntityUserProperties(
+    table: "cycle_user_properties" | "module_user_properties" | "project_epic_user_properties",
+    column: "cycle_id" | "module_id" | "project_id",
+    entityId: string
+  ): Promise<IIssueFiltersResponse> {
+    const defaults: IIssueFiltersResponse = {
+      rich_filters: {},
+      display_filters: {},
+      display_properties: {},
+    } as IIssueFiltersResponse;
+
+    try {
+      const userId = await this.currentUserId();
+
+      const { data, error } = await getSupabase()
+        .from(table)
+        .select("*")
+        .eq(column, entityId)
+        .eq("user_id", userId)
+        .maybeSingle();
+
+      if (error || !data) return defaults;
+
+      const row = data as Partial<IIssueFiltersResponse>;
+
+      return {
+        rich_filters: row.rich_filters ?? defaults.rich_filters,
+        display_filters: row.display_filters ?? defaults.display_filters,
+        display_properties: row.display_properties ?? defaults.display_properties,
+      };
+    } catch {
+      return defaults;
+    }
+  }
+
+  async updateEntityUserProperties(
+    table: "cycle_user_properties" | "module_user_properties" | "project_epic_user_properties",
+    column: "cycle_id" | "module_id" | "project_id",
+    entityId: string,
+    projectId: string,
+    patch: Partial<IIssueFiltersResponse>
+  ): Promise<IIssueFiltersResponse> {
+    const supabase = getSupabase();
+    const userId = await this.currentUserId();
+
+    const { data: project } = await supabase.from("projects").select("workspace_id").eq("id", projectId).single();
+    const workspaceId = (project as { workspace_id?: string } | null)?.workspace_id;
+
+    if (!workspaceId) throw new Error("That project does not exist.");
+
+    const { error } = await supabase.from(table).upsert(
+      {
+        [column]: entityId,
+        project_id: projectId,
+        workspace_id: workspaceId,
+        user_id: userId,
+        ...patch,
+        updated_at: new Date().toISOString(),
+        created_by_id: userId,
+        updated_by_id: userId,
+      },
+      { onConflict: `${column},user_id` }
+    );
+
+    if (error) throw new Error(`Failed to save those filters: ${error.message}`);
+
+    return this.getEntityUserProperties(table, column, entityId);
+  }
+
+  // -- States ---------------------------------------------------------------
+  // A project's workflow columns. create_project seeds six of them, so a
+  // project always has states; the screens below edit that set.
+
+  async getProjectStates(workspaceSlug: string, projectId: string): Promise<IState[]> {
+    const { data, error } = await getSupabase()
+      .from("states")
+      .select("*")
+      .eq("project_id", projectId)
+      .is("deleted_at", null)
+      .order("sequence", { ascending: true });
+
+    if (error) throw new Error(`Failed to load states: ${error.message}`);
+
+    return (data ?? []) as unknown as IState[];
+  }
+
+  async getProjectState(projectId: string, stateId: string): Promise<IState> {
+    const { data, error } = await getSupabase()
+      .from("states")
+      .select("*")
+      .eq("project_id", projectId)
+      .eq("id", stateId)
+      .single();
+
+    if (error || !data) throw new Error(`Failed to load that state: ${error?.message ?? stateId}`);
+
+    return data as unknown as IState;
+  }
+
+  /** The state new intake work items land in. */
+  async getIntakeState(projectId: string): Promise<IIntakeState> {
+    const { data, error } = await getSupabase()
+      .from("states")
+      .select("*")
+      .eq("project_id", projectId)
+      .eq("is_triage", true)
+      .is("deleted_at", null)
+      .maybeSingle();
+
+    if (error) throw new Error(`Failed to load the intake state: ${error.message}`);
+    if (!data) throw new Error("This project has no intake state.");
+
+    return data as unknown as IIntakeState;
+  }
+
+  async createState(workspaceSlug: string, projectId: string, payload: Partial<IState>): Promise<IState> {
+    const supabase = getSupabase();
+    const userId = await this.currentUserId();
+
+    const { data: project } = await supabase.from("projects").select("workspace_id").eq("id", projectId).single();
+    const workspaceId = (project as { workspace_id?: string } | null)?.workspace_id;
+
+    if (!workspaceId) throw new Error("That project does not exist.");
+
+    // Sequence orders the columns; Django allocated it server-side, so the
+    // next one has to be worked out here instead.
+    const { data: last } = await supabase
+      .from("states")
+      .select("sequence")
+      .eq("project_id", projectId)
+      .order("sequence", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    const nextSequence = ((last as { sequence?: number } | null)?.sequence ?? 0) + 15000;
+
+    const { data, error } = await supabase
+      .from("states")
+      .insert([
+        {
+          ...payload,
+          project_id: projectId,
+          workspace_id: workspaceId,
+          sequence: payload.sequence ?? nextSequence,
+          created_by_id: userId,
+          updated_by_id: userId,
+        },
+      ])
+      .select()
+      .single();
+
+    if (error || !data) throw new Error(`Failed to create that state: ${error?.message ?? "unknown error"}`);
+
+    return data as unknown as IState;
+  }
+
+  async updateState(projectId: string, stateId: string, patch: Partial<IState>): Promise<IState> {
+    const supabase = getSupabase();
+    const userId = await this.currentUserId();
+
+    const { data, error } = await supabase
+      .from("states")
+      .update({ ...patch, updated_at: new Date().toISOString(), updated_by_id: userId })
+      .eq("project_id", projectId)
+      .eq("id", stateId)
+      .select()
+      .single();
+
+    if (error || !data) throw new Error(`Failed to update that state: ${error?.message ?? "unknown error"}`);
+
+    return data as unknown as IState;
+  }
+
+  /**
+   * Exactly one state per project is the default, so the previous holder has
+   * to be cleared first.
+   */
+  async markStateDefault(projectId: string, stateId: string): Promise<void> {
+    const supabase = getSupabase();
+
+    const { error: clearError } = await supabase
+      .from("states")
+      .update({ default: false })
+      .eq("project_id", projectId)
+      .eq("default", true);
+
+    if (clearError) throw new Error(`Failed to update the default state: ${clearError.message}`);
+
+    const { error } = await supabase
+      .from("states")
+      .update({ default: true })
+      .eq("project_id", projectId)
+      .eq("id", stateId);
+
+    if (error) throw new Error(`Failed to update the default state: ${error.message}`);
+  }
+
+  async deleteState(projectId: string, stateId: string): Promise<void> {
+    const { error } = await getSupabase()
+      .from("states")
+      .update({ deleted_at: new Date().toISOString() })
+      .eq("project_id", projectId)
+      .eq("id", stateId);
+
+    if (error) throw new Error(`Failed to delete that state: ${error.message}`);
   }
 
   // -- Labels ---------------------------------------------------------------

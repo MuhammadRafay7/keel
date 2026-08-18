@@ -18,6 +18,7 @@ import { WorkItemFiltersRow } from "@/components/work-item-filters/filters-row";
 import { useIssues } from "@/hooks/store/use-issues";
 import { IssuesStoreContext } from "@/hooks/use-issue-layout-store";
 // local imports
+import { ClickUpChatView } from "@/components/chat/chat-view";
 import { IssuePeekOverview } from "../../peek-overview";
 import { CalendarLayout } from "../calendar/roots/project-root";
 import { BaseGanttRoot } from "../gantt";
@@ -37,6 +38,8 @@ function ProjectIssueLayout(props: { activeLayout: EIssueLayoutTypes | undefined
       return <BaseGanttRoot />;
     case EIssueLayoutTypes.SPREADSHEET:
       return <ProjectSpreadsheetLayout />;
+    case EIssueLayoutTypes.CHAT:
+      return <ClickUpChatView />;
     default:
       return null;
   }
@@ -51,7 +54,7 @@ export const ProjectLayoutRoot = observer(function ProjectLayoutRoot() {
   const { issues, issuesFilter } = useIssues(EIssuesStoreType.PROJECT);
   // derived values
   const workItemFilters = projectId ? issuesFilter?.getIssueFilters(projectId) : undefined;
-  const activeLayout = workItemFilters?.displayFilters?.layout;
+  const activeLayout = workItemFilters?.displayFilters?.layout || EIssueLayoutTypes.LIST;
 
   useSWR(
     workspaceSlug && projectId ? `PROJECT_ISSUES_${workspaceSlug}_${projectId}` : null,
@@ -63,7 +66,13 @@ export const ProjectLayoutRoot = observer(function ProjectLayoutRoot() {
     { revalidateIfStale: false, revalidateOnFocus: false }
   );
 
-  if (!workspaceSlug || !projectId || !workItemFilters) return <></>;
+  if (!workspaceSlug || !projectId || !workItemFilters) {
+    return (
+      <div className="flex h-full w-full items-center justify-center bg-surface-1">
+        <Spinner className="size-6 text-accent-primary" />
+      </div>
+    );
+  }
   return (
     <IssuesStoreContext.Provider value={EIssuesStoreType.PROJECT}>
       <ProjectLevelWorkItemFiltersHOC

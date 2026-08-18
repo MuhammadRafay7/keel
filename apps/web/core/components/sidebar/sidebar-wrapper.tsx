@@ -18,6 +18,7 @@ import useSize from "@/hooks/use-window-size";
 // keel web components
 import { WorkspaceEditionBadge } from "@/components/workspace/edition-badge";
 import { AppSidebarToggleButton } from "./sidebar-toggle-button";
+import { QuickThemeToggle } from "./quick-theme-toggle";
 import { IconButton } from "@keel/propel/icon-button";
 
 type TSidebarWrapperProps = {
@@ -81,14 +82,12 @@ export const SidebarWrapper = observer(function SidebarWrapper(props: TSidebarWr
         >
           {children}
         </ScrollArea>
-        {/* Help Section */}
-        <div className="flex h-12 items-center justify-between border-t border-subtle bg-surface-1 p-3">
-          <WorkspaceEditionBadge />
-          {/* TODO: To be checked if we need this */}
-          {/* <div className="flex items-center gap-2">
-          {!shouldRenderAppRail && <HelpMenu />}
-          {!isAppRailEnabled && <AppSidebarToggleButton />}
-        </div> */}
+        {/* Sidebar Footer with Quick Theme Toggle */}
+        <div className="flex flex-col gap-2 border-t border-subtle bg-surface-1 p-3">
+          <QuickThemeToggle />
+          <div className="flex items-center justify-between">
+            <WorkspaceEditionBadge />
+          </div>
         </div>
       </div>
     </>

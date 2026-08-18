@@ -19,6 +19,7 @@ supabase/
         types.ts         # AIProviderAdapter interface
         openai.ts        # OpenAI streaming adapter
     send-workspace-invite/ # Vertical slice: Transactional Email Invitations Edge Function
+    send-notification-email/ # Vertical slice: Notification Emails Edge Function
       index.ts           # Server entrypoint for Resend invitation dispatch, HTML escaping, and status updates
     README.md            # This guide
 ```
@@ -47,6 +48,41 @@ supabase/
   - `SITE_URL` / `APP_URL` (Frontend URL base for invitation link)
   - `SUPABASE_URL`
   - `SUPABASE_SERVICE_ROLE_KEY`
+
+### 3. `send-notification-email`
+
+- **Purpose**: Emails a single notification row. Invoked by the `on_notification_send_email` trigger (migration 0017) through `pg_net` for every row inserted into `public.notifications`.
+- **Why the decision lives here**: whether a notification should be emailed depends on the recipient's `user_notification_preferences` and on their address — both need the same round trip, so the trigger stays ignorant of what is mailable and this function decides.
+- **Skips, not failures**: a preference that is turned off, a user with no email, and a deactivated account all return `200` with a `skipped` reason. Only a genuine send failure returns `500`.
+- **Entity → preference mapping**: `issue_mention`/`chat_mention` → `mention`, `issue_comment` → `comment`, `issue_assigned` → `property_change`, `issue_completed` → `issue_completed`, `issue_state` → `state_change`. A missing preferences row means defaults, and the defaults are on.
+- **Environment Variables**:
+  - `RESEND_API_KEY` (Required)
+  - `RESEND_FROM_EMAIL` (Optional, defaults to `Keel <onboarding@resend.dev>`)
+  - `SITE_URL` / `APP_URL` (Frontend URL base for the deep link)
+  - `SUPABASE_URL`
+  - `SUPABASE_SERVICE_ROLE_KEY`
+
+---
+
+## Database settings the email triggers require
+
+Both email triggers dispatch through `pg_net`, and both read the target URL and key from Postgres settings. Without these the triggers run, find no usable URL, and silently send nothing — no error, no email.
+
+**In production these are set for you.** The `Deploy Supabase` workflow applies them on every deploy from the `SUPABASE_PROJECT_REF` and `SUPABASE_ANON_KEY` secrets, so a fresh project or a rotated key cannot leave the triggers pointing at localhost. Set them by hand only for local development:
+
+```sql
+alter database postgres set app.settings.supabase_url = 'https://<project-ref>.supabase.co';
+alter database postgres set app.settings.supabase_anon_key = '<anon-key>';
+```
+
+Verify a trigger actually dispatched:
+
+```sql
+select id, url, created, status_code
+from net._http_response
+order by created desc
+limit 10;
+```
 
 ---
 
@@ -129,3 +165,16 @@ curl -i -X POST 'http://127.0.0.1:54321/functions/v1/send-workspace-invite' \
     "inviter_name": "Alice"
   }'
 ```
+
+#### Testing `send-notification-email`:
+
+```bash
+curl -i -X POST 'http://127.0.0.1:54321/functions/v1/send-notification-email' \
+  -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}" \
+  -H "Content-Type: application/json" \
+  -d '{ "notification_id": "notification-uuid-here" }'
+```
+
+To test the whole path rather than the function alone, post a comment that mentions
+someone: the `on_issue_comment_notify` trigger raises the notification, and
+`on_notification_send_email` hands it to this function.
