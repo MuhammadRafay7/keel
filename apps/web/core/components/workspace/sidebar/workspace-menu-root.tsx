@@ -149,7 +149,7 @@ export const WorkspaceMenuRoot = observer(function WorkspaceMenuRoot(props: Work
               <Menu.Items as={Fragment}>
                 <div
                   className={cn(
-                    "shadow-glass-lg fixed z-50 mt-1 flex w-[19rem] origin-top-left flex-col divide-y divide-subtle rounded-2xl border border-subtle bg-surface-1/95 backdrop-blur-2xl outline-none",
+                    "fixed z-50 mt-1 flex w-[19rem] origin-top-left flex-col divide-y divide-subtle rounded-2xl glass-overlay outline-none",
                     {
                       "top-11 left-14": variant === "sidebar",
                       "top-11 left-4": variant === "top-navigation",
