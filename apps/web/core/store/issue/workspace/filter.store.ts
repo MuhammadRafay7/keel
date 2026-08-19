@@ -171,13 +171,13 @@ export class WorkspaceIssuesFilter extends IssueFilterHelperStore implements IWo
 
     // Get the view details if the view is not a static view
     if (STATIC_VIEW_TYPES.includes(viewId) === false) {
-      const _filters = await this.issueFilterService.getViewDetails(workspaceSlug, viewId);
-      richFilters = _filters?.rich_filters;
-      displayFilters = this.computedDisplayFilters(_filters?.display_filters, {
+      const viewFilters = await this.issueFilterService.getViewDetails(workspaceSlug, viewId);
+      richFilters = viewFilters?.rich_filters;
+      displayFilters = this.computedDisplayFilters(viewFilters?.display_filters, {
         layout: EIssueLayoutTypes.SPREADSHEET,
         order_by: "-created_at",
       });
-      displayProperties = this.computedDisplayProperties(_filters?.display_properties);
+      displayProperties = this.computedDisplayProperties(viewFilters?.display_properties);
     }
 
     // override existing order by if ordered by manual sort_order
@@ -213,15 +213,22 @@ export class WorkspaceIssuesFilter extends IssueFilterHelperStore implements IWo
 
   updateFilters: IWorkspaceIssuesFilter["updateFilters"] = async (workspaceSlug, projectId, type, filters, viewId) => {
     try {
-      const issueFilters = this.getIssueFilters(viewId);
+      if (!this.filters[viewId]) {
+        this.filters[viewId] = {
+          richFilters: {},
+          displayFilters: { layout: EIssueLayoutTypes.LIST, order_by: "-created_at", sub_issue: true },
+          displayProperties: {},
+          kanbanFilters: { group_by: [], sub_group_by: [] },
+        };
+      }
 
-      if (!issueFilters) return;
+      const issueFilters = this.getIssueFilters(viewId) || this.filters[viewId];
 
       const _filters = {
-        richFilters: issueFilters.richFilters,
-        displayFilters: issueFilters.displayFilters as IIssueDisplayFilterOptions,
-        displayProperties: issueFilters.displayProperties as IIssueDisplayProperties,
-        kanbanFilters: issueFilters.kanbanFilters as TIssueKanbanFilters,
+        richFilters: issueFilters.richFilters || {},
+        displayFilters: (issueFilters.displayFilters || {}) as IIssueDisplayFilterOptions,
+        displayProperties: (issueFilters.displayProperties || {}) as IIssueDisplayProperties,
+        kanbanFilters: (issueFilters.kanbanFilters || { group_by: [], sub_group_by: [] }) as TIssueKanbanFilters,
       };
 
       switch (type) {
@@ -312,8 +319,7 @@ export class WorkspaceIssuesFilter extends IssueFilterHelperStore implements IWo
           break;
       }
     } catch (error) {
-      if (viewId) this.fetchFilters(workspaceSlug, viewId);
-      throw error;
+      console.warn("Failed to update workspace filters:", error);
     }
   };
 }

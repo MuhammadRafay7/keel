@@ -1,15 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Mark } from "./Mark";
 import { ThemeToggle } from "./ThemeToggle";
 
 const APP = "https://app.keel.ostenmark.com";
+const REPO = "https://github.com/MuhammadRafay7/keel";
 
 export function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const navRef = useRef<HTMLElement | null>(null);
+
+  const handleMouseEnter = (menu: string) => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setActiveDropdown(menu);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null);
+    }, 150);
+  };
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setActiveDropdown(null);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   return (
     <header className="site-header">
@@ -21,13 +49,14 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="nav-menu" onMouseLeave={() => setActiveDropdown(null)}>
+        <nav ref={navRef} className="nav-menu" onMouseLeave={handleMouseLeave}>
           {/* Product Dropdown */}
-          <div className="nav-item" onMouseEnter={() => setActiveDropdown("product")}>
+          <div className="nav-item" onMouseEnter={() => handleMouseEnter("product")}>
             <button
               type="button"
               className={`nav-link-btn ${activeDropdown === "product" ? "active" : ""}`}
               onClick={() => setActiveDropdown(activeDropdown === "product" ? null : "product")}
+              aria-expanded={activeDropdown === "product"}
             >
               Product
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ marginLeft: "2px" }}>
@@ -42,7 +71,7 @@ export function Header() {
             </button>
 
             {activeDropdown === "product" && (
-              <div className="nav-dropdown">
+              <div className="nav-dropdown" onMouseEnter={() => handleMouseEnter("product")}>
                 <Link href="/features" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
                   <span className="dropdown-item-title">📋 5 Dynamic Work Views</span>
                   <span className="dropdown-item-desc">List, Kanban, Calendar, Gantt, and Spreadsheet grids</span>
@@ -64,11 +93,12 @@ export function Header() {
           </div>
 
           {/* Solutions / Platform Dropdown */}
-          <div className="nav-item" onMouseEnter={() => setActiveDropdown("platform")}>
+          <div className="nav-item" onMouseEnter={() => handleMouseEnter("platform")}>
             <button
               type="button"
               className={`nav-link-btn ${activeDropdown === "platform" ? "active" : ""}`}
               onClick={() => setActiveDropdown(activeDropdown === "platform" ? null : "platform")}
+              aria-expanded={activeDropdown === "platform"}
             >
               Platform
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ marginLeft: "2px" }}>
@@ -83,15 +113,21 @@ export function Header() {
             </button>
 
             {activeDropdown === "platform" && (
-              <div className="nav-dropdown">
+              <div className="nav-dropdown" onMouseEnter={() => handleMouseEnter("platform")}>
                 <Link href="/about" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
                   <span className="dropdown-item-title">🐳 Docker Self-Hosting</span>
                   <span className="dropdown-item-desc">Deploy in minutes with Docker Compose or Kubernetes</span>
                 </Link>
-                <Link href="/about" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
+                <a
+                  href={REPO}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="dropdown-item"
+                  onClick={() => setActiveDropdown(null)}
+                >
                   <span className="dropdown-item-title">🔓 Open Source (AGPL-3.0)</span>
                   <span className="dropdown-item-desc">Full source code access and true data sovereignty</span>
-                </Link>
+                </a>
                 <Link href="/docs" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
                   <span className="dropdown-item-title">⚡️ Architecture &amp; REST APIs</span>
                   <span className="dropdown-item-desc">Next.js, MobX reactive state, and Django backend</span>
@@ -106,13 +142,16 @@ export function Header() {
           <Link href="/docs" className="nav-link-btn">
             Docs
           </Link>
+          <Link href="/changelog" className="nav-link-btn">
+            Changelog
+          </Link>
         </nav>
 
         {/* Action Buttons */}
         <div className="nav-actions">
           <ThemeToggle />
           <a
-            href="https://github.com/MuhammadRafay7/keel"
+            href={REPO}
             target="_blank"
             rel="noreferrer"
             className="btn btn-secondary btn-sm"
@@ -157,7 +196,10 @@ export function Header() {
           <Link href="/docs" className="nav-link-btn" onClick={() => setMobileMenuOpen(false)}>
             Documentation
           </Link>
-          <a href="https://github.com/MuhammadRafay7/keel" target="_blank" rel="noreferrer" className="btn btn-secondary">
+          <Link href="/changelog" className="nav-link-btn" onClick={() => setMobileMenuOpen(false)}>
+            Changelog
+          </Link>
+          <a href={REPO} target="_blank" rel="noreferrer" className="btn btn-secondary">
             GitHub Repository
           </a>
           <a href={`${APP}/sign-in`} className="btn btn-inverse">

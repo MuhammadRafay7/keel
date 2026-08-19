@@ -108,7 +108,7 @@ export const HeaderGroupByCard = observer(function HeaderGroupByCard(props: IHea
         />
       )}
       <div
-        className={`shadow-xs relative flex flex-shrink-0 gap-2 rounded-lg border border-subtle/80 bg-surface-2/80 px-2.5 py-1.5 transition-all ${
+        className={`shadow-xs relative flex flex-shrink-0 gap-2 rounded-xl border border-subtle bg-surface-2/80 px-3 py-2 backdrop-blur-md transition-all ${
           verticalAlignPosition ? `w-[44px] flex-col items-center` : `w-full flex-row items-center justify-between`
         }`}
       >

@@ -28,7 +28,7 @@ export function LayoutSelection(props: Props) {
   };
 
   return (
-    <div className="flex items-center gap-1 rounded-lg border border-subtle bg-surface-2 p-1 text-12 font-medium">
+    <div className="shadow-xs flex items-center gap-0.5 rounded-full border border-subtle bg-surface-2/80 p-1 text-12 font-medium backdrop-blur-md">
       {ISSUE_LAYOUTS.filter((l) => layouts.includes(l.key)).map((layout) => {
         const isSelected = selectedLayout === layout.key;
         return (
@@ -36,7 +36,7 @@ export function LayoutSelection(props: Props) {
             key={layout.key}
             type="button"
             className={cn(
-              "flex items-center gap-1.5 rounded-md px-2.5 py-1 whitespace-nowrap transition-all duration-150",
+              "flex items-center gap-1.5 rounded-full px-3 py-1 whitespace-nowrap transition-all duration-150",
               isSelected
                 ? "shadow-xs border border-subtle bg-surface-1 font-semibold text-accent-primary"
                 : "text-secondary hover:bg-surface-1/60 hover:text-primary"

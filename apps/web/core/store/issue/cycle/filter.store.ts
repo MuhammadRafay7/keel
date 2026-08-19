@@ -20,7 +20,7 @@ import type {
   TWorkItemFilterExpression,
   TSupportedFilterForUpdate,
 } from "@keel/types";
-import { EIssuesStoreType } from "@keel/types";
+import { EIssuesStoreType, EIssueLayoutTypes } from "@keel/types";
 import { handleIssueQueryParamsByLayout } from "@keel/utils";
 import { IssueFiltersService } from "@/services/issue_filter.service";
 import type { IBaseIssueFilterStore } from "../helpers/issue-filter-helper.store";
@@ -205,13 +205,23 @@ export class CycleIssuesFilter extends IssueFilterHelperStore implements ICycleI
 
   updateFilters: ICycleIssuesFilter["updateFilters"] = async (workspaceSlug, projectId, type, filters, cycleId) => {
     try {
-      if (isEmpty(this.filters) || isEmpty(this.filters[cycleId])) return;
+      if (!this.filters[cycleId]) {
+        this.filters[cycleId] = {
+          richFilters: {},
+          displayFilters: { layout: EIssueLayoutTypes.LIST, order_by: "-created_at", sub_issue: true },
+          displayProperties: {},
+          kanbanFilters: { group_by: [], sub_group_by: [] },
+        };
+      }
 
       const _filters = {
-        richFilters: this.filters[cycleId].richFilters,
-        displayFilters: this.filters[cycleId].displayFilters as IIssueDisplayFilterOptions,
-        displayProperties: this.filters[cycleId].displayProperties as IIssueDisplayProperties,
-        kanbanFilters: this.filters[cycleId].kanbanFilters as TIssueKanbanFilters,
+        richFilters: this.filters[cycleId].richFilters || {},
+        displayFilters: (this.filters[cycleId].displayFilters || {}) as IIssueDisplayFilterOptions,
+        displayProperties: (this.filters[cycleId].displayProperties || {}) as IIssueDisplayProperties,
+        kanbanFilters: (this.filters[cycleId].kanbanFilters || {
+          group_by: [],
+          sub_group_by: [],
+        }) as TIssueKanbanFilters,
       };
 
       switch (type) {
@@ -261,9 +271,13 @@ export class CycleIssuesFilter extends IssueFilterHelperStore implements ICycleI
             );
           }
 
-          await this.issueFilterService.patchCycleIssueFilters(workspaceSlug, projectId, cycleId, {
-            display_filters: _filters.displayFilters,
-          });
+          try {
+            await this.issueFilterService.patchCycleIssueFilters(workspaceSlug, projectId, cycleId, {
+              display_filters: _filters.displayFilters,
+            });
+          } catch (patchErr) {
+            console.warn("Failed to persist cycle display filters to server, preserving local layout:", patchErr);
+          }
 
           break;
         }
@@ -281,9 +295,13 @@ export class CycleIssuesFilter extends IssueFilterHelperStore implements ICycleI
             });
           });
 
-          await this.issueFilterService.patchCycleIssueFilters(workspaceSlug, projectId, cycleId, {
-            display_properties: _filters.displayProperties,
-          });
+          try {
+            await this.issueFilterService.patchCycleIssueFilters(workspaceSlug, projectId, cycleId, {
+              display_properties: _filters.displayProperties,
+            });
+          } catch (patchErr) {
+            console.warn("Failed to persist cycle display properties to server:", patchErr);
+          }
           break;
         }
 
@@ -313,8 +331,7 @@ export class CycleIssuesFilter extends IssueFilterHelperStore implements ICycleI
           break;
       }
     } catch (error) {
-      if (cycleId) this.fetchFilters(workspaceSlug, projectId, cycleId);
-      throw error;
+      console.warn("Failed to update cycle filters:", error);
     }
   };
 }

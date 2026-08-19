@@ -20,7 +20,7 @@ import type {
   TWorkItemFilterExpression,
   TSupportedFilterForUpdate,
 } from "@keel/types";
-import { EIssuesStoreType } from "@keel/types";
+import { EIssuesStoreType, EIssueLayoutTypes } from "@keel/types";
 import { handleIssueQueryParamsByLayout } from "@keel/utils";
 import type { IBaseIssueFilterStore } from "../helpers/issue-filter-helper.store";
 import { IssueFilterHelperStore } from "../helpers/issue-filter-helper.store";
@@ -193,13 +193,23 @@ export class ProjectIssuesFilter extends IssueFilterHelperStore implements IProj
 
   updateFilters: IProjectIssuesFilter["updateFilters"] = async (workspaceSlug, projectId, type, filters) => {
     try {
-      if (isEmpty(this.filters) || isEmpty(this.filters[projectId])) return;
+      if (!this.filters[projectId]) {
+        this.filters[projectId] = {
+          richFilters: {},
+          displayFilters: { layout: EIssueLayoutTypes.LIST, order_by: "-created_at", sub_issue: true },
+          displayProperties: {},
+          kanbanFilters: { group_by: [], sub_group_by: [] },
+        };
+      }
 
       const _filters = {
-        richFilters: this.filters[projectId].richFilters,
-        displayFilters: this.filters[projectId].displayFilters as IIssueDisplayFilterOptions,
-        displayProperties: this.filters[projectId].displayProperties as IIssueDisplayProperties,
-        kanbanFilters: this.filters[projectId].kanbanFilters as TIssueKanbanFilters,
+        richFilters: this.filters[projectId].richFilters || {},
+        displayFilters: (this.filters[projectId].displayFilters || {}) as IIssueDisplayFilterOptions,
+        displayProperties: (this.filters[projectId].displayProperties || {}) as IIssueDisplayProperties,
+        kanbanFilters: (this.filters[projectId].kanbanFilters || {
+          group_by: [],
+          sub_group_by: [],
+        }) as TIssueKanbanFilters,
       };
 
       switch (type) {
@@ -244,9 +254,13 @@ export class ProjectIssuesFilter extends IssueFilterHelperStore implements IProj
             this.rootIssueStore.projectIssues.fetchIssuesWithExistingPagination(workspaceSlug, projectId, "mutation");
           }
 
-          await this.projectService.updateProjectUserProperties(workspaceSlug, projectId, {
-            display_filters: _filters.displayFilters,
-          });
+          try {
+            await this.projectService.updateProjectUserProperties(workspaceSlug, projectId, {
+              display_filters: _filters.displayFilters,
+            });
+          } catch (patchErr) {
+            console.warn("Failed to persist display filters to server, preserving local layout selection:", patchErr);
+          }
 
           break;
         }
@@ -264,9 +278,13 @@ export class ProjectIssuesFilter extends IssueFilterHelperStore implements IProj
             });
           });
 
-          await this.projectService.updateProjectUserProperties(workspaceSlug, projectId, {
-            display_properties: _filters.displayProperties,
-          });
+          try {
+            await this.projectService.updateProjectUserProperties(workspaceSlug, projectId, {
+              display_properties: _filters.displayProperties,
+            });
+          } catch (patchErr) {
+            console.warn("Failed to persist display properties to server:", patchErr);
+          }
           break;
         }
 
@@ -296,8 +314,7 @@ export class ProjectIssuesFilter extends IssueFilterHelperStore implements IProj
           break;
       }
     } catch (error) {
-      this.fetchFilters(workspaceSlug, projectId);
-      throw error;
+      console.warn("Failed to update project filters:", error);
     }
   };
 }

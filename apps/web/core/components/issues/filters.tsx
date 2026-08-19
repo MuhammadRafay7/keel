@@ -78,7 +78,7 @@ export const HeaderFilters: React.FC<Props> = observer(function HeaderFilters(pr
   } = useIssues(storeType);
 
   // derived values
-  const activeLayout = issueFilters?.displayFilters?.layout;
+  const activeLayout = issueFilters?.displayFilters?.layout || EIssueLayoutTypes.LIST;
   const layoutDisplayFiltersOptions = ISSUE_STORE_TO_FILTERS_MAP[storeType]?.layoutOptions[activeLayout];
 
   // Me Mode rides on the same rich filter expression the filter row edits, so
