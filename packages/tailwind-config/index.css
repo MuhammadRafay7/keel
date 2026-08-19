@@ -227,7 +227,12 @@ h6 {
  * The three tokens below carry those pieces so every glass surface in the app
  * is lit from the same angle. They flip with the theme; the utilities do not.
  */
-@theme {
+/*
+ * Plain custom properties rather than @theme entries: nothing generates a
+ * utility from them, and @theme is tree-shaken against utility usage, so a
+ * token consumed only by hand-written CSS does not belong there.
+ */
+:root {
   --glass-specular: rgba(255, 255, 255, 0.9);
   --glass-specular-edge: rgba(255, 255, 255, 0.55);
   --glass-cast: rgba(41, 47, 61, 0.08);

@@ -23,7 +23,7 @@ html {
 }
 
 #nprogress .bar {
-  background: linear-gradient(90deg, #0284c7 0%, #38bdf8 100%) !important;
+  background: linear-gradient(90deg, var(--brand-default) 0%, var(--brand-500) 100%) !important;
   position: fixed;
   z-index: 1031;
   top: 0;
@@ -32,84 +32,39 @@ html {
   height: 2.5px;
 }
 
-/* Apple & ClickUp-Inspired Glassmorphic Visual System */
-.clickup-card,
-.glass-task-card {
-  border-radius: 1rem;
+/*
+ * The work item card.
+ *
+ * Everything else that lived here — a second badge, pill, top bar, column and
+ * dropdown treatment — was never referenced by any component, and each carried
+ * its own hard-coded rgba shadows that stayed light-mode in dark. The shared
+ * glass utilities in @keel/tailwind-config cover those surfaces now; this is
+ * the one card style that is genuinely local to the board.
+ */
+.work-item-card {
+  border-radius: 0.875rem;
   border: 1px solid var(--border-subtle);
   background: var(--bg-surface-1);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
   box-shadow:
-    0 2px 8px -2px rgba(0, 0, 0, 0.05),
-    0 0 1px 1px rgba(255, 255, 255, 0.05) inset;
-  transition: all 220ms cubic-bezier(0.16, 1, 0.3, 1);
+    0 2px 8px -3px var(--glass-cast),
+    inset 0 1px 0 0 var(--glass-specular-edge);
+  transition:
+    border-color 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.clickup-card:hover,
-.glass-task-card:hover {
+.work-item-card:hover {
   border-color: var(--border-strong);
   box-shadow:
-    0 12px 28px -6px rgba(0, 0, 0, 0.12),
-    0 0 1px 1px rgba(255, 255, 255, 0.1) inset;
-  transform: translateY(-2px);
+    0 12px 26px -8px var(--glass-cast),
+    inset 0 1px 0 0 var(--glass-specular);
 }
 
-.clickup-badge,
-.glass-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.2rem 0.65rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  border: 1px solid var(--border-subtle);
-  backdrop-filter: blur(12px);
-  transition: all 150ms ease;
-}
-
-.clickup-pill-active {
-  background: var(--bg-accent-subtle);
-  color: var(--txt-accent-primary);
-  font-weight: 600;
-  border-radius: 9999px;
-  border: 1px solid rgba(2, 132, 199, 0.25);
-  box-shadow: 0 2px 6px -1px rgba(2, 132, 199, 0.15);
-  transition: all 150ms ease;
-}
-
-.clickup-glass,
-.glass-top-bar {
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  background: var(--bg-canvas);
-  opacity: 0.95;
-  border-bottom: 1px solid var(--border-subtle);
-  position: sticky;
-  top: 0;
-  z-index: 25;
-}
-
-.glass-kanban-col {
-  border-radius: 1.25rem;
-  background: var(--bg-surface-2);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--border-subtle);
-  padding: 0.5rem;
-  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.04);
-}
-
-.glass-dropdown-menu {
-  border-radius: 1.15rem;
-  background: var(--bg-surface-1);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  border: 1px solid var(--border-subtle);
-  box-shadow:
-    0 20px 40px -10px rgba(0, 0, 0, 0.25),
-    0 0 1px 1px rgba(255, 255, 255, 0.08) inset;
-  padding: 0.5rem;
+@media (prefers-reduced-motion: reduce) {
+  .work-item-card {
+    transition: none;
+  }
 }

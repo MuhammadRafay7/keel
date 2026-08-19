@@ -179,7 +179,7 @@ export const IssueBlock = observer(function IssueBlock(props: IssueBlockProps) {
       <Row
         ref={issueRef}
         className={cn(
-          "group/list-block hover:shadow-xs relative flex min-h-11 flex-col gap-3 rounded-xl border border-transparent bg-layer-transparent px-2.5 py-2.5 text-13 transition-all duration-150 hover:border-subtle/80 hover:bg-surface-2/70",
+          "group/list-block relative flex min-h-10 flex-col gap-2 rounded-lg border border-transparent bg-layer-transparent px-2.5 py-1.5 text-13 transition-colors duration-150 hover:border-subtle/70 hover:bg-surface-2/60",
           {
             "border-accent-primary/60 shadow-xs bg-surface-2/80":
               getIsIssuePeeked(issue.id) && peekIssue?.nestingLevel === nestingLevel,
