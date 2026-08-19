@@ -32,6 +32,8 @@ import { AppProvider } from "./provider";
 // fonts
 import "@fontsource-variable/inter";
 import interVariableWoff2 from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
+import "@fontsource-variable/plus-jakarta-sans";
+import jakartaVariableWoff2 from "@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2?url";
 import "@fontsource/material-symbols-rounded";
 import "@fontsource/ibm-plex-mono";
 
@@ -50,6 +52,13 @@ export const links: LinksFunction = () => [
   {
     rel: "preload",
     href: interVariableWoff2,
+    as: "font",
+    type: "font/woff2",
+    crossOrigin: "anonymous",
+  },
+  {
+    rel: "preload",
+    href: jakartaVariableWoff2,
     as: "font",
     type: "font/woff2",
     crossOrigin: "anonymous",

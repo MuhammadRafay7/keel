@@ -17,6 +17,20 @@ body {
   @apply font-body bg-canvas text-primary;
 }
 
+/*
+ * Headings carry the display face the marketing site uses; body text stays on
+ * Inter, which holds its shape better at the 11-13px the work item rows run at.
+ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-heading;
+  letter-spacing: -0.011em;
+}
+
 /* emoji icon picker */
 @utility conical-gradient {
   background: conic-gradient(
@@ -203,38 +217,105 @@ body {
 }
 
 /* ---------- Apple/iOS Glassmorphism & Squircle Utilities ---------- */
+/*
+ * Real glass is three things at once, and dropping any one of them makes a
+ * surface read as "translucent panel" rather than glass:
+ *   1. blur + saturate  — colour behind the pane bleeds through and intensifies
+ *   2. a specular hairline along the top edge — the lit rim of a bevel
+ *   3. a soft, wide, downward shadow — the pane floats above the ground
+ *
+ * The three tokens below carry those pieces so every glass surface in the app
+ * is lit from the same angle. They flip with the theme; the utilities do not.
+ */
+@theme {
+  --glass-specular: rgba(255, 255, 255, 0.9);
+  --glass-specular-edge: rgba(255, 255, 255, 0.55);
+  --glass-cast: rgba(41, 47, 61, 0.08);
+}
+
+[data-theme*="dark"] {
+  --glass-specular: rgba(255, 255, 255, 0.14);
+  --glass-specular-edge: rgba(255, 255, 255, 0.08);
+  --glass-cast: rgba(0, 0, 0, 0.55);
+}
+
 @utility glass-panel {
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  background-color: color-mix(in srgb, var(--background-color-surface-1) 85%, transparent);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background-color: color-mix(in srgb, var(--background-color-surface-1) 78%, transparent);
   border: 1px solid var(--border-color-subtle);
+  box-shadow:
+    0 8px 28px -12px var(--glass-cast),
+    inset 0 1px 0 0 var(--glass-specular-edge);
 }
 
 @utility glass-card {
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  background-color: color-mix(in srgb, var(--background-color-surface-2) 80%, transparent);
+  backdrop-filter: blur(16px) saturate(170%);
+  -webkit-backdrop-filter: blur(16px) saturate(170%);
+  background-color: color-mix(in srgb, var(--background-color-surface-2) 74%, transparent);
   border: 1px solid var(--border-color-subtle);
   border-radius: 1rem;
+  box-shadow:
+    0 10px 30px -14px var(--glass-cast),
+    inset 0 1px 0 0 var(--glass-specular-edge);
 }
 
 @utility glass-pill {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  background-color: color-mix(in srgb, var(--background-color-surface-1) 85%, transparent);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  background-color: color-mix(in srgb, var(--background-color-surface-1) 80%, transparent);
   border: 1px solid var(--border-color-subtle);
   border-radius: 9999px;
+  box-shadow:
+    0 2px 8px -4px var(--glass-cast),
+    inset 0 1px 0 0 var(--glass-specular-edge);
 }
 
 @utility glass-header {
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  background-color: color-mix(in srgb, var(--background-color-canvas) 80%, transparent);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  background-color: color-mix(in srgb, var(--background-color-canvas) 72%, transparent);
   border-bottom: 1px solid var(--border-color-subtle);
+  box-shadow: inset 0 1px 0 0 var(--glass-specular-edge);
 }
 
+/* A floating pane — dropdowns, popovers, the peek panel. */
+@utility glass-overlay {
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  background-color: color-mix(in srgb, var(--background-color-surface-1) 82%, transparent);
+  border: 1px solid var(--border-color-subtle);
+  box-shadow:
+    0 24px 60px -18px var(--glass-cast),
+    0 2px 8px -4px var(--glass-cast),
+    inset 0 1px 0 0 var(--glass-specular);
+}
+
+/*
+ * The lit rim, as a standalone layer. Put it on a `relative` element whose
+ * children sit above it — it paints a 1px gradient hairline that fades from
+ * bright at the top-left to nothing by the bottom, which is what sells a bevel.
+ */
 @utility specular-border {
-  border-color: rgba(255, 255, 255, 0.1);
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(160deg, var(--glass-specular) 0%, transparent 45%);
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
 }
 
 @utility squircle-card {
@@ -244,4 +325,3 @@ body {
 @utility squircle-modal {
   border-radius: 1.5rem;
 }
-

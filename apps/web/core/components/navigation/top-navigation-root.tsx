@@ -46,12 +46,9 @@ export const TopNavigationRoot = observer(function TopNavigationRoot() {
 
   return (
     <div
-      className={cn(
-        "shadow-sm z-[27] flex min-h-11 w-full items-center border-b border-subtle bg-canvas/80 px-3.5 backdrop-blur-xl transition-all duration-300",
-        {
-          "px-2": !showLabel,
-        }
-      )}
+      className={cn("z-[27] flex min-h-12 w-full items-center glass-header px-3.5 transition-all duration-300", {
+        "px-2": !showLabel,
+      })}
     >
       {/* Workspace Menu */}
       <div className="flex-1 shrink-0">
