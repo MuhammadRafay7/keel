@@ -1,5 +1,7 @@
-@import "tailwindcss";
-@import "@keel/tailwind-config";
+@import "@keel/tailwind-config/index.css";
+@import "@keel/editor/styles";
+@import "@keel/propel/styles/react-day-picker.css";
+@plugin "@tailwindcss/typography";
 
 @layer base {
   body {
