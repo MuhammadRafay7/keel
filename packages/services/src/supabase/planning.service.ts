@@ -7,7 +7,11 @@
 import type { ICycle, IModule, IProjectView, TIssuesResponse } from "@keel/types";
 
 import { getSupabase } from "./client";
+import { buildIssuesResponse } from "./work-item-grouping";
 import { ISSUE_SELECT, supabaseWorkItemService } from "./work-item.service";
+
+/** The subset of the filter store's param bag that shapes a work item response. */
+type TWorkItemQueries = { group_by?: string; sub_group_by?: string };
 
 const CYCLE_FIELDS =
   "id, name, description, start_date, end_date, owned_by_id, project_id, workspace_id, " +
@@ -398,22 +402,12 @@ export class SupabasePlanningService {
     return Array.from(new Set((data ?? []).map((row) => (row as { issue_id: string }).issue_id)));
   }
 
-  private async issuesByIds(projectId: string, issueIds: string[], groupBy?: string): Promise<TIssuesResponse> {
-    const empty = {
-      grouped_by: groupBy ?? "",
-      next_cursor: "",
-      prev_cursor: "",
-      next_page_results: false,
-      prev_page_results: false,
-      total_pages: 1,
-      extra_stats: null,
-      count: 0,
-      total_count: 0,
-      results: [],
-      total_results: 0,
-    } as TIssuesResponse;
-
-    if (issueIds.length === 0) return empty;
+  private async issuesByIds(
+    projectId: string,
+    issueIds: string[],
+    queries?: TWorkItemQueries
+  ): Promise<TIssuesResponse> {
+    if (issueIds.length === 0) return buildIssuesResponse([], queries);
 
     const { data, error } = await getSupabase()
       .from("issues")
@@ -431,33 +425,27 @@ export class SupabasePlanningService {
       supabaseWorkItemService.toIssue(row as unknown as Record<string, unknown>)
     );
 
-    return {
-      ...empty,
-      count: issues.length,
-      total_count: issues.length,
-      results: issues,
-      total_results: issues.length,
-    };
+    return buildIssuesResponse(issues, queries);
   }
 
   async getCycleIssues(
     workspaceSlug: string,
     projectId: string,
     cycleId: string,
-    queries?: { group_by?: string }
+    queries?: TWorkItemQueries
   ): Promise<TIssuesResponse> {
     const issueIds = await this.issueIdsIn("cycle_issues", "cycle_id", cycleId);
-    return this.issuesByIds(projectId, issueIds, queries?.group_by);
+    return this.issuesByIds(projectId, issueIds, queries);
   }
 
   async getModuleIssues(
     workspaceSlug: string,
     projectId: string,
     moduleId: string,
-    queries?: { group_by?: string }
+    queries?: TWorkItemQueries
   ): Promise<TIssuesResponse> {
     const issueIds = await this.issueIdsIn("module_issues", "module_id", moduleId);
-    return this.issuesByIds(projectId, issueIds, queries?.group_by);
+    return this.issuesByIds(projectId, issueIds, queries);
   }
 
   async addIssuesToModule(projectId: string, moduleId: string, issueIds: string[]): Promise<void> {
@@ -758,7 +746,7 @@ export class SupabasePlanningService {
   }
 
   /** Work items across a whole workspace, for a workspace-level view. */
-  async getWorkspaceViewIssues(workspaceSlug: string, queries?: { group_by?: string }): Promise<TIssuesResponse> {
+  async getWorkspaceViewIssues(workspaceSlug: string, queries?: TWorkItemQueries): Promise<TIssuesResponse> {
     const supabase = getSupabase();
 
     const { data: workspace } = await supabase.from("workspaces").select("id").eq("slug", workspaceSlug).single();
@@ -780,19 +768,7 @@ export class SupabasePlanningService {
       supabaseWorkItemService.toIssue(row as unknown as Record<string, unknown>)
     );
 
-    return {
-      grouped_by: queries?.group_by ?? "",
-      next_cursor: "",
-      prev_cursor: "",
-      next_page_results: false,
-      prev_page_results: false,
-      total_pages: 1,
-      extra_stats: null,
-      count: issues.length,
-      total_count: issues.length,
-      results: issues,
-      total_results: issues.length,
-    };
+    return buildIssuesResponse(issues, queries);
   }
 
   // -- Module links -----------------------------------------------------------
@@ -873,19 +849,7 @@ export class SupabasePlanningService {
       supabaseWorkItemService.toIssue(row as unknown as Record<string, unknown>)
     );
 
-    return {
-      grouped_by: "",
-      next_cursor: "",
-      prev_cursor: "",
-      next_page_results: false,
-      prev_page_results: false,
-      total_pages: 1,
-      extra_stats: null,
-      count: issues.length,
-      total_count: issues.length,
-      results: issues,
-      total_results: issues.length,
-    };
+    return buildIssuesResponse(issues, queries);
   }
 
   // -- Active cycle progress --------------------------------------------------
