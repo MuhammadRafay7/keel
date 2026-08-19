@@ -7,7 +7,7 @@
 import { useEffect, useState, useRef } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { Hash, Plus, Send, Paperclip, Smile, AtSign, Search, MessageSquare, User, Users } from "lucide-react";
+import { Hash, Plus, Send, Paperclip, Smile, AtSign, Search, MessageSquare } from "lucide-react";
 // keel imports
 import { Button } from "@keel/propel/button";
 import { setToast, TOAST_TYPE } from "@keel/propel/toast";
@@ -18,7 +18,61 @@ import { supabaseChatService } from "@keel/services";
 import { useMember } from "@/hooks/store/use-member";
 import { useUser } from "@/hooks/store/user";
 
-export const ClickUpChatView = observer(function ClickUpChatView() {
+/** Messages within this gap of each other collapse under one avatar. */
+const GROUPING_WINDOW_MS = 5 * 60 * 1000;
+
+/** A stable per-person avatar tint, so faces stay recognisable down the list. */
+const AVATAR_TINTS = [
+  "bg-[oklch(0.93_0.06_242)] text-[oklch(0.40_0.10_242)]",
+  "bg-[oklch(0.93_0.06_150)] text-[oklch(0.40_0.10_150)]",
+  "bg-[oklch(0.93_0.06_60)] text-[oklch(0.40_0.10_60)]",
+  "bg-[oklch(0.93_0.06_20)] text-[oklch(0.40_0.10_20)]",
+  "bg-[oklch(0.93_0.06_300)] text-[oklch(0.40_0.10_300)]",
+  "bg-[oklch(0.93_0.06_190)] text-[oklch(0.40_0.10_190)]",
+];
+
+const tintFor = (seed: string | null | undefined): string => {
+  if (!seed) return AVATAR_TINTS[0];
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+  return AVATAR_TINTS[hash % AVATAR_TINTS.length];
+};
+
+const initialOf = (name: string | null | undefined): string => name?.trim()?.[0]?.toUpperCase() ?? "U";
+
+const timeOf = (iso: string | null | undefined): string =>
+  iso ? new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "Just now";
+
+/** "Today" / "Yesterday" / "12 March 2026", for the day separators. */
+const startOfDay = (d: Date): number => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+
+const dayLabelOf = (iso: string | null | undefined): string => {
+  if (!iso) return "Today";
+
+  const date = new Date(iso);
+  const days = Math.round((startOfDay(new Date()) - startOfDay(date)) / 86_400_000);
+
+  if (days === 0) return "Today";
+  if (days === 1) return "Yesterday";
+
+  return date.toLocaleDateString([], { day: "numeric", month: "long", year: "numeric" });
+};
+
+/**
+ * Whether a message opens a new block — a different sender, a different day, or
+ * a long enough pause. Only block openers carry an avatar and a name, which is
+ * what keeps a fast back-and-forth readable instead of a wall of repeated faces.
+ */
+const startsBlock = (message: IChatMessage, previous: IChatMessage | undefined): boolean => {
+  if (!previous) return true;
+  if (previous.sender_id !== message.sender_id) return true;
+  if (dayLabelOf(previous.created_at) !== dayLabelOf(message.created_at)) return true;
+
+  const gap = new Date(message.created_at ?? 0).getTime() - new Date(previous.created_at ?? 0).getTime();
+  return !Number.isFinite(gap) || gap > GROUPING_WINDOW_MS;
+};
+
+export const ProjectChatView = observer(function ProjectChatView() {
   const { workspaceSlug, projectId } = useParams();
   const { data: currentUser } = useUser();
   const {
@@ -216,57 +270,63 @@ export const ClickUpChatView = observer(function ClickUpChatView() {
   };
 
   return (
-    <div className="flex h-full w-full overflow-hidden bg-surface-1 text-primary">
-      {/* Sidebar - Channels & DMs */}
-      <div className="flex w-64 flex-shrink-0 flex-col border-r border-subtle bg-surface-2/60">
-        {/* Workspace Chat Header */}
-        <div className="flex h-14 items-center justify-between border-b border-subtle/80 px-4">
-          <div className="flex items-center gap-2 font-semibold text-primary">
-            <MessageSquare className="size-4 text-accent-primary" />
-            <span className="text-14 font-bold">ClickUp Chat</span>
+    <div className="flex h-full w-full overflow-hidden bg-canvas text-primary">
+      {/* ---- Channel rail ---------------------------------------------- */}
+      <aside className="flex w-[260px] shrink-0 flex-col rounded-none border-y-0 border-l-0 glass-panel">
+        <header className="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-subtle px-4">
+          <div className="flex min-w-0 items-center gap-2">
+            <MessageSquare className="size-4 shrink-0 text-accent-primary" />
+            <h2 className="truncate text-14 font-semibold text-primary">Chat</h2>
           </div>
           <button
             type="button"
             onClick={() => setIsCreatingChannel(!isCreatingChannel)}
-            title="Create new channel"
-            className="flex size-7 items-center justify-center rounded-lg border border-subtle bg-surface-1 text-secondary transition-all hover:bg-surface-2 hover:text-accent-primary"
+            title="Create a channel"
+            aria-label="Create a channel"
+            className="flex size-7 shrink-0 items-center justify-center rounded-lg text-tertiary transition-colors duration-150 hover:bg-layer-transparent-hover hover:text-primary"
           >
             <Plus className="size-4" />
           </button>
-        </div>
+        </header>
 
-        {/* Create Channel Modal / Input inline */}
         {isCreatingChannel && (
-          <form onSubmit={handleCreateChannel} className="border-b border-subtle bg-surface-1 p-3">
-            <div className="tracking-wider mb-1.5 text-11 font-semibold text-tertiary uppercase">New Channel</div>
+          <form onSubmit={handleCreateChannel} className="shrink-0 border-b border-subtle px-4 py-3">
+            <label
+              htmlFor="new-channel-name"
+              className="mb-1.5 block text-11 font-semibold tracking-wide text-tertiary uppercase"
+            >
+              New channel
+            </label>
             <div className="flex items-center gap-1.5">
               <input
+                id="new-channel-name"
                 type="text"
                 value={newChannelName}
                 onChange={(e) => setNewChannelName(e.target.value)}
                 placeholder="e.g. frontend-team"
-                className="placeholder-tertiary focus:border-accent-primary w-full rounded-md border border-subtle bg-surface-2 px-2.5 py-1 text-12 text-primary focus:outline-none"
+                className="placeholder-tertiary h-7 w-full min-w-0 rounded-lg border border-subtle bg-surface-2 px-2.5 text-12 text-primary focus:border-accent-strong focus:outline-none"
               />
-              <Button type="submit" size="sm" variant="primary" className="px-2.5 py-1 text-11">
+              <Button type="submit" size="sm" variant="primary" className="h-7 shrink-0 px-2.5 text-11">
                 Add
               </Button>
             </div>
           </form>
         )}
 
-        {/* Channel List */}
-        <div className="flex-1 space-y-4 overflow-y-auto p-3">
-          <div>
-            <div className="tracking-wider mb-1 flex items-center justify-between px-2 text-11 font-bold text-tertiary uppercase">
-              <span>Channels</span>
-              <Users className="size-3" />
+        <div className="flex-1 overflow-y-auto px-2 py-3">
+          <section>
+            <div className="flex items-center justify-between px-2 pb-1">
+              <span className="text-11 font-semibold tracking-wide text-tertiary uppercase">Channels</span>
+              <span className="text-11 text-tertiary tabular-nums">{channels.length || ""}</span>
             </div>
-            <div className="space-y-0.5">
+            <div className="flex flex-col gap-px">
               {isLoadingChannels && channels.length === 0 && (
-                <div className="px-2.5 py-1.5 text-12 text-tertiary">Loading channels…</div>
+                <p className="px-2 py-1.5 text-12 text-tertiary">Loading channels…</p>
               )}
               {!isLoadingChannels && channels.length === 0 && (
-                <div className="px-2.5 py-1.5 text-12 text-tertiary">No channels yet. Create one to start talking.</div>
+                <p className="px-2 py-1.5 text-12 leading-relaxed text-tertiary">
+                  No channels yet. Create one to start talking.
+                </p>
               )}
               {channels.map((channel) => {
                 const isActive = activeChannel?.id === channel.id;
@@ -275,47 +335,51 @@ export const ClickUpChatView = observer(function ClickUpChatView() {
                     key={channel.id}
                     type="button"
                     onClick={() => setActiveChannel(channel)}
+                    aria-current={isActive ? "true" : undefined}
                     className={cn(
-                      "flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-13 transition-all duration-150",
+                      "flex h-8 w-full items-center gap-2 rounded-lg px-2 text-13 transition-colors duration-150",
                       isActive
-                        ? "shadow-xs bg-accent-subtle font-semibold text-accent-primary"
-                        : "text-secondary hover:bg-surface-1/80 hover:text-primary"
+                        ? "bg-accent-subtle font-semibold text-accent-primary"
+                        : "font-medium text-secondary hover:bg-layer-transparent-hover hover:text-primary"
                     )}
                   >
-                    <Hash
-                      className={cn("size-3.5 flex-shrink-0", isActive ? "text-accent-primary" : "text-tertiary")}
-                    />
+                    <Hash className={cn("size-3.5 shrink-0", isActive ? "text-accent-primary" : "text-tertiary")} />
                     <span className="truncate">{channel.name}</span>
                   </button>
                 );
               })}
             </div>
-          </div>
+          </section>
 
-          {/* Direct Messages Demo Section */}
-          <div>
-            <div className="tracking-wider mb-1 flex items-center justify-between px-2 text-11 font-bold text-tertiary uppercase">
-              <span>Direct Messages</span>
-              <User className="size-3" />
+          <section className="mt-5">
+            <div className="flex items-center justify-between px-2 pb-1">
+              <span className="text-11 font-semibold tracking-wide text-tertiary uppercase">Direct messages</span>
             </div>
-            <div className="space-y-0.5">
+            <div className="flex flex-col gap-px">
               {(projectMemberIds ?? []).length === 0 && (
-                <div className="px-2.5 py-1.5 text-12 text-tertiary">No teammates on this project yet.</div>
+                <p className="px-2 py-1.5 text-12 text-tertiary">No teammates on this project yet.</p>
               )}
               {(projectMemberIds ?? []).map((memberId) => {
                 const member = getUserDetails(memberId);
                 if (!member) return null;
+
                 const memberName = member.display_name || member.first_name || member.email || "Member";
                 const isCurrentUser = memberId === currentUser?.id;
+
                 return (
                   <div
                     key={memberId}
                     title="Direct messages are coming soon"
-                    className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-13 text-secondary"
+                    className="flex h-8 items-center gap-2 rounded-lg px-2 text-13 text-tertiary"
                   >
-                    <div className="bg-surface-3 relative flex size-5 flex-shrink-0 items-center justify-center rounded-full text-10 font-bold text-primary">
-                      {memberName[0]?.toUpperCase()}
-                    </div>
+                    <span
+                      className={cn(
+                        "flex size-5 shrink-0 items-center justify-center rounded-full text-10 font-semibold",
+                        tintFor(memberId)
+                      )}
+                    >
+                      {initialOf(memberName)}
+                    </span>
                     <span className="truncate">
                       {memberName}
                       {isCurrentUser ? " (You)" : ""}
@@ -324,76 +388,108 @@ export const ClickUpChatView = observer(function ClickUpChatView() {
                 );
               })}
             </div>
-          </div>
+          </section>
         </div>
-      </div>
+      </aside>
 
-      {/* Main Chat Stream Area */}
-      <div className="flex flex-1 flex-col overflow-hidden bg-surface-1">
-        {/* Active Channel Header */}
-        <div className="flex h-14 items-center justify-between border-b border-subtle/80 bg-surface-1 px-6">
-          <div className="flex items-center gap-2 overflow-hidden">
-            <Hash className="size-5 flex-shrink-0 text-accent-primary" />
-            <div className="truncate">
-              <h2 className="text-14 leading-tight font-bold text-primary">
-                {activeChannel?.name || "Select channel"}
+      {/* ---- Message stream --------------------------------------------- */}
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+        <header className="flex h-14 shrink-0 items-center justify-between gap-4 glass-header px-5">
+          <div className="flex min-w-0 items-center gap-2">
+            <Hash className="size-5 shrink-0 text-accent-primary" />
+            <div className="min-w-0">
+              <h2 className="truncate text-14 leading-tight font-semibold text-primary">
+                {activeChannel?.name || "Select a channel"}
               </h2>
               {activeChannel?.description && (
-                <p className="truncate text-11 text-tertiary">{activeChannel.description}</p>
+                <p className="truncate text-11 leading-tight text-tertiary">{activeChannel.description}</p>
               )}
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="relative hidden md:block">
-              <Search className="absolute top-2 left-2.5 size-3.5 text-tertiary" />
-              <input
-                type="text"
-                placeholder="Search messages..."
-                className="placeholder-tertiary focus:border-accent-primary w-44 rounded-lg border border-subtle bg-surface-2/60 py-1 pr-3 pl-8 text-12 text-primary focus:outline-none"
-              />
-            </div>
+          <div className="relative hidden shrink-0 md:block">
+            <Search className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-tertiary" />
+            <input
+              type="search"
+              placeholder="Search messages"
+              aria-label="Search messages"
+              className="placeholder-tertiary h-8 w-48 rounded-lg border border-subtle bg-surface-2/60 pr-3 pl-8 text-12 text-primary focus:border-accent-strong focus:outline-none"
+            />
           </div>
-        </div>
+        </header>
 
-        {/* Message History List */}
-        <div className="flex-1 space-y-4 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto px-5 py-4">
           {isLoadingMessages && messages.length === 0 && (
-            <div className="flex h-full items-center justify-center text-13 text-tertiary">Loading messages…</div>
+            <p className="flex h-full items-center justify-center text-13 text-tertiary">Loading messages…</p>
           )}
+
           {!isLoadingMessages && messages.length === 0 && (
-            <div className="flex h-full flex-col items-center justify-center gap-1 text-center">
-              <MessageSquare className="size-6 text-tertiary" />
+            <div className="flex h-full flex-col items-center justify-center gap-1.5 text-center">
+              <span className="mb-1 flex size-11 items-center justify-center rounded-2xl bg-accent-subtle">
+                <MessageSquare className="size-5 text-accent-primary" />
+              </span>
               <p className="text-13 font-semibold text-primary">
                 {activeChannel ? `This is the start of #${activeChannel.name}` : "Select a channel"}
               </p>
               <p className="text-12 text-tertiary">Send the first message to get the conversation going.</p>
             </div>
           )}
-          {messages.map((msg) => {
+
+          {messages.map((msg, index) => {
+            const previous = messages[index - 1];
+            const isBlockStart = startsBlock(msg, previous);
+            const isNewDay = !previous || dayLabelOf(previous.created_at) !== dayLabelOf(msg.created_at);
             const isSelf = Boolean(currentUser?.id) && msg.sender_id === currentUser?.id;
+
             return (
-              <div key={msg.id} className="group flex gap-3">
-                <div className="flex size-8 flex-shrink-0 items-center justify-center rounded-full bg-accent-subtle text-12 font-bold text-accent-primary">
-                  {msg.sender_name ? msg.sender_name[0].toUpperCase() : "U"}
-                </div>
-                <div className="flex max-w-[80%] flex-col space-y-1">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-13 font-semibold text-primary">{msg.sender_name}</span>
-                    <span className="text-11 text-tertiary">
-                      {msg.created_at
-                        ? new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-                        : "Just now"}
+              <div key={msg.id}>
+                {isNewDay && (
+                  <div className="flex items-center gap-3 py-3" role="separator">
+                    <span className="h-px flex-1 bg-[var(--border-color-subtle)]" />
+                    <span className="glass-pill px-2.5 py-0.5 text-11 font-medium text-tertiary">
+                      {dayLabelOf(msg.created_at)}
                     </span>
+                    <span className="h-px flex-1 bg-[var(--border-color-subtle)]" />
                   </div>
-                  <div
-                    className={cn(
-                      "shadow-xs rounded-xl border px-3.5 py-2 text-13 leading-relaxed",
-                      isSelf
-                        ? "border-accent-primary/30 bg-accent-subtle/70 text-primary"
-                        : "border-subtle/80 bg-surface-2/80 text-primary"
+                )}
+
+                <div
+                  className={cn(
+                    "group relative flex gap-3 rounded-lg pr-2 transition-colors duration-100 hover:bg-layer-transparent-hover",
+                    isBlockStart ? "mt-2 py-1 first:mt-0" : "py-px"
+                  )}
+                >
+                  {/* 32px avatar + 12px gutter; continuations hold the same 44px indent */}
+                  {isBlockStart ? (
+                    <span
+                      className={cn(
+                        "mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full text-12 font-semibold",
+                        tintFor(msg.sender_id ?? msg.sender_name)
+                      )}
+                    >
+                      {initialOf(msg.sender_name)}
+                    </span>
+                  ) : (
+                    <span
+                      aria-hidden
+                      className="w-8 shrink-0 self-stretch text-right text-10 leading-5 text-tertiary opacity-0 transition-opacity duration-100 group-hover:opacity-100"
+                    >
+                      {timeOf(msg.created_at)}
+                    </span>
+                  )}
+
+                  <div className="min-w-0 flex-1">
+                    {isBlockStart && (
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-13 font-semibold text-primary">
+                          {msg.sender_name}
+                          {isSelf && <span className="font-normal ml-1 text-tertiary">(You)</span>}
+                        </span>
+                        <span className="text-11 text-tertiary">{timeOf(msg.created_at)}</span>
+                      </div>
                     )}
-                  >
-                    {msg.message}
+                    <p className="text-13 leading-relaxed break-words whitespace-pre-wrap text-primary">
+                      {msg.message}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -402,10 +498,10 @@ export const ClickUpChatView = observer(function ClickUpChatView() {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* ClickUp Chat Input Bar */}
-        <div className="relative border-t border-subtle bg-surface-1 p-4">
+        {/* ---- Composer ------------------------------------------------- */}
+        <div className="relative shrink-0 px-5 pt-1 pb-5">
           {mentionMatches.length > 0 && (
-            <div className="shadow-lg absolute bottom-full left-4 z-10 mb-1 w-64 overflow-hidden rounded-lg border border-subtle bg-surface-1">
+            <div className="absolute bottom-full left-5 z-10 mb-2 w-64 overflow-hidden rounded-xl glass-overlay">
               {mentionMatches.map((member) => (
                 <button
                   key={member.id}
@@ -415,19 +511,25 @@ export const ClickUpChatView = observer(function ClickUpChatView() {
                     setMentionQuery(null);
                     inputRef.current?.focus();
                   }}
-                  className="flex w-full items-center gap-2 px-3 py-2 text-left text-13 text-secondary transition-all hover:bg-surface-2 hover:text-primary"
+                  className="flex h-9 w-full items-center gap-2 px-3 text-left text-13 text-secondary transition-colors duration-100 hover:bg-layer-transparent-hover hover:text-primary"
                 >
-                  <div className="bg-surface-3 flex size-5 flex-shrink-0 items-center justify-center rounded-full text-10 font-bold text-primary">
-                    {member.name[0]?.toUpperCase()}
-                  </div>
+                  <span
+                    className={cn(
+                      "flex size-5 shrink-0 items-center justify-center rounded-full text-10 font-semibold",
+                      tintFor(member.id)
+                    )}
+                  >
+                    {initialOf(member.name)}
+                  </span>
                   <span className="truncate">{member.name}</span>
                 </button>
               ))}
             </div>
           )}
+
           <form
             onSubmit={handleSendMessage}
-            className="focus-within:border-accent-primary shadow-xs flex flex-col rounded-xl border border-subtle bg-surface-2/70 p-2 transition-all"
+            className="flex flex-col gap-1 glass-card rounded-xl p-2 transition-colors duration-150 focus-within:border-accent-strong"
           >
             <textarea
               ref={inputRef}
@@ -449,40 +551,49 @@ export const ClickUpChatView = observer(function ClickUpChatView() {
                   void handleSendMessage();
                 }
               }}
-              placeholder={`Message #${activeChannel?.name || "channel"}... (Enter to send, Shift+Enter for new line)`}
-              className="placeholder-tertiary w-full resize-none bg-transparent px-2 py-1 text-13 text-primary focus:outline-none"
+              placeholder={`Message #${activeChannel?.name || "channel"}`}
+              className="placeholder-tertiary w-full resize-none bg-transparent px-2 py-1 text-13 leading-relaxed text-primary focus:outline-none"
             />
-            <div className="flex items-center justify-between border-t border-subtle/40 px-1 pt-1">
-              <div className="flex items-center gap-1 text-tertiary">
-                <button type="button" className="rounded-md p-1 transition-all hover:bg-surface-1 hover:text-primary">
-                  <Paperclip className="size-4" />
-                </button>
-                <button type="button" className="rounded-md p-1 transition-all hover:bg-surface-1 hover:text-primary">
-                  <Smile className="size-4" />
-                </button>
-                <button
-                  type="button"
-                  title="Mention someone"
-                  onClick={() => {
-                    setInputMessage((current) => `${current}@`);
-                    setMentionQuery("");
-                    inputRef.current?.focus();
-                  }}
-                  className="rounded-md p-1 transition-all hover:bg-surface-1 hover:text-primary"
-                >
-                  <AtSign className="size-4" />
-                </button>
+            <div className="flex items-center justify-between gap-2 border-t border-subtle/50 px-1 pt-1.5">
+              <div className="flex items-center gap-0.5">
+                {[
+                  { icon: Paperclip, label: "Attach a file", onClick: undefined },
+                  { icon: Smile, label: "Add an emoji", onClick: undefined },
+                  {
+                    icon: AtSign,
+                    label: "Mention someone",
+                    onClick: () => {
+                      setInputMessage((current) => `${current}@`);
+                      setMentionQuery("");
+                      inputRef.current?.focus();
+                    },
+                  },
+                ].map(({ icon: Icon, label, onClick }) => (
+                  <button
+                    key={label}
+                    type="button"
+                    title={label}
+                    aria-label={label}
+                    onClick={onClick}
+                    className="flex size-7 items-center justify-center rounded-lg text-tertiary transition-colors duration-100 hover:bg-layer-transparent-hover hover:text-primary"
+                  >
+                    <Icon className="size-4" />
+                  </button>
+                ))}
               </div>
-              <Button
-                type="submit"
-                disabled={!inputMessage.trim() || isSending}
-                variant="primary"
-                size="sm"
-                className="gap-1.5 px-3 py-1 text-12 font-semibold"
-              >
-                <span>Send</span>
-                <Send className="size-3.5" />
-              </Button>
+              <div className="flex items-center gap-2">
+                <span className="hidden text-11 text-tertiary sm:inline">Enter to send · Shift+Enter for a line</span>
+                <Button
+                  type="submit"
+                  disabled={!inputMessage.trim() || isSending}
+                  variant="primary"
+                  size="sm"
+                  className="h-7 gap-1.5 px-3 text-12 font-semibold"
+                >
+                  <span>Send</span>
+                  <Send className="size-3.5" />
+                </Button>
+              </div>
             </div>
           </form>
         </div>
