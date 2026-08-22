@@ -4,7 +4,10 @@
 
 export const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  // `x-user-ai-key` carries a key the browser holds locally. It has to be
+  // listed here or the preflight rejects the request before the function is
+  // ever reached — which looks exactly like the function being down.
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-user-ai-key",
   "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
 };
 
