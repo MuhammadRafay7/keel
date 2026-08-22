@@ -154,9 +154,7 @@ export const IssuePeekOverviewHeader = observer(function IssuePeekOverviewHeader
 
   return (
     <div
-      className={`relative flex items-center justify-between p-4 ${
-        currentMode?.key === "full-screen" ? "border-b border-subtle" : ""
-      }`}
+      className={`relative flex items-center justify-between border-b border-subtle bg-surface-1/60 px-4 py-3 backdrop-blur-md transition-all`}
     >
       <div className="flex items-center gap-4">
         <Tooltip tooltipContent={t("common.close_peek_view")} isMobile={isMobile}>

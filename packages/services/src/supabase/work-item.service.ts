@@ -17,6 +17,7 @@ import type {
 } from "@keel/types";
 
 import { getSupabase } from "./client";
+import { buildIssuesResponse } from "./work-item-grouping";
 import { supabaseWorkItemDetailService } from "./work-item-detail.service";
 
 const ISSUE_FIELDS =
@@ -239,19 +240,7 @@ export class SupabaseWorkItemService {
 
     const issues = (data ?? []).map((row) => this.toIssue(row as unknown as Record<string, unknown>));
 
-    return {
-      grouped_by: queries?.group_by ?? "",
-      next_cursor: "",
-      prev_cursor: "",
-      next_page_results: false,
-      prev_page_results: false,
-      total_count: issues.length,
-      count: issues.length,
-      total_pages: 1,
-      extra_stats: null,
-      results: issues,
-      total_results: issues.length,
-    };
+    return buildIssuesResponse(issues, queries);
   }
 
   /** Work item ids that have one of `values` in a join table. */
@@ -308,19 +297,7 @@ export class SupabaseWorkItemService {
 
     const issues = (data ?? []).map((row) => this.toIssue(row as unknown as Record<string, unknown>));
 
-    return {
-      grouped_by: queries?.group_by ?? "",
-      next_cursor: "",
-      prev_cursor: "",
-      next_page_results: false,
-      prev_page_results: false,
-      total_count: issues.length,
-      count: issues.length,
-      total_pages: 1,
-      extra_stats: null,
-      results: issues,
-      total_results: issues.length,
-    };
+    return buildIssuesResponse(issues, queries);
   }
 
   async getIssuesWithParams(
@@ -916,19 +893,7 @@ export class SupabaseWorkItemService {
 
     const issues = (data ?? []).map((row) => this.toIssue(row as unknown as Record<string, unknown>));
 
-    return {
-      grouped_by: queries?.group_by ?? "",
-      next_cursor: "",
-      prev_cursor: "",
-      next_page_results: false,
-      prev_page_results: false,
-      total_count: issues.length,
-      count: issues.length,
-      total_pages: 1,
-      extra_stats: null,
-      results: issues,
-      total_results: issues.length,
-    };
+    return buildIssuesResponse(issues, queries);
   }
 
   async archiveIssue(projectId: string, issueId: string): Promise<{ archived_at: string }> {

@@ -113,9 +113,9 @@ export const WorkspaceMenuRoot = observer(function WorkspaceMenuRoot(props: Work
             {variant === "top-navigation" && (
               <Menu.Button
                 className={cn(
-                  "group/menu-button flex flex-grow items-center justify-between gap-1 truncate rounded-sm p-1 text-13 font-medium text-secondary hover:bg-layer-1 focus:outline-none",
+                  "group/menu-button shadow-xs flex flex-grow items-center justify-between gap-1.5 truncate rounded-xl border border-transparent px-2.5 py-1 text-13 font-medium text-secondary transition-all duration-150 hover:border-subtle hover:bg-surface-2/80 focus:outline-none",
                   {
-                    "bg-layer-1": open,
+                    "border-subtle bg-surface-2": open,
                   }
                 )}
                 aria-label={t("aria_labels.projects_sidebar.open_workspace_switcher")}
@@ -124,9 +124,11 @@ export const WorkspaceMenuRoot = observer(function WorkspaceMenuRoot(props: Work
                   <WorkspaceLogo
                     logo={activeWorkspace?.logo_url}
                     name={activeWorkspace?.name}
-                    classNames="border border-subtle rounded-md size-7"
+                    classNames="border border-subtle rounded-lg size-7 shadow-xs"
                   />
-                  <h4 className="truncate text-14 font-medium text-primary">{activeWorkspace?.name ?? t("loading")}</h4>
+                  <h4 className="truncate text-14 font-semibold text-primary">
+                    {activeWorkspace?.name ?? t("loading")}
+                  </h4>
                 </div>
                 <ChevronDownIcon
                   className={cn("size-4 flex-shrink-0 text-placeholder duration-300", {
@@ -139,7 +141,7 @@ export const WorkspaceMenuRoot = observer(function WorkspaceMenuRoot(props: Work
               as={Fragment}
               enter="transition ease-out duration-100"
               enterFrom="transform opacity-0 scale-95"
-              enterTo="trnsform opacity-100 scale-100"
+              enterTo="transform opacity-100 scale-100"
               leave="transition ease-in duration-75"
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
@@ -147,15 +149,15 @@ export const WorkspaceMenuRoot = observer(function WorkspaceMenuRoot(props: Work
               <Menu.Items as={Fragment}>
                 <div
                   className={cn(
-                    "fixed z-21 mt-1 flex w-[19rem] origin-top-left flex-col divide-y divide-subtle rounded-md border-[0.5px] border-strong bg-surface-1 shadow-raised-200 outline-none",
+                    "fixed z-50 mt-1 flex w-[19rem] origin-top-left flex-col divide-y divide-subtle rounded-2xl glass-overlay outline-none",
                     {
                       "top-11 left-14": variant === "sidebar",
-                      "top-10 left-4": variant === "top-navigation",
+                      "top-11 left-4": variant === "top-navigation",
                     }
                   )}
                 >
                   <div className="vertical-scrollbar flex scrollbar-sm max-h-96 flex-col items-start justify-start overflow-x-hidden overflow-y-scroll">
-                    <span className="sticky top-0 z-21 h-full w-full flex-shrink-0 truncate rounded-md bg-surface-1 px-4 pt-3 pb-1 text-left text-13 font-medium text-placeholder">
+                    <span className="sticky top-0 z-21 h-full w-full flex-shrink-0 truncate rounded-2xl bg-surface-1/95 px-4 pt-3 pb-1 text-left text-13 font-medium text-placeholder">
                       {currentUser?.email}
                     </span>
                     {workspacesList ? (

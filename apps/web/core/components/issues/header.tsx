@@ -25,8 +25,6 @@ import { Breadcrumbs, Header } from "@keel/ui";
 // components
 import { BreadcrumbLink } from "@/components/common/breadcrumb-link";
 import { CountChip } from "@/components/common/count-chip";
-// constants
-import { HeaderFilters } from "@/components/issues/filters";
 // helpers
 // hooks
 import { useCommandPalette } from "@/hooks/store/use-command-palette";
@@ -110,14 +108,6 @@ export const IssuesHeader = observer(function IssuesHeader() {
         )}
       </Header.LeftItem>
       <Header.RightItem>
-        <div className="hidden gap-2 md:flex">
-          <HeaderFilters
-            projectId={projectId}
-            currentProjectDetails={currentProjectDetails}
-            workspaceSlug={workspaceSlug}
-            canUserCreateIssue={canUserCreateIssue}
-          />
-        </div>
         {canUserCreateIssue && (
           <Button
             variant="primary"

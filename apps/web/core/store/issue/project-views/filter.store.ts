@@ -21,7 +21,7 @@ import type {
   TWorkItemFilterExpression,
   TSupportedFilterForUpdate,
 } from "@keel/types";
-import { EIssuesStoreType } from "@keel/types";
+import { EIssuesStoreType, EIssueLayoutTypes } from "@keel/types";
 import { handleIssueQueryParamsByLayout } from "@keel/utils";
 // services
 import { ViewService } from "@/services/view.service";
@@ -219,13 +219,23 @@ export class ProjectViewIssuesFilter extends IssueFilterHelperStore implements I
     viewId
   ) => {
     try {
-      if (isEmpty(this.filters) || isEmpty(this.filters[viewId])) return;
+      if (!this.filters[viewId]) {
+        this.filters[viewId] = {
+          richFilters: {},
+          displayFilters: { layout: EIssueLayoutTypes.LIST, order_by: "-created_at", sub_issue: true },
+          displayProperties: {},
+          kanbanFilters: { group_by: [], sub_group_by: [] },
+        };
+      }
 
       const _filters = {
-        richFilters: this.filters[viewId].richFilters,
-        displayFilters: this.filters[viewId].displayFilters as IIssueDisplayFilterOptions,
-        displayProperties: this.filters[viewId].displayProperties as IIssueDisplayProperties,
-        kanbanFilters: this.filters[viewId].kanbanFilters as TIssueKanbanFilters,
+        richFilters: this.filters[viewId].richFilters || {},
+        displayFilters: (this.filters[viewId].displayFilters || {}) as IIssueDisplayFilterOptions,
+        displayProperties: (this.filters[viewId].displayProperties || {}) as IIssueDisplayProperties,
+        kanbanFilters: (this.filters[viewId].kanbanFilters || {
+          group_by: [],
+          sub_group_by: [],
+        }) as TIssueKanbanFilters,
       };
 
       switch (type) {
@@ -326,8 +336,7 @@ export class ProjectViewIssuesFilter extends IssueFilterHelperStore implements I
           break;
       }
     } catch (error) {
-      if (viewId) this.fetchFilters(workspaceSlug, projectId, viewId);
-      throw error;
+      console.warn("Failed to update project view filters:", error);
     }
   };
 

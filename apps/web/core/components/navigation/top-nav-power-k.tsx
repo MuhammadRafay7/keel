@@ -101,7 +101,7 @@ export const TopNavPowerK = observer(() => {
     return () => {
       setTopNavInputRef(null);
     };
-  }, [setTopNavInputRef]);
+  }, [setTopNavInputRef, inputRef]);
 
   const handleClear = () => {
     setSearchTerm("");
@@ -203,7 +203,8 @@ export const TopNavPowerK = observer(() => {
         return;
       }
     },
-    [searchTerm, activePage, context, shouldShowContextBasedActions, setActivePage, closePanel]
+    // oxlint-disable-next-line eslint-plugin-react-hooks/exhaustive-deps -- containerRef is a ref, not a reactive value
+    [searchTerm, activePage, context, shouldShowContextBasedActions, setActivePage, closePanel, isOpen]
   );
 
   return (
@@ -213,18 +214,18 @@ export const TopNavPowerK = observer(() => {
           "w-[554px]": isOpen,
         })}
       >
-        <div
+        <label
+          htmlFor="top-nav-power-k-input"
           className={cn(
-            "flex h-7 w-full items-center rounded-lg border border-subtle-1 bg-layer-2 p-2 transition-colors duration-200",
+            "shadow-xs flex h-8 w-full cursor-text items-center rounded-full border border-subtle bg-surface-2/80 px-3 py-1.5 backdrop-blur-md transition-all duration-200 hover:border-strong",
             {
-              "bg-layer-1": isOpen,
+              "shadow-sm border-accent-primary bg-surface-1": isOpen,
             }
           )}
-          onClick={() => inputRef.current?.focus()}
-          role="button"
         >
           <SearchIcon className="mr-2 size-3.5 shrink-0 text-placeholder" />
           <input
+            id="top-nav-power-k-input"
             ref={inputRef}
             type="text"
             value={searchTerm}
@@ -235,22 +236,26 @@ export const TopNavPowerK = observer(() => {
             onMouseDown={handleMouseDown}
             onFocus={handleFocus}
             onKeyDown={handleKeyDown}
-            placeholder="Search commands..."
-            className="placeholder-text-placeholder min-w-0 flex-1 bg-transparent text-13 text-primary outline-none"
+            placeholder="Search or jump to... (⌘K)"
+            className="placeholder-text-placeholder font-normal min-w-0 flex-1 bg-transparent text-13 text-primary outline-none"
           />
-          {searchTerm && (
+          {searchTerm ? (
             <button type="button" onClick={handleClear} className="ml-2 shrink-0">
               <CloseIcon className="size-3.5 text-placeholder hover:text-primary" />
             </button>
+          ) : (
+            <span className="font-mono bg-surface-3/70 hidden items-center gap-0.5 rounded-md border border-subtle/50 px-1.5 py-0.5 text-[10px] text-tertiary sm:inline-flex">
+              ⌘K
+            </span>
           )}
-        </div>
+        </label>
       </div>
       <div
         className={cn(
-          "shadow-lg absolute -top-[6px] left-1/2 z-20 flex -translate-x-1/2 flex-col overflow-hidden rounded-md border border-subtle bg-surface-1 px-0 pt-10 transition-all duration-300 ease-in-out",
+          "absolute -top-[6px] left-1/2 z-20 flex -translate-x-1/2 flex-col overflow-hidden rounded-2xl glass-overlay px-0 pt-11 transition-all duration-300 ease-in-out",
           {
             "max-h-[80vh] w-[574px] opacity-100": isOpen,
-            "h-0 w-0 opacity-0": !isOpen,
+            "pointer-events-none h-0 w-0 opacity-0": !isOpen,
           }
         )}
       >

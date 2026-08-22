@@ -282,8 +282,8 @@ export const KanbanGroup = observer(function KanbanGroup(props: IKanbanGroup) {
     <div
       id={`${groupId}__${sub_group_id}`}
       className={cn(
-        "relative h-full min-h-[120px] transition-all",
-        { "rounded-sm bg-layer-1": isDraggingOverColumn },
+        "shadow-xs relative h-full min-h-[120px] rounded-2xl border border-subtle/60 bg-surface-2/40 p-2 backdrop-blur-md transition-all",
+        { "border-accent-primary/50 shadow-md bg-layer-1": isDraggingOverColumn },
         { "vertical-scrollbar scrollbar-md": !sub_group_by && !shouldOverlayBeVisible }
       )}
       ref={columnRef}

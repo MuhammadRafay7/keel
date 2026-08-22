@@ -162,19 +162,19 @@
     --neutral-1100: oklch(0.26 0.016 260);
     --neutral-1200: oklch(0.15 0.018 260);
     --neutral-black: oklch(0.09 0.02 260);
-    /* Brand colors (ClickUp Purple) */
-    --brand-100: oklch(0.975 0.02 285);
-    --brand-200: oklch(0.945 0.04 285);
-    --brand-300: oklch(0.9 0.07 285);
-    --brand-400: oklch(0.82 0.12 285);
-    --brand-500: oklch(0.72 0.17 285);
-    --brand-600: oklch(0.64 0.2 285);
-    --brand-700: oklch(0.56 0.22 285);
-    --brand-900: oklch(0.44 0.21 285);
-    --brand-1000: oklch(0.36 0.18 285);
-    --brand-1100: oklch(0.28 0.14 285);
-    --brand-1200: oklch(0.2 0.1 285);
-    --brand-default: oklch(0.56 0.22 285);
+    /* Brand colors — the marketing site's azure, at hue 242 */
+    --brand-100: oklch(0.972 0.014 242);
+    --brand-200: oklch(0.943 0.03 242);
+    --brand-300: oklch(0.898 0.055 242);
+    --brand-400: oklch(0.82 0.085 242);
+    --brand-500: oklch(0.72 0.115 242);
+    --brand-600: oklch(0.63 0.135 242);
+    --brand-700: oklch(0.55 0.13 242);
+    --brand-900: oklch(0.403 0.096 242);
+    --brand-1000: oklch(0.34 0.082 242);
+    --brand-1100: oklch(0.27 0.065 242);
+    --brand-1200: oklch(0.2 0.048 242);
+    --brand-default: oklch(0.48 0.116 242);
     /* Green/Success colors */
     --green-100: oklch(0.9819 0.0181 155.83);
     --green-200: oklch(0.9624 0.0434 156.74);
@@ -413,19 +413,19 @@
       --neutral-1100: oklch(0.9 0.003 260);
       --neutral-1200: oklch(0.97 0.002 260);
       --neutral-white: oklch(0.99 0 0);
-      /* Brand colors (Luminous Violet) */
-      --brand-100: oklch(0.22 0.05 285);
-      --brand-200: oklch(0.28 0.08 285);
-      --brand-300: oklch(0.35 0.12 285);
-      --brand-400: oklch(0.45 0.16 285);
-      --brand-500: oklch(0.55 0.19 285);
-      --brand-700: oklch(0.72 0.18 285);
-      --brand-800: oklch(0.8 0.14 285);
-      --brand-900: oklch(0.87 0.1 285);
-      --brand-1000: oklch(0.92 0.06 285);
-      --brand-1100: oklch(0.96 0.03 285);
-      --brand-1200: oklch(0.985 0.01 285);
-      --brand-default: oklch(0.68 0.21 285);
+      /* Brand colors — the marketing site's azure, lifted for dark ground */
+      --brand-100: oklch(0.235 0.035 233);
+      --brand-200: oklch(0.29 0.055 233);
+      --brand-300: oklch(0.36 0.08 233);
+      --brand-400: oklch(0.46 0.105 233);
+      --brand-500: oklch(0.56 0.125 233);
+      --brand-700: oklch(0.72 0.14 233);
+      --brand-800: oklch(0.8 0.12 233);
+      --brand-900: oklch(0.87 0.09 233);
+      --brand-1000: oklch(0.92 0.055 233);
+      --brand-1100: oklch(0.96 0.028 233);
+      --brand-1200: oklch(0.985 0.01 233);
+      --brand-default: oklch(0.754 0.139 233);
       /* Green colors */
       --green-100: oklch(0.2721 0.067322 152.52);
       --green-200: oklch(0.3935 0.0957 152.28);
@@ -980,8 +980,8 @@
   /* ---------- Font family ---------- */
   --font-*: initial;
   --font-heading:
-    "Inter Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-    "Noto Color Emoji";
+    "Plus Jakarta Sans Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-body:
     "Inter Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     "Noto Color Emoji";

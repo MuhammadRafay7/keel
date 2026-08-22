@@ -55,9 +55,10 @@ interface AppSidebarButtonItemProps {
 
 const styles = {
   base: "group flex flex-col gap-0.5 items-center justify-center text-tertiary transition-all duration-150",
-  icon: "flex items-center justify-center gap-2 size-8 rounded-lg text-tertiary transition-all duration-150",
-  iconActive: "bg-accent-subtle text-accent-primary shadow-xs font-semibold",
-  iconInactive: "group-hover:text-primary group-hover:bg-surface-2/80 text-tertiary",
+  icon: "flex items-center justify-center gap-2 size-8.5 rounded-xl text-tertiary transition-all duration-200",
+  iconActive:
+    "bg-accent-subtle text-accent-primary shadow-xs font-semibold scale-[1.02] border border-accent-primary/20",
+  iconInactive: "group-hover:text-primary group-hover:bg-surface-2/80 text-tertiary group-hover:scale-[1.02]",
   label: "text-11 font-medium transition-colors duration-150",
   labelActive: "text-accent-primary font-semibold",
   labelInactive: "group-hover:text-primary text-tertiary",

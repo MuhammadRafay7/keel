@@ -3,7 +3,7 @@ import Link from "next/link";
 export const metadata = {
   title: "Features — Keel",
   description:
-    "Explore the full suite of Keel features: Work items, Cycles, Modules, Views, Pages & Wiki, Intake Triage, and Keel AI.",
+    "Explore the full suite of Keel features: 5 Work Views, Cycles & Sprints, Modules, Pages & Docs, and Docker Self-Hosting.",
 };
 
 const APP = "https://app.keel.ostenmark.com";
@@ -13,35 +13,39 @@ export default function FeaturesPage() {
     <>
       {/* 1. Page Header */}
       <section className="inner-page-head">
-        <div className="shell">
-          <span className="label-badge">FEATURES</span>
-          <h1 className="font-satoshi">Every capability your team needs to plan, track, and ship</h1>
-          <p className="inner-page-lede">
-            Keel brings work items, docs, and AI-powered workflows into one unified workspace so teams and agents can
-            plan, execute, and stay aligned across every layer of the organization.
+        <div className="shell" style={{ textAlign: "center", maxWidth: "48rem" }}>
+          <span className="label-badge">CAPABILITIES</span>
+          <h1 className="font-satoshi" style={{ margin: "1rem 0" }}>
+            Every tool your team needs to plan, track, and ship
+          </h1>
+          <p className="inner-page-lede" style={{ margin: "0 auto" }}>
+            Keel unites work items, agile cycles, roadmap modules, and living markdown documentation into one fast,
+            extensible workspace.
           </p>
 
-          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "2rem" }}>
+          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", justifyContent: "center", marginTop: "2rem" }}>
             {[
               "Work Items",
+              "5 Dynamic Views",
               "Cycles & Sprints",
               "Modules & Epics",
-              "5 Layout Views",
-              "Pages & Wiki",
-              "Intake Triage",
-              "Analytics",
-              "Keel AI",
+              "Pages & Docs",
+              "Power-K (Cmd+K)",
+              "Docker Self-Hosting",
+              "AGPL-3.0 License",
             ].map((item) => (
               <span
                 key={item}
                 style={{
                   fontFamily: "var(--mono)",
                   fontSize: "0.75rem",
-                  padding: "0.35rem 0.75rem",
-                  borderRadius: "999px",
-                  background: "var(--surface)",
-                  border: "1px solid var(--line)",
-                  color: "var(--fg-muted)",
+                  fontWeight: 600,
+                  padding: "0.35rem 0.85rem",
+                  borderRadius: "9999px",
+                  background: "var(--surface-glass)",
+                  backdropFilter: "blur(12px)",
+                  border: "1px solid var(--surface-glass-border)",
+                  color: "var(--accent)",
                 }}
               >
                 {item}
@@ -51,243 +55,145 @@ export default function FeaturesPage() {
         </div>
       </section>
 
-      {/* 2. Work Items Deep Dive */}
-      <section className="section-pad">
-        <div className="shell">
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-              gap: "3rem",
-              alignItems: "flex-start",
-            }}
-          >
-            <div>
-              <span className="label-badge">THE WORK</span>
-              <h2 className="font-satoshi" style={{ fontSize: "2.25rem", marginBottom: "1rem" }}>
-                Work items: The unit everything hangs off.
-              </h2>
-              <p style={{ color: "var(--fg-muted)", fontSize: "1.05rem", lineHeight: "1.65", margin: 0 }}>
-                State, priority, assignees, labels, estimates and dates. Items nest into sub-items and link to each
-                other as blocking, duplicate or related — so the shape of the work is visible rather than folklore.
-              </p>
-
-              <div style={{ marginTop: "2rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
-                <div style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
-                  <span style={{ color: "var(--accent-brand-bright)", fontWeight: 700 }}>✓</span>
-                  <div>
-                    <strong style={{ color: "var(--fg)" }}>Sub-items &amp; Nested Hierarchies</strong>
-                    <div style={{ color: "var(--fg-muted)", fontSize: "0.875rem" }}>
-                      Break complex tasks down infinitely without losing parent progress rollups.
-                    </div>
-                  </div>
-                </div>
-
-                <div style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
-                  <span style={{ color: "var(--accent-brand-bright)", fontWeight: 700 }}>✓</span>
-                  <div>
-                    <strong style={{ color: "var(--fg)" }}>Issue Dependencies &amp; Relations</strong>
-                    <div style={{ color: "var(--fg-muted)", fontSize: "0.875rem" }}>
-                      Explicitly define blocking, blocked-by, duplicate, and related links.
-                    </div>
-                  </div>
-                </div>
-
-                <div style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
-                  <span style={{ color: "var(--accent-brand-bright)", fontWeight: 700 }}>✓</span>
-                  <div>
-                    <strong style={{ color: "var(--fg)" }}>Custom Workflow States</strong>
-                    <div style={{ color: "var(--fg-muted)", fontSize: "0.875rem" }}>
-                      Group workflow stages into Backlog, Unstarted, Started, Completed, and Cancelled.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Visual Vector Card */}
-            <div
-              style={{
-                background: "var(--surface-product)",
-                border: "1px solid var(--line)",
-                borderRadius: "16px",
-                padding: "1.75rem",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  borderBottom: "1px solid var(--line)",
-                  paddingBottom: "1rem",
-                  marginBottom: "1rem",
-                }}
-              >
-                <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-                  <span
-                    style={{
-                      fontFamily: "var(--mono)",
-                      color: "var(--accent-brand)",
-                      fontSize: "0.8125rem",
-                      fontWeight: 600,
-                    }}
-                  >
-                    #ENG-408
-                  </span>
-                  <span style={{ fontWeight: 600, color: "var(--fg)" }}>Three.js Antigravity Orbit Canvas</span>
-                </div>
-                <span
-                  style={{
-                    background: "rgba(56, 189, 248, 0.12)",
-                    color: "#38bdf8",
-                    padding: "0.15rem 0.5rem",
-                    borderRadius: "4px",
-                    fontSize: "0.75rem",
-                    fontFamily: "var(--mono)",
-                  }}
-                >
-                  In Progress
-                </span>
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", fontSize: "0.8125rem" }}>
-                <div>
-                  <span style={{ color: "var(--fg-muted)" }}>Priority:</span>
-                  <div style={{ fontWeight: 500, color: "#ef4444" }}>Urgent</div>
-                </div>
-                <div>
-                  <span style={{ color: "var(--fg-muted)" }}>Estimate:</span>
-                  <div style={{ fontWeight: 500, color: "var(--fg)" }}>5 Points</div>
-                </div>
-                <div>
-                  <span style={{ color: "var(--fg-muted)" }}>Cycle:</span>
-                  <div style={{ fontWeight: 500, color: "var(--fg)" }}>Sprint 24</div>
-                </div>
-                <div>
-                  <span style={{ color: "var(--fg-muted)" }}>Assignee:</span>
-                  <div style={{ fontWeight: 500, color: "var(--fg)" }}>Elena Rostova</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. Planning: Cycles & Modules (Dark Section #0F0F10) */}
-      <section className="section-pad section-dark">
-        <div className="shell">
-          <div className="section-header">
-            <span className="label-badge">PLANNING &amp; RHYTHM</span>
-            <h2 className="font-satoshi">Cycles for rhythm, modules for structure</h2>
-            <p className="section-desc">
-              The two group work differently on purpose. Cycles are about time-boxed iterations; modules are about
-              durable feature milestones that outlive any single cycle.
-            </p>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.5rem" }}>
-            <div
-              style={{
-                background: "var(--surface-dark-card)",
-                border: "1px solid var(--line-dark)",
-                borderRadius: "16px",
-                padding: "2rem",
-              }}
-            >
-              <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>🔄</div>
-              <h3 style={{ color: "var(--fg-dark-primary)", marginBottom: "0.75rem" }}>Cycles (Sprints)</h3>
-              <p style={{ color: "var(--fg-dark-secondary)", fontSize: "0.95rem", lineHeight: "1.6", margin: 0 }}>
-                Time-boxed periods with start and end dates. Velocity charts show real-time burn-down as work completes.
-                Completed cycles auto-archive, while unfinished work transfers forward cleanly.
-              </p>
-            </div>
-
-            <div
-              style={{
-                background: "var(--surface-dark-card)",
-                border: "1px solid var(--line-dark)",
-                borderRadius: "16px",
-                padding: "2rem",
-              }}
-            >
-              <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>📦</div>
-              <h3 style={{ color: "var(--fg-dark-primary)", marginBottom: "0.75rem" }}>Modules &amp; Epics</h3>
-              <p style={{ color: "var(--fg-dark-secondary)", fontSize: "0.95rem", lineHeight: "1.6", margin: 0 }}>
-                Durable groupings that cut across cycles, allowing teams to split complex features into shippable
-                deliverables with independent status rollups.
-              </p>
-            </div>
-
-            <div
-              style={{
-                background: "var(--surface-dark-card)",
-                border: "1px solid var(--line-dark)",
-                borderRadius: "16px",
-                padding: "2rem",
-              }}
-            >
-              <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>🎯</div>
-              <h3 style={{ color: "var(--fg-dark-primary)", marginBottom: "0.75rem" }}>Initiatives &amp; Roadmaps</h3>
-              <p style={{ color: "var(--fg-dark-secondary)", fontSize: "0.95rem", lineHeight: "1.6", margin: 0 }}>
-                High-level company initiatives that connect multiple projects and teams together, giving leadership a
-                single pane of glass across the entire portfolio.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Five Views Section */}
+      {/* 2. 5 Dynamic Views */}
       <section className="section-pad">
         <div className="shell">
           <div className="section-header center">
             <span className="label-badge">LAYOUTS &amp; PERSPECTIVES</span>
-            <h2 className="font-satoshi">Look at the same work five different ways</h2>
-            <p className="section-desc">
-              Group and filter by any property, then save the combination as a custom view — private to you, or shared
-              with the whole team.
+            <h2 className="font-satoshi">5 Ways to Visualize Your Work</h2>
+            <p style={{ color: "var(--fg-muted)", maxWidth: "36rem", margin: "0.5rem auto 0" }}>
+              Switch instantly between high-density views with persistent grouping, sorting, and custom property filters.
             </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.25rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem" }}>
             {[
-              { title: "Kanban Board", desc: "Drag and drop cards across columns to advance workflow states." },
-              { title: "Spreadsheet Grid", desc: "Inline bulk editing of assignees, estimates, dates, and labels." },
-              { title: "List View", desc: "Clean hierarchical view for scanning large backlogs with instant filters." },
-              { title: "Gantt Timeline", desc: "Visualize dependencies, project milestones, and resource scheduling." },
               {
+                icon: "📋",
+                title: "List View",
+                desc: "High-density hierarchical table with inline cell editing for status, priority, assignees, and dates.",
+              },
+              {
+                icon: "📊",
+                title: "Kanban Board",
+                desc: "Interactive visual columns with drag-and-drop cards, WIP limits, and custom grouping.",
+              },
+              {
+                icon: "📅",
                 title: "Calendar View",
-                desc: "Date-based scheduling for planning release days and marketing deadlines.",
+                desc: "Date-based monthly and weekly perspectives for release schedules and milestone deadlines.",
+              },
+              {
+                icon: "📈",
+                title: "Gantt Timeline",
+                desc: "Cascade dependencies, lead/lag indicators, and milestone forecasting over time.",
+              },
+              {
+                icon: "📑",
+                title: "Spreadsheet Grid",
+                desc: "Rapid spreadsheet-style entry for managing hundreds of backlog items in seconds.",
+              },
+              {
+                icon: "📖",
+                title: "Pages & Docs",
+                desc: "Collaborative rich-text markdown documents with slash commands tied directly to tasks.",
               },
             ].map((v) => (
               <div
                 key={v.title}
                 style={{
-                  background: "var(--surface-product)",
-                  border: "1px solid var(--line)",
-                  borderRadius: "12px",
-                  padding: "1.5rem",
+                  background: "var(--surface-glass)",
+                  backdropFilter: "blur(20px)",
+                  border: "1px solid var(--surface-glass-border)",
+                  borderRadius: "20px",
+                  padding: "1.75rem",
+                  boxShadow: "var(--shadow-glass)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
                 }}
               >
-                <h4 style={{ marginBottom: "0.5rem" }}>{v.title}</h4>
-                <p style={{ color: "var(--fg-muted)", fontSize: "0.875rem", margin: 0, lineHeight: "1.5" }}>{v.desc}</p>
+                <div style={{ fontSize: "1.75rem" }}>{v.icon}</div>
+                <h3 style={{ fontSize: "1.15rem", margin: 0 }}>{v.title}</h3>
+                <p style={{ color: "var(--fg-muted)", fontSize: "0.875rem", margin: 0, lineHeight: "1.55" }}>{v.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 5. Pre-Footer CTA Band */}
-      <section className="cta-band-section">
+      {/* 3. Planning & Rhythm: Cycles & Modules */}
+      <section className="section-pad" style={{ background: "var(--surface-product)" }}>
         <div className="shell">
-          <h2 className="font-satoshi">Ready to experience next-gen project management?</h2>
-          <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-            <a className="btn btn-inverse btn-lg" href={`${APP}/sign-up`}>
-              Get started free
-            </a>
-            <Link className="btn btn-secondary btn-lg" href="/contact">
-              Talk to sales
-            </Link>
+          <div className="section-header">
+            <span className="label-badge">AGILE PLANNING</span>
+            <h2 className="font-satoshi">Cycles for sprint cadence, modules for roadmaps</h2>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.75rem" }}>
+            <div
+              style={{
+                background: "var(--surface-glass)",
+                backdropFilter: "blur(20px)",
+                border: "1px solid var(--surface-glass-border)",
+                borderRadius: "24px",
+                padding: "2.25rem",
+                boxShadow: "var(--shadow-glass)",
+              }}
+            >
+              <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>🔄</div>
+              <h3 style={{ marginBottom: "0.75rem" }}>Cycles &amp; Sprints</h3>
+              <p style={{ color: "var(--fg-muted)", fontSize: "0.95rem", lineHeight: "1.6", margin: 0 }}>
+                Time-boxed sprint periods with automated progress tracking and velocity burn-down metrics. Lock scope
+                during active sprints and carry unfinished work forward seamlessly.
+              </p>
+            </div>
+
+            <div
+              style={{
+                background: "var(--surface-glass)",
+                backdropFilter: "blur(20px)",
+                border: "1px solid var(--surface-glass-border)",
+                borderRadius: "24px",
+                padding: "2.25rem",
+                boxShadow: "var(--shadow-glass)",
+              }}
+            >
+              <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>📦</div>
+              <h3 style={{ marginBottom: "0.75rem" }}>Modules &amp; Epics</h3>
+              <p style={{ color: "var(--fg-muted)", fontSize: "0.95rem", lineHeight: "1.6", margin: 0 }}>
+                Multi-sprint feature milestones that group related work items across your engineering team with lead
+                assignees, target dates, and automatic status rollups.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. CTA */}
+      <section className="section-pad" style={{ textAlign: "center" }}>
+        <div className="shell" style={{ maxWidth: "48rem" }}>
+          <div
+            style={{
+              background: "var(--surface-glass)",
+              backdropFilter: "blur(24px)",
+              border: "1px solid var(--surface-glass-border)",
+              borderRadius: "32px",
+              padding: "3.5rem 2rem",
+              boxShadow: "var(--shadow-glass-lg)",
+            }}
+          >
+            <h2 className="font-satoshi" style={{ margin: "0 0 1.25rem" }}>
+              Ready to ship faster with Keel?
+            </h2>
+            <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
+              <a className="btn btn-brand btn-lg" href={`${APP}/sign-up`}>
+                Launch Keel Free
+              </a>
+              <Link className="btn btn-secondary btn-lg" href="/docs">
+                Read the Documentation
+              </Link>
+            </div>
           </div>
         </div>
       </section>

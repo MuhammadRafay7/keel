@@ -179,13 +179,14 @@ export const IssueBlock = observer(function IssueBlock(props: IssueBlockProps) {
       <Row
         ref={issueRef}
         className={cn(
-          "group/list-block relative flex min-h-11 flex-col gap-3 bg-layer-transparent py-3 text-13 transition-colors hover:bg-layer-transparent-hover",
+          "group/list-block relative flex min-h-10 flex-col gap-2 rounded-lg border border-transparent bg-layer-transparent px-2.5 py-1.5 text-13 transition-colors duration-150 hover:border-subtle/70 hover:bg-surface-2/60",
           {
-            "border-accent-strong": getIsIssuePeeked(issue.id) && peekIssue?.nestingLevel === nestingLevel,
+            "border-accent-primary/60 shadow-xs bg-surface-2/80":
+              getIsIssuePeeked(issue.id) && peekIssue?.nestingLevel === nestingLevel,
             "border-strong-1": isIssueActive,
             "last:border-b-transparent": !getIsIssuePeeked(issue.id) && !isIssueActive,
-            "bg-accent-primary/5 hover:bg-accent-primary/10": isIssueSelected,
-            "bg-layer-1": isCurrentBlockDragging,
+            "border-accent-primary/30 bg-accent-primary/10 hover:bg-accent-primary/15": isIssueSelected,
+            "shadow-md bg-layer-1": isCurrentBlockDragging,
             "md:flex-row md:items-center": isSidebarCollapsed,
             "lg:flex-row lg:items-center": !isSidebarCollapsed,
           }

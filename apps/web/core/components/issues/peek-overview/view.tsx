@@ -120,12 +120,14 @@ export const IssueView = observer(function IssueView(props: IIssueView) {
 
   const peekOverviewIssueClassName = cn(
     !embedIssue
-      ? "absolute z-[25] flex flex-col overflow-hidden rounded-sm border border-subtle bg-surface-1 transition-all duration-300"
+      ? "absolute z-[25] flex flex-col overflow-hidden glass-overlay transition-all duration-300"
       : `h-full w-full`,
     !embedIssue && {
-      "top-0 right-0 bottom-0 w-full border-0 border-l md:w-[50%]": peekMode === "side-peek",
-      "top-[8.33%] left-[8.33%] size-5/6": peekMode === "modal",
-      "absolute inset-0 m-4": peekMode === "full-screen",
+      // Docked to the edge, so it keeps only the one border that reads as a seam.
+      "top-0 right-0 bottom-0 w-full rounded-none border-y-0 border-r-0 md:w-[52%] lg:w-[48%]":
+        peekMode === "side-peek",
+      "top-[6%] left-[10%] h-[88%] w-[80%] rounded-3xl": peekMode === "modal",
+      "absolute inset-0 m-3 rounded-2xl": peekMode === "full-screen",
     }
   );
 

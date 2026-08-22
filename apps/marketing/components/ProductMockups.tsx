@@ -1,358 +1,1248 @@
+"use client";
+
+import { useState } from "react";
+import {
+  ListIcon,
+  KanbanIcon,
+  CalendarIcon,
+  GanttIcon,
+  TableIcon,
+  CycleIcon,
+  ModuleIcon,
+  DocIcon,
+  TriageIcon,
+} from "./Icons";
+
 export function HeroDashboardMockup() {
+  const [activeTab, setActiveTab] = useState<"list" | "board" | "calendar" | "gantt" | "table">("list");
+  const [activeSidebar, setActiveSidebar] = useState<"issues" | "cycles" | "modules" | "pages" | "triage">("issues");
+
+  const featureTabs = [
+    { id: "issues", label: "Projects & 5 Views", Icon: ListIcon },
+    { id: "cycles", label: "Agile Cycles & Sprints", Icon: CycleIcon },
+    { id: "modules", label: "Modules & Epics", Icon: ModuleIcon },
+    { id: "pages", label: "Pages & Wikis", Icon: DocIcon },
+    { id: "triage", label: "Intake & Triage", Icon: TriageIcon },
+  ];
+
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        background: "#0f0f10",
-        color: "#f8fafc",
-        fontSize: "0.8125rem",
-        userSelect: "none",
-      }}
-    >
-      {/* App Header Bar */}
+    <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", width: "100%", alignItems: "center" }}>
+      {/* ClickUp-Style Feature Switcher Bar */}
+      <div className="hero-feature-switcher-bar">
+        {featureTabs.map((f) => {
+          const TabIcon = f.Icon;
+          return (
+            <button
+              key={f.id}
+              type="button"
+              className={`hero-feature-tab ${activeSidebar === f.id ? "active" : ""}`}
+              onClick={() => setActiveSidebar(f.id as typeof activeSidebar)}
+            >
+              <TabIcon size={14} className="hero-feature-tab-icon" />
+              <span className="hero-feature-tab-label">{f.label}</span>
+            </button>
+          );
+        })}
+      </div>
+
       <div
         style={{
           display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "0.75rem 1.25rem",
-          borderBottom: "1px solid #1e293b",
-          background: "#131b24",
+          flexDirection: "column",
+          background: "rgba(15, 23, 42, 0.95)",
+          color: "#f8fafc",
+          fontSize: "0.8125rem",
+          userSelect: "none",
+          borderRadius: "24px",
+          overflow: "hidden",
+          width: "100%",
+          boxSizing: "border-box",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <div style={{ display: "flex", gap: "0.4rem" }}>
-            <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#ef4444" }} />
-            <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#f59e0b" }} />
-            <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#10b981" }} />
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontWeight: 600, color: "#e4e6e7" }}>
-            <span>⚡️ Keel Core / Platform Engineering</span>
-          </div>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-          <span
-            style={{
-              background: "rgba(56, 189, 248, 0.12)",
-              color: "#38bdf8",
-              padding: "0.2rem 0.6rem",
-              borderRadius: "999px",
-              fontSize: "0.75rem",
-              fontFamily: "var(--mono)",
-            }}
-          >
-            Sprint 24 · Active
-          </span>
-          <span style={{ color: "#94a3b8", fontSize: "0.75rem" }}>84% Completed</span>
-        </div>
-      </div>
-
-      {/* Main App Body */}
-      <div style={{ display: "grid", gridTemplateColumns: "220px 1fr", minHeight: "360px" }}>
-        {/* Sidebar */}
+        {/* 1. Apple macOS Window Header */}
         <div
           style={{
-            borderRight: "1px solid #1e293b",
-            padding: "1rem",
-            background: "#0b1015",
             display: "flex",
-            flexDirection: "column",
-            gap: "1.25rem",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "0.85rem 1.25rem",
+            borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+            background: "rgba(30, 41, 59, 0.6)",
+            backdropFilter: "blur(16px)",
+            flexWrap: "wrap",
+            gap: "0.75rem",
           }}
         >
-          <div>
-            <div
-              style={{
-                fontSize: "0.6875rem",
-                fontFamily: "var(--mono)",
-                color: "#64748b",
-                textTransform: "uppercase",
-                marginBottom: "0.5rem",
-              }}
-            >
-              Workflows
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
-              <div
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            {/* macOS Window Controls */}
+            <div style={{ display: "flex", gap: "0.45rem" }}>
+              <span
                 style={{
-                  padding: "0.4rem 0.6rem",
-                  background: "#1e293b",
-                  borderRadius: "6px",
-                  color: "#38bdf8",
-                  fontWeight: 500,
+                  width: "11px",
+                  height: "11px",
+                  borderRadius: "50%",
+                  background: "#ff5f56",
+                  display: "inline-block",
                 }}
-              >
-                📋 All Work Items (48)
-              </div>
-              <div style={{ padding: "0.4rem 0.6rem", color: "#94a3b8" }}>🔄 Cycles &amp; Sprints</div>
-              <div style={{ padding: "0.4rem 0.6rem", color: "#94a3b8" }}>📦 Modules &amp; Epics</div>
-              <div style={{ padding: "0.4rem 0.6rem", color: "#94a3b8" }}>📖 Wiki &amp; Docs</div>
-              <div style={{ padding: "0.4rem 0.6rem", color: "#94a3b8" }}>📥 Intake Triage</div>
+              />
+              <span
+                style={{
+                  width: "11px",
+                  height: "11px",
+                  borderRadius: "50%",
+                  background: "#ffbd2e",
+                  display: "inline-block",
+                }}
+              />
+              <span
+                style={{
+                  width: "11px",
+                  height: "11px",
+                  borderRadius: "50%",
+                  background: "#27c93f",
+                  display: "inline-block",
+                }}
+              />
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontWeight: 600, color: "#f1f5f9" }}>
+              <span>Keel Workspace / Platform Core</span>
             </div>
           </div>
-          <div>
-            <div
+
+          {/* View Switcher Pills */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              background: "rgba(15, 23, 42, 0.7)",
+              padding: "0.25rem",
+              borderRadius: "9999px",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+            }}
+          >
+            {[
+              { id: "list", label: "List", Icon: ListIcon },
+              { id: "board", label: "Board", Icon: KanbanIcon },
+              { id: "calendar", label: "Calendar", Icon: CalendarIcon },
+              { id: "gantt", label: "Gantt", Icon: GanttIcon },
+              { id: "table", label: "Table", Icon: TableIcon },
+            ].map((v) => {
+              const VIcon = v.Icon;
+              return (
+                <button
+                  key={v.id}
+                  type="button"
+                  onClick={() => {
+                    setActiveSidebar("issues");
+                    setActiveTab(v.id as "list" | "board" | "calendar" | "gantt" | "table");
+                  }}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                    border: "none",
+                    background: activeSidebar === "issues" && activeTab === v.id ? "#0284c7" : "transparent",
+                    color: activeSidebar === "issues" && activeTab === v.id ? "#ffffff" : "#94a3b8",
+                    fontWeight: 600,
+                    fontSize: "0.75rem",
+                    padding: "0.35rem 0.75rem",
+                    borderRadius: "9999px",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease",
+                    boxShadow:
+                      activeSidebar === "issues" && activeTab === v.id ? "0 2px 8px rgba(2, 132, 199, 0.4)" : "none",
+                  }}
+                >
+                  <VIcon size={12} />
+                  <span>{v.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Active Cycle Pill */}
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <span
               style={{
-                fontSize: "0.6875rem",
+                background: "rgba(56, 189, 248, 0.12)",
+                color: "#38bdf8",
+                padding: "0.25rem 0.65rem",
+                borderRadius: "9999px",
+                fontSize: "0.75rem",
                 fontFamily: "var(--mono)",
-                color: "#64748b",
-                textTransform: "uppercase",
-                marginBottom: "0.5rem",
+                fontWeight: 600,
+                border: "1px solid rgba(56, 189, 248, 0.25)",
               }}
             >
-              AI Agents
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
-              <div
-                style={{
-                  padding: "0.3rem 0.6rem",
-                  color: "#10b981",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                }}
-              >
-                <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#10b981" }} /> @TriageBot
-                (Live)
-              </div>
-              <div
-                style={{
-                  padding: "0.3rem 0.6rem",
-                  color: "#a855f7",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                }}
-              >
-                <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#a855f7" }} /> @Summarizer
-                (Idle)
-              </div>
-            </div>
+              Cycle 14 · 82% Done
+            </span>
           </div>
         </div>
 
-        {/* Main Kanban Content */}
-        <div
-          style={{
-            padding: "1.25rem",
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "1rem",
-            background: "#0f1720",
-          }}
-        >
-          {/* Column 1: In Progress */}
+        {/* 2. Main App Body */}
+        <div style={{ display: "grid", gridTemplateColumns: "220px 1fr", minHeight: "410px" }}>
+          {/* Left Sidebar */}
           <div
             style={{
-              background: "#131b24",
-              borderRadius: "10px",
-              border: "1px solid #1e293b",
-              padding: "0.85rem",
+              borderRight: "1px solid rgba(255, 255, 255, 0.08)",
+              padding: "1rem",
+              background: "rgba(15, 23, 42, 0.4)",
               display: "flex",
               flexDirection: "column",
-              gap: "0.75rem",
+              gap: "1.25rem",
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                color: "#f59e0b",
-                fontWeight: 600,
-                fontSize: "0.75rem",
-                fontFamily: "var(--mono)",
-              }}
-            >
-              <span>IN PROGRESS (3)</span>
-              <span style={{ background: "rgba(245, 158, 11, 0.15)", padding: "0.1rem 0.4rem", borderRadius: "4px" }}>
-                68%
-              </span>
-            </div>
-            <div
-              style={{
-                background: "#1a2330",
-                borderRadius: "8px",
-                padding: "0.75rem",
-                border: "1px solid #283548",
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.4rem",
-              }}
-            >
-              <div style={{ fontSize: "0.75rem", color: "#38bdf8", fontFamily: "var(--mono)" }}>#KEEL-402</div>
-              <div style={{ color: "#f8fafc", fontWeight: 500 }}>Implement Model Context Protocol (MCP) Server</div>
+            <div>
               <div
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: "0.25rem",
                   fontSize: "0.6875rem",
-                  color: "#94a3b8",
+                  fontFamily: "var(--mono)",
+                  color: "#64748b",
+                  textTransform: "uppercase",
+                  marginBottom: "0.5rem",
+                  letterSpacing: "0.06em",
+                  fontWeight: 600,
                 }}
               >
-                <span>Backend · High</span>
-                <span
-                  style={{ background: "#006399", color: "#ffffff", padding: "0.1rem 0.35rem", borderRadius: "4px" }}
-                >
-                  Duane
-                </span>
+                Views &amp; Work
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+                {[
+                  { id: "issues", label: "Issues (48)", Icon: ListIcon },
+                  { id: "cycles", label: "Cycles & Sprints", Icon: CycleIcon },
+                  { id: "modules", label: "Modules & Epics", Icon: ModuleIcon },
+                  { id: "pages", label: "Pages & Docs", Icon: DocIcon },
+                  { id: "triage", label: "Intake Triage", Icon: TriageIcon },
+                ].map((item) => {
+                  const SIcon = item.Icon;
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => setActiveSidebar(item.id as typeof activeSidebar)}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                        padding: "0.45rem 0.75rem",
+                        background: activeSidebar === item.id ? "rgba(2, 132, 199, 0.2)" : "transparent",
+                        color: activeSidebar === item.id ? "#38bdf8" : "#94a3b8",
+                        borderRadius: "10px",
+                        fontWeight: 600,
+                        fontSize: "0.8125rem",
+                        border:
+                          activeSidebar === item.id ? "1px solid rgba(56, 189, 248, 0.2)" : "1px solid transparent",
+                        cursor: "pointer",
+                        textAlign: "left",
+                        transition: "all 0.15s ease",
+                      }}
+                    >
+                      <SIcon size={14} />
+                      <span>{item.label}</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
-            <div
-              style={{
-                background: "#1a2330",
-                borderRadius: "8px",
-                padding: "0.75rem",
-                border: "1px solid #283548",
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.4rem",
-              }}
-            >
-              <div style={{ fontSize: "0.75rem", color: "#38bdf8", fontFamily: "var(--mono)" }}>#KEEL-408</div>
-              <div style={{ color: "#f8fafc", fontWeight: 500 }}>Three.js Antigravity Physics Orbit Interaction</div>
+
+            <div>
               <div
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: "0.25rem",
                   fontSize: "0.6875rem",
-                  color: "#94a3b8",
+                  fontFamily: "var(--mono)",
+                  color: "#64748b",
+                  textTransform: "uppercase",
+                  marginBottom: "0.5rem",
+                  letterSpacing: "0.06em",
+                  fontWeight: 600,
                 }}
               >
-                <span>Frontend · Urgent</span>
-                <span
-                  style={{ background: "#0284c7", color: "#ffffff", padding: "0.1rem 0.35rem", borderRadius: "4px" }}
-                >
-                  Elena
-                </span>
+                Active Projects
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+                <div style={{ padding: "0.45rem 0.75rem", color: "#94a3b8", fontSize: "0.8125rem" }}>
+                  Web Application
+                </div>
+                <div style={{ padding: "0.45rem 0.75rem", color: "#94a3b8", fontSize: "0.8125rem" }}>API Engine</div>
+                <div style={{ padding: "0.45rem 0.75rem", color: "#94a3b8", fontSize: "0.8125rem" }}>
+                  Mobile Clients
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Column 2: In Review */}
-          <div
-            style={{
-              background: "#131b24",
-              borderRadius: "10px",
-              border: "1px solid #1e293b",
-              padding: "0.85rem",
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.75rem",
-            }}
-          >
+          {/* Dynamic Content Canvas */}
+          <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "1rem", overflowX: "auto" }}>
+            {/* Controls Bar */}
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                color: "#a855f7",
-                fontWeight: 600,
-                fontSize: "0.75rem",
-                fontFamily: "var(--mono)",
+                flexWrap: "wrap",
+                gap: "0.5rem",
               }}
             >
-              <span>IN REVIEW (2)</span>
-              <span style={{ background: "rgba(168, 85, 247, 0.15)", padding: "0.1rem 0.4rem", borderRadius: "4px" }}>
-                PRs Open
-              </span>
-            </div>
-            <div
-              style={{
-                background: "#1a2330",
-                borderRadius: "8px",
-                padding: "0.75rem",
-                border: "1px solid #283548",
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.4rem",
-              }}
-            >
-              <div style={{ fontSize: "0.75rem", color: "#a855f7", fontFamily: "var(--mono)" }}>#KEEL-395</div>
-              <div style={{ color: "#f8fafc", fontWeight: 500 }}>Multi-tenant Air-gapped SSO SAML Provider</div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: "0.25rem",
-                  fontSize: "0.6875rem",
-                  color: "#94a3b8",
-                }}
-              >
-                <span>Security · Review</span>
+              <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
                 <span
-                  style={{ background: "#6366f1", color: "#ffffff", padding: "0.1rem 0.35rem", borderRadius: "4px" }}
+                  style={{
+                    padding: "0.3rem 0.65rem",
+                    background: "rgba(255, 255, 255, 0.06)",
+                    borderRadius: "8px",
+                    color: "#cbd5e1",
+                    fontSize: "0.75rem",
+                    border: "1px solid rgba(255, 255, 255, 0.06)",
+                  }}
                 >
-                  Alex
+                  Filter: All Active ▾
+                </span>
+                <span
+                  style={{
+                    padding: "0.3rem 0.65rem",
+                    background: "rgba(255, 255, 255, 0.06)",
+                    borderRadius: "8px",
+                    color: "#cbd5e1",
+                    fontSize: "0.75rem",
+                    border: "1px solid rgba(255, 255, 255, 0.06)",
+                  }}
+                >
+                  Group: Status ▾
+                </span>
+                <span
+                  style={{
+                    padding: "0.3rem 0.65rem",
+                    background: "rgba(255, 255, 255, 0.06)",
+                    borderRadius: "8px",
+                    color: "#cbd5e1",
+                    fontSize: "0.75rem",
+                    border: "1px solid rgba(255, 255, 255, 0.06)",
+                  }}
+                >
+                  Sort: Priority ▾
+                </span>
+              </div>
+              <div style={{ display: "flex", gap: "0.5rem" }}>
+                <span
+                  style={{
+                    padding: "0.35rem 0.85rem",
+                    background: "#0284c7",
+                    color: "#ffffff",
+                    borderRadius: "8px",
+                    fontWeight: 600,
+                    fontSize: "0.75rem",
+                    boxShadow: "0 2px 6px rgba(2, 132, 199, 0.3)",
+                  }}
+                >
+                  + New Issue
                 </span>
               </div>
             </div>
-          </div>
 
-          {/* Column 3: Done */}
-          <div
-            style={{
-              background: "#131b24",
-              borderRadius: "10px",
-              border: "1px solid #1e293b",
-              padding: "0.85rem",
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.75rem",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                color: "#10b981",
-                fontWeight: 600,
-                fontSize: "0.75rem",
-                fontFamily: "var(--mono)",
-              }}
-            >
-              <span>DONE (18)</span>
-              <span style={{ background: "rgba(16, 185, 129, 0.15)", padding: "0.1rem 0.4rem", borderRadius: "4px" }}>
-                Shipped
-              </span>
-            </div>
-            <div
-              style={{
-                background: "#1a2330",
-                borderRadius: "8px",
-                padding: "0.75rem",
-                border: "1px solid #283548",
-                opacity: 0.85,
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.4rem",
-              }}
-            >
-              <div style={{ fontSize: "0.75rem", color: "#10b981", fontFamily: "var(--mono)" }}>#KEEL-372</div>
-              <div style={{ color: "#f8fafc", textDecoration: "line-through" }}>
-                Jira &amp; Linear Importer Migration Script
+            {/* VIEW RENDERER */}
+            {activeSidebar === "cycles" ? (
+              /* CYCLES VIEW */
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                <div
+                  style={{
+                    background: "rgba(30, 41, 59, 0.5)",
+                    borderRadius: "16px",
+                    border: "1px solid rgba(255, 255, 255, 0.08)",
+                    padding: "1.25rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "1rem",
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div>
+                      <h4 style={{ margin: 0, fontSize: "1rem", color: "#f8fafc" }}>Sprint Cycle 14 (Active)</h4>
+                      <span style={{ fontSize: "0.75rem", color: "#94a3b8" }}>
+                        Aug 15 - Aug 29 · 14 Work Items · Scope Locked
+                      </span>
+                    </div>
+                    <span
+                      style={{
+                        background: "#0284c7",
+                        color: "#fff",
+                        padding: "0.25rem 0.75rem",
+                        borderRadius: "9999px",
+                        fontWeight: 600,
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      Active Sprint
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      height: "8px",
+                      background: "rgba(255, 255, 255, 0.08)",
+                      borderRadius: "9999px",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "82%",
+                        height: "100%",
+                        background: "linear-gradient(90deg, #0284c7, #38bdf8)",
+                        borderRadius: "9999px",
+                      }}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(3, 1fr)",
+                      gap: "0.75rem",
+                      textAlign: "center",
+                    }}
+                  >
+                    <div style={{ background: "rgba(15, 23, 42, 0.6)", padding: "0.75rem", borderRadius: "10px" }}>
+                      <div style={{ color: "#38bdf8", fontWeight: 700, fontSize: "1.125rem" }}>32 pts</div>
+                      <div style={{ color: "#94a3b8", fontSize: "0.7rem" }}>Completed</div>
+                    </div>
+                    <div style={{ background: "rgba(15, 23, 42, 0.6)", padding: "0.75rem", borderRadius: "10px" }}>
+                      <div style={{ color: "#f59e0b", fontWeight: 700, fontSize: "1.125rem" }}>8 pts</div>
+                      <div style={{ color: "#94a3b8", fontSize: "0.7rem" }}>In Progress</div>
+                    </div>
+                    <div style={{ background: "rgba(15, 23, 42, 0.6)", padding: "0.75rem", borderRadius: "10px" }}>
+                      <div style={{ color: "#10b981", fontWeight: 700, fontSize: "1.125rem" }}>96%</div>
+                      <div style={{ color: "#94a3b8", fontSize: "0.7rem" }}>Burndown Health</div>
+                    </div>
+                  </div>
+                </div>
               </div>
+            ) : activeSidebar === "modules" ? (
+              /* MODULES VIEW */
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                {[
+                  { name: "Realtime Presence Engine", status: "In Progress", progress: "74%", count: "12 issues" },
+                  { name: "SAML SSO & RBAC Engine", status: "In Progress", progress: "90%", count: "8 issues" },
+                  { name: "iOS & macOS Native Clients", status: "Planning", progress: "35%", count: "18 issues" },
+                ].map((m) => (
+                  <div
+                    key={m.name}
+                    style={{
+                      background: "rgba(30, 41, 59, 0.4)",
+                      borderRadius: "14px",
+                      border: "1px solid rgba(255, 255, 255, 0.08)",
+                      padding: "1rem",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0.5rem",
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span style={{ fontWeight: 600, color: "#f8fafc" }}>{m.name}</span>
+                      <span style={{ fontSize: "0.75rem", color: "#38bdf8", fontWeight: 600 }}>{m.progress}</span>
+                    </div>
+                    <div
+                      style={{
+                        height: "6px",
+                        background: "rgba(255, 255, 255, 0.06)",
+                        borderRadius: "9999px",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: m.progress,
+                          height: "100%",
+                          background: "linear-gradient(90deg, #0284c7, #38bdf8)",
+                          borderRadius: "9999px",
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : activeSidebar === "pages" ? (
+              /* PAGES & DOCS VIEW */
               <div
                 style={{
+                  background: "rgba(30, 41, 59, 0.4)",
+                  borderRadius: "16px",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                  padding: "1.25rem",
                   display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: "0.25rem",
-                  fontSize: "0.6875rem",
-                  color: "#94a3b8",
+                  flexDirection: "column",
+                  gap: "0.75rem",
                 }}
               >
-                <span>Passed CI/CD</span>
-                <span style={{ color: "#10b981" }}>✓ Merged</span>
+                <div style={{ fontSize: "1.125rem", fontWeight: 700, color: "#f8fafc" }}>
+                  Technical Architecture Spec v2.4
+                </div>
+                <p style={{ color: "#94a3b8", margin: 0, lineHeight: 1.6 }}>
+                  Keel provides a unified workspace architecture with MobX reactive state management, Django REST
+                  backends, and full AGPL-3.0 data ownership.
+                </p>
+                <div
+                  style={{
+                    padding: "0.75rem",
+                    background: "rgba(15, 23, 42, 0.6)",
+                    borderRadius: "10px",
+                    borderLeft: "3px solid #0284c7",
+                    color: "#38bdf8",
+                    fontSize: "0.75rem",
+                  }}
+                >
+                  Type <code>/</code> for slash commands to embed active issues, cycles, burndown charts, and markdown
+                  tables.
+                </div>
               </div>
-            </div>
+            ) : activeTab === "board" ? (
+              /* 2. KANBAN BOARD VIEW */
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, minmax(210px, 1fr))",
+                  gap: "0.85rem",
+                  alignItems: "start",
+                }}
+              >
+                {/* Column: To Do */}
+                <div
+                  style={{
+                    background: "rgba(30, 41, 59, 0.4)",
+                    borderRadius: "16px",
+                    border: "1px solid rgba(255, 255, 255, 0.08)",
+                    padding: "0.75rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.65rem",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      padding: "0.25rem 0.5rem",
+                    }}
+                  >
+                    <span
+                      style={{ fontWeight: 600, color: "#94a3b8", fontSize: "0.75rem", textTransform: "uppercase" }}
+                    >
+                      ⚪️ Backlog (2)
+                    </span>
+                    <span style={{ fontSize: "0.7rem", color: "#64748b" }}>+</span>
+                  </div>
+                  <div
+                    style={{
+                      background: "rgba(15, 23, 42, 0.7)",
+                      borderRadius: "12px",
+                      border: "1px solid rgba(255, 255, 255, 0.06)",
+                      padding: "0.85rem",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0.5rem",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span style={{ color: "#ef4444", fontSize: "0.7rem", fontWeight: 700 }}>🔴 High</span>
+                      <span style={{ color: "#64748b", fontSize: "0.7rem" }}>KEEL-114</span>
+                    </div>
+                    <span style={{ color: "#f8fafc", fontWeight: 500, lineHeight: 1.4 }}>
+                      Realtime collaboration presence broadcast
+                    </span>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginTop: "0.25rem",
+                      }}
+                    >
+                      <span style={{ color: "#94a3b8", fontSize: "0.7rem" }}>Due Aug 28</span>
+                      <span
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                          borderRadius: "50%",
+                          background: "#0284c7",
+                          color: "#fff",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: "0.65rem",
+                          fontWeight: 700,
+                        }}
+                      >
+                        AK
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      background: "rgba(15, 23, 42, 0.7)",
+                      borderRadius: "12px",
+                      border: "1px solid rgba(255, 255, 255, 0.06)",
+                      padding: "0.85rem",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0.5rem",
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span style={{ color: "#f59e0b", fontSize: "0.7rem", fontWeight: 700 }}>🟡 Medium</span>
+                      <span style={{ color: "#64748b", fontSize: "0.7rem" }}>KEEL-118</span>
+                    </div>
+                    <span style={{ color: "#f8fafc", fontWeight: 500, lineHeight: 1.4 }}>
+                      S3 direct upload presigned URL handler
+                    </span>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginTop: "0.25rem",
+                      }}
+                    >
+                      <span style={{ color: "#94a3b8", fontSize: "0.7rem" }}>Due Sep 2</span>
+                      <span
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                          borderRadius: "50%",
+                          background: "#10b981",
+                          color: "#fff",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: "0.65rem",
+                          fontWeight: 700,
+                        }}
+                      >
+                        MR
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Column: In Progress */}
+                <div
+                  style={{
+                    background: "rgba(30, 41, 59, 0.5)",
+                    borderRadius: "16px",
+                    border: "1px solid rgba(56, 189, 248, 0.2)",
+                    padding: "0.75rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.65rem",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      padding: "0.25rem 0.5rem",
+                    }}
+                  >
+                    <span
+                      style={{ fontWeight: 600, color: "#38bdf8", fontSize: "0.75rem", textTransform: "uppercase" }}
+                    >
+                      🟡 In Progress (3)
+                    </span>
+                    <span
+                      style={{
+                        background: "rgba(56, 189, 248, 0.15)",
+                        color: "#38bdf8",
+                        borderRadius: "9999px",
+                        padding: "0.1rem 0.45rem",
+                        fontSize: "0.65rem",
+                        fontWeight: 700,
+                      }}
+                    >
+                      3
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      background: "rgba(15, 23, 42, 0.8)",
+                      borderRadius: "12px",
+                      border: "1px solid rgba(255, 255, 255, 0.1)",
+                      padding: "0.85rem",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0.5rem",
+                      boxShadow: "0 6px 16px rgba(0,0,0,0.3)",
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span style={{ color: "#ef4444", fontSize: "0.7rem", fontWeight: 700 }}>🔴 High</span>
+                      <span style={{ color: "#64748b", fontSize: "0.7rem" }}>KEEL-104</span>
+                    </div>
+                    <span style={{ color: "#f8fafc", fontWeight: 500, lineHeight: 1.4 }}>
+                      Virtualized table rendering for 10k+ rows
+                    </span>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginTop: "0.25rem",
+                      }}
+                    >
+                      <span style={{ color: "#ef4444", fontSize: "0.7rem", fontWeight: 600 }}>Due Tomorrow</span>
+                      <span
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                          borderRadius: "50%",
+                          background: "#0284c7",
+                          color: "#fff",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: "0.65rem",
+                          fontWeight: 700,
+                        }}
+                      >
+                        MR
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      background: "rgba(15, 23, 42, 0.8)",
+                      borderRadius: "12px",
+                      border: "1px solid rgba(255, 255, 255, 0.1)",
+                      padding: "0.85rem",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0.5rem",
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span style={{ color: "#f59e0b", fontSize: "0.7rem", fontWeight: 700 }}>🟡 Medium</span>
+                      <span style={{ color: "#64748b", fontSize: "0.7rem" }}>KEEL-108</span>
+                    </div>
+                    <span style={{ color: "#f8fafc", fontWeight: 500, lineHeight: 1.4 }}>
+                      Prosemirror slash-commands for embeddings
+                    </span>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginTop: "0.25rem",
+                      }}
+                    >
+                      <span style={{ color: "#94a3b8", fontSize: "0.7rem" }}>Due Aug 24</span>
+                      <span
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                          borderRadius: "50%",
+                          background: "#8b5cf6",
+                          color: "#fff",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: "0.65rem",
+                          fontWeight: 700,
+                        }}
+                      >
+                        AK
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Column: Done */}
+                <div
+                  style={{
+                    background: "rgba(30, 41, 59, 0.4)",
+                    borderRadius: "16px",
+                    border: "1px solid rgba(255, 255, 255, 0.08)",
+                    padding: "0.75rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.65rem",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      padding: "0.25rem 0.5rem",
+                    }}
+                  >
+                    <span
+                      style={{ fontWeight: 600, color: "#10b981", fontSize: "0.75rem", textTransform: "uppercase" }}
+                    >
+                      🟢 Done (2)
+                    </span>
+                    <span style={{ fontSize: "0.7rem", color: "#10b981" }}>✓</span>
+                  </div>
+                  <div
+                    style={{
+                      background: "rgba(15, 23, 42, 0.7)",
+                      borderRadius: "12px",
+                      border: "1px solid rgba(255, 255, 255, 0.06)",
+                      padding: "0.85rem",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0.5rem",
+                      opacity: 0.85,
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span style={{ color: "#10b981", fontSize: "0.7rem", fontWeight: 700 }}>🟢 Low</span>
+                      <span style={{ color: "#64748b", fontSize: "0.7rem" }}>KEEL-99</span>
+                    </div>
+                    <span
+                      style={{ color: "#94a3b8", fontWeight: 500, textDecoration: "line-through", lineHeight: 1.4 }}
+                    >
+                      MobX reactive workspace store hydration
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      background: "rgba(15, 23, 42, 0.7)",
+                      borderRadius: "12px",
+                      border: "1px solid rgba(255, 255, 255, 0.06)",
+                      padding: "0.85rem",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0.5rem",
+                      opacity: 0.85,
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span style={{ color: "#10b981", fontSize: "0.7rem", fontWeight: 700 }}>🟢 Low</span>
+                      <span style={{ color: "#64748b", fontSize: "0.7rem" }}>KEEL-101</span>
+                    </div>
+                    <span
+                      style={{ color: "#94a3b8", fontWeight: 500, textDecoration: "line-through", lineHeight: 1.4 }}
+                    >
+                      Apple glass UI tokens & squircle cards
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ) : activeTab === "calendar" ? (
+              /* 3. CALENDAR VIEW */
+              <div
+                style={{
+                  background: "rgba(30, 41, 59, 0.4)",
+                  borderRadius: "16px",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                  padding: "1rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    borderBottom: "1px solid rgba(255, 255, 255, 0.06)",
+                    paddingBottom: "0.5rem",
+                  }}
+                >
+                  <span style={{ fontWeight: 700, color: "#f8fafc" }}>August 2026 · Sprint Cycle 14</span>
+                  <span style={{ fontSize: "0.75rem", color: "#38bdf8" }}>Week 34 (Aug 18 - 24)</span>
+                </div>
+                <div
+                  style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "0.5rem", minHeight: "180px" }}
+                >
+                  {[
+                    { day: "Mon 18", tasks: [{ id: "KEEL-99", title: "Store hydration", status: "done" }] },
+                    { day: "Tue 19", tasks: [{ id: "KEEL-104", title: "Virtualized tables", status: "active" }] },
+                    { day: "Wed 20", tasks: [{ id: "KEEL-108", title: "Slash commands", status: "active" }] },
+                    { day: "Thu 21", tasks: [{ id: "KEEL-112", title: "Docker multi-arch", status: "active" }] },
+                    { day: "Fri 22", tasks: [{ id: "KEEL-114", title: "Presence broadcast", status: "pending" }] },
+                  ].map((col) => (
+                    <div
+                      key={col.day}
+                      style={{
+                        background: "rgba(15, 23, 42, 0.6)",
+                        borderRadius: "10px",
+                        padding: "0.5rem",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "0.4rem",
+                      }}
+                    >
+                      <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "#94a3b8" }}>{col.day}</span>
+                      {col.tasks.map((t) => (
+                        <div
+                          key={t.id}
+                          style={{
+                            background:
+                              t.status === "done"
+                                ? "rgba(16, 185, 129, 0.2)"
+                                : t.status === "active"
+                                  ? "rgba(2, 132, 199, 0.25)"
+                                  : "rgba(255, 255, 255, 0.06)",
+                            border:
+                              t.status === "done"
+                                ? "1px solid rgba(16, 185, 129, 0.4)"
+                                : t.status === "active"
+                                  ? "1px solid rgba(56, 189, 248, 0.3)"
+                                  : "1px solid rgba(255, 255, 255, 0.08)",
+                            borderRadius: "8px",
+                            padding: "0.4rem 0.5rem",
+                            fontSize: "0.7rem",
+                            color: t.status === "done" ? "#10b981" : t.status === "active" ? "#38bdf8" : "#cbd5e1",
+                            fontWeight: 600,
+                          }}
+                        >
+                          <div style={{ fontSize: "0.65rem", opacity: 0.8 }}>{t.id}</div>
+                          <div style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                            {t.title}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : activeTab === "gantt" ? (
+              /* 4. GANTT TIMELINE VIEW */
+              <div
+                style={{
+                  background: "rgba(30, 41, 59, 0.4)",
+                  borderRadius: "16px",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                  padding: "1rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    borderBottom: "1px solid rgba(255, 255, 255, 0.06)",
+                    paddingBottom: "0.5rem",
+                  }}
+                >
+                  <span style={{ fontWeight: 700, color: "#f8fafc" }}>Roadmap &amp; Timeline Execution</span>
+                  <span style={{ fontSize: "0.75rem", color: "#38bdf8" }}>Aug 15 - Aug 30</span>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+                  {[
+                    {
+                      name: "⚡️ Sprint Cycle 14 Execution",
+                      start: "5%",
+                      width: "75%",
+                      color: "linear-gradient(90deg, #0284c7, #38bdf8)",
+                    },
+                    { name: "KEEL-104: Virtualized rendering", start: "10%", width: "40%", color: "#ef4444" },
+                    { name: "KEEL-108: Prosemirror editor", start: "25%", width: "45%", color: "#f59e0b" },
+                    { name: "KEEL-112: Docker Compose multi-arch", start: "40%", width: "50%", color: "#38bdf8" },
+                  ].map((bar) => (
+                    <div key={bar.name} style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+                      <span style={{ fontSize: "0.75rem", color: "#cbd5e1", fontWeight: 500 }}>{bar.name}</span>
+                      <div
+                        style={{
+                          height: "18px",
+                          background: "rgba(15, 23, 42, 0.6)",
+                          borderRadius: "6px",
+                          position: "relative",
+                          overflow: "hidden",
+                        }}
+                      >
+                        <div
+                          style={{
+                            position: "absolute",
+                            left: bar.start,
+                            width: bar.width,
+                            height: "100%",
+                            background: bar.color,
+                            borderRadius: "6px",
+                            boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : activeTab === "table" ? (
+              /* 5. SPREADSHEET TABLE VIEW */
+              <div
+                style={{
+                  background: "rgba(30, 41, 59, 0.4)",
+                  borderRadius: "16px",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "90px 1.8fr 120px 100px 100px",
+                    padding: "0.65rem 1rem",
+                    background: "rgba(15, 23, 42, 0.7)",
+                    fontWeight: 600,
+                    color: "#94a3b8",
+                    fontSize: "0.725rem",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  <span>ID</span>
+                  <span>Title</span>
+                  <span>State</span>
+                  <span>Priority</span>
+                  <span>Assignee</span>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  {[
+                    {
+                      id: "KEEL-104",
+                      title: "Virtualized table rendering for 10k+ rows",
+                      state: "In Progress",
+                      prio: "🔴 High",
+                      avatar: "MR",
+                      prioColor: "#ef4444",
+                    },
+                    {
+                      id: "KEEL-108",
+                      title: "Prosemirror slash-commands for embeddings",
+                      state: "In Progress",
+                      prio: "🟡 Medium",
+                      avatar: "AK",
+                      prioColor: "#f59e0b",
+                    },
+                    {
+                      id: "KEEL-112",
+                      title: "Docker Compose multi-arch arm64/amd64 build",
+                      state: "In Progress",
+                      prio: "🔵 Normal",
+                      avatar: "DL",
+                      prioColor: "#38bdf8",
+                    },
+                    {
+                      id: "KEEL-114",
+                      title: "Realtime collaboration presence broadcast",
+                      state: "Backlog",
+                      prio: "🔴 High",
+                      avatar: "AK",
+                      prioColor: "#ef4444",
+                    },
+                    {
+                      id: "KEEL-99",
+                      title: "MobX reactive workspace store hydration",
+                      state: "Done",
+                      prio: "🟢 Low",
+                      avatar: "MR",
+                      prioColor: "#10b981",
+                    },
+                  ].map((row, rIdx) => (
+                    <div
+                      key={row.id}
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "90px 1.8fr 120px 100px 100px",
+                        padding: "0.65rem 1rem",
+                        borderTop: "1px solid rgba(255, 255, 255, 0.04)",
+                        alignItems: "center",
+                        background: rIdx % 2 === 0 ? "transparent" : "rgba(255, 255, 255, 0.02)",
+                      }}
+                    >
+                      <span style={{ fontFamily: "var(--mono)", color: "#64748b", fontSize: "0.75rem" }}>{row.id}</span>
+                      <span style={{ color: "#f8fafc", fontWeight: 500 }}>{row.title}</span>
+                      <span
+                        style={{
+                          color: row.state === "Done" ? "#10b981" : row.state === "In Progress" ? "#38bdf8" : "#94a3b8",
+                          fontSize: "0.75rem",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {row.state}
+                      </span>
+                      <span style={{ color: row.prioColor, fontSize: "0.75rem", fontWeight: 600 }}>{row.prio}</span>
+                      <span
+                        style={{
+                          width: "22px",
+                          height: "22px",
+                          borderRadius: "50%",
+                          background: "#0284c7",
+                          color: "#fff",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: "0.65rem",
+                          fontWeight: 700,
+                        }}
+                      >
+                        {row.avatar}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              /* 1. DEFAULT LIST VIEW */
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                {/* In Progress Group */}
+                <div
+                  style={{
+                    background: "rgba(30, 41, 59, 0.4)",
+                    borderRadius: "14px",
+                    border: "1px solid rgba(255, 255, 255, 0.06)",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div
+                    style={{
+                      padding: "0.65rem 1rem",
+                      background: "rgba(30, 41, 59, 0.6)",
+                      fontWeight: 600,
+                      color: "#38bdf8",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <span>🟡 In Progress (3)</span>
+                    <span style={{ fontSize: "0.75rem", color: "#64748b" }}>Sprint Cycle 14</span>
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <div
+                      style={{
+                        padding: "0.65rem 1rem",
+                        borderTop: "1px solid rgba(255, 255, 255, 0.04)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                        <span style={{ color: "#ef4444", fontSize: "0.75rem", fontWeight: 700 }}>🔴 High</span>
+                        <span style={{ color: "#f8fafc", fontWeight: 500 }}>
+                          KEEL-104: Virtualized table rendering for 10k+ rows
+                        </span>
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "1rem",
+                          color: "#94a3b8",
+                          fontSize: "0.75rem",
+                        }}
+                      >
+                        <span>Due tomorrow</span>
+                        <span
+                          style={{
+                            width: "20px",
+                            height: "20px",
+                            borderRadius: "50%",
+                            background: "#0284c7",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: "#fff",
+                            fontSize: "0.65rem",
+                            fontWeight: 700,
+                          }}
+                        >
+                          MR
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        padding: "0.65rem 1rem",
+                        borderTop: "1px solid rgba(255, 255, 255, 0.04)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                        <span style={{ color: "#f59e0b", fontSize: "0.75rem", fontWeight: 700 }}>🟡 Medium</span>
+                        <span style={{ color: "#f8fafc", fontWeight: 500 }}>
+                          KEEL-108: Prosemirror slash-commands for issue embeddings
+                        </span>
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "1rem",
+                          color: "#94a3b8",
+                          fontSize: "0.75rem",
+                        }}
+                      >
+                        <span>Due Aug 24</span>
+                        <span
+                          style={{
+                            width: "20px",
+                            height: "20px",
+                            borderRadius: "50%",
+                            background: "#10b981",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: "#fff",
+                            fontSize: "0.65rem",
+                            fontWeight: 700,
+                          }}
+                        >
+                          AK
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        padding: "0.65rem 1rem",
+                        borderTop: "1px solid rgba(255, 255, 255, 0.04)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                        <span style={{ color: "#38bdf8", fontSize: "0.75rem", fontWeight: 700 }}>🔵 Normal</span>
+                        <span style={{ color: "#f8fafc", fontWeight: 500 }}>
+                          KEEL-112: Docker Compose multi-arch arm64/amd64 build
+                        </span>
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "1rem",
+                          color: "#94a3b8",
+                          fontSize: "0.75rem",
+                        }}
+                      >
+                        <span>Due Aug 26</span>
+                        <span
+                          style={{
+                            width: "20px",
+                            height: "20px",
+                            borderRadius: "50%",
+                            background: "#8b5cf6",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: "#fff",
+                            fontSize: "0.65rem",
+                            fontWeight: 700,
+                          }}
+                        >
+                          DL
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -361,188 +1251,154 @@ export function HeroDashboardMockup() {
 }
 
 export function ProjectsBentoVisual() {
-  return (
-    <div
-      style={{
-        background: "#131b24",
-        border: "1px solid #1e293b",
-        borderRadius: "10px",
-        padding: "1rem",
-        color: "#f8fafc",
-        fontSize: "0.75rem",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderBottom: "1px solid #1e293b",
-          paddingBottom: "0.5rem",
-          marginBottom: "0.75rem",
-        }}
-      >
-        <span style={{ fontWeight: 600, color: "#38bdf8" }}>Platform Roadmap 2026</span>
-        <span style={{ color: "#94a3b8", fontFamily: "var(--mono)" }}>Sprint 24 · 12 Issues</span>
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-        <div
-          style={{
-            background: "#1c2633",
-            padding: "0.5rem",
-            borderRadius: "6px",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <span>🚀 Global CDN Cache Layer</span>
-          <span style={{ color: "#10b981" }}>Done</span>
-        </div>
-        <div
-          style={{
-            background: "#1c2633",
-            padding: "0.5rem",
-            borderRadius: "6px",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <span>⚡️ Real-time WebSocket Gateway</span>
-          <span style={{ color: "#38bdf8" }}>In Progress</span>
-        </div>
-      </div>
-    </div>
-  );
-}
+  const [activeTab, setActiveTab] = useState("list");
 
-export function WikiBentoVisual() {
   return (
-    <div
-      style={{
-        background: "#131b24",
-        border: "1px solid #1e293b",
-        borderRadius: "10px",
-        padding: "1rem",
-        color: "#f8fafc",
-        fontSize: "0.75rem",
-      }}
-    >
+    <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+      <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+        {[
+          { id: "list", label: "📋 List" },
+          { id: "board", label: "📊 Kanban" },
+          { id: "calendar", label: "📅 Calendar" },
+          { id: "gantt", label: "📈 Gantt" },
+          { id: "table", label: "📑 Spreadsheet" },
+        ].map((v) => (
+          <button
+            key={v.id}
+            type="button"
+            onClick={() => setActiveTab(v.id)}
+            style={{
+              border: "none",
+              padding: "0.3rem 0.65rem",
+              background: activeTab === v.id ? "rgba(2, 132, 199, 0.15)" : "rgba(0,0,0,0.05)",
+              color: activeTab === v.id ? "#0284c7" : "var(--fg-muted)",
+              borderRadius: "9999px",
+              fontWeight: activeTab === v.id ? 600 : 400,
+              fontSize: "0.75rem",
+              cursor: "pointer",
+              transition: "all 0.15s ease",
+            }}
+          >
+            {v.label}
+          </button>
+        ))}
+      </div>
       <div
         style={{
+          background: "var(--surface)",
+          border: "1px solid var(--surface-glass-border)",
+          borderRadius: "12px",
+          padding: "0.75rem",
           display: "flex",
-          alignItems: "center",
+          flexDirection: "column",
           gap: "0.5rem",
-          borderBottom: "1px solid #1e293b",
-          paddingBottom: "0.5rem",
-          marginBottom: "0.75rem",
         }}
       >
-        <span>📄</span>
-        <span style={{ fontWeight: 600, color: "#e4e6e7" }}>Engineering Handbook / Architecture Specs</span>
-      </div>
-      <div style={{ color: "#94a3b8", lineHeight: "1.4", fontFamily: "var(--mono)", fontSize: "0.7rem" }}>
-        # Storage Architecture
-        <br />- PostgreSQL 16 + Citus distributed cluster
-        <br />- S3 Compatible Asset Storage with zero-knowledge encryption
-        <br />- Linked work items: #ENG-104, #ENG-105
-      </div>
-    </div>
-  );
-}
-
-export function AiBentoVisual() {
-  return (
-    <div
-      style={{
-        background: "#131b24",
-        border: "1px solid #1e293b",
-        borderRadius: "10px",
-        padding: "1rem",
-        color: "#f8fafc",
-        fontSize: "0.75rem",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderBottom: "1px solid #1e293b",
-          paddingBottom: "0.5rem",
-          marginBottom: "0.75rem",
-        }}
-      >
-        <span style={{ fontWeight: 600, color: "#a855f7" }}>Keel Agent Task Run</span>
-        <span style={{ color: "#10b981", fontFamily: "var(--mono)" }}>● Active</span>
-      </div>
-      <div
-        style={{
-          background: "#0b1015",
-          borderRadius: "6px",
-          padding: "0.6rem",
-          fontFamily: "var(--mono)",
-          fontSize: "0.7rem",
-          color: "#38bdf8",
-        }}
-      >
-        &gt; Analyzing repository commits...
-        <br />
-        &gt; Auto-generating changelog draft for v1.5
-        <br />
-        &gt; Linked 14 issues, 6 contributors
-      </div>
-    </div>
-  );
-}
-
-export function DeskBentoVisual() {
-  return (
-    <div
-      style={{
-        background: "#131b24",
-        border: "1px solid #1e293b",
-        borderRadius: "10px",
-        padding: "1rem",
-        color: "#f8fafc",
-        fontSize: "0.75rem",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderBottom: "1px solid #1e293b",
-          paddingBottom: "0.5rem",
-          marginBottom: "0.75rem",
-        }}
-      >
-        <span style={{ fontWeight: 600, color: "#f59e0b" }}>Customer Intake Triage</span>
-        <span
-          style={{
-            background: "rgba(245, 158, 11, 0.15)",
-            color: "#f59e0b",
-            padding: "0.1rem 0.4rem",
-            borderRadius: "4px",
-          }}
-        >
-          3 New
-        </span>
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
         <div
           style={{
-            background: "#1c2633",
-            padding: "0.45rem",
-            borderRadius: "6px",
             display: "flex",
             justifyContent: "space-between",
+            alignItems: "center",
+            fontSize: "0.8125rem",
+            fontWeight: 600,
           }}
         >
-          <span>Email: SAML SSO setup assistance</span>
-          <span style={{ color: "#38bdf8" }}>Accept → #SEC-99</span>
+          <span>Sprint Cycle #14 Progress</span>
+          <span style={{ color: "#0284c7" }}>82% Complete</span>
+        </div>
+        <div
+          style={{
+            height: "6px",
+            width: "100%",
+            background: "rgba(0,0,0,0.06)",
+            borderRadius: "9999px",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              height: "100%",
+              width: "82%",
+              background: "linear-gradient(90deg, #0284c7, #38bdf8)",
+              borderRadius: "9999px",
+            }}
+          />
         </div>
       </div>
     </div>
   );
 }
+
+export function CyclesBentoVisual() {
+  return (
+    <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+      <div
+        style={{
+          background: "var(--surface)",
+          border: "1px solid var(--surface-glass-border)",
+          borderRadius: "12px",
+          padding: "0.85rem",
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.5rem",
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span style={{ fontWeight: 600, fontSize: "0.8125rem" }}>⚡️ Sprint 14 · Scope Locked</span>
+          <span style={{ fontSize: "0.75rem", color: "#10b981", fontWeight: 600 }}>● 6 Days Left</span>
+        </div>
+        <div style={{ display: "flex", gap: "0.5rem", fontSize: "0.75rem", color: "var(--fg-muted)" }}>
+          <span>48 Total Pts</span> · <span>38 Done</span> · <span>10 Remaining</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function PagesBentoVisual() {
+  return (
+    <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+      <div
+        style={{
+          background: "var(--surface)",
+          border: "1px solid var(--surface-glass-border)",
+          borderRadius: "12px",
+          padding: "0.85rem",
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.4rem",
+          fontSize: "0.8125rem",
+        }}
+      >
+        <div style={{ fontWeight: 600 }}>📄 Release Notes v2.4</div>
+        <div style={{ color: "var(--fg-muted)", fontSize: "0.75rem" }}>
+          Type / to embed issues or cycles directly into docs...
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function DockerBentoVisual() {
+  return (
+    <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+      <div
+        style={{
+          background: "rgba(15, 23, 42, 0.95)",
+          color: "#38bdf8",
+          padding: "0.85rem",
+          borderRadius: "12px",
+          fontFamily: "var(--mono)",
+          fontSize: "0.75rem",
+          border: "1px solid rgba(255, 255, 255, 0.1)",
+        }}
+      >
+        <div>$ docker compose up -d</div>
+        <div style={{ color: "#10b981", marginTop: "0.25rem" }}>✔ All 6 containers started healthy</div>
+      </div>
+    </div>
+  );
+}
+
+export const WikiBentoVisual = PagesBentoVisual;
+export const SelfHostBentoVisual = DockerBentoVisual;
