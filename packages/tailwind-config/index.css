@@ -17,6 +17,20 @@ body {
   @apply font-body bg-canvas text-primary;
 }
 
+/*
+ * Headings carry the display face the marketing site uses; body text stays on
+ * Inter, which holds its shape better at the 11-13px the work item rows run at.
+ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-heading;
+  letter-spacing: -0.011em;
+}
+
 /* emoji icon picker */
 @utility conical-gradient {
   background: conic-gradient(
@@ -199,5 +213,177 @@ body {
   input::placeholder,
   textarea::placeholder {
     @apply text-placeholder;
+  }
+}
+
+/* ---------- Apple/iOS Glassmorphism & Squircle Utilities ---------- */
+/*
+ * Real glass is three things at once, and dropping any one of them makes a
+ * surface read as "translucent panel" rather than glass:
+ *   1. blur + saturate  — colour behind the pane bleeds through and intensifies
+ *   2. a specular hairline along the top edge — the lit rim of a bevel
+ *   3. a soft, wide, downward shadow — the pane floats above the ground
+ *
+ * The three tokens below carry those pieces so every glass surface in the app
+ * is lit from the same angle. They flip with the theme; the utilities do not.
+ */
+/*
+ * Plain custom properties rather than @theme entries: nothing generates a
+ * utility from them, and @theme is tree-shaken against utility usage, so a
+ * token consumed only by hand-written CSS does not belong there.
+ */
+
+/*
+ * The lit rim, as a standalone layer. Put it on a `relative` element whose
+ * children sit above it — it paints a 1px gradient hairline that fades from
+ * bright at the top-left to nothing by the bottom, which is what sells a bevel.
+ */
+@utility specular-border {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(160deg, var(--glass-specular) 0%, transparent 45%);
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+@utility squircle-card {
+  border-radius: 1.25rem;
+}
+
+@utility squircle-modal {
+  border-radius: 1.5rem;
+}
+
+/* ---------- Motion, focus, and interaction ---------- */
+/*
+ * Three things the app kept re-inventing per component, each time with a
+ * slightly different duration, curve, or focus colour. They live here so a row
+ * in the list, a card on the board and an item in the sidebar all respond to
+ * the pointer at the same speed and settle on the same curve.
+ */
+
+/* The house transition. Only the properties that actually change, so a hover
+ * never forces layout or paints an unrelated property. */
+@utility transition-smooth {
+  transition-property: color, background-color, border-color, box-shadow, transform, opacity;
+  transition-duration: 180ms;
+  transition-timing-function: var(--ease-smooth);
+}
+
+@utility transition-smooth-slow {
+  transition-property: color, background-color, border-color, box-shadow, transform, opacity;
+  transition-duration: 320ms;
+  transition-timing-function: var(--ease-smooth);
+}
+
+/*
+ * Keyboard focus, once. `:focus-visible` rather than `:focus` so a pointer
+ * click never paints a ring, and an offset outline rather than a box-shadow so
+ * the ring survives on elements that already carry an elevation shadow.
+ */
+@utility focus-ring {
+  &:focus-visible {
+    outline: 2px solid var(--border-color-accent-strong);
+    outline-offset: 2px;
+    border-radius: inherit;
+  }
+}
+
+/* Same ring, drawn inside the element — for rows and cells that sit flush
+ * against a neighbour and have no room to bleed an outline outward. */
+@utility focus-ring-inset {
+  &:focus-visible {
+    outline: 2px solid var(--border-color-accent-strong);
+    outline-offset: -2px;
+    border-radius: inherit;
+  }
+}
+
+/* The standard "this is grabbable" response: rise a hair, deepen the cast. */
+@utility hover-lift {
+  transition:
+    transform 220ms var(--ease-smooth),
+    box-shadow 220ms var(--ease-smooth),
+    border-color 220ms var(--ease-smooth);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-raised-300);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-raised-100);
+  }
+}
+
+/*
+ * A row that responds to the pointer without moving. Rows live in a stack, and
+ * lifting one shifts the optical rhythm of every row under it — so rows get a
+ * wash and a leading accent rule instead of a lift.
+ */
+@utility interactive-row {
+  position: relative;
+  transition:
+    background-color 150ms var(--ease-smooth),
+    color 150ms var(--ease-smooth);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0.25rem;
+    bottom: 0.25rem;
+    left: 0;
+    width: 2px;
+    border-radius: 9999px;
+    background: var(--border-color-accent-strong);
+    opacity: 0;
+    transform: scaleY(0.4);
+    transform-origin: center;
+    transition:
+      opacity 180ms var(--ease-smooth),
+      transform 180ms var(--ease-smooth);
+    pointer-events: none;
+  }
+
+  &:hover {
+    background-color: var(--background-color-layer-1-hover);
+  }
+
+  &:hover::before,
+  &[data-active="true"]::before {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+/*
+ * Honour the OS setting globally rather than per component. Motion is removed;
+ * colour and shadow changes are kept, because those carry the state, and a
+ * hover that communicates nothing is worse than one that moves.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .hover-lift:hover,
+  .hover-lift:active {
+    transform: none;
+  }
+
+  .interactive-row::before {
+    transition: opacity 1ms linear;
+    transform: scaleY(1);
   }
 }

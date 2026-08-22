@@ -5,7 +5,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { CircleCheck, XCircle } from "lucide-react";
+import { CircleCheck, XCircle } from "@keel/propel/icons";
 import { API_BASE_URL } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";
 import { Button } from "@keel/propel/button";

@@ -57,6 +57,42 @@
       "title": "Token di accesso personali",
       "description": "Genera token API sicuri per integrare i tuoi dati con sistemi e applicazioni esterni."
     },
+    "ai": {
+      "title": "Fornitore di IA",
+      "description": "Colleghi la Sua chiave API per usare le funzionalità di IA. Keel non addebita l'uso del modello — lo fa il Suo fornitore.",
+      "key_absent": "Nessuna chiave salvata",
+      "key_stored": "Chiave salvata: {hint}",
+      "replace_placeholder": "Inserisca una nuova chiave per sostituire quella salvata",
+      "get_key": "Ottieni una chiave API {provider}",
+      "save": "Salva",
+      "update": "Aggiorna",
+      "remove": "Rimuovi",
+      "show_key": "Mostra chiave",
+      "hide_key": "Nascondi chiave",
+      "privacy_note": "Le chiavi vengono cifrate prima di essere salvate e vengono decifrate solo sul server al momento di una richiesta. Non vengono mai rinviate al Suo browser.",
+      "unavailable": "Le funzionalità di IA non sono disponibili perché questa istanza non è collegata a Supabase.",
+      "toast": {
+        "saved": {
+          "title": "Chiave salvata",
+          "message": "La Sua chiave API {provider} è salvata e pronta all'uso."
+        },
+        "removed": {
+          "title": "Chiave rimossa",
+          "message": "La Sua chiave API {provider} è stata eliminata."
+        },
+        "error": {
+          "message": "Non è stato possibile salvare questa chiave. La verifichi e riprovi."
+        }
+      },
+      "connected": "Connesso",
+      "default_badge": "Predefinito",
+      "add_title": "Aggiungere un provider",
+      "replace_title": "Sostituire la chiave salvata",
+      "provider_label": "Provider",
+      "model_label": "Modello",
+      "model_placeholder": "Selezionare un modello",
+      "key_label": "Chiave API"
+    },
     "activity": {
       "heading": "Attività",
       "description": "Traccia le tue azioni e modifiche recenti su tutti i progetti ed elementi di lavoro."
@@ -103,7 +139,8 @@
       "preferences": "Preferenze",
       "notifications": "Notifiche",
       "api-tokens": "Token di accesso personali",
-      "connections": "Connessioni"
+      "connections": "Connessioni",
+      "ai": "Fornitore di IA"
     },
     "tabs": {
       "summary": "Riepilogo",

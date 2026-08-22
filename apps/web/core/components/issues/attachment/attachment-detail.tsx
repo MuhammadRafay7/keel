@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import Link from "next/link";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle } from "@keel/propel/icons";
 import { CloseIcon } from "@keel/propel/icons";
 // ui
 import { Tooltip } from "@keel/propel/tooltip";

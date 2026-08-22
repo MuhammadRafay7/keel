@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { Loader } from "lucide-react";
+import { Loader } from "@keel/propel/icons";
 import { CloseIcon } from "@keel/propel/icons";
 // keel imports
 import { TOAST_TYPE, setToast } from "@keel/propel/toast";

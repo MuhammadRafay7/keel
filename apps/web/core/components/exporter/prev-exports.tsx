@@ -7,7 +7,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import useSWR, { mutate } from "swr";
-import { MoveLeft, MoveRight, RefreshCw } from "lucide-react";
+import { MoveLeft, MoveRight, RefreshCw } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 import { Button } from "@keel/propel/button";

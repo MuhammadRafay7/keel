@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import type { LucideIcon } from "lucide-react";
+import type { LucideIcon } from "@keel/propel/icons";
 import { MembersPropertyIcon } from "@keel/propel/icons";
 // keel ui
 import { Avatar, AvatarGroup } from "@keel/ui";

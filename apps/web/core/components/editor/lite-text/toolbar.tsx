@@ -5,7 +5,7 @@
  */
 
 import React, { useEffect, useState, useCallback } from "react";
-import type { LucideIcon } from "lucide-react";
+import type { LucideIcon } from "@keel/propel/icons";
 
 import { EIssueCommentAccessSpecifier } from "@keel/constants";
 // editor

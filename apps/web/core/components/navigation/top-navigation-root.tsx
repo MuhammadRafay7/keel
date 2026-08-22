@@ -18,8 +18,8 @@ import { AppSidebarItem } from "@/components/sidebar/sidebar-item";
 import { InboxIcon } from "@keel/propel/icons";
 import useSWR from "swr";
 import { useWorkspaceNotifications } from "@/hooks/store/notifications";
-// local imports
-import { StarUsOnGitHubLink } from "@/app/(all)/[workspaceSlug]/(projects)/star-us-link";
+import { toggleAgentChat } from "@/components/ai";
+import { Sparkles } from "@keel/propel/icons";
 
 export const TopNavigationRoot = observer(function TopNavigationRoot() {
   // router
@@ -46,9 +46,12 @@ export const TopNavigationRoot = observer(function TopNavigationRoot() {
 
   return (
     <div
-      className={cn("z-[27] flex min-h-10 w-full items-center bg-canvas px-3.5 transition-all duration-300", {
-        "px-2": !showLabel,
-      })}
+      className={cn(
+        "z-[27] flex min-h-12 w-full items-center border-b border-subtle bg-surface-1 px-3.5 transition-all duration-300",
+        {
+          "px-2": !showLabel,
+        }
+      )}
     >
       {/* Workspace Menu */}
       <div className="flex-1 shrink-0">
@@ -77,8 +80,22 @@ export const TopNavigationRoot = observer(function TopNavigationRoot() {
             }}
           />
         </Tooltip>
+        {/*
+          The AI trigger lives in the top bar rather than as a pill floating
+          over the page. Floating over the board covered the quick-add control
+          in the last column, and it followed the user onto the sign-in screen.
+        */}
+        <Tooltip tooltipContent="Keel AI  ⌘J" position="bottom">
+          <button
+            type="button"
+            onClick={toggleAgentChat}
+            aria-label="Open Keel AI"
+            className="flex size-8 items-center justify-center focus-ring rounded-md text-tertiary transition-smooth hover:bg-layer-1-hover hover:text-accent-primary"
+          >
+            <Sparkles className="size-[18px]" />
+          </button>
+        </Tooltip>
         <HelpMenuRoot />
-        <StarUsOnGitHubLink />
         <div className="flex size-8 items-center justify-center rounded-md hover:bg-layer-1-hover">
           <UserMenuRoot />
         </div>

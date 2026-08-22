@@ -6,7 +6,7 @@
 
 import React, { useCallback, useState } from "react";
 import { observer } from "mobx-react";
-import { ListFilterPlus } from "lucide-react";
+import { ListFilterPlus } from "@keel/propel/icons";
 import { Transition } from "@headlessui/react";
 // keel imports
 import { Button } from "@keel/propel/button";
@@ -125,10 +125,10 @@ export const FiltersRow = observer(function FiltersRow<K extends TFilterProperty
   );
 
   const mainContent = (
-    <div className="flex w-full items-start gap-2 rounded-lg bg-layer-1 px-4 py-2">
+    <div className="flex w-full items-start gap-2 rounded-xl border border-subtle bg-surface-2/60 px-3.5 py-1.5 shadow-raised-100 backdrop-blur-md">
       <div className="flex w-full flex-wrap items-center gap-2">{leftContent}</div>
       <div
-        className={cn("flex items-center gap-2 border-l border-subtle pl-4", {
+        className={cn("flex items-center gap-2 border-l border-subtle pl-3", {
           "border-l-transparent pl-0": !hasAvailableOperations,
         })}
       >

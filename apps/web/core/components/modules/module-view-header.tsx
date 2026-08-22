@@ -7,7 +7,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { ListFilter } from "lucide-react";
+import { ListFilter } from "@keel/propel/icons";
 // keel helpers
 import { MODULE_VIEW_LAYOUTS } from "@keel/constants";
 import { useOutsideClickDetector } from "@keel/hooks";

@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 import { TOAST_TYPE, setToast } from "@keel/propel/toast";

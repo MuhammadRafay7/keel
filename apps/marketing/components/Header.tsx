@@ -1,33 +1,62 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Mark } from "./Mark";
 import { ThemeToggle } from "./ThemeToggle";
+import { ListIcon, CycleIcon, ModuleIcon, DocIcon, SparklesIcon } from "./Icons";
 
 const APP = "https://app.keel.ostenmark.com";
+const SALES_EMAIL = "sales@ostenmark.com";
 
 export function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const navRef = useRef<HTMLElement | null>(null);
+
+  const handleMouseEnter = (menu: string) => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setActiveDropdown(menu);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null);
+    }, 150);
+  };
+
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setActiveDropdown(null);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   return (
     <header className="site-header">
       <div className="shell nav">
-        {/* Brand Logo & Wordmark */}
-        <Link href="/" className="logo">
+        {/* Brand Logo */}
+        <Link href="/" className="logo" aria-label="Keel Home">
           <Mark className="logo-mark" />
-          <b style={{ color: "var(--fg)" }}>Keel</b>
+          <span style={{ color: "var(--fg)", fontWeight: 700, fontSize: "1.25rem" }}>Keel</span>
         </Link>
 
-        {/* Desktop Navigation Links with Interactive Dropdowns */}
-        <nav className="nav-menu" onMouseLeave={() => setActiveDropdown(null)}>
+        {/* Desktop Navigation */}
+        <nav ref={navRef} className="nav-menu" aria-label="Main Navigation" onMouseLeave={handleMouseLeave}>
           {/* Product Dropdown */}
-          <div className="nav-item" onMouseEnter={() => setActiveDropdown("product")}>
+          <div className="nav-item" onMouseEnter={() => handleMouseEnter("product")}>
             <button
               type="button"
               className={`nav-link-btn ${activeDropdown === "product" ? "active" : ""}`}
               onClick={() => setActiveDropdown(activeDropdown === "product" ? null : "product")}
+              aria-expanded={activeDropdown === "product"}
             >
               Product
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ marginLeft: "2px" }}>
@@ -42,136 +71,98 @@ export function Header() {
             </button>
 
             {activeDropdown === "product" && (
-              <div className="nav-dropdown">
+              <div className="nav-dropdown" onMouseEnter={() => handleMouseEnter("product")}>
                 <Link href="/features" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">Projects &amp; Work Items</span>
-                  <span className="dropdown-item-desc">Plan, track, and ship with issues, cycles, and modules</span>
-                </Link>
-                <Link href="/docs" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">Pages &amp; Wiki</span>
-                  <span className="dropdown-item-desc">Collaborative rich-text docs tied directly to work</span>
+                  <span
+                    className="dropdown-item-title"
+                    style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}
+                  >
+                    <ListIcon size={14} style={{ color: "var(--accent)" }} /> 5 Dynamic Work Views
+                  </span>
+                  <span className="dropdown-item-desc">
+                    List, Board, Calendar, Table spreadsheet &amp; Timeline Gantt
+                  </span>
                 </Link>
                 <Link href="/features" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">Keel AI</span>
-                  <span className="dropdown-item-desc">Autonomous agents and workspace context graph</span>
+                  <span
+                    className="dropdown-item-title"
+                    style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}
+                  >
+                    <CycleIcon size={14} style={{ color: "var(--accent)" }} /> Cycles &amp; Sprints
+                  </span>
+                  <span className="dropdown-item-desc">
+                    Time-boxed iterations, scope locking &amp; burndown tracking
+                  </span>
                 </Link>
                 <Link href="/features" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">Intake Triage</span>
-                  <span className="dropdown-item-desc">Triage incoming requests before touching backlogs</span>
+                  <span
+                    className="dropdown-item-title"
+                    style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}
+                  >
+                    <ModuleIcon size={14} style={{ color: "var(--accent)" }} /> Modules &amp; Roadmaps
+                  </span>
+                  <span className="dropdown-item-desc">Multi-sprint feature initiatives and milestone rollups</span>
+                </Link>
+                <Link href="/features" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
+                  <span
+                    className="dropdown-item-title"
+                    style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}
+                  >
+                    <DocIcon size={14} style={{ color: "var(--accent)" }} /> Pages &amp; Collaborative Docs
+                  </span>
+                  <span className="dropdown-item-desc">Rich documents tied directly to active work items</span>
+                </Link>
+                <Link href="/features" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
+                  <span
+                    className="dropdown-item-title"
+                    style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}
+                  >
+                    <SparklesIcon size={14} style={{ color: "var(--accent)" }} /> Bring Your Own AI Key
+                  </span>
+                  <span className="dropdown-item-desc">Direct Anthropic, OpenAI, Google, Groq API key integration</span>
                 </Link>
               </div>
             )}
           </div>
 
-          {/* Solutions Dropdown */}
-          <div className="nav-item" onMouseEnter={() => setActiveDropdown("solutions")}>
-            <button
-              type="button"
-              className={`nav-link-btn ${activeDropdown === "solutions" ? "active" : ""}`}
-              onClick={() => setActiveDropdown(activeDropdown === "solutions" ? null : "solutions")}
-            >
-              Solutions
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ marginLeft: "2px" }}>
-                <path
-                  d="M2.5 4.5L6 8L9.5 4.5"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-
-            {activeDropdown === "solutions" && (
-              <div className="nav-dropdown">
-                <Link href="/about" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">Enterprise Teams</span>
-                  <span className="dropdown-item-desc">SOC 2, SAML SSO, air-gapped deployments</span>
-                </Link>
-                <Link href="/about" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">Engineering &amp; Agile</span>
-                  <span className="dropdown-item-desc">Cycles, sprint velocity, and Git synchronization</span>
-                </Link>
-                <Link href="/about" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">Startups &amp; Growing Teams</span>
-                  <span className="dropdown-item-desc">Fast onboarding and high-speed execution</span>
-                </Link>
-              </div>
-            )}
-          </div>
-
-          {/* Resources Dropdown */}
-          <div className="nav-item" onMouseEnter={() => setActiveDropdown("resources")}>
-            <button
-              type="button"
-              className={`nav-link-btn ${activeDropdown === "resources" ? "active" : ""}`}
-              onClick={() => setActiveDropdown(activeDropdown === "resources" ? null : "resources")}
-            >
-              Resources
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ marginLeft: "2px" }}>
-                <path
-                  d="M2.5 4.5L6 8L9.5 4.5"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-
-            {activeDropdown === "resources" && (
-              <div className="nav-dropdown">
-                <Link href="/docs" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">Documentation</span>
-                  <span className="dropdown-item-desc">Guides, tutorials, and configuration references</span>
-                </Link>
-                <Link href="/changelog" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">Changelog</span>
-                  <span className="dropdown-item-desc">Latest product updates and release notes</span>
-                </Link>
-                <Link href="/about" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">Customer Stories</span>
-                  <span className="dropdown-item-desc">How engineering teams scale with Keel</span>
-                </Link>
-              </div>
-            )}
-          </div>
-
+          <Link href="/features" className="nav-link-btn">
+            Features
+          </Link>
           <Link href="/about" className="nav-link-btn">
-            Pricing
+            About
           </Link>
           <Link href="/docs" className="nav-link-btn">
-            Self-host Keel
+            Docs
+          </Link>
+          <Link href="/changelog" className="nav-link-btn">
+            Changelog
           </Link>
         </nav>
 
-        {/* Right Nav Actions */}
+        {/* Action Buttons */}
         <div className="nav-actions">
           <ThemeToggle />
-          <Link href="/contact" className="btn btn-quiet btn-sm" style={{ display: "none" }}>
-            Contact sales
-          </Link>
-          <a className="btn btn-quiet btn-sm" href={APP}>
-            Login
+          <a href={`mailto:${SALES_EMAIL}`} className="btn btn-secondary btn-sm">
+            Talk to sales
           </a>
-          <a className="btn btn-inverse btn-sm" href={`${APP}/sign-up`}>
-            Get started free
+          <a href={`${APP}/sign-in`} className="btn btn-brand btn-sm">
+            Launch Workspace
           </a>
+
+          {/* Mobile Menu Button */}
           <button
             type="button"
             className="mobile-menu-btn"
-            aria-label="Toggle navigation"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M18 6L6 18M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            )}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              {mobileMenuOpen ? (
+                <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
+              ) : (
+                <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" strokeLinejoin="round" />
+              )}
+            </svg>
           </button>
         </div>
       </div>
@@ -179,41 +170,27 @@ export function Header() {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="mobile-nav-drawer">
-          <Link
-            href="/features"
-            onClick={() => setMobileMenuOpen(false)}
-            style={{ fontSize: "1.1rem", fontWeight: 600 }}
-          >
+          <Link href="/features" className="nav-link-btn" onClick={() => setMobileMenuOpen(false)}>
             Features
           </Link>
-          <Link href="/docs" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "1.1rem", fontWeight: 600 }}>
+          <Link href="/about" className="nav-link-btn" onClick={() => setMobileMenuOpen(false)}>
+            About
+          </Link>
+          <Link href="/docs" className="nav-link-btn" onClick={() => setMobileMenuOpen(false)}>
             Documentation
           </Link>
-          <Link
-            href="/changelog"
-            onClick={() => setMobileMenuOpen(false)}
-            style={{ fontSize: "1.1rem", fontWeight: 600 }}
-          >
+          <Link href="/changelog" className="nav-link-btn" onClick={() => setMobileMenuOpen(false)}>
             Changelog
           </Link>
-          <Link href="/about" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "1.1rem", fontWeight: 600 }}>
-            About &amp; Pricing
+          <Link href="/contact" className="nav-link-btn" onClick={() => setMobileMenuOpen(false)}>
+            Contact
           </Link>
-          <Link
-            href="/contact"
-            onClick={() => setMobileMenuOpen(false)}
-            style={{ fontSize: "1.1rem", fontWeight: 600 }}
-          >
-            Contact Sales
-          </Link>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginTop: "1rem" }}>
-            <a className="btn btn-secondary" href={APP}>
-              Login
-            </a>
-            <a className="btn btn-inverse" href={`${APP}/sign-up`}>
-              Get started free
-            </a>
-          </div>
+          <a href={`mailto:${SALES_EMAIL}`} className="btn btn-secondary">
+            Talk to sales
+          </a>
+          <a href={`${APP}/sign-in`} className="btn btn-brand">
+            Launch Workspace
+          </a>
         </div>
       )}
     </header>

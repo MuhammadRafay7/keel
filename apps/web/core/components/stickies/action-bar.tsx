@@ -8,7 +8,7 @@ import { useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
-import { StickyNote as StickyIcon } from "lucide-react";
+import { StickyNote as StickyIcon } from "@keel/propel/icons";
 // keel hooks
 import { useOutsideClickDetector } from "@keel/hooks";
 // keel ui
@@ -63,7 +63,7 @@ export const StickyActionBar = observer(function StickyActionBar() {
       >
         <Tooltip tooltipContent="All stickies" isMobile={false} position="left">
           <button
-            className="btn btn--icon shadow-sm flex h-10 w-10 items-center justify-center rounded-full bg-surface-1"
+            className="btn btn--icon flex h-10 w-10 items-center justify-center rounded-full bg-surface-1 shadow-raised-100"
             onClick={() => toggleAllStickiesModal(true)}
           >
             <RecentStickyIcon className="size-5 rotate-90 text-tertiary" />
@@ -92,7 +92,7 @@ export const StickyActionBar = observer(function StickyActionBar() {
             disabled={showRecentSticky}
           >
             <button
-              className="btn btn--icon shadow-sm flex h-10 w-10 items-center justify-center rounded-full bg-surface-1"
+              className="btn btn--icon flex h-10 w-10 items-center justify-center rounded-full bg-surface-1 shadow-raised-100"
               onClick={() => setShowRecentSticky(true)}
               style={{ color: recentStickyBackgroundColor }}
             >
@@ -102,7 +102,7 @@ export const StickyActionBar = observer(function StickyActionBar() {
         )}
         <Tooltip tooltipContent="Add sticky" isMobile={false} position="left">
           <button
-            className="btn btn--icon shadow-sm flex h-10 w-10 items-center justify-center rounded-full bg-surface-1"
+            className="btn btn--icon flex h-10 w-10 items-center justify-center rounded-full bg-surface-1 shadow-raised-100"
             onClick={() => {
               updateActiveStickyId("");
               toggleShowNewSticky(true);
@@ -115,7 +115,7 @@ export const StickyActionBar = observer(function StickyActionBar() {
       </div>
 
       <button
-        className={`btn btn--icon shadow-sm flex h-10 w-10 items-center justify-center rounded-full bg-surface-1 transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`}
+        className={`btn btn--icon flex h-10 w-10 items-center justify-center rounded-full bg-surface-1 shadow-raised-100 transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`}
         onClick={() => setIsExpanded(!isExpanded)}
       >
         {isExpanded ? (

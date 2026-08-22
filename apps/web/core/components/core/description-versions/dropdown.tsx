@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { History } from "lucide-react";
+import { History } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 import type { TDescriptionVersion } from "@keel/types";

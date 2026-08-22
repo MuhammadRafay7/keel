@@ -7,7 +7,7 @@
 // keel package imports
 import type { ReactNode } from "react";
 import React from "react";
-import { Calendar } from "lucide-react";
+import { Calendar } from "@keel/propel/icons";
 // keel package imports
 import { ANALYTICS_DURATION_FILTER_OPTIONS } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import useSWR from "swr";
-import { EyeIcon, TriangleAlert } from "lucide-react";
+import { EyeIcon, TriangleAlert } from "@keel/propel/icons";
 // keel imports
 import { Button } from "@keel/propel/button";
 import { TOAST_TYPE, setToast } from "@keel/propel/toast";

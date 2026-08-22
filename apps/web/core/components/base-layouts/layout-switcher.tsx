@@ -29,7 +29,7 @@ export function LayoutSwitcher(props: Props) {
   };
 
   return (
-    <div className="flex items-center gap-1 rounded-md bg-layer-3 p-1">
+    <div className="flex items-center gap-0.5 rounded-lg border border-subtle bg-surface-2/80 p-0.5 backdrop-blur-md">
       {BASE_LAYOUTS.filter((l) => (layouts ? layouts.includes(l.key) : true)).map((layout) => {
         const Icon = layout.icon;
         return (
@@ -37,9 +37,10 @@ export function LayoutSwitcher(props: Props) {
             <button
               type="button"
               className={cn(
-                "group grid h-5.5 w-7 place-items-center overflow-hidden rounded-sm transition-all hover:bg-layer-transparent-hover",
+                "group grid h-6 w-7 place-items-center overflow-hidden rounded-md transition-all duration-150",
                 {
-                  "bg-layer-transparent-active hover:bg-layer-transparent-active": selectedLayout === layout.key,
+                  "bg-surface-1 text-primary shadow-raised-100": selectedLayout === layout.key,
+                  "text-tertiary hover:bg-surface-1/50 hover:text-primary": selectedLayout !== layout.key,
                 }
               )}
               onClick={() => handleOnChange(layout.key)}
@@ -50,7 +51,7 @@ export function LayoutSwitcher(props: Props) {
                 strokeWidth={2}
                 className={cn("size-3.5", {
                   "text-primary": selectedLayout === layout.key,
-                  "text-secondary": selectedLayout !== layout.key,
+                  "text-tertiary group-hover:text-primary": selectedLayout !== layout.key,
                 })}
               />
             </button>

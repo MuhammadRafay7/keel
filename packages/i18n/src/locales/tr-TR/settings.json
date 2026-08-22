@@ -57,6 +57,42 @@
       "title": "Kişisel Erişim Tokenları",
       "description": "Verilerinizi harici sistemler ve uygulamalarla entegre etmek için güvenli API tokenları oluşturun."
     },
+    "ai": {
+      "title": "Yapay zekâ sağlayıcısı",
+      "description": "Yapay zekâ özelliklerini kullanmak için kendi API anahtarınızı bağlayın. Model kullanımı için sizden Keel değil, sağlayıcınız ücret alır.",
+      "key_absent": "Kayıtlı anahtar yok",
+      "key_stored": "Kayıtlı anahtar: {hint}",
+      "replace_placeholder": "Kayıtlı anahtarın yerine geçecek yeni bir anahtar girin",
+      "get_key": "{provider} API anahtarı edinin",
+      "save": "Kaydet",
+      "update": "Güncelle",
+      "remove": "Kaldır",
+      "show_key": "Anahtarı göster",
+      "hide_key": "Anahtarı gizle",
+      "privacy_note": "Anahtarlar kaydedilmeden önce şifrelenir ve yalnızca bir istek yapıldığında sunucuda çözülür. Tarayıcınıza asla geri gönderilmez.",
+      "unavailable": "Bu örnek Supabase'e bağlı olmadığı için yapay zekâ özellikleri kullanılamıyor.",
+      "toast": {
+        "saved": {
+          "title": "Anahtar kaydedildi",
+          "message": "{provider} API anahtarınız kaydedildi ve kullanıma hazır."
+        },
+        "removed": {
+          "title": "Anahtar kaldırıldı",
+          "message": "{provider} API anahtarınız silindi."
+        },
+        "error": {
+          "message": "Bu anahtarı kaydedemedik. Lütfen kontrol edip yeniden deneyin."
+        }
+      },
+      "connected": "Bağlandı",
+      "default_badge": "Varsayılan",
+      "add_title": "Sağlayıcı ekleyin",
+      "replace_title": "Kayıtlı anahtarı değiştirin",
+      "provider_label": "Sağlayıcı",
+      "model_label": "Model",
+      "model_placeholder": "Bir model seçin",
+      "key_label": "API anahtarı"
+    },
     "activity": {
       "heading": "Aktivite",
       "description": "Tüm projeler ve iş öğeleri genelinde son eylemlerinizi ve değişikliklerinizi izleyin."
@@ -103,7 +139,8 @@
       "preferences": "Tercihler",
       "notifications": "Bildirimler",
       "api-tokens": "Kişisel Erişim Tokenları",
-      "connections": "Bağlantılar"
+      "connections": "Bağlantılar",
+      "ai": "Yapay zekâ sağlayıcısı"
     },
     "tabs": {
       "summary": "Özet",

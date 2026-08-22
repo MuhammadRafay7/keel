@@ -118,6 +118,11 @@ export const handleIssueQueryParamsByLayout = (
 
   const currentViewLayoutOptions = ISSUE_DISPLAY_FILTERS_BY_PAGE[viewType].layoutOptions[layout];
 
+  // A layout the page has no options for — a stale value persisted against an
+  // older build, say — carries no display filters rather than throwing here and
+  // taking the whole filter row down with it.
+  if (!currentViewLayoutOptions) return queryParams;
+
   // add display filters query params
   Object.keys(currentViewLayoutOptions.display_filters).forEach((option) => {
     queryParams.push(option as TIssueParams);
@@ -275,6 +280,9 @@ export const issueCountBasedOnFilters = (
  * @param {IIssueDisplayFilterOptions} displayFilters
  * @returns {IIssueDisplayFilterOptions}
  */
+/** Layouts a work item view can actually render; anything else falls back. */
+const SUPPORTED_LAYOUTS: EIssueLayoutTypes[] = Object.values(EIssueLayoutTypes);
+
 export const getComputedDisplayFilters = (
   displayFilters: IIssueDisplayFilterOptions = {},
   defaultValues?: IIssueDisplayFilterOptions
@@ -285,7 +293,7 @@ export const getComputedDisplayFilters = (
       show_weekends: filters?.calendar?.show_weekends || false,
       layout: filters?.calendar?.layout || "month",
     },
-    layout: filters?.layout || EIssueLayoutTypes.LIST,
+    layout: SUPPORTED_LAYOUTS.includes(filters?.layout) ? filters?.layout : EIssueLayoutTypes.LIST,
     order_by: filters?.order_by || "sort_order",
     group_by: filters?.group_by || null,
     sub_group_by: filters?.sub_group_by || null,

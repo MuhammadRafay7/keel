@@ -39,7 +39,7 @@ export const WithLabel: Story = {
     return (
       <div className="flex items-center gap-2">
         <Switch {...args} value={value} onChange={setValue} label="Enable notifications" />
-        <label className="text-13">Enable notifications</label>
+        <span className="text-13">Enable notifications</span>
       </div>
     );
   },
@@ -127,7 +127,7 @@ export const InForm: Story = {
     const [updates, setUpdates] = useState(true);
 
     return (
-      <div className="border-gray-200 shadow-md w-80 rounded-lg border bg-white p-6">
+      <div className="border-gray-200 w-80 rounded-lg border bg-white p-6 shadow-raised-200">
         <h3 className="text-16 font-semibold">Notification Settings</h3>
         <div className="mt-4 space-y-4">
           <div className="flex items-center justify-between">

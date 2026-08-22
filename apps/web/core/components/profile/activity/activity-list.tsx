@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { History, MessageSquare } from "lucide-react";
+import { History, MessageSquare } from "@keel/propel/icons";
 // keel imports
 import type { IUserActivityResponse } from "@keel/types";
 import { calculateTimeAgo, getFileURL } from "@keel/utils";

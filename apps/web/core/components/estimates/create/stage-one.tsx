@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { Info } from "lucide-react";
+import { Info } from "@keel/propel/icons";
 // keel imports
 import { EEstimateSystem, ESTIMATE_SYSTEMS } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

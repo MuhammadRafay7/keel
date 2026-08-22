@@ -6,7 +6,7 @@
 
 import { useCallback } from "react";
 import { useParams } from "next/navigation";
-import { ArchiveIcon, ArchiveRestoreIcon, LockKeyhole, LockKeyholeOpen, Star, StarOff } from "lucide-react";
+import { ArchiveIcon, ArchiveRestoreIcon, LockKeyhole, LockKeyholeOpen, Star, StarOff } from "@keel/propel/icons";
 import { useTranslation } from "@keel/i18n";
 // keel imports
 import { LinkIcon, GlobeIcon, LockIcon } from "@keel/propel/icons";

@@ -82,6 +82,11 @@ export const coreRoutes: RouteConfigEntry[] = [
           route(":workspaceSlug/drafts", "./(all)/[workspaceSlug]/(projects)/drafts/page.tsx"),
         ]),
 
+        // Workspace Chat
+        layout("./(all)/[workspaceSlug]/(projects)/chat/layout.tsx", [
+          route(":workspaceSlug/chat", "./(all)/[workspaceSlug]/(projects)/chat/page.tsx"),
+        ]),
+
         // Notifications
         layout("./(all)/[workspaceSlug]/(projects)/notifications/layout.tsx", [
           route(":workspaceSlug/notifications", "./(all)/[workspaceSlug]/(projects)/notifications/page.tsx"),
@@ -138,6 +143,13 @@ export const coreRoutes: RouteConfigEntry[] = [
             route(
               ":workspaceSlug/projects/:projectId/issues",
               "./(all)/[workspaceSlug]/(projects)/projects/(detail)/[projectId]/issues/(list)/page.tsx"
+            ),
+          ]),
+          // Project Chat
+          layout("./(all)/[workspaceSlug]/(projects)/projects/(detail)/[projectId]/chat/layout.tsx", [
+            route(
+              ":workspaceSlug/projects/:projectId/chat",
+              "./(all)/[workspaceSlug]/(projects)/projects/(detail)/[projectId]/chat/page.tsx"
             ),
           ]),
           // Issue Detail

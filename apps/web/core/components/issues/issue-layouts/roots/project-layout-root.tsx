@@ -8,17 +8,18 @@ import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
 // keel constants
-import { ISSUE_DISPLAY_FILTERS_BY_PAGE, PROJECT_VIEW_TRACKER_ELEMENTS } from "@keel/constants";
+import { EUserPermissions, EUserPermissionsLevel, ISSUE_DISPLAY_FILTERS_BY_PAGE } from "@keel/constants";
 import { EIssueLayoutTypes, EIssuesStoreType } from "@keel/types";
 import { Spinner } from "@keel/ui";
 // components
+import { WorkItemViewToolbar } from "@/components/issues/view-toolbar";
 import { ProjectLevelWorkItemFiltersHOC } from "@/components/work-item-filters/filters-hoc/project-level";
-import { WorkItemFiltersRow } from "@/components/work-item-filters/filters-row";
 // hooks
 import { useIssues } from "@/hooks/store/use-issues";
+import { useProject } from "@/hooks/store/use-project";
+import { useUserPermissions } from "@/hooks/store/user";
 import { IssuesStoreContext } from "@/hooks/use-issue-layout-store";
 // local imports
-import { ClickUpChatView } from "@/components/chat/chat-view";
 import { IssuePeekOverview } from "../../peek-overview";
 import { CalendarLayout } from "../calendar/roots/project-root";
 import { BaseGanttRoot } from "../gantt";
@@ -38,8 +39,6 @@ function ProjectIssueLayout(props: { activeLayout: EIssueLayoutTypes | undefined
       return <BaseGanttRoot />;
     case EIssueLayoutTypes.SPREADSHEET:
       return <ProjectSpreadsheetLayout />;
-    case EIssueLayoutTypes.CHAT:
-      return <ClickUpChatView />;
     default:
       return null;
   }
@@ -52,6 +51,12 @@ export const ProjectLayoutRoot = observer(function ProjectLayoutRoot() {
   const projectId = routerProjectId ? routerProjectId.toString() : undefined;
   // hooks
   const { issues, issuesFilter } = useIssues(EIssuesStoreType.PROJECT);
+  const { currentProjectDetails } = useProject();
+  const { allowPermissions } = useUserPermissions();
+  const canUserCreateIssue = allowPermissions(
+    [EUserPermissions.ADMIN, EUserPermissions.MEMBER],
+    EUserPermissionsLevel.PROJECT
+  );
   // derived values
   const workItemFilters = projectId ? issuesFilter?.getIssueFilters(projectId) : undefined;
   const activeLayout = workItemFilters?.displayFilters?.layout || EIssueLayoutTypes.LIST;
@@ -87,18 +92,17 @@ export const ProjectLayoutRoot = observer(function ProjectLayoutRoot() {
       >
         {({ filter: projectWorkItemsFilter }) => (
           <div className="relative flex h-full w-full flex-col overflow-hidden">
-            {projectWorkItemsFilter && (
-              <WorkItemFiltersRow
-                filter={projectWorkItemsFilter}
-                trackerElements={{
-                  saveView: PROJECT_VIEW_TRACKER_ELEMENTS.PROJECT_HEADER_SAVE_AS_VIEW_BUTTON,
-                }}
-              />
-            )}
+            <WorkItemViewToolbar
+              canUserCreateIssue={canUserCreateIssue}
+              currentProjectDetails={currentProjectDetails}
+              filter={projectWorkItemsFilter}
+              projectId={projectId}
+              workspaceSlug={workspaceSlug}
+            />
             <div className="relative h-full w-full overflow-auto bg-surface-1">
               {/* mutation loader */}
               {issues?.getIssueLoader() === "mutation" && (
-                <div className="shadow-sm fixed top-[70px] right-[20px] z-50 flex h-[40px] w-[40px] items-center justify-center rounded-sm bg-layer-1">
+                <div className="fixed top-[70px] right-[20px] z-50 flex h-[40px] w-[40px] items-center justify-center rounded-sm bg-layer-1 shadow-raised-100">
                   <Spinner className="h-4 w-4" />
                 </div>
               )}

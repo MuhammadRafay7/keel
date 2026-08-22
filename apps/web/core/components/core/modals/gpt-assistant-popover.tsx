@@ -9,7 +9,7 @@ import React, { useEffect, useState, useRef, Fragment } from "react";
 import type { Placement } from "@popperjs/core";
 import { Controller, useForm } from "react-hook-form"; // services
 import { usePopper } from "react-popper";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle } from "@keel/propel/icons";
 import { Popover, Transition } from "@headlessui/react";
 // keel imports
 import type { EditorRefApi } from "@keel/editor";

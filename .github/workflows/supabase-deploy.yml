@@ -125,5 +125,39 @@ jobs:
 
           echo "Email triggers now dispatch to https://$SUPABASE_PROJECT_REF.supabase.co"
 
+      # Optional. Without it, 0019 generates a secret on first use and stores
+      # it in app_settings, which works but leaves the key material in the
+      # same database as the ciphertext. Setting this seeds an
+      # externally-held secret instead.
+      #
+      # Written with ON CONFLICT DO NOTHING on purpose: once any key has been
+      # encrypted, replacing the secret makes every stored key undecryptable.
+      # Rotating is therefore a deliberate manual operation, not something a
+      # deploy can do by accident.
+      - name: Seed the AI key encryption secret
+        if: ${{ secrets.SUPABASE_AI_ENCRYPTION_SECRET != '' }}
+        env:
+          AI_ENCRYPTION_SECRET: ${{ secrets.SUPABASE_AI_ENCRYPTION_SECRET }}
+        run: |
+          SQL="insert into public.app_settings (key, value, updated_at)"
+          SQL="$SQL values ('ai_encryption_secret', \$secret\$$AI_ENCRYPTION_SECRET\$secret\$, now())"
+          SQL="$SQL on conflict (key) do nothing;"
+
+          PAYLOAD="$(jq -n --arg q "$SQL" '{query: $q}')"
+
+          HTTP_CODE="$(curl -sS -o /tmp/ai-secret-response.json -w '%{http_code}' \
+            -X POST "https://api.supabase.com/v1/projects/$SUPABASE_PROJECT_REF/database/query" \
+            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD")"
+
+          if [ "$HTTP_CODE" -ge 300 ]; then
+            echo "Seeding the AI encryption secret failed with HTTP $HTTP_CODE:" >&2
+            cat /tmp/ai-secret-response.json >&2
+            exit 1
+          fi
+
+          echo "AI key encryption secret is provisioned."
+
       - name: Confirm the migration history matches the repository
         run: supabase migration list --linked

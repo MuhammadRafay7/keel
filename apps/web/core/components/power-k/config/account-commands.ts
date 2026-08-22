@@ -5,7 +5,7 @@
  */
 
 import { useCallback } from "react";
-import { LogOut, Mails } from "lucide-react";
+import { LogOut, Mails } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 import { setToast, TOAST_TYPE } from "@keel/propel/toast";

@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Settings, UserPlus } from "lucide-react";
+import { Settings, UserPlus } from "@keel/propel/icons";
 import { Menu } from "@headlessui/react";
 // keel imports
 import { EUserPermissions } from "@keel/constants";

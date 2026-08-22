@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle } from "@keel/propel/icons";
 import { Tab } from "@headlessui/react";
 // keel imports
 // helpers

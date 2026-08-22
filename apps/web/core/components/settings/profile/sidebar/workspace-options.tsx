@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { CirclePlus, Mails } from "lucide-react";
+import { CirclePlus, Mails } from "@keel/propel/icons";
 import { observer } from "mobx-react";
 // keel imports
 import { useTranslation } from "@keel/i18n";

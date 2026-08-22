@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import type { LucideIcon } from "lucide-react";
+import type { LucideIcon } from "@keel/propel/icons";
 // keel ui
 import { useTranslation } from "@keel/i18n";
 import type { ISvgIcons } from "@keel/propel/icons";

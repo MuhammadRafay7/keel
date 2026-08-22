@@ -5,7 +5,7 @@
  */
 
 import { useState } from "react";
-import { CircleArrowUp, CornerDownRight, RefreshCcw, Sparkles } from "lucide-react";
+import { CircleArrowUp, CornerDownRight, RefreshCcw, Sparkles } from "@keel/propel/icons";
 // ui
 import { Tooltip } from "@keel/propel/tooltip";
 // components

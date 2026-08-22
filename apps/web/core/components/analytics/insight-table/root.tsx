@@ -5,7 +5,7 @@
  */
 
 import type { ColumnDef, Row, Table } from "@tanstack/react-table";
-import { Download } from "lucide-react";
+import { Download } from "@keel/propel/icons";
 import { useTranslation } from "@keel/i18n";
 import { Button } from "@keel/propel/button";
 import type { AnalyticsTableDataMap, TAnalyticsTabsBase } from "@keel/types";

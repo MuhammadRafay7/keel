@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { PanelRight } from "lucide-react";
+import { PanelRight } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 import { Tooltip } from "@keel/propel/tooltip";

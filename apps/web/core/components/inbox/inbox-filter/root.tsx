@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { ListFilter } from "lucide-react";
+import { ListFilter } from "@keel/propel/icons";
 import { getButtonStyling } from "@keel/propel/button";
 // keel imports
 import { ChevronDownIcon } from "@keel/propel/icons";

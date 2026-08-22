@@ -1,358 +1,559 @@
+"use client";
+
+import { useState } from "react";
+import {
+  ListIcon,
+  KanbanIcon,
+  CalendarIcon,
+  GanttIcon,
+  TableIcon,
+  CycleIcon,
+  ModuleIcon,
+  DocIcon,
+  TriageIcon,
+} from "./Icons";
+
 export function HeroDashboardMockup() {
+  const [activeTab, setActiveTab] = useState<"list" | "board" | "calendar" | "gantt" | "table">("list");
+  const [activeSidebar, setActiveSidebar] = useState<"issues" | "cycles" | "modules" | "pages" | "ai">("issues");
+
+  const featureTabs = [
+    { id: "issues", label: "Projects & 5 Views", Icon: ListIcon },
+    { id: "cycles", label: "Agile Cycles & Sprints", Icon: CycleIcon },
+    { id: "modules", label: "Modules & Epics", Icon: ModuleIcon },
+    { id: "pages", label: "Pages & Docs", Icon: DocIcon },
+    { id: "ai", label: "Bring Your Own AI Key", Icon: TriageIcon },
+  ];
+
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        background: "#0f0f10",
-        color: "#f8fafc",
-        fontSize: "0.8125rem",
-        userSelect: "none",
-      }}
-    >
-      {/* App Header Bar */}
+    <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", width: "100%", alignItems: "center" }}>
+      {/* Feature Switcher Bar */}
+      <div className="hero-feature-switcher-bar">
+        {featureTabs.map((f) => {
+          const TabIcon = f.Icon;
+          return (
+            <button
+              key={f.id}
+              type="button"
+              className={`hero-feature-tab ${activeSidebar === f.id ? "active" : ""}`}
+              onClick={() => setActiveSidebar(f.id as typeof activeSidebar)}
+            >
+              <TabIcon size={14} className="hero-feature-tab-icon" />
+              <span className="hero-feature-tab-label">{f.label}</span>
+            </button>
+          );
+        })}
+      </div>
+
       <div
         style={{
           display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "0.75rem 1.25rem",
-          borderBottom: "1px solid #1e293b",
-          background: "#131b24",
+          flexDirection: "column",
+          background: "rgba(15, 23, 42, 0.95)",
+          color: "#f8fafc",
+          fontSize: "0.8125rem",
+          userSelect: "none",
+          borderRadius: "24px",
+          overflow: "hidden",
+          width: "100%",
+          boxSizing: "border-box",
+          border: "1px solid rgba(255, 255, 255, 0.1)",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <div style={{ display: "flex", gap: "0.4rem" }}>
-            <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#ef4444" }} />
-            <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#f59e0b" }} />
-            <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#10b981" }} />
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontWeight: 600, color: "#e4e6e7" }}>
-            <span>⚡️ Keel Core / Platform Engineering</span>
-          </div>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-          <span
-            style={{
-              background: "rgba(56, 189, 248, 0.12)",
-              color: "#38bdf8",
-              padding: "0.2rem 0.6rem",
-              borderRadius: "999px",
-              fontSize: "0.75rem",
-              fontFamily: "var(--mono)",
-            }}
-          >
-            Sprint 24 · Active
-          </span>
-          <span style={{ color: "#94a3b8", fontSize: "0.75rem" }}>84% Completed</span>
-        </div>
-      </div>
-
-      {/* Main App Body */}
-      <div style={{ display: "grid", gridTemplateColumns: "220px 1fr", minHeight: "360px" }}>
-        {/* Sidebar */}
+        {/* macOS Window Header */}
         <div
           style={{
-            borderRight: "1px solid #1e293b",
-            padding: "1rem",
-            background: "#0b1015",
             display: "flex",
-            flexDirection: "column",
-            gap: "1.25rem",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "0.85rem 1.25rem",
+            borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+            background: "rgba(30, 41, 59, 0.6)",
+            backdropFilter: "blur(16px)",
+            flexWrap: "wrap",
+            gap: "0.75rem",
           }}
         >
-          <div>
-            <div
-              style={{
-                fontSize: "0.6875rem",
-                fontFamily: "var(--mono)",
-                color: "#64748b",
-                textTransform: "uppercase",
-                marginBottom: "0.5rem",
-              }}
-            >
-              Workflows
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
-              <div
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <div style={{ display: "flex", gap: "0.45rem" }}>
+              <span
                 style={{
-                  padding: "0.4rem 0.6rem",
-                  background: "#1e293b",
-                  borderRadius: "6px",
-                  color: "#38bdf8",
-                  fontWeight: 500,
+                  width: "11px",
+                  height: "11px",
+                  borderRadius: "50%",
+                  background: "#ff5f56",
+                  display: "inline-block",
                 }}
-              >
-                📋 All Work Items (48)
-              </div>
-              <div style={{ padding: "0.4rem 0.6rem", color: "#94a3b8" }}>🔄 Cycles &amp; Sprints</div>
-              <div style={{ padding: "0.4rem 0.6rem", color: "#94a3b8" }}>📦 Modules &amp; Epics</div>
-              <div style={{ padding: "0.4rem 0.6rem", color: "#94a3b8" }}>📖 Wiki &amp; Docs</div>
-              <div style={{ padding: "0.4rem 0.6rem", color: "#94a3b8" }}>📥 Intake Triage</div>
+              />
+              <span
+                style={{
+                  width: "11px",
+                  height: "11px",
+                  borderRadius: "50%",
+                  background: "#ffbd2e",
+                  display: "inline-block",
+                }}
+              />
+              <span
+                style={{
+                  width: "11px",
+                  height: "11px",
+                  borderRadius: "50%",
+                  background: "#27c93f",
+                  display: "inline-block",
+                }}
+              />
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontWeight: 600, color: "#f1f5f9" }}>
+              <span>Keel Workspace / Engineering Team</span>
             </div>
           </div>
-          <div>
-            <div
+
+          {/* View Switcher Pills */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              background: "rgba(15, 23, 42, 0.7)",
+              padding: "0.25rem",
+              borderRadius: "9999px",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+            }}
+          >
+            {[
+              { id: "list", label: "List", Icon: ListIcon },
+              { id: "board", label: "Board", Icon: KanbanIcon },
+              { id: "calendar", label: "Calendar", Icon: CalendarIcon },
+              { id: "gantt", label: "Gantt", Icon: GanttIcon },
+              { id: "table", label: "Table", Icon: TableIcon },
+            ].map((v) => {
+              const VIcon = v.Icon;
+              const isSelected = activeSidebar === "issues" && activeTab === v.id;
+              return (
+                <button
+                  key={v.id}
+                  type="button"
+                  onClick={() => {
+                    setActiveSidebar("issues");
+                    setActiveTab(v.id as "list" | "board" | "calendar" | "gantt" | "table");
+                  }}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                    border: "none",
+                    background: isSelected ? "#7c3aed" : "transparent",
+                    color: isSelected ? "#ffffff" : "#94a3b8",
+                    fontWeight: 600,
+                    fontSize: "0.75rem",
+                    padding: "0.35rem 0.75rem",
+                    borderRadius: "9999px",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease",
+                    boxShadow: isSelected ? "0 2px 8px rgba(124, 58, 237, 0.4)" : "none",
+                  }}
+                >
+                  <VIcon size={12} />
+                  <span>{v.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Active Cycle Pill */}
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <span
               style={{
-                fontSize: "0.6875rem",
+                background: "rgba(167, 139, 250, 0.12)",
+                color: "#a78bfa",
+                padding: "0.25rem 0.65rem",
+                borderRadius: "9999px",
+                fontSize: "0.75rem",
                 fontFamily: "var(--mono)",
-                color: "#64748b",
-                textTransform: "uppercase",
-                marginBottom: "0.5rem",
+                fontWeight: 600,
+                border: "1px solid rgba(167, 139, 250, 0.25)",
               }}
             >
-              AI Agents
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
-              <div
-                style={{
-                  padding: "0.3rem 0.6rem",
-                  color: "#10b981",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                }}
-              >
-                <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#10b981" }} /> @TriageBot
-                (Live)
-              </div>
-              <div
-                style={{
-                  padding: "0.3rem 0.6rem",
-                  color: "#a855f7",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                }}
-              >
-                <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#a855f7" }} /> @Summarizer
-                (Idle)
-              </div>
-            </div>
+              Sprint Cycle 14 · 82% Complete
+            </span>
           </div>
         </div>
 
-        {/* Main Kanban Content */}
-        <div
-          style={{
-            padding: "1.25rem",
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "1rem",
-            background: "#0f1720",
-          }}
-        >
-          {/* Column 1: In Progress */}
+        {/* Main App Body */}
+        <div style={{ display: "grid", gridTemplateColumns: "210px 1fr", minHeight: "400px" }}>
+          {/* Left Sidebar */}
           <div
             style={{
-              background: "#131b24",
-              borderRadius: "10px",
-              border: "1px solid #1e293b",
-              padding: "0.85rem",
+              borderRight: "1px solid rgba(255, 255, 255, 0.08)",
+              padding: "1rem",
+              background: "rgba(15, 23, 42, 0.4)",
               display: "flex",
               flexDirection: "column",
-              gap: "0.75rem",
+              gap: "1.25rem",
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                color: "#f59e0b",
-                fontWeight: 600,
-                fontSize: "0.75rem",
-                fontFamily: "var(--mono)",
-              }}
-            >
-              <span>IN PROGRESS (3)</span>
-              <span style={{ background: "rgba(245, 158, 11, 0.15)", padding: "0.1rem 0.4rem", borderRadius: "4px" }}>
-                68%
-              </span>
-            </div>
-            <div
-              style={{
-                background: "#1a2330",
-                borderRadius: "8px",
-                padding: "0.75rem",
-                border: "1px solid #283548",
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.4rem",
-              }}
-            >
-              <div style={{ fontSize: "0.75rem", color: "#38bdf8", fontFamily: "var(--mono)" }}>#KEEL-402</div>
-              <div style={{ color: "#f8fafc", fontWeight: 500 }}>Implement Model Context Protocol (MCP) Server</div>
+            <div>
               <div
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: "0.25rem",
                   fontSize: "0.6875rem",
-                  color: "#94a3b8",
+                  fontFamily: "var(--mono)",
+                  color: "#64748b",
+                  textTransform: "uppercase",
+                  marginBottom: "0.5rem",
+                  letterSpacing: "0.06em",
+                  fontWeight: 600,
                 }}
               >
-                <span>Backend · High</span>
-                <span
-                  style={{ background: "#006399", color: "#ffffff", padding: "0.1rem 0.35rem", borderRadius: "4px" }}
-                >
-                  Duane
-                </span>
+                Views &amp; Work
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+                {[
+                  { id: "issues", label: "Issues (48)", Icon: ListIcon },
+                  { id: "cycles", label: "Cycles & Sprints", Icon: CycleIcon },
+                  { id: "modules", label: "Modules & Epics", Icon: ModuleIcon },
+                  { id: "pages", label: "Pages & Docs", Icon: DocIcon },
+                  { id: "ai", label: "BYO AI Key Settings", Icon: TriageIcon },
+                ].map((item) => {
+                  const SIcon = item.Icon;
+                  const isSelected = activeSidebar === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => setActiveSidebar(item.id as typeof activeSidebar)}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                        padding: "0.45rem 0.75rem",
+                        background: isSelected ? "rgba(124, 58, 237, 0.2)" : "transparent",
+                        color: isSelected ? "#a78bfa" : "#94a3b8",
+                        borderRadius: "10px",
+                        fontWeight: 600,
+                        fontSize: "0.8125rem",
+                        border: isSelected ? "1px solid rgba(167, 139, 250, 0.3)" : "1px solid transparent",
+                        cursor: "pointer",
+                        textAlign: "left",
+                        transition: "all 0.15s ease",
+                      }}
+                    >
+                      <SIcon size={14} />
+                      <span>{item.label}</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
-            <div
-              style={{
-                background: "#1a2330",
-                borderRadius: "8px",
-                padding: "0.75rem",
-                border: "1px solid #283548",
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.4rem",
-              }}
-            >
-              <div style={{ fontSize: "0.75rem", color: "#38bdf8", fontFamily: "var(--mono)" }}>#KEEL-408</div>
-              <div style={{ color: "#f8fafc", fontWeight: 500 }}>Three.js Antigravity Physics Orbit Interaction</div>
+
+            <div>
               <div
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: "0.25rem",
                   fontSize: "0.6875rem",
-                  color: "#94a3b8",
+                  fontFamily: "var(--mono)",
+                  color: "#64748b",
+                  textTransform: "uppercase",
+                  marginBottom: "0.5rem",
+                  letterSpacing: "0.06em",
+                  fontWeight: 600,
                 }}
               >
-                <span>Frontend · Urgent</span>
-                <span
-                  style={{ background: "#0284c7", color: "#ffffff", padding: "0.1rem 0.35rem", borderRadius: "4px" }}
-                >
-                  Elena
-                </span>
+                Projects
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+                <div style={{ padding: "0.4rem 0.75rem", color: "#f8fafc", fontWeight: 500, fontSize: "0.8125rem" }}>
+                  • Web Engine
+                </div>
+                <div style={{ padding: "0.4rem 0.75rem", color: "#94a3b8", fontSize: "0.8125rem" }}>• API Backend</div>
+                <div style={{ padding: "0.4rem 0.75rem", color: "#94a3b8", fontSize: "0.8125rem" }}>• Mobile Apps</div>
               </div>
             </div>
           </div>
 
-          {/* Column 2: In Review */}
-          <div
-            style={{
-              background: "#131b24",
-              borderRadius: "10px",
-              border: "1px solid #1e293b",
-              padding: "0.85rem",
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.75rem",
-            }}
-          >
+          {/* Canvas View */}
+          <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "1rem", overflowX: "auto" }}>
+            {/* View Filter Controls */}
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                color: "#a855f7",
-                fontWeight: 600,
-                fontSize: "0.75rem",
-                fontFamily: "var(--mono)",
+                flexWrap: "wrap",
+                gap: "0.5rem",
               }}
             >
-              <span>IN REVIEW (2)</span>
-              <span style={{ background: "rgba(168, 85, 247, 0.15)", padding: "0.1rem 0.4rem", borderRadius: "4px" }}>
-                PRs Open
-              </span>
-            </div>
-            <div
-              style={{
-                background: "#1a2330",
-                borderRadius: "8px",
-                padding: "0.75rem",
-                border: "1px solid #283548",
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.4rem",
-              }}
-            >
-              <div style={{ fontSize: "0.75rem", color: "#a855f7", fontFamily: "var(--mono)" }}>#KEEL-395</div>
-              <div style={{ color: "#f8fafc", fontWeight: 500 }}>Multi-tenant Air-gapped SSO SAML Provider</div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: "0.25rem",
-                  fontSize: "0.6875rem",
-                  color: "#94a3b8",
-                }}
-              >
-                <span>Security · Review</span>
+              <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
                 <span
-                  style={{ background: "#6366f1", color: "#ffffff", padding: "0.1rem 0.35rem", borderRadius: "4px" }}
+                  style={{
+                    padding: "0.3rem 0.65rem",
+                    background: "rgba(255,255,255,0.06)",
+                    borderRadius: "8px",
+                    color: "#cbd5e1",
+                    fontSize: "0.75rem",
+                  }}
                 >
-                  Alex
+                  Filter: Active ▾
+                </span>
+                <span
+                  style={{
+                    padding: "0.3rem 0.65rem",
+                    background: "rgba(255,255,255,0.06)",
+                    borderRadius: "8px",
+                    color: "#cbd5e1",
+                    fontSize: "0.75rem",
+                  }}
+                >
+                  Group: State ▾
+                </span>
+                <span
+                  style={{
+                    padding: "0.3rem 0.65rem",
+                    background: "rgba(255,255,255,0.06)",
+                    borderRadius: "8px",
+                    color: "#cbd5e1",
+                    fontSize: "0.75rem",
+                  }}
+                >
+                  Sort: Priority ▾
                 </span>
               </div>
-            </div>
-          </div>
-
-          {/* Column 3: Done */}
-          <div
-            style={{
-              background: "#131b24",
-              borderRadius: "10px",
-              border: "1px solid #1e293b",
-              padding: "0.85rem",
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.75rem",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                color: "#10b981",
-                fontWeight: 600,
-                fontSize: "0.75rem",
-                fontFamily: "var(--mono)",
-              }}
-            >
-              <span>DONE (18)</span>
-              <span style={{ background: "rgba(16, 185, 129, 0.15)", padding: "0.1rem 0.4rem", borderRadius: "4px" }}>
-                Shipped
-              </span>
-            </div>
-            <div
-              style={{
-                background: "#1a2330",
-                borderRadius: "8px",
-                padding: "0.75rem",
-                border: "1px solid #283548",
-                opacity: 0.85,
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.4rem",
-              }}
-            >
-              <div style={{ fontSize: "0.75rem", color: "#10b981", fontFamily: "var(--mono)" }}>#KEEL-372</div>
-              <div style={{ color: "#f8fafc", textDecoration: "line-through" }}>
-                Jira &amp; Linear Importer Migration Script
-              </div>
-              <div
+              <span
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: "0.25rem",
-                  fontSize: "0.6875rem",
-                  color: "#94a3b8",
+                  padding: "0.35rem 0.85rem",
+                  background: "#7c3aed",
+                  color: "#ffffff",
+                  borderRadius: "8px",
+                  fontWeight: 600,
+                  fontSize: "0.75rem",
+                  boxShadow: "0 2px 8px rgba(124, 58, 237, 0.4)",
                 }}
               >
-                <span>Passed CI/CD</span>
-                <span style={{ color: "#10b981" }}>✓ Merged</span>
-              </div>
+                + New Issue
+              </span>
             </div>
+
+            {/* Dynamic Content */}
+            {activeSidebar === "cycles" ? (
+              <div
+                style={{
+                  background: "rgba(30, 41, 59, 0.4)",
+                  borderRadius: "16px",
+                  padding: "1.25rem",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.75rem" }}>
+                  <div>
+                    <h4 style={{ margin: 0, color: "#f8fafc" }}>Sprint Cycle 14</h4>
+                    <span style={{ fontSize: "0.75rem", color: "#94a3b8" }}>14 Work Items · Burndown on track</span>
+                  </div>
+                  <span
+                    style={{
+                      background: "#7c3aed",
+                      color: "#fff",
+                      padding: "0.2rem 0.65rem",
+                      borderRadius: "9999px",
+                      fontSize: "0.75rem",
+                      fontWeight: 600,
+                    }}
+                  >
+                    Active
+                  </span>
+                </div>
+                <div
+                  style={{
+                    height: "8px",
+                    background: "rgba(255,255,255,0.08)",
+                    borderRadius: "9999px",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "82%",
+                      height: "100%",
+                      background: "linear-gradient(90deg, #7c3aed, #a78bfa)",
+                      borderRadius: "9999px",
+                    }}
+                  />
+                </div>
+              </div>
+            ) : activeSidebar === "modules" ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                {[
+                  { name: "BYO AI Model Integration Engine", progress: "88%", count: "12 items" },
+                  { name: "5 Dynamic Views & Saved Filter Sets", progress: "95%", count: "24 items" },
+                  { name: "Collaborative Pages Slash Commands", progress: "60%", count: "8 items" },
+                ].map((m) => (
+                  <div
+                    key={m.name}
+                    style={{
+                      background: "rgba(30, 41, 59, 0.4)",
+                      padding: "1rem",
+                      borderRadius: "14px",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+                      <span style={{ fontWeight: 600, color: "#f8fafc" }}>{m.name}</span>
+                      <span style={{ color: "#a78bfa", fontWeight: 600 }}>{m.progress}</span>
+                    </div>
+                    <div
+                      style={{
+                        height: "6px",
+                        background: "rgba(255,255,255,0.06)",
+                        borderRadius: "9999px",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: m.progress,
+                          height: "100%",
+                          background: "linear-gradient(90deg, #7c3aed, #a78bfa)",
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : activeSidebar === "pages" ? (
+              <div
+                style={{
+                  background: "rgba(30, 41, 59, 0.4)",
+                  borderRadius: "16px",
+                  padding: "1.25rem",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                }}
+              >
+                <div style={{ fontSize: "1.1rem", fontWeight: 700, color: "#f8fafc", marginBottom: "0.5rem" }}>
+                  Engineering Architecture Specs
+                </div>
+                <p style={{ color: "#94a3b8", fontSize: "0.875rem", margin: "0 0 1rem" }}>
+                  Living collaborative markdown pages living beside active issues and sprint cycles.
+                </p>
+                <div
+                  style={{
+                    padding: "0.75rem",
+                    background: "rgba(15, 23, 42, 0.6)",
+                    borderRadius: "10px",
+                    borderLeft: "3px solid #7c3aed",
+                    color: "#a78bfa",
+                    fontSize: "0.75rem",
+                  }}
+                >
+                  Type <code>/</code> for slash commands to embed active issues, sub-items, and checklists.
+                </div>
+              </div>
+            ) : activeSidebar === "ai" ? (
+              <div
+                style={{
+                  background: "rgba(30, 27, 46, 0.6)",
+                  borderRadius: "16px",
+                  padding: "1.25rem",
+                  border: "1px solid rgba(167, 139, 250, 0.3)",
+                }}
+              >
+                <div style={{ fontSize: "1rem", fontWeight: 700, color: "#a78bfa", marginBottom: "0.5rem" }}>
+                  Bring Your Own API Key Configuration
+                </div>
+                <p style={{ color: "#94a3b8", fontSize: "0.8125rem", margin: "0 0 1rem" }}>
+                  Configure your API key for Anthropic, OpenAI, Google, xAI, Mistral, DeepSeek, or Groq. Keel never
+                  resells model usage.
+                </p>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
+                  <div
+                    style={{
+                      background: "rgba(15, 23, 42, 0.7)",
+                      padding: "0.6rem 0.8rem",
+                      borderRadius: "8px",
+                      fontSize: "0.75rem",
+                      color: "#f8fafc",
+                    }}
+                  >
+                    Anthropic API Key: <span style={{ color: "#10b981" }}>● Active (sk-ant-...)</span>
+                  </div>
+                  <div
+                    style={{
+                      background: "rgba(15, 23, 42, 0.7)",
+                      padding: "0.6rem 0.8rem",
+                      borderRadius: "8px",
+                      fontSize: "0.75rem",
+                      color: "#f8fafc",
+                    }}
+                  >
+                    OpenAI API Key: <span style={{ color: "#10b981" }}>● Active (sk-proj-...)</span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* ISSUES LIST/BOARD VIEW */
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                {[
+                  {
+                    id: "KEEL-101",
+                    title: "Implement Bring Your Own AI Key setting across 7 model providers",
+                    priority: "Urgent",
+                    state: "In Progress",
+                    color: "#ef4444",
+                  },
+                  {
+                    id: "KEEL-102",
+                    title: "Unify 5 dynamic work views (List, Board, Calendar, Table, Gantt)",
+                    priority: "High",
+                    state: "In Progress",
+                    color: "#f59e0b",
+                  },
+                  {
+                    id: "KEEL-103",
+                    title: "Collaborative Pages document editor with slash command embeds",
+                    priority: "Medium",
+                    state: "In Progress",
+                    color: "#7c3aed",
+                  },
+                  {
+                    id: "KEEL-104",
+                    title: "Per-project discussion chat & intake triage inbox",
+                    priority: "Medium",
+                    state: "Done",
+                    color: "#10b981",
+                  },
+                ].map((item) => (
+                  <div
+                    key={item.id}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "0.65rem 0.85rem",
+                      background: "rgba(30, 41, 59, 0.4)",
+                      borderRadius: "10px",
+                      border: "1px solid rgba(255, 255, 255, 0.05)",
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                      <span style={{ color: "#64748b", fontFamily: "var(--mono)", fontSize: "0.75rem" }}>
+                        {item.id}
+                      </span>
+                      <span style={{ color: "#f8fafc", fontWeight: 500 }}>{item.title}</span>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                      <span
+                        style={{
+                          fontSize: "0.7rem",
+                          color: item.color,
+                          background: `${item.color}15`,
+                          padding: "0.15rem 0.5rem",
+                          borderRadius: "4px",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {item.priority}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -362,187 +563,132 @@ export function HeroDashboardMockup() {
 
 export function ProjectsBentoVisual() {
   return (
-    <div
-      style={{
-        background: "#131b24",
-        border: "1px solid #1e293b",
-        borderRadius: "10px",
-        padding: "1rem",
-        color: "#f8fafc",
-        fontSize: "0.75rem",
-      }}
-    >
+    <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+      <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+        {["📋 List", "📊 Board", "📅 Calendar", "📈 Gantt", "📑 Table"].map((label, idx) => (
+          <span
+            key={label}
+            style={{
+              padding: "0.3rem 0.65rem",
+              background: idx === 0 ? "rgba(124, 58, 237, 0.15)" : "rgba(0,0,0,0.04)",
+              color: idx === 0 ? "#7c3aed" : "var(--fg-muted)",
+              borderRadius: "9999px",
+              fontWeight: 600,
+              fontSize: "0.75rem",
+            }}
+          >
+            {label}
+          </span>
+        ))}
+      </div>
       <div
         style={{
+          background: "var(--surface)",
+          border: "1px solid var(--surface-glass-border)",
+          borderRadius: "12px",
+          padding: "0.75rem",
           display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderBottom: "1px solid #1e293b",
-          paddingBottom: "0.5rem",
-          marginBottom: "0.75rem",
-        }}
-      >
-        <span style={{ fontWeight: 600, color: "#38bdf8" }}>Platform Roadmap 2026</span>
-        <span style={{ color: "#94a3b8", fontFamily: "var(--mono)" }}>Sprint 24 · 12 Issues</span>
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-        <div
-          style={{
-            background: "#1c2633",
-            padding: "0.5rem",
-            borderRadius: "6px",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <span>🚀 Global CDN Cache Layer</span>
-          <span style={{ color: "#10b981" }}>Done</span>
-        </div>
-        <div
-          style={{
-            background: "#1c2633",
-            padding: "0.5rem",
-            borderRadius: "6px",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <span>⚡️ Real-time WebSocket Gateway</span>
-          <span style={{ color: "#38bdf8" }}>In Progress</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export function WikiBentoVisual() {
-  return (
-    <div
-      style={{
-        background: "#131b24",
-        border: "1px solid #1e293b",
-        borderRadius: "10px",
-        padding: "1rem",
-        color: "#f8fafc",
-        fontSize: "0.75rem",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
+          flexDirection: "column",
           gap: "0.5rem",
-          borderBottom: "1px solid #1e293b",
-          paddingBottom: "0.5rem",
-          marginBottom: "0.75rem",
         }}
       >
-        <span>📄</span>
-        <span style={{ fontWeight: 600, color: "#e4e6e7" }}>Engineering Handbook / Architecture Specs</span>
-      </div>
-      <div style={{ color: "#94a3b8", lineHeight: "1.4", fontFamily: "var(--mono)", fontSize: "0.7rem" }}>
-        # Storage Architecture
-        <br />- PostgreSQL 16 + Citus distributed cluster
-        <br />- S3 Compatible Asset Storage with zero-knowledge encryption
-        <br />- Linked work items: #ENG-104, #ENG-105
-      </div>
-    </div>
-  );
-}
-
-export function AiBentoVisual() {
-  return (
-    <div
-      style={{
-        background: "#131b24",
-        border: "1px solid #1e293b",
-        borderRadius: "10px",
-        padding: "1rem",
-        color: "#f8fafc",
-        fontSize: "0.75rem",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderBottom: "1px solid #1e293b",
-          paddingBottom: "0.5rem",
-          marginBottom: "0.75rem",
-        }}
-      >
-        <span style={{ fontWeight: 600, color: "#a855f7" }}>Keel Agent Task Run</span>
-        <span style={{ color: "#10b981", fontFamily: "var(--mono)" }}>● Active</span>
-      </div>
-      <div
-        style={{
-          background: "#0b1015",
-          borderRadius: "6px",
-          padding: "0.6rem",
-          fontFamily: "var(--mono)",
-          fontSize: "0.7rem",
-          color: "#38bdf8",
-        }}
-      >
-        &gt; Analyzing repository commits...
-        <br />
-        &gt; Auto-generating changelog draft for v1.5
-        <br />
-        &gt; Linked 14 issues, 6 contributors
-      </div>
-    </div>
-  );
-}
-
-export function DeskBentoVisual() {
-  return (
-    <div
-      style={{
-        background: "#131b24",
-        border: "1px solid #1e293b",
-        borderRadius: "10px",
-        padding: "1rem",
-        color: "#f8fafc",
-        fontSize: "0.75rem",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderBottom: "1px solid #1e293b",
-          paddingBottom: "0.5rem",
-          marginBottom: "0.75rem",
-        }}
-      >
-        <span style={{ fontWeight: 600, color: "#f59e0b" }}>Customer Intake Triage</span>
-        <span
-          style={{
-            background: "rgba(245, 158, 11, 0.15)",
-            color: "#f59e0b",
-            padding: "0.1rem 0.4rem",
-            borderRadius: "4px",
-          }}
-        >
-          3 New
-        </span>
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8125rem", fontWeight: 600 }}>
+          <span>Sprint Cycle #14 Progress</span>
+          <span style={{ color: "#7c3aed" }}>82% Complete</span>
+        </div>
         <div
           style={{
-            background: "#1c2633",
-            padding: "0.45rem",
-            borderRadius: "6px",
-            display: "flex",
-            justifyContent: "space-between",
+            height: "6px",
+            width: "100%",
+            background: "rgba(0,0,0,0.06)",
+            borderRadius: "9999px",
+            overflow: "hidden",
           }}
         >
-          <span>Email: SAML SSO setup assistance</span>
-          <span style={{ color: "#38bdf8" }}>Accept → #SEC-99</span>
+          <div
+            style={{
+              height: "100%",
+              width: "82%",
+              background: "linear-gradient(90deg, #7c3aed, #a78bfa)",
+              borderRadius: "9999px",
+            }}
+          />
         </div>
       </div>
     </div>
   );
 }
+
+export function CyclesBentoVisual() {
+  return (
+    <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+      <div
+        style={{
+          background: "var(--surface)",
+          border: "1px solid var(--surface-glass-border)",
+          borderRadius: "12px",
+          padding: "0.85rem",
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.5rem",
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span style={{ fontWeight: 600, fontSize: "0.8125rem" }}>⚡️ Sprint 14 · Scope Locked</span>
+          <span style={{ fontSize: "0.75rem", color: "#10b981", fontWeight: 600 }}>● 6 Days Left</span>
+        </div>
+        <div style={{ display: "flex", gap: "0.5rem", fontSize: "0.75rem", color: "var(--fg-muted)" }}>
+          <span>48 Total Pts</span> · <span>38 Done</span> · <span>10 Remaining</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function PagesBentoVisual() {
+  return (
+    <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+      <div
+        style={{
+          background: "var(--surface)",
+          border: "1px solid var(--surface-glass-border)",
+          borderRadius: "12px",
+          padding: "0.85rem",
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.4rem",
+          fontSize: "0.8125rem",
+        }}
+      >
+        <div style={{ fontWeight: 600 }}>📄 System Architecture &amp; Specs</div>
+        <div style={{ color: "var(--fg-muted)", fontSize: "0.75rem" }}>
+          Type / to embed work items, sprint cycles, or sub-tasks...
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ByoAiBentoVisual() {
+  return (
+    <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+      <div
+        style={{
+          background: "rgba(15, 23, 42, 0.95)",
+          color: "#a78bfa",
+          padding: "0.85rem",
+          borderRadius: "12px",
+          fontFamily: "var(--mono)",
+          fontSize: "0.75rem",
+          border: "1px solid rgba(167, 139, 250, 0.25)",
+        }}
+      >
+        <div>🔑 API Key: sk-ant-api03-... (Anthropic)</div>
+        <div style={{ color: "#10b981", marginTop: "0.25rem" }}>✔ Direct provider routing · 0% reseller markup</div>
+      </div>
+    </div>
+  );
+}
+
+export const WikiBentoVisual = PagesBentoVisual;
+export const SelfHostBentoVisual = ByoAiBentoVisual;

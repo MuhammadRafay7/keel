@@ -5,7 +5,7 @@
  */
 
 import { useCallback } from "react";
-import { PanelLeft } from "lucide-react";
+import { PanelLeft } from "@keel/propel/icons";
 import { useTranslation } from "@keel/i18n";
 import { LinkIcon, SearchIcon } from "@keel/propel/icons";
 // keel imports

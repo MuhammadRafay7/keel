@@ -7,7 +7,7 @@
 import { useCallback, useState } from "react";
 import { debounce } from "lodash-es";
 import { observer } from "mobx-react";
-import { Minimize2 } from "lucide-react";
+import { Minimize2 } from "@keel/propel/icons";
 // keel types
 import type { TSticky } from "@keel/types";
 // keel utils

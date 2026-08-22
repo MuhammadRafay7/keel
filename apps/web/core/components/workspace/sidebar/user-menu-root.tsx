@@ -7,7 +7,7 @@
 import { useState, useEffect } from "react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/navigation";
-import { LogOut, Settings, Settings2 } from "lucide-react";
+import { LogOut, Settings, Settings2 } from "@keel/propel/icons";
 // keel imports
 import { GOD_MODE_URL } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

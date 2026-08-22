@@ -4,6 +4,7 @@
  * See the LICENSE file for details.
  */
 
+import { forwardRef } from "react";
 import Link from "next/link";
 import { cn } from "@keel/utils";
 
@@ -53,12 +54,21 @@ interface AppSidebarButtonItemProps {
 // STYLES
 // ============================================================================
 
+/*
+ * The rail sits at the far left of every screen and is scanned, not read — so
+ * the icon tile carries the whole state and the label only confirms it.
+ *
+ * The previous treatment scaled the tile up on hover. At 34px a 2% scale is
+ * under a pixel: too small to register as motion, but enough to resample the
+ * icon and make it shimmer. It is replaced by a wash and a colour shift, which
+ * are legible at this size, and the tile holds still.
+ */
 const styles = {
-  base: "group flex flex-col gap-0.5 items-center justify-center text-tertiary transition-all duration-150",
-  icon: "flex items-center justify-center gap-2 size-8 rounded-lg text-tertiary transition-all duration-150",
-  iconActive: "bg-accent-subtle text-accent-primary shadow-xs font-semibold",
-  iconInactive: "group-hover:text-primary group-hover:bg-surface-2/80 text-tertiary",
-  label: "text-11 font-medium transition-colors duration-150",
+  base: "group flex flex-col gap-1 items-center justify-center text-tertiary transition-smooth focus-ring rounded-xl",
+  icon: "relative flex items-center justify-center gap-2 size-8.5 rounded-xl text-tertiary transition-smooth",
+  iconActive: "bg-accent-subtle text-accent-primary shadow-raised-100 ring-1 ring-accent-subtle",
+  iconInactive: "text-tertiary group-hover:text-primary group-hover:bg-layer-transparent-hover",
+  label: "text-11 font-medium leading-none transition-smooth",
   labelActive: "text-accent-primary font-semibold",
   labelInactive: "group-hover:text-primary text-tertiary",
 } as const;
@@ -97,23 +107,42 @@ function AppSidebarItemIcon({ icon, highlight }: AppSidebarItemIconProps) {
   );
 }
 
-function AppSidebarLinkItem({ href, children, className }: AppSidebarLinkItemProps) {
+/*
+ * These forward their ref because `Tooltip` anchors by cloning its child and
+ * attaching a ref to it. Without forwarding, React logs "Function components
+ * cannot be given refs" and the tooltip has nothing to position against — which
+ * is exactly what the top navigation's Inbox tooltip was doing.
+ */
+const AppSidebarLinkItem = forwardRef<HTMLAnchorElement, AppSidebarLinkItemProps>(function AppSidebarLinkItem(
+  { href, children, className, ...rest },
+  ref
+) {
   if (!href) return null;
 
   return (
-    <Link href={href} className={cn(styles.base, className)}>
+    <Link href={href} ref={ref} className={cn(styles.base, className)} {...rest}>
       {children}
     </Link>
   );
-}
+});
 
-function AppSidebarButtonItem({ children, onClick, disabled = false, className }: AppSidebarButtonItemProps) {
+const AppSidebarButtonItem = forwardRef<HTMLButtonElement, AppSidebarButtonItemProps>(function AppSidebarButtonItem(
+  { children, onClick, disabled = false, className, ...rest },
+  ref
+) {
   return (
-    <button className={cn(styles.base, className)} onClick={onClick} disabled={disabled} type="button">
+    <button
+      ref={ref}
+      className={cn(styles.base, className)}
+      onClick={onClick}
+      disabled={disabled}
+      type="button"
+      {...rest}
+    >
       {children}
     </button>
   );
-}
+});
 
 // ============================================================================
 // MAIN COMPONENT
@@ -126,7 +155,10 @@ export type AppSidebarItemComponent = React.FC<AppSidebarItemProps> & {
   Button: React.FC<AppSidebarButtonItemProps>;
 };
 
-function AppSidebarItem({ variant = "link", item }: AppSidebarItemProps) {
+const AppSidebarItem = forwardRef<HTMLElement, AppSidebarItemProps>(function AppSidebarItem(
+  { variant = "link", item, ...rest },
+  ref
+) {
   if (!item) return null;
 
   const { icon, isActive, label, href, onClick, disabled, showLabel = true } = item;
@@ -139,24 +171,30 @@ function AppSidebarItem({ variant = "link", item }: AppSidebarItemProps) {
   );
 
   if (variant === "link") {
-    return <AppSidebarLinkItem href={href}>{commonItems}</AppSidebarLinkItem>;
+    return (
+      <AppSidebarLinkItem href={href} ref={ref as React.Ref<HTMLAnchorElement>} {...rest}>
+        {commonItems}
+      </AppSidebarLinkItem>
+    );
   }
 
   return (
-    <AppSidebarButtonItem onClick={onClick} disabled={disabled}>
+    <AppSidebarButtonItem onClick={onClick} disabled={disabled} ref={ref as React.Ref<HTMLButtonElement>} {...rest}>
       {commonItems}
     </AppSidebarButtonItem>
   );
-}
+});
 
 // ============================================================================
 // COMPOUND COMPONENT ASSIGNMENT
 // ============================================================================
 
-AppSidebarItem.Label = AppSidebarItemLabel;
-AppSidebarItem.Icon = AppSidebarItemIcon;
-AppSidebarItem.Link = AppSidebarLinkItem;
-AppSidebarItem.Button = AppSidebarButtonItem;
+const AppSidebarItemWithSlots = Object.assign(AppSidebarItem, {
+  Label: AppSidebarItemLabel,
+  Icon: AppSidebarItemIcon,
+  Link: AppSidebarLinkItem,
+  Button: AppSidebarButtonItem,
+});
 
-export { AppSidebarItem };
+export { AppSidebarItemWithSlots as AppSidebarItem };
 export type { AppSidebarItemData, AppSidebarItemProps };

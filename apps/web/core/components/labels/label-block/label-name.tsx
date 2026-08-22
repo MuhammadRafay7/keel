@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { Component } from "lucide-react";
+import { Component } from "@keel/propel/icons";
 
 interface ILabelName {
   name: string;

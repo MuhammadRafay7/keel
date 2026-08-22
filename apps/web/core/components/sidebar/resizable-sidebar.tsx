@@ -146,12 +146,14 @@ export function ResizableSidebar({
     if (!isAnySidebarDropdownOpen && isCollapsed && isHoveringTrigger) {
       handlePeekLeave();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAnySidebarDropdownOpen]);
 
   useEffect(() => {
     if (!isAnyExtendedSidebarExpanded && isCollapsed && isHoveringTrigger) {
       handlePeekLeave();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAnyExtendedSidebarExpanded]);
 
   // Reset peek when sidebar is expanded
@@ -174,14 +176,44 @@ export function ResizableSidebar({
     onCollapsedChange?.(isCollapsed);
   }, [isCollapsed, onCollapsedChange]);
 
+  const handleTriggerEnter = useCallback(() => {
+    if (!isCollapsed) return;
+    setIsHoveringTrigger(true);
+    setShowPeek(true);
+    if (peekTimeoutRef.current) clearTimeout(peekTimeoutRef.current);
+  }, [isCollapsed, setShowPeek]);
+
   return (
     <>
+      {/*
+        The hover target that opens the peek panel.
+
+        Everything else the peek needs already existed — the panel, the open and
+        close timers, the "stay open while a dropdown is open" guards — but
+        nothing ever set `showPeek` to true, so a collapsed sidebar could only
+        be reopened by clicking the toggle. This is the missing trigger: a strip
+        along the window's leading edge, invisible and only present while the
+        sidebar is collapsed.
+
+        It is 12px rather than 1–2px because this is a "throw the pointer at the
+        edge" gesture; a hairline target turns it into aiming. It sits under the
+        sidebar's own z-index so it can never intercept clicks meant for the
+        panel it opens.
+      */}
+      {isCollapsed && (
+        <div
+          className="absolute inset-y-0 left-0 z-10 w-3"
+          onMouseEnter={handleTriggerEnter}
+          aria-hidden="true"
+          data-testid="sidebar-peek-trigger"
+        />
+      )}
       {/* Main Sidebar */}
       <div
         id="main-sidebar"
         className={cn(
           "z-20 h-full border-r border-subtle bg-surface-1",
-          !isResizing && "transition-all duration-300 ease-in-out",
+          !isResizing && "transition-[width,min-width,max-width,transform,opacity] duration-300 ease-smooth",
           isCollapsed ? "w-0 translate-x-[-100%] opacity-0" : "translate-x-0 opacity-100",
           isMobile && "absolute",
           className
@@ -197,19 +229,27 @@ export function ResizableSidebar({
       >
         <aside
           className={cn(
-            "group/sidebar relative flex h-full w-full flex-col overflow-hidden bg-surface-1 pt-3",
+            "group/sidebar relative flex h-full w-full flex-col overflow-hidden rounded-none border-y-0 border-l-0 bg-surface-1 pt-3",
             isAnyExtendedSidebarExpanded && "rounded-none"
           )}
         >
           {children}
 
-          {/* Resize Handle */}
+          {/*
+            Resize handle.
+
+            The hit area is 8px wide and invisible; the line the user sees is
+            2px and painted by the ::after. Splitting the two is what makes a
+            resize edge feel accurate — a 2px target is genuinely hard to grab,
+            but an 8px visible bar looks like a piece of chrome nobody asked
+            for. It only lights up once the pointer is on it, or while dragging.
+          */}
           <div
             className={cn(
-              "absolute z-[20] h-full w-1 cursor-ew-resize transition-all duration-200",
-              !isResizing && "hover:bg-surface-2",
-              isResizing && "w-1.5 bg-layer-1",
-              "top-0 right-0"
+              "group/resize absolute top-0 right-0 z-[20] h-full w-2 translate-x-1/2 cursor-ew-resize",
+              "after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] after:-translate-x-1/2",
+              "after:rounded-full after:bg-accent-primary after:transition-smooth",
+              isResizing ? "after:opacity-100" : "after:opacity-0 hover:after:opacity-100"
             )}
             // onDoubleClick toggle sidebar
             onDoubleClick={() => toggleCollapsed()}
@@ -222,8 +262,10 @@ export function ResizableSidebar({
       {/* Peek View */}
       <div
         className={cn(
-          "shadow-sm absolute left-0 z-20 h-full bg-surface-1",
-          !isResizing && "transition-all duration-300 ease-in-out",
+          // The peek panel floats over the content, so it casts sideways rather
+          // than carrying a flat all-round shadow that reads as a seam.
+          "absolute left-0 z-20 h-full bg-surface-1 shadow-direction-right",
+          !isResizing && "transition-[width,transform,opacity] duration-300 ease-smooth",
           isCollapsed && showPeek ? "translate-x-0 opacity-100" : "translate-x-[-100%] opacity-0",
           "pointer-events-none",
           isCollapsed && showPeek && "pointer-events-auto",
@@ -245,13 +287,13 @@ export function ResizableSidebar({
           )}
         >
           {children}
-          {/* Resize Handle */}
+          {/* Resize handle — see the note on the main sidebar's handle above. */}
           <div
             className={cn(
-              "absolute z-[20] h-full w-1 cursor-ew-resize transition-all duration-200",
-              !isResizing && "hover:bg-surface-2",
-              isResizing && "bg-layer-1",
-              "top-0 right-0"
+              "group/resize absolute top-0 right-0 z-[20] h-full w-2 translate-x-1/2 cursor-ew-resize",
+              "after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] after:-translate-x-1/2",
+              "after:rounded-full after:bg-accent-primary after:transition-smooth",
+              isResizing ? "after:opacity-100" : "after:opacity-0 hover:after:opacity-100"
             )}
             // onDoubleClick toggle sidebar
             onDoubleClick={() => toggleCollapsed()}
@@ -263,7 +305,7 @@ export function ResizableSidebar({
       </div>
 
       {/* Extended Sidebar */}
-      {extendedSidebar && extendedSidebar}
+      {extendedSidebar}
     </>
   );
 }

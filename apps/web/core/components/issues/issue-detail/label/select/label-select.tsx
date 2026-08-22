@@ -7,7 +7,7 @@
 import { Fragment, useState } from "react";
 import { observer } from "mobx-react";
 import { usePopper } from "react-popper";
-import { Loader } from "lucide-react";
+import { Loader } from "@keel/propel/icons";
 import { Combobox } from "@headlessui/react";
 // keel imports
 import { EUserPermissionsLevel, getRandomLabelColor } from "@keel/constants";

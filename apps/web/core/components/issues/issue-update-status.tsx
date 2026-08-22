@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw } from "@keel/propel/icons";
 // types
 import type { TNameDescriptionLoader } from "@keel/types";
 

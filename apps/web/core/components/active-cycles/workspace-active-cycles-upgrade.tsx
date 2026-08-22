@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { AlertOctagon, BarChart4, CircleDashed, Folder, Microscope } from "lucide-react";
+import { AlertOctagon, BarChart4, CircleDashed, Folder, Microscope } from "@keel/propel/icons";
 // keel imports
 import { MARKETING_PRICING_PAGE_LINK } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

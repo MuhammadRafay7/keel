@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { ArrowDownWideNarrow, ArrowUpWideNarrow } from "lucide-react";
+import { ArrowDownWideNarrow, ArrowUpWideNarrow } from "@keel/propel/icons";
 import { MODULE_ORDER_BY_OPTIONS } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";
 import { getButtonStyling } from "@keel/propel/button";

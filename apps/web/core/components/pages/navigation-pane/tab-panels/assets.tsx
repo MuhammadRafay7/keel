@@ -7,7 +7,7 @@
 import { useMemo } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { Download } from "lucide-react";
+import { Download } from "@keel/propel/icons";
 // keel imports
 import { CORE_EXTENSIONS } from "@keel/editor";
 import type { TEditorAsset } from "@keel/editor";

@@ -162,19 +162,19 @@
     --neutral-1100: oklch(0.26 0.016 260);
     --neutral-1200: oklch(0.15 0.018 260);
     --neutral-black: oklch(0.09 0.02 260);
-    /* Brand colors (ClickUp Purple) */
-    --brand-100: oklch(0.975 0.02 285);
-    --brand-200: oklch(0.945 0.04 285);
-    --brand-300: oklch(0.9 0.07 285);
-    --brand-400: oklch(0.82 0.12 285);
-    --brand-500: oklch(0.72 0.17 285);
-    --brand-600: oklch(0.64 0.2 285);
-    --brand-700: oklch(0.56 0.22 285);
-    --brand-900: oklch(0.44 0.21 285);
-    --brand-1000: oklch(0.36 0.18 285);
-    --brand-1100: oklch(0.28 0.14 285);
-    --brand-1200: oklch(0.2 0.1 285);
-    --brand-default: oklch(0.56 0.22 285);
+    /* Brand colors — the marketing site's azure, at hue 242 */
+    --brand-100: oklch(0.972 0.014 242);
+    --brand-200: oklch(0.943 0.03 242);
+    --brand-300: oklch(0.898 0.055 242);
+    --brand-400: oklch(0.82 0.085 242);
+    --brand-500: oklch(0.72 0.115 242);
+    --brand-600: oklch(0.63 0.135 242);
+    --brand-700: oklch(0.55 0.13 242);
+    --brand-900: oklch(0.403 0.096 242);
+    --brand-1000: oklch(0.34 0.082 242);
+    --brand-1100: oklch(0.27 0.065 242);
+    --brand-1200: oklch(0.2 0.048 242);
+    --brand-default: oklch(0.48 0.116 242);
     /* Green/Success colors */
     --green-100: oklch(0.9819 0.0181 155.83);
     --green-200: oklch(0.9624 0.0434 156.74);
@@ -396,8 +396,25 @@
     --bg-plans-brand-subtle: var(--brand-200);
     --bg-plans-brand-solid: var(--brand-1200);
 
+    /* ---------- Elevation ---------- */
+    /*
+     * The colour every shadow in the app is cast in, in four depths. On light
+     * ground a shadow is a soft slate wash; on dark ground it has to be much
+     * closer to true black and much stronger, because a dark surface sitting on
+     * a dark canvas has no luminance gap of its own to separate the two.
+     */
+    --elevation-tint-100: oklch(0.28 0.02 260 / 4%);
+    --elevation-tint-200: oklch(0.28 0.02 260 / 7%);
+    --elevation-tint-300: oklch(0.28 0.02 260 / 10%);
+    --elevation-tint-400: oklch(0.28 0.02 260 / 14%);
+
     /* ---------- Dark mode color tokens ---------- */
     @variant dark {
+      /* Elevation — near-black and far stronger; see the note in light mode. */
+      --elevation-tint-100: oklch(0 0 0 / 22%);
+      --elevation-tint-200: oklch(0 0 0 / 32%);
+      --elevation-tint-300: oklch(0 0 0 / 44%);
+      --elevation-tint-400: oklch(0 0 0 / 58%);
       /* Neutral colors (ClickUp Dark Slate) */
       --neutral-black: oklch(0.13 0.01 260);
       --neutral-100: oklch(0.165 0.012 260);
@@ -413,19 +430,19 @@
       --neutral-1100: oklch(0.9 0.003 260);
       --neutral-1200: oklch(0.97 0.002 260);
       --neutral-white: oklch(0.99 0 0);
-      /* Brand colors (Luminous Violet) */
-      --brand-100: oklch(0.22 0.05 285);
-      --brand-200: oklch(0.28 0.08 285);
-      --brand-300: oklch(0.35 0.12 285);
-      --brand-400: oklch(0.45 0.16 285);
-      --brand-500: oklch(0.55 0.19 285);
-      --brand-700: oklch(0.72 0.18 285);
-      --brand-800: oklch(0.8 0.14 285);
-      --brand-900: oklch(0.87 0.1 285);
-      --brand-1000: oklch(0.92 0.06 285);
-      --brand-1100: oklch(0.96 0.03 285);
-      --brand-1200: oklch(0.985 0.01 285);
-      --brand-default: oklch(0.68 0.21 285);
+      /* Brand colors — the marketing site's azure, lifted for dark ground */
+      --brand-100: oklch(0.235 0.035 233);
+      --brand-200: oklch(0.29 0.055 233);
+      --brand-300: oklch(0.36 0.08 233);
+      --brand-400: oklch(0.46 0.105 233);
+      --brand-500: oklch(0.56 0.125 233);
+      --brand-700: oklch(0.72 0.14 233);
+      --brand-800: oklch(0.8 0.12 233);
+      --brand-900: oklch(0.87 0.09 233);
+      --brand-1000: oklch(0.92 0.055 233);
+      --brand-1100: oklch(0.96 0.028 233);
+      --brand-1200: oklch(0.985 0.01 233);
+      --brand-default: oklch(0.754 0.139 233);
       /* Green colors */
       --green-100: oklch(0.2721 0.067322 152.52);
       --green-200: oklch(0.3935 0.0957 152.28);
@@ -707,14 +724,23 @@
   /* ---------- Ring width ---------- */
   --ring-width-*: initial;
   /* ---------- Shadow ---------- */
+  /*
+   * Cleared here and rebuilt in the `@theme inline` block below, so every
+   * shadow is cast in `--elevation-tint-*` and therefore flips with the theme.
+   * Literal values here would stay light-mode slate on a dark ground, which is
+   * how the app ended up with panels that float in light and sit flat in dark.
+   */
   --shadow-*: initial;
-  --shadow-raised-100: 0px 1px 6px -1px #292f3d08, 0px 1px 4px 0px #292f3d0a;
-  --shadow-raised-200: 0px 1px 2px -1px #292f3d0f, 0px 1px 3px 0px #292f3d0d;
-  --shadow-raised-300: 0px 2px 4px -1px #292f3d0a, 0px 4px 6px -1px #292f3d0d;
-  --shadow-overlay-100: 0px 10px 10px -5px #292f3d0a, 0px 10px 40px -5px #292f3d0a;
-  --shadow-overlay-200: 0px 10px 10px -10px #292f3d0a, 0px 30px 60px -12px #292f3d1a;
-  --shadow-direction-left: -10px 0px 30px -5px #292f3d05, -5px 0px 80px -5px #292f3d0a;
-  --shadow-direction-right: 10px 0px 30px -5px #0000000a, 5px 0px 80px -5px #0000000a;
+  /* ---------- Motion ---------- */
+  /*
+   * One easing curve for the whole app. `smooth` is the decelerating curve
+   * every surface animates on — panels, rows, cards, dropdowns — so nothing
+   * reads as if it belongs to a different product. `spring` overshoots very
+   * slightly and is reserved for elements that appear from nothing.
+   */
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --ease-entrance: cubic-bezier(0.22, 1, 0.36, 1);
   /* --------- Height --------- */
   --height-header: 3.25rem;
   /* --------- Padding --------- */
@@ -725,6 +751,21 @@
 
 /* -------------------- Semantic colors (Final colors to be used in components) -------------------- */
 @theme inline {
+  /* ---------- Shadow ---------- */
+  /*
+   * Six steps, three jobs. `raised` is for things that sit on the page and
+   * lift under the pointer (cards, rows, buttons). `overlay` is for things that
+   * float over it (menus, modals, the peek panel) — those get a second, wider,
+   * softer layer so the falloff reads as distance rather than as a thick edge.
+   * `direction` casts sideways, for the sidebar and peek rails.
+   */
+  --shadow-raised-100: 0 1px 2px -1px var(--elevation-tint-100), 0 1px 3px 0 var(--elevation-tint-100);
+  --shadow-raised-200: 0 1px 2px -1px var(--elevation-tint-200), 0 2px 6px -1px var(--elevation-tint-200);
+  --shadow-raised-300: 0 2px 4px -2px var(--elevation-tint-200), 0 6px 16px -4px var(--elevation-tint-300);
+  --shadow-overlay-100: 0 4px 10px -6px var(--elevation-tint-200), 0 12px 32px -8px var(--elevation-tint-300);
+  --shadow-overlay-200: 0 8px 16px -10px var(--elevation-tint-300), 0 28px 60px -16px var(--elevation-tint-400);
+  --shadow-direction-left: -8px 0 24px -10px var(--elevation-tint-200), -2px 0 60px -12px var(--elevation-tint-300);
+  --shadow-direction-right: 8px 0 24px -10px var(--elevation-tint-200), 2px 0 60px -12px var(--elevation-tint-300);
   /* ---------- Outline width ---------- */
   --outline-width-sm: var(--border-width-sm);
   --outline-width-md: var(--border-width-md);
@@ -968,6 +1009,14 @@
   --text-color-priority-low: var(--priority-low);
   --text-color-priority-none: var(--priority-none);
   /* Border */
+  /* Priority backgrounds. Text and border variants already existed; the fills
+     are what let a priority chip carry a tint of its own colour instead of a
+     flat neutral that makes every level look alike at a glance. */
+  --background-color-priority-urgent: var(--priority-urgent);
+  --background-color-priority-high: var(--priority-high);
+  --background-color-priority-medium: var(--priority-medium);
+  --background-color-priority-low: var(--priority-low);
+  --background-color-priority-none: var(--priority-none);
   --border-color-priority-urgent: var(--priority-urgent);
   --border-color-priority-high: var(--priority-high);
   --border-color-priority-medium: var(--priority-medium);
@@ -980,8 +1029,8 @@
   /* ---------- Font family ---------- */
   --font-*: initial;
   --font-heading:
-    "Inter Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-    "Noto Color Emoji";
+    "Plus Jakarta Sans Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-body:
     "Inter Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     "Noto Color Emoji";
@@ -1005,6 +1054,9 @@
   --text-12: 0.75rem;
   --text-13: 0.8125rem;
   --text-14: 0.875rem;
+  /* 15px: the step between body and heading. Three call sites already used
+     `text-15` before this existed, so the class silently emitted nothing. */
+  --text-15: 0.9375rem;
   --text-16: 1rem;
   --text-18: 1.125rem;
   --text-20: 1.25rem;
@@ -1306,4 +1358,273 @@
   --tw-prose-pre-bg: var(--background-color-layer-1);
   --tw-prose-th-borders: var(--border-color-subtle);
   --tw-prose-td-borders: var(--border-color-subtle);
+}
+
+/* -------------------- Accent themes -------------------- */
+/*
+ * Every accent token in the app — button fills, active nav rows, focus rings,
+ * links, selection rails — resolves through `--brand-*`. So an accent theme is
+ * not a set of component overrides; it is this one ramp at a different hue.
+ * Redefining twelve custom properties re-tints the entire product.
+ *
+ * Set `data-accent` on <html> alongside `data-theme`. With none set, the azure
+ * ramp defined further up stands, so an install that never opts in is unchanged.
+ *
+ * The selector is deliberately NOT anchored to `:root`. Scoping it to any
+ * element lets a subtree opt into an accent — which is how the swatches in the
+ * accent picker paint themselves: each one carries `data-accent` and is filled
+ * with `bg-accent-primary`, so the swatch *is* the theme rather than a
+ * hand-maintained colour that can drift from it.
+ *
+ * Specificity is (0,1,0), matching the base `:root` ramp, so these win purely by
+ * coming later in the file — which is also why each accent needs its own dark
+ * block rather than relying on the base dark ramp.
+ */
+
+/* Violet */
+[data-accent="violet"] {
+  --brand-100: oklch(0.972 0.0154 292);
+  --brand-200: oklch(0.943 0.033 292);
+  --brand-300: oklch(0.898 0.0605 292);
+  --brand-400: oklch(0.82 0.0935 292);
+  --brand-500: oklch(0.72 0.1265 292);
+  --brand-600: oklch(0.63 0.1485 292);
+  --brand-700: oklch(0.55 0.143 292);
+  --brand-900: oklch(0.403 0.1056 292);
+  --brand-1000: oklch(0.34 0.0902 292);
+  --brand-1100: oklch(0.27 0.0715 292);
+  --brand-1200: oklch(0.2 0.0528 292);
+  --brand-default: oklch(0.48 0.1276 292);
+}
+
+[data-accent="violet"]:where([data-theme*="dark"], [data-theme*="dark"] *) {
+  --brand-100: oklch(0.235 0.0385 288);
+  --brand-200: oklch(0.29 0.0605 288);
+  --brand-300: oklch(0.36 0.088 288);
+  --brand-400: oklch(0.46 0.1155 288);
+  --brand-500: oklch(0.56 0.1375 288);
+  --brand-700: oklch(0.72 0.154 288);
+  --brand-800: oklch(0.8 0.132 288);
+  --brand-900: oklch(0.87 0.099 288);
+  --brand-1000: oklch(0.92 0.0605 288);
+  --brand-1100: oklch(0.96 0.0308 288);
+  --brand-1200: oklch(0.985 0.011 288);
+  --brand-default: oklch(0.754 0.1529 288);
+}
+
+/* Azure */
+[data-accent="azure"] {
+  --brand-100: oklch(0.972 0.014 242);
+  --brand-200: oklch(0.943 0.03 242);
+  --brand-300: oklch(0.898 0.055 242);
+  --brand-400: oklch(0.82 0.085 242);
+  --brand-500: oklch(0.72 0.115 242);
+  --brand-600: oklch(0.63 0.135 242);
+  --brand-700: oklch(0.55 0.13 242);
+  --brand-900: oklch(0.403 0.096 242);
+  --brand-1000: oklch(0.34 0.082 242);
+  --brand-1100: oklch(0.27 0.065 242);
+  --brand-1200: oklch(0.2 0.048 242);
+  --brand-default: oklch(0.48 0.116 242);
+}
+
+[data-accent="azure"]:where([data-theme*="dark"], [data-theme*="dark"] *) {
+  --brand-100: oklch(0.235 0.035 233);
+  --brand-200: oklch(0.29 0.055 233);
+  --brand-300: oklch(0.36 0.08 233);
+  --brand-400: oklch(0.46 0.105 233);
+  --brand-500: oklch(0.56 0.125 233);
+  --brand-700: oklch(0.72 0.14 233);
+  --brand-800: oklch(0.8 0.12 233);
+  --brand-900: oklch(0.87 0.09 233);
+  --brand-1000: oklch(0.92 0.055 233);
+  --brand-1100: oklch(0.96 0.028 233);
+  --brand-1200: oklch(0.985 0.01 233);
+  --brand-default: oklch(0.754 0.139 233);
+}
+
+/* Indigo */
+[data-accent="indigo"] {
+  --brand-100: oklch(0.972 0.0151 268);
+  --brand-200: oklch(0.943 0.0324 268);
+  --brand-300: oklch(0.898 0.0594 268);
+  --brand-400: oklch(0.82 0.0918 268);
+  --brand-500: oklch(0.72 0.1242 268);
+  --brand-600: oklch(0.63 0.1458 268);
+  --brand-700: oklch(0.55 0.1404 268);
+  --brand-900: oklch(0.403 0.1037 268);
+  --brand-1000: oklch(0.34 0.0886 268);
+  --brand-1100: oklch(0.27 0.0702 268);
+  --brand-1200: oklch(0.2 0.0518 268);
+  --brand-default: oklch(0.48 0.1253 268);
+}
+
+[data-accent="indigo"]:where([data-theme*="dark"], [data-theme*="dark"] *) {
+  --brand-100: oklch(0.235 0.0378 262);
+  --brand-200: oklch(0.29 0.0594 262);
+  --brand-300: oklch(0.36 0.0864 262);
+  --brand-400: oklch(0.46 0.1134 262);
+  --brand-500: oklch(0.56 0.135 262);
+  --brand-700: oklch(0.72 0.1512 262);
+  --brand-800: oklch(0.8 0.1296 262);
+  --brand-900: oklch(0.87 0.0972 262);
+  --brand-1000: oklch(0.92 0.0594 262);
+  --brand-1100: oklch(0.96 0.0302 262);
+  --brand-1200: oklch(0.985 0.0108 262);
+  --brand-default: oklch(0.754 0.1501 262);
+}
+
+/* Emerald */
+[data-accent="emerald"] {
+  --brand-100: oklch(0.972 0.0119 155);
+  --brand-200: oklch(0.943 0.0255 155);
+  --brand-300: oklch(0.898 0.0467 155);
+  --brand-400: oklch(0.82 0.0723 155);
+  --brand-500: oklch(0.72 0.0978 155);
+  --brand-600: oklch(0.63 0.1148 155);
+  --brand-700: oklch(0.55 0.1105 155);
+  --brand-900: oklch(0.403 0.0816 155);
+  --brand-1000: oklch(0.34 0.0697 155);
+  --brand-1100: oklch(0.27 0.0553 155);
+  --brand-1200: oklch(0.2 0.0408 155);
+  --brand-default: oklch(0.48 0.0986 155);
+}
+
+[data-accent="emerald"]:where([data-theme*="dark"], [data-theme*="dark"] *) {
+  --brand-100: oklch(0.235 0.0298 152);
+  --brand-200: oklch(0.29 0.0467 152);
+  --brand-300: oklch(0.36 0.068 152);
+  --brand-400: oklch(0.46 0.0892 152);
+  --brand-500: oklch(0.56 0.1062 152);
+  --brand-700: oklch(0.72 0.119 152);
+  --brand-800: oklch(0.8 0.102 152);
+  --brand-900: oklch(0.87 0.0765 152);
+  --brand-1000: oklch(0.92 0.0467 152);
+  --brand-1100: oklch(0.96 0.0238 152);
+  --brand-1200: oklch(0.985 0.0085 152);
+  --brand-default: oklch(0.754 0.1182 152);
+}
+
+/* Teal */
+[data-accent="teal"] {
+  --brand-100: oklch(0.972 0.0115 190);
+  --brand-200: oklch(0.943 0.0246 190);
+  --brand-300: oklch(0.898 0.0451 190);
+  --brand-400: oklch(0.82 0.0697 190);
+  --brand-500: oklch(0.72 0.0943 190);
+  --brand-600: oklch(0.63 0.1107 190);
+  --brand-700: oklch(0.55 0.1066 190);
+  --brand-900: oklch(0.403 0.0787 190);
+  --brand-1000: oklch(0.34 0.0672 190);
+  --brand-1100: oklch(0.27 0.0533 190);
+  --brand-1200: oklch(0.2 0.0394 190);
+  --brand-default: oklch(0.48 0.0951 190);
+}
+
+[data-accent="teal"]:where([data-theme*="dark"], [data-theme*="dark"] *) {
+  --brand-100: oklch(0.235 0.0287 186);
+  --brand-200: oklch(0.29 0.0451 186);
+  --brand-300: oklch(0.36 0.0656 186);
+  --brand-400: oklch(0.46 0.0861 186);
+  --brand-500: oklch(0.56 0.1025 186);
+  --brand-700: oklch(0.72 0.1148 186);
+  --brand-800: oklch(0.8 0.0984 186);
+  --brand-900: oklch(0.87 0.0738 186);
+  --brand-1000: oklch(0.92 0.0451 186);
+  --brand-1100: oklch(0.96 0.023 186);
+  --brand-1200: oklch(0.985 0.0082 186);
+  --brand-default: oklch(0.754 0.114 186);
+}
+
+/* Amber */
+[data-accent="amber"] {
+  --brand-100: oklch(0.972 0.0133 75);
+  --brand-200: oklch(0.943 0.0285 75);
+  --brand-300: oklch(0.898 0.0522 75);
+  --brand-400: oklch(0.82 0.0808 75);
+  --brand-500: oklch(0.72 0.1092 75);
+  --brand-600: oklch(0.63 0.1283 75);
+  --brand-700: oklch(0.55 0.1235 75);
+  --brand-900: oklch(0.403 0.0912 75);
+  --brand-1000: oklch(0.34 0.0779 75);
+  --brand-1100: oklch(0.27 0.0617 75);
+  --brand-1200: oklch(0.2 0.0456 75);
+  --brand-default: oklch(0.48 0.1102 75);
+}
+
+[data-accent="amber"]:where([data-theme*="dark"], [data-theme*="dark"] *) {
+  --brand-100: oklch(0.235 0.0333 72);
+  --brand-200: oklch(0.29 0.0522 72);
+  --brand-300: oklch(0.36 0.076 72);
+  --brand-400: oklch(0.46 0.0997 72);
+  --brand-500: oklch(0.56 0.1187 72);
+  --brand-700: oklch(0.72 0.133 72);
+  --brand-800: oklch(0.8 0.114 72);
+  --brand-900: oklch(0.87 0.0855 72);
+  --brand-1000: oklch(0.92 0.0522 72);
+  --brand-1100: oklch(0.96 0.0266 72);
+  --brand-1200: oklch(0.985 0.0095 72);
+  --brand-default: oklch(0.754 0.1321 72);
+}
+
+/* Rose */
+[data-accent="rose"] {
+  --brand-100: oklch(0.972 0.0147 18);
+  --brand-200: oklch(0.943 0.0315 18);
+  --brand-300: oklch(0.898 0.0578 18);
+  --brand-400: oklch(0.82 0.0893 18);
+  --brand-500: oklch(0.72 0.1208 18);
+  --brand-600: oklch(0.63 0.1418 18);
+  --brand-700: oklch(0.55 0.1365 18);
+  --brand-900: oklch(0.403 0.1008 18);
+  --brand-1000: oklch(0.34 0.0861 18);
+  --brand-1100: oklch(0.27 0.0683 18);
+  --brand-1200: oklch(0.2 0.0504 18);
+  --brand-default: oklch(0.48 0.1218 18);
+}
+
+[data-accent="rose"]:where([data-theme*="dark"], [data-theme*="dark"] *) {
+  --brand-100: oklch(0.235 0.0368 15);
+  --brand-200: oklch(0.29 0.0578 15);
+  --brand-300: oklch(0.36 0.084 15);
+  --brand-400: oklch(0.46 0.1103 15);
+  --brand-500: oklch(0.56 0.1313 15);
+  --brand-700: oklch(0.72 0.147 15);
+  --brand-800: oklch(0.8 0.126 15);
+  --brand-900: oklch(0.87 0.0945 15);
+  --brand-1000: oklch(0.92 0.0578 15);
+  --brand-1100: oklch(0.96 0.0294 15);
+  --brand-1200: oklch(0.985 0.0105 15);
+  --brand-default: oklch(0.754 0.146 15);
+}
+
+/* Pink */
+[data-accent="pink"] {
+  --brand-100: oklch(0.972 0.0143 350);
+  --brand-200: oklch(0.943 0.0306 350);
+  --brand-300: oklch(0.898 0.0561 350);
+  --brand-400: oklch(0.82 0.0867 350);
+  --brand-500: oklch(0.72 0.1173 350);
+  --brand-600: oklch(0.63 0.1377 350);
+  --brand-700: oklch(0.55 0.1326 350);
+  --brand-900: oklch(0.403 0.0979 350);
+  --brand-1000: oklch(0.34 0.0836 350);
+  --brand-1100: oklch(0.27 0.0663 350);
+  --brand-1200: oklch(0.2 0.049 350);
+  --brand-default: oklch(0.48 0.1183 350);
+}
+
+[data-accent="pink"]:where([data-theme*="dark"], [data-theme*="dark"] *) {
+  --brand-100: oklch(0.235 0.0357 346);
+  --brand-200: oklch(0.29 0.0561 346);
+  --brand-300: oklch(0.36 0.0816 346);
+  --brand-400: oklch(0.46 0.1071 346);
+  --brand-500: oklch(0.56 0.1275 346);
+  --brand-700: oklch(0.72 0.1428 346);
+  --brand-800: oklch(0.8 0.1224 346);
+  --brand-900: oklch(0.87 0.0918 346);
+  --brand-1000: oklch(0.92 0.0561 346);
+  --brand-1100: oklch(0.96 0.0286 346);
+  --brand-1200: oklch(0.985 0.0102 346);
+  --brand-default: oklch(0.754 0.1418 346);
 }

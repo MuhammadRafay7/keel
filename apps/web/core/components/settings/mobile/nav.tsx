@@ -6,7 +6,7 @@
 
 import { useRef } from "react";
 import { observer } from "mobx-react";
-import { Menu } from "lucide-react";
+import { Menu } from "@keel/propel/icons";
 import { useOutsideClickDetector } from "@keel/hooks";
 import { useTranslation } from "@keel/i18n";
 import { ChevronRightIcon } from "@keel/propel/icons";

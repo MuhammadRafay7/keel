@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from "react";
-import { CloudOff, Dot } from "lucide-react";
+import { CloudOff, Dot } from "@keel/propel/icons";
 import { Tooltip } from "@keel/propel/tooltip";
 import { Badge } from "@keel/propel/badge";
 

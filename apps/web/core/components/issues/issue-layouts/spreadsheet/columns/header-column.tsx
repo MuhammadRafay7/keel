@@ -5,7 +5,14 @@
  */
 
 //ui
-import { ArrowDownWideNarrow, ArrowUpNarrowWide, CheckIcon, ChevronDownIcon, Eraser, MoveRight } from "lucide-react";
+import {
+  ArrowDownWideNarrow,
+  ArrowUpNarrowWide,
+  CheckIcon,
+  ChevronDownIcon,
+  Eraser,
+  MoveRight,
+} from "@keel/propel/icons";
 // constants
 import { SPREADSHEET_PROPERTY_DETAILS } from "@keel/constants";
 // i18n

@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { ArrowDownWideNarrow, ArrowUpWideNarrow } from "lucide-react";
+import { ArrowDownWideNarrow, ArrowUpWideNarrow } from "@keel/propel/icons";
 import { INBOX_ISSUE_ORDER_BY_OPTIONS, INBOX_ISSUE_SORT_BY_OPTIONS } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";
 import { getButtonStyling } from "@keel/propel/button";

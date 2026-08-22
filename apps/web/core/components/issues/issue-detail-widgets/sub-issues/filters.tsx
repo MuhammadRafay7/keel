@@ -6,7 +6,7 @@
 
 import { useMemo, useState } from "react";
 import { observer } from "mobx-react";
-import { ListFilter } from "lucide-react";
+import { ListFilter } from "@keel/propel/icons";
 import { useTranslation } from "@keel/i18n";
 import { SearchIcon, CloseIcon } from "@keel/propel/icons";
 import type { IIssueFilterOptions, IState } from "@keel/types";

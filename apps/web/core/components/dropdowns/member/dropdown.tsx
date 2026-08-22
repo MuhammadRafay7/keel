@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import type { LucideIcon } from "lucide-react";
+import type { LucideIcon } from "@keel/propel/icons";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
 // local imports

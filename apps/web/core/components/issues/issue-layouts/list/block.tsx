@@ -173,19 +173,27 @@ export const IssueBlock = observer(function IssueBlock(props: IssueBlockProps) {
       id={`issue-${issue.id}`}
       href={workItemLink}
       onClick={() => handleIssuePeekOverview(issue)}
-      className="w-full cursor-pointer"
+      className="w-full cursor-pointer focus-ring rounded-lg"
       disabled={!!issue?.tempId || issue?.is_draft}
     >
       <Row
         ref={issueRef}
         className={cn(
-          "group/list-block relative flex min-h-11 flex-col gap-3 bg-layer-transparent py-3 text-13 transition-colors hover:bg-layer-transparent-hover",
+          "group/list-block relative flex min-h-10 flex-col gap-2 rounded-lg border border-transparent bg-layer-transparent px-2.5 py-1.5 text-13 transition-smooth hover:border-subtle/70 hover:bg-surface-2/60",
+          /*
+           * The open row gets a rail against its leading edge as well as a
+           * tinted border. In a list of forty rows a 1px accent outline is easy
+           * to lose while scrolling; the rail is a solid mark at a fixed
+           * position, so the eye can find the open item without re-reading.
+           */
+          "before:absolute before:top-1.5 before:bottom-1.5 before:left-0 before:w-[3px] before:rounded-full before:bg-accent-primary before:opacity-0 before:transition-smooth",
           {
-            "border-accent-strong": getIsIssuePeeked(issue.id) && peekIssue?.nestingLevel === nestingLevel,
+            "border-accent-primary/60 bg-surface-2/80 shadow-raised-100 before:opacity-100":
+              getIsIssuePeeked(issue.id) && peekIssue?.nestingLevel === nestingLevel,
             "border-strong-1": isIssueActive,
             "last:border-b-transparent": !getIsIssuePeeked(issue.id) && !isIssueActive,
-            "bg-accent-primary/5 hover:bg-accent-primary/10": isIssueSelected,
-            "bg-layer-1": isCurrentBlockDragging,
+            "border-accent-primary/30 bg-accent-primary/10 hover:bg-accent-primary/15": isIssueSelected,
+            "bg-layer-1 opacity-90 shadow-raised-300": isCurrentBlockDragging,
             "md:flex-row md:items-center": isSidebarCollapsed,
             "lg:flex-row lg:items-center": !isSidebarCollapsed,
           }

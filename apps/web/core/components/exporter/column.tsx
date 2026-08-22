@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { Download } from "lucide-react";
+import { Download } from "@keel/propel/icons";
 import type { IExportData } from "@keel/types";
 import { getDate, getFileURL, renderFormattedDate } from "@keel/utils";
 

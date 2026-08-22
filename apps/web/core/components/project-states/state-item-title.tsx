@@ -6,7 +6,7 @@
 
 import type { SetStateAction } from "react";
 import { observer } from "mobx-react";
-import { GripVertical } from "lucide-react";
+import { GripVertical } from "@keel/propel/icons";
 import { EIconSize, STATE_TRACKER_ELEMENTS } from "@keel/constants";
 // keel imports
 import { EditIcon, StateGroupIcon } from "@keel/propel/icons";

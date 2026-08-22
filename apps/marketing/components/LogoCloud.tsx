@@ -1,51 +1,60 @@
-export function LogoCloud() {
-  const logos = [
-    { name: "Sony", text: "SONY" },
-    { name: "Aramco", text: "aramco" },
-    { name: "Dolby", text: "Dolby" },
-    { name: "Accenture", text: "accenture" },
-    { name: "Amazon", text: "amazon" },
-    { name: "Essor", text: "ESSOR" },
-    { name: "40AU", text: "40AU" },
-    { name: "Hypersonica", text: "HYPERSONICA" },
-    { name: "SSI", text: "SSI" },
-    { name: "Ruby Labs", text: "ruby labs" },
-    { name: "République Française", text: "RÉPUBLIQUE FRANÇAISE" },
-    { name: "Gov of Lithuania", text: "LIETUVOS RESPUBLIKA" },
-    { name: "Mirador Therapeutics", text: "MIRADOR" },
-    { name: "Texelis", text: "TEXELIS" },
-    { name: "OptiGRÜN", text: "OPTIGRÜN" },
-    { name: "Stark Bank", text: "STARK BANK" },
-    { name: "Datum", text: "DATUM" },
-    { name: "Power Integrations", text: "POWER INTEGRATIONS" },
-  ];
+import React from "react";
+import { CodeIcon, ServerIcon, SmartphoneIcon, CpuIcon, SparklesIcon, ShieldCheckIcon } from "@/components/Icons";
 
+const DISCIPLINES = [
+  {
+    icon: CodeIcon,
+    name: "Frontend & UI Teams",
+    tech: "React · Next.js · Design Systems",
+  },
+  {
+    icon: ServerIcon,
+    name: "Infrastructure & DevOps",
+    tech: "CI/CD · Docker · K8s · Terraform",
+  },
+  {
+    icon: SmartphoneIcon,
+    name: "Mobile & iOS Teams",
+    tech: "Swift · React Native · Expo",
+  },
+  {
+    icon: CpuIcon,
+    name: "Core API & Backend",
+    tech: "Python · Rust · Microservices",
+  },
+  {
+    icon: SparklesIcon,
+    name: "AI Platform Teams",
+    tech: "Anthropic · OpenAI · Custom Keys",
+  },
+  {
+    icon: ShieldCheckIcon,
+    name: "Security & Platform",
+    tech: "SOC2 · RBAC · Audit Logging",
+  },
+];
+
+export function LogoCloud() {
   return (
-    <section
-      aria-label="Logos"
-      className="section-pad"
-      style={{ paddingTop: "3rem", paddingBottom: "3rem" }}
-      id="logos"
-    >
-      <div className="shell">
-        <div className="logo-grid">
-          {logos.map((logo) => (
-            <div key={logo.name} className="logo-item">
-              <span
-                style={{
-                  fontFamily: "var(--sans)",
-                  fontWeight: 700,
-                  fontSize: logo.text.length > 14 ? "0.75rem" : "1.1rem",
-                  letterSpacing: logo.text === logo.text.toUpperCase() ? "0.12em" : "-0.02em",
-                  color: "var(--fg-muted)",
-                  textTransform: logo.text === logo.text.toUpperCase() ? "uppercase" : "none",
-                  userSelect: "none",
-                }}
-              >
-                {logo.text}
-              </span>
-            </div>
-          ))}
+    <section aria-label="Engineering Disciplines" className="engineering-trust-section">
+      <div className="shell" style={{ textAlign: "center" }}>
+        <p className="engineering-trust-heading">Built for high-velocity software engineering teams</p>
+
+        <div className="engineering-discipline-grid">
+          {DISCIPLINES.map((item) => {
+            const Icon = item.icon;
+            return (
+              <div key={item.name} className="discipline-card">
+                <div className="discipline-card-icon">
+                  <Icon size={16} />
+                </div>
+                <div className="discipline-card-info">
+                  <span className="discipline-card-name">{item.name}</span>
+                  <span className="discipline-card-tech">{item.tech}</span>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

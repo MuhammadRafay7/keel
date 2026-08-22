@@ -6,7 +6,7 @@
 
 import type { ReactNode } from "react";
 import { observer } from "mobx-react";
-import { CheckCircle, Clock, MoreVertical } from "lucide-react";
+import { CheckCircle, Clock, MoreVertical } from "@keel/propel/icons";
 import { useTranslation } from "@keel/i18n";
 // keel imports
 import { ArchiveIcon, CheckIcon } from "@keel/propel/icons";

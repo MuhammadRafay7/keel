@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { X } from "lucide-react";
+import { X } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 // local imports

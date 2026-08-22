@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { Link as Loader } from "lucide-react";
+import { Link as Loader } from "@keel/propel/icons";
 import { useTranslation } from "@keel/i18n";
 import { LinkIcon, EditIcon, TrashIcon, CloseIcon, ChevronRightIcon } from "@keel/propel/icons";
 // keel imports

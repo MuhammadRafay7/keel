@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw } from "@keel/propel/icons";
 // hooks
 import { ArchiveIcon } from "@keel/propel/icons";
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";

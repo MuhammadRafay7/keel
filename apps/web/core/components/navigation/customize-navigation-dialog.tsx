@@ -7,7 +7,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { GripVertical, X } from "lucide-react";
+import { GripVertical, X } from "@keel/propel/icons";
 // keel imports
 import { WORKSPACE_SIDEBAR_DYNAMIC_NAVIGATION_ITEMS_LINKS, EUserPermissionsLevel } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

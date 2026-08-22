@@ -4,10 +4,11 @@
  * See the LICENSE file for details.
  */
 
+import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 // icons
-import { Circle } from "lucide-react";
+import { Circle, UploadCloud } from "@keel/propel/icons";
 // keel imports
 import {
   EUserPermissions,
@@ -25,8 +26,7 @@ import { Breadcrumbs, Header } from "@keel/ui";
 // components
 import { BreadcrumbLink } from "@/components/common/breadcrumb-link";
 import { CountChip } from "@/components/common/count-chip";
-// constants
-import { HeaderFilters } from "@/components/issues/filters";
+import { BulkImportModal } from "@/components/work-items/import";
 // helpers
 // hooks
 import { useCommandPalette } from "@/hooks/store/use-command-palette";
@@ -42,9 +42,11 @@ export const IssuesHeader = observer(function IssuesHeader() {
   // router
   const router = useAppRouter();
   const { workspaceSlug, projectId } = useParams();
+  // states
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   // store hooks
   const {
-    issues: { getGroupIssueCount },
+    issues: { getGroupIssueCount, fetchIssuesWithExistingPagination },
   } = useIssues(EIssuesStoreType.PROJECT);
   // i18n
   const { t } = useTranslation();
@@ -67,71 +69,89 @@ export const IssuesHeader = observer(function IssuesHeader() {
   );
 
   return (
-    <Header>
-      <Header.LeftItem>
-        <div className="flex items-center gap-2.5">
-          <Breadcrumbs onBack={() => router.back()} isLoading={loader === "init-loader"} className="flex-grow-0">
-            <CommonProjectBreadcrumbs workspaceSlug={workspaceSlug?.toString()} projectId={projectId?.toString()} />
-            <Breadcrumbs.Item
-              component={
-                <BreadcrumbLink
-                  label="Work Items"
-                  href={`/${workspaceSlug}/projects/${projectId}/issues/`}
-                  icon={<WorkItemsIcon className="h-4 w-4 text-tertiary" />}
-                  isLast
-                />
-              }
-              isLast
-            />
-          </Breadcrumbs>
-          {issuesCount && issuesCount > 0 ? (
-            <Tooltip
-              isMobile={isMobile}
-              tooltipContent={`There are ${issuesCount} ${issuesCount > 1 ? "work items" : "work item"} in this project`}
-              position="bottom"
+    <>
+      <Header>
+        <Header.LeftItem>
+          <div className="flex items-center gap-2.5">
+            <Breadcrumbs onBack={() => router.back()} isLoading={loader === "init-loader"} className="flex-grow-0">
+              <CommonProjectBreadcrumbs workspaceSlug={workspaceSlug?.toString()} projectId={projectId?.toString()} />
+              <Breadcrumbs.Item
+                component={
+                  <BreadcrumbLink
+                    label="Work Items"
+                    href={`/${workspaceSlug}/projects/${projectId}/issues/`}
+                    icon={<WorkItemsIcon className="h-4 w-4 text-tertiary" />}
+                    isLast
+                  />
+                }
+                isLast
+              />
+            </Breadcrumbs>
+            {issuesCount && issuesCount > 0 ? (
+              <Tooltip
+                isMobile={isMobile}
+                tooltipContent={`There are ${issuesCount} ${issuesCount > 1 ? "work items" : "work item"} in this project`}
+                position="bottom"
+              >
+                <CountChip count={issuesCount} />
+              </Tooltip>
+            ) : null}
+          </div>
+          {currentProjectDetails?.anchor ? (
+            <a
+              href={publishedURL}
+              className="group flex items-center gap-1.5 rounded-sm bg-accent-primary/10 px-2.5 py-1 text-11 font-medium text-accent-primary"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <CountChip count={issuesCount} />
-            </Tooltip>
-          ) : null}
-        </div>
-        {currentProjectDetails?.anchor ? (
-          <a
-            href={publishedURL}
-            className="group flex items-center gap-1.5 rounded-sm bg-accent-primary/10 px-2.5 py-1 text-11 font-medium text-accent-primary"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Circle className="h-1.5 w-1.5 fill-accent-primary" strokeWidth={2} />
-            {t("workspace_projects.network.public.title")}
-            <NewTabIcon className="hidden h-3 w-3 group-hover:block" strokeWidth={2} />
-          </a>
-        ) : (
-          <></>
-        )}
-      </Header.LeftItem>
-      <Header.RightItem>
-        <div className="hidden gap-2 md:flex">
-          <HeaderFilters
-            projectId={projectId}
-            currentProjectDetails={currentProjectDetails}
-            workspaceSlug={workspaceSlug}
-            canUserCreateIssue={canUserCreateIssue}
-          />
-        </div>
-        {canUserCreateIssue && (
-          <Button
-            variant="primary"
-            size="lg"
-            onClick={() => {
-              toggleCreateIssueModal(true, EIssuesStoreType.PROJECT);
-            }}
-            data-ph-element={WORK_ITEM_TRACKER_ELEMENTS.HEADER_ADD_BUTTON.WORK_ITEMS}
-          >
-            <div className="block sm:hidden">{t("issue.label", { count: 1 })}</div>
-            <div className="hidden sm:block">{t("issue.add.label")}</div>
-          </Button>
-        )}
-      </Header.RightItem>
-    </Header>
+              <Circle className="h-1.5 w-1.5 fill-accent-primary" strokeWidth={2} />
+              {t("workspace_projects.network.public.title")}
+              <NewTabIcon className="hidden h-3 w-3 group-hover:block" strokeWidth={2} />
+            </a>
+          ) : (
+            <></>
+          )}
+        </Header.LeftItem>
+        <Header.RightItem>
+          {canUserCreateIssue && (
+            <div className="flex items-center gap-2">
+              <Button
+                variant="secondary"
+                size="lg"
+                onClick={() => setIsImportModalOpen(true)}
+                className="flex items-center gap-1.5"
+              >
+                <UploadCloud className="size-4" />
+                <span className="hidden sm:inline">Import</span>
+              </Button>
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={() => {
+                  toggleCreateIssueModal(true, EIssuesStoreType.PROJECT);
+                }}
+                data-ph-element={WORK_ITEM_TRACKER_ELEMENTS.HEADER_ADD_BUTTON.WORK_ITEMS}
+              >
+                <div className="block sm:hidden">{t("issue.label", { count: 1 })}</div>
+                <div className="hidden sm:block">{t("issue.add.label")}</div>
+              </Button>
+            </div>
+          )}
+        </Header.RightItem>
+      </Header>
+
+      {isImportModalOpen && projectId && workspaceSlug && (
+        <BulkImportModal
+          isOpen={isImportModalOpen}
+          onClose={() => setIsImportModalOpen(false)}
+          workspaceSlug={workspaceSlug.toString()}
+          projectId={projectId.toString()}
+          projectName={currentProjectDetails?.name}
+          onSuccess={() => {
+            fetchIssuesWithExistingPagination(workspaceSlug.toString(), projectId.toString(), "mutation");
+          }}
+        />
+      )}
+    </>
   );
 });

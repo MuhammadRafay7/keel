@@ -7,7 +7,7 @@
 import React, { useRef, useState } from "react";
 import { omit } from "lodash-es";
 import { observer } from "mobx-react";
-import { SquareStackIcon } from "lucide-react";
+import { SquareStackIcon } from "@keel/propel/icons";
 import { CopyIcon, EditIcon, TrashIcon } from "@keel/propel/icons";
 // keel utils
 import { Tooltip } from "@keel/propel/tooltip";

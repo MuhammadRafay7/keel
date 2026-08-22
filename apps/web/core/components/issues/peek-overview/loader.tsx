@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { MoveRight } from "lucide-react";
+import { MoveRight } from "@keel/propel/icons";
 import { Tooltip } from "@keel/propel/tooltip";
 import { Loader } from "@keel/ui";
 // hooks

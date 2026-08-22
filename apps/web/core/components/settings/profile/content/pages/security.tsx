@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { Controller, useForm } from "react-hook-form";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "@keel/propel/icons";
 // keel imports
 import { E_PASSWORD_STRENGTH } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

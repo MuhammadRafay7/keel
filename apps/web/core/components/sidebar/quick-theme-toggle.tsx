@@ -7,7 +7,7 @@
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { useTheme } from "next-themes";
-import { Sun, Moon, Monitor } from "lucide-react";
+import { Sun, Moon, Monitor } from "@keel/propel/icons";
 import { useUserProfile } from "@/hooks/store/user";
 
 export const QuickThemeToggle = observer(function QuickThemeToggle() {
@@ -40,10 +40,11 @@ export const QuickThemeToggle = observer(function QuickThemeToggle() {
             type="button"
             onClick={() => handleThemeSwitch(value)}
             title={`Switch to ${label} theme`}
-            className={`flex flex-1 items-center justify-center gap-1 rounded-md px-1.5 py-1 text-11 font-medium transition-all duration-150 ${
+            aria-pressed={isActive}
+            className={`flex flex-1 items-center justify-center gap-1 focus-ring rounded-md px-1.5 py-1 text-11 font-medium transition-smooth ${
               isActive
-                ? "shadow-xs bg-surface-1 font-semibold text-accent-primary"
-                : "hover:bg-surface-1/50 hover:text-primary"
+                ? "bg-surface-1 font-semibold text-accent-primary shadow-raised-100"
+                : "hover:bg-surface-1/60 hover:text-primary"
             }`}
           >
             <Icon className="size-3.5 flex-shrink-0" />
