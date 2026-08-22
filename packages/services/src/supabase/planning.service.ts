@@ -831,7 +831,12 @@ export class SupabasePlanningService {
   }
 
   /** Work items belonging to a saved project view. */
-  async getViewIssues(workspaceSlug: string, projectId: string, viewId: string): Promise<TIssuesResponse> {
+  async getViewIssues(
+    workspaceSlug: string,
+    projectId: string,
+    viewId: string,
+    queries?: TWorkItemQueries
+  ): Promise<TIssuesResponse> {
     void viewId;
 
     const { data, error } = await getSupabase()

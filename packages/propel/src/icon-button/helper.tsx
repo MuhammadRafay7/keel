@@ -9,7 +9,9 @@ import { cva } from "class-variance-authority";
 import type React from "react";
 
 export const iconButtonVariants = cva(
-  "inline-flex aspect-square items-center justify-center gap-1 whitespace-nowrap transition-colors focus-visible:outline-none disabled:pointer-events-none",
+  "inline-flex aspect-square items-center justify-center gap-1 whitespace-nowrap transition-smooth disabled:pointer-events-none " +
+    // See the note on `buttonVariants` — same missing focus indicator.
+    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong",
   {
     variants: {
       variant: {

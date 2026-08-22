@@ -10,7 +10,7 @@ import type { TContextMenuItem } from "@keel/ui";
 import { CustomMenu } from "@keel/ui";
 import { copyUrlToClipboard, cn } from "@keel/utils";
 import { useLayoutMenuItems } from "@/components/common/quick-actions-helper";
-import { Ellipsis } from "lucide-react";
+import { Ellipsis } from "@keel/propel/icons";
 import { IconButton } from "@keel/propel/icon-button";
 
 type Props = {

@@ -8,7 +8,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Placement } from "@popperjs/core";
 import { useParams } from "next/navigation";
 import { usePopper } from "react-popper";
-import { Loader } from "lucide-react";
+import { Loader } from "@keel/propel/icons";
 import { Combobox } from "@headlessui/react";
 // keel imports
 import { EUserPermissionsLevel, getRandomLabelColor } from "@keel/constants";

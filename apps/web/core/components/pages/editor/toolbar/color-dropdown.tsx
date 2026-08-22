@@ -5,7 +5,7 @@
  */
 
 import { memo } from "react";
-import { ALargeSmall, Ban } from "lucide-react";
+import { ALargeSmall, Ban } from "@keel/propel/icons";
 import { Popover } from "@headlessui/react";
 // keel editor
 import { COLORS_LIST } from "@keel/editor";

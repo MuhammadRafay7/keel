@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { FileText, FolderPlus, Layers, SquarePlus } from "lucide-react";
+import { FileText, FolderPlus, Layers, SquarePlus } from "@keel/propel/icons";
 // keel imports
 import { EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
 import { ContrastIcon, DiceIcon, LayersIcon } from "@keel/propel/icons";

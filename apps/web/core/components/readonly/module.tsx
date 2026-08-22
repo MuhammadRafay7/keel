@@ -6,7 +6,7 @@
 
 import { useEffect } from "react";
 import { observer } from "mobx-react";
-import { Layers } from "lucide-react";
+import { Layers } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 import { cn } from "@keel/utils";

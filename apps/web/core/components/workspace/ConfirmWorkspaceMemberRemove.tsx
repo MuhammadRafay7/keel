@@ -6,7 +6,7 @@
 
 import React, { useState } from "react";
 import { observer } from "mobx-react";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle } from "@keel/propel/icons";
 import { Dialog, Transition } from "@headlessui/react";
 import { Button } from "@keel/propel/button";
 import { useUser } from "@/hooks/store/user";

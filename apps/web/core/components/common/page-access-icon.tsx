@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { ArchiveIcon, Earth } from "lucide-react";
+import { ArchiveIcon, Earth } from "@keel/propel/icons";
 import { EPageAccess } from "@keel/constants";
 import { LockIcon } from "@keel/propel/icons";
 import type { TPage } from "@keel/types";

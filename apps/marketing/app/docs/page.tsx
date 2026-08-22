@@ -2,35 +2,36 @@ import Link from "next/link";
 
 export const metadata = {
   title: "Documentation — Keel",
-  description: "Comprehensive documentation, architecture specs, and deployment guides for Keel.",
+  description: "Comprehensive documentation, workspace guides, and API integration references for Keel.",
 };
 
 const APP = "https://app.keel.ostenmark.com";
-const REPO = "https://github.com/MuhammadRafay7/keel";
+const SALES_EMAIL = "sales@ostenmark.com";
 
 export default function DocsPage() {
   return (
     <>
       {/* 1. Page Header */}
       <section className="inner-page-head">
-        <div className="shell">
+        <div className="shell" style={{ textAlign: "center", maxWidth: "48rem" }}>
           <span className="label-badge">DOCUMENTATION</span>
-          <h1 className="font-satoshi">Documentation &amp; Developer Guides</h1>
-          <p className="inner-page-lede">
-            Everything you need to setup your workspace, deploy self-hosted instances on Docker &amp; Kubernetes, build
-            integrations with REST APIs &amp; MCP servers, and automate workflows.
+          <h1 className="font-heading" style={{ margin: "1rem 0" }}>
+            Documentation &amp; User Guides
+          </h1>
+          <p className="inner-page-lede" style={{ margin: "0 auto" }}>
+            Everything you need to set up your workspace, configure Bring Your Own AI Key across 7 providers, master 5
+            dynamic views, and automate workflows with REST APIs.
           </p>
 
-          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "2rem" }}>
-            <a href={REPO} target="_blank" rel="noreferrer" className="btn btn-secondary btn-sm">
-              GitHub Repository &rarr;
-            </a>
-            <a href={`${REPO}/blob/main/README.md`} target="_blank" rel="noreferrer" className="btn btn-outline btn-sm">
-              Quickstart README
-            </a>
-            <Link href="/features" className="btn btn-outline btn-sm">
-              Features Overview
+          <div
+            style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", justifyContent: "center", marginTop: "2rem" }}
+          >
+            <Link href="/features" className="btn btn-brand btn-sm">
+              Features Overview &rarr;
             </Link>
+            <a href={`mailto:${SALES_EMAIL}`} className="btn btn-secondary btn-sm">
+              Talk to sales
+            </a>
           </div>
         </div>
       </section>
@@ -39,13 +40,15 @@ export default function DocsPage() {
       <section className="section-pad">
         <div className="shell">
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.5rem" }}>
-            {/* Getting Started */}
+            {/* Workspace Setup */}
             <div
               style={{
-                background: "var(--surface-product)",
-                border: "1px solid var(--line)",
-                borderRadius: "16px",
+                background: "var(--surface-glass)",
+                backdropFilter: "blur(20px)",
+                border: "1px solid var(--surface-glass-border)",
+                borderRadius: "24px",
                 padding: "2rem",
+                boxShadow: "var(--shadow-glass)",
                 display: "flex",
                 flexDirection: "column",
                 gap: "1rem",
@@ -68,39 +71,42 @@ export default function DocsPage() {
                 }}
               >
                 <li>
-                  <a href={`${REPO}/blob/main/README.md`} style={{ color: "var(--accent-brand-bright)" }}>
-                    • Workspace Creation &amp; Setup &rarr;
-                  </a>
+                  <Link href="/features" style={{ color: "var(--accent)" }}>
+                    • Workspace Creation &amp; Team Invitations &rarr;
+                  </Link>
                 </li>
                 <li>
-                  <a href={`${REPO}/blob/main/README.md`} style={{ color: "var(--accent-brand-bright)" }}>
-                    • Team Invitations &amp; Role Access &rarr;
-                  </a>
+                  <Link href="/features" style={{ color: "var(--accent)" }}>
+                    • Project Creation &amp; Custom States &rarr;
+                  </Link>
                 </li>
                 <li>
-                  <a href={`${REPO}/blob/main/README.md`} style={{ color: "var(--accent-brand-bright)" }}>
-                    • Creating Your First Project &rarr;
-                  </a>
+                  <Link href="/features" style={{ color: "var(--accent)" }}>
+                    • Member Roles &amp; Access Controls &rarr;
+                  </Link>
                 </li>
               </ul>
             </div>
 
-            {/* Self-Hosting & Prime CLI */}
+            {/* BYO AI Key Setup */}
             <div
               style={{
-                background: "var(--surface-product)",
-                border: "1px solid var(--line)",
-                borderRadius: "16px",
+                background: "var(--surface-glass)",
+                backdropFilter: "blur(20px)",
+                border: "1px solid var(--surface-glass-border)",
+                borderRadius: "24px",
                 padding: "2rem",
+                boxShadow: "var(--shadow-glass)",
                 display: "flex",
                 flexDirection: "column",
                 gap: "1rem",
               }}
             >
-              <div style={{ fontSize: "1.75rem" }}>🐳</div>
-              <h3 style={{ fontSize: "1.25rem", margin: 0 }}>Self-Hosting &amp; Deployment</h3>
+              <div style={{ fontSize: "1.75rem" }}>🔑</div>
+              <h3 style={{ fontSize: "1.25rem", margin: 0 }}>Bring Your Own AI Key</h3>
               <p style={{ color: "var(--fg-muted)", fontSize: "0.9rem", margin: 0 }}>
-                Run Keel on your own infrastructure with Docker Compose or Kubernetes Helm charts.
+                Configure your API key for Anthropic, OpenAI, Google, xAI, Mistral, DeepSeek, or Groq with zero token
+                reseller markup.
               </p>
               <ul
                 style={{
@@ -114,39 +120,89 @@ export default function DocsPage() {
                 }}
               >
                 <li>
-                  <a href={`${REPO}/blob/main/README.md`} style={{ color: "var(--accent-brand-bright)" }}>
-                    • Docker Compose Quickstart &rarr;
-                  </a>
+                  <Link href="/features" style={{ color: "var(--accent)" }}>
+                    • Anthropic Claude &amp; OpenAI GPT Key Setup &rarr;
+                  </Link>
                 </li>
                 <li>
-                  <a href={`${REPO}/blob/main/README.md`} style={{ color: "var(--accent-brand-bright)" }}>
-                    • Kubernetes Helm Chart Production &rarr;
-                  </a>
+                  <Link href="/features" style={{ color: "var(--accent)" }}>
+                    • Google Gemini, DeepSeek &amp; Groq Integration &rarr;
+                  </Link>
                 </li>
                 <li>
-                  <a href={`${REPO}/blob/main/README.md`} style={{ color: "var(--accent-brand-bright)" }}>
-                    • Air-gapped &amp; On-prem Setup &rarr;
-                  </a>
+                  <Link href="/features" style={{ color: "var(--accent)" }}>
+                    • Workspace Agent Panel Configuration &rarr;
+                  </Link>
                 </li>
               </ul>
             </div>
 
-            {/* Developers & MCP */}
+            {/* 5 Dynamic Views & Saved Filters */}
             <div
               style={{
-                background: "var(--surface-product)",
-                border: "1px solid var(--line)",
-                borderRadius: "16px",
+                background: "var(--surface-glass)",
+                backdropFilter: "blur(20px)",
+                border: "1px solid var(--surface-glass-border)",
+                borderRadius: "24px",
                 padding: "2rem",
+                boxShadow: "var(--shadow-glass)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
+              }}
+            >
+              <div style={{ fontSize: "1.75rem" }}>📋</div>
+              <h3 style={{ fontSize: "1.25rem", margin: 0 }}>5 Views &amp; Saved Filters</h3>
+              <p style={{ color: "var(--fg-muted)", fontSize: "0.9rem", margin: 0 }}>
+                Switch between List, Board, Calendar, Table, and Timeline views, and save custom shareable filter sets.
+              </p>
+              <ul
+                style={{
+                  listStyle: "none",
+                  padding: 0,
+                  margin: "0.5rem 0 0",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.5rem",
+                  fontSize: "0.875rem",
+                }}
+              >
+                <li>
+                  <Link href="/features" style={{ color: "var(--accent)" }}>
+                    • Configuring List, Board &amp; Table Grids &rarr;
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/features" style={{ color: "var(--accent)" }}>
+                    • Gantt Timelines &amp; Dependency Cascade &rarr;
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/features" style={{ color: "var(--accent)" }}>
+                    • Creating &amp; Sharing Saved View Filters &rarr;
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* REST API & Webhooks */}
+            <div
+              style={{
+                background: "var(--surface-glass)",
+                backdropFilter: "blur(20px)",
+                border: "1px solid var(--surface-glass-border)",
+                borderRadius: "24px",
+                padding: "2rem",
+                boxShadow: "var(--shadow-glass)",
                 display: "flex",
                 flexDirection: "column",
                 gap: "1rem",
               }}
             >
               <div style={{ fontSize: "1.75rem" }}>⚡️</div>
-              <h3 style={{ fontSize: "1.25rem", margin: 0 }}>Developers &amp; AI Agents</h3>
+              <h3 style={{ fontSize: "1.25rem", margin: 0 }}>API &amp; Webhooks</h3>
               <p style={{ color: "var(--fg-muted)", fontSize: "0.9rem", margin: 0 }}>
-                Build integrations, automate tasks, and connect AI assistants via Model Context Protocol (MCP).
+                Integrate workspace events, automate task states, and connect external developer tooling with REST APIs.
               </p>
               <ul
                 style={{
@@ -160,64 +216,18 @@ export default function DocsPage() {
                 }}
               >
                 <li>
-                  <a href={`${REPO}/blob/main/docs/architecture.md`} style={{ color: "var(--accent-brand-bright)" }}>
-                    • REST API &amp; Webhooks Reference &rarr;
-                  </a>
-                </li>
-                <li>
-                  <a href={`${REPO}/blob/main/docs/architecture.md`} style={{ color: "var(--accent-brand-bright)" }}>
-                    • Model Context Protocol (MCP) Server &rarr;
-                  </a>
-                </li>
-                <li>
-                  <a href={`${REPO}/blob/main/docs/architecture.md`} style={{ color: "var(--accent-brand-bright)" }}>
-                    • Keel Architecture Specification &rarr;
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Enterprise & Security */}
-            <div
-              style={{
-                background: "var(--surface-product)",
-                border: "1px solid var(--line)",
-                borderRadius: "16px",
-                padding: "2rem",
-                display: "flex",
-                flexDirection: "column",
-                gap: "1rem",
-              }}
-            >
-              <div style={{ fontSize: "1.75rem" }}>🛡️</div>
-              <h3 style={{ fontSize: "1.25rem", margin: 0 }}>Enterprise &amp; Compliance</h3>
-              <p style={{ color: "var(--fg-muted)", fontSize: "0.9rem", margin: 0 }}>
-                Configure SAML SSO, Row-Level Security, God Mode administration, and audit logs.
-              </p>
-              <ul
-                style={{
-                  listStyle: "none",
-                  padding: 0,
-                  margin: "0.5rem 0 0",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.5rem",
-                  fontSize: "0.875rem",
-                }}
-              >
-                <li>
-                  <Link href="/contact" style={{ color: "var(--accent-brand-bright)" }}>
-                    • SAML 2.0 &amp; OIDC Single Sign-On &rarr;
+                  <Link href="/contact" style={{ color: "var(--accent)" }}>
+                    • API Authentication Tokens &rarr;
                   </Link>
                 </li>
                 <li>
-                  <Link href="/contact" style={{ color: "var(--accent-brand-bright)" }}>
-                    • God Mode Admin Configuration &rarr;
+                  <Link href="/contact" style={{ color: "var(--accent)" }}>
+                    • Webhooks &amp; Event Notification Payload &rarr;
                   </Link>
                 </li>
                 <li>
-                  <Link href="/contact" style={{ color: "var(--accent-brand-bright)" }}>
-                    • SOC 2 &amp; ISO 27001 Compliance Reports &rarr;
+                  <Link href="/contact" style={{ color: "var(--accent)" }}>
+                    • Enterprise SAML SSO Configuration &rarr;
                   </Link>
                 </li>
               </ul>
@@ -227,16 +237,29 @@ export default function DocsPage() {
       </section>
 
       {/* 3. Pre-Footer CTA */}
-      <section className="cta-band-section">
-        <div className="shell">
-          <h2 className="font-satoshi">Start building with Keel today</h2>
-          <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-            <a className="btn btn-inverse btn-lg" href={`${APP}/sign-up`}>
-              Create free account
-            </a>
-            <a className="btn btn-secondary btn-lg" href={REPO}>
-              Explore source on GitHub
-            </a>
+      <section className="section-pad" style={{ textAlign: "center" }}>
+        <div className="shell" style={{ maxWidth: "48rem" }}>
+          <div
+            style={{
+              background: "var(--surface-glass)",
+              backdropFilter: "blur(24px)",
+              border: "1px solid var(--surface-glass-border)",
+              borderRadius: "32px",
+              padding: "3.5rem 2rem",
+              boxShadow: "var(--shadow-glass-lg)",
+            }}
+          >
+            <h2 className="font-heading" style={{ margin: "0 0 1.25rem" }}>
+              Start building with Keel
+            </h2>
+            <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
+              <a className="btn btn-brand btn-lg" href={`${APP}/sign-up`}>
+                Launch Workspace
+              </a>
+              <a className="btn btn-secondary btn-lg" href={`mailto:${SALES_EMAIL}`}>
+                Talk to sales
+              </a>
+            </div>
           </div>
         </div>
       </section>

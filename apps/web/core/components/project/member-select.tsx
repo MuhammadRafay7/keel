@@ -7,7 +7,7 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { Ban } from "lucide-react";
+import { Ban } from "@keel/propel/icons";
 import { EUserProjectRoles } from "@keel/types";
 // keel ui
 import { Avatar, CustomSearchSelect } from "@keel/ui";

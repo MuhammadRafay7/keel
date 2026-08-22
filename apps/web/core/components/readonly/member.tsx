@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import type { LucideIcon } from "lucide-react";
+import type { LucideIcon } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 import { cn } from "@keel/utils";

@@ -16,9 +16,10 @@ export function SidebarSearchButton(props: Props) {
   return (
     <div
       className={cn(
-        "shadow-sm grid aspect-square size-8 flex-shrink-0 place-items-center rounded-md border-[0.5px] border-strong outline-none hover:bg-surface-2",
+        "grid aspect-square size-8 flex-shrink-0 place-items-center rounded-lg border border-subtle",
+        "focus-ring shadow-raised-100 transition-smooth outline-none hover:border-strong hover:bg-layer-1-hover",
         {
-          "border-accent-strong-200 bg-accent-primary/10 hover:bg-accent-primary/10": isActive,
+          "border-accent-subtle bg-accent-subtle hover:bg-accent-subtle-hover": isActive,
         }
       )}
     >

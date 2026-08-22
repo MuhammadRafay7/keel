@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { AlertTriangle, CheckCircle2, Clock, XCircle } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Clock, XCircle } from "@keel/propel/icons";
 import { CopyIcon } from "@keel/propel/icons";
 import type { TInboxIssueStatus } from "@keel/types";
 import { EInboxIssueStatus } from "@keel/types";

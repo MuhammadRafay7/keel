@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp } from "@keel/propel/icons";
 // keel imports
 import { Button } from "@keel/propel/button";
 import { cn } from "@keel/utils";

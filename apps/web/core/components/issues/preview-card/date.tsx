@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { CalendarDays } from "lucide-react";
+import { CalendarDays } from "@keel/propel/icons";
 // keel imports
 import { DueDatePropertyIcon, StartDatePropertyIcon } from "@keel/propel/icons";
 import type { TStateGroups } from "@keel/types";

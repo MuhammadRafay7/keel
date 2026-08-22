@@ -7,7 +7,7 @@
 import { useState, useRef } from "react";
 import { observer } from "mobx-react";
 import { useParams, useRouter } from "next/navigation";
-import { MoreHorizontal, ArchiveIcon, Settings } from "lucide-react";
+import { MoreHorizontal, ArchiveIcon, Settings } from "@keel/propel/icons";
 import { Disclosure } from "@headlessui/react";
 // keel imports
 import { EUserPermissionsLevel } from "@keel/constants";

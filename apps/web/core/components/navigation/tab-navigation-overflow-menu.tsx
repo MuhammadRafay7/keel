@@ -6,7 +6,7 @@
 
 import React from "react";
 import { Link } from "react-router";
-import { MoreHorizontal, Pin } from "lucide-react";
+import { MoreHorizontal, Pin } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 import { SetAsDefaultIcon } from "@keel/propel/icons";

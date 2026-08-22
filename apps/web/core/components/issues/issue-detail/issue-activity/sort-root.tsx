@@ -5,7 +5,7 @@
  */
 
 import { memo } from "react";
-import { ArrowUpWideNarrow, ArrowDownWideNarrow } from "lucide-react";
+import { ArrowUpWideNarrow, ArrowDownWideNarrow } from "@keel/propel/icons";
 // keel package imports
 import { E_SORT_ORDER } from "@keel/constants";
 import { IconButton } from "@keel/propel/icon-button";

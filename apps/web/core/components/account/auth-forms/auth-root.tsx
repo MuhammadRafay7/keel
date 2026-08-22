@@ -151,8 +151,11 @@ export const AuthRoot = observer(function AuthRoot(props: TAuthRoot) {
 
 function AuthContainer({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mt-10 flex w-full flex-grow flex-col items-center justify-center py-6">
-      <div className="relative flex w-full max-w-[22.5rem] flex-col gap-6">{children}</div>
+    // No margin or growth of its own: the auth shell now owns the centring and
+    // the card owns the padding. Both here as well produced a form sitting low
+    // in its own card.
+    <div className="flex w-full flex-col items-center justify-center">
+      <div className="relative flex w-full flex-col gap-6">{children}</div>
     </div>
   );
 }

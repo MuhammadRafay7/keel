@@ -9,7 +9,7 @@ import type { ColumnDef, Row, RowData } from "@tanstack/react-table";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
-import { UserRound } from "lucide-react";
+import { UserRound } from "@keel/propel/icons";
 import { useTranslation } from "@keel/i18n";
 import { Logo } from "@keel/propel/emoji-icon-picker";
 import { ProjectIcon } from "@keel/propel/icons";

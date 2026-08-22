@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { MoveRight } from "lucide-react";
+import { MoveRight } from "@keel/propel/icons";
 import { Tooltip } from "@keel/propel/tooltip";
 // assets
 import emptyIssue from "@/app/assets/empty-state/issue.svg?url";

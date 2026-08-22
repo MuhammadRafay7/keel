@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import type { Control } from "react-hook-form";
 import { Controller } from "react-hook-form";
-import { Sparkle } from "lucide-react";
+import { Sparkle } from "@keel/propel/icons";
 // keel imports
 import { ETabIndices } from "@keel/constants";
 import type { EditorRefApi } from "@keel/editor";
@@ -19,6 +19,7 @@ import { EFileAssetType } from "@keel/types";
 import { Loader } from "@keel/ui";
 import { getDescriptionPlaceholderI18n, getTabIndex } from "@keel/utils";
 // components
+import { EnhanceWorkItemModal } from "@/components/issues/ai-enhance";
 import { GptAssistantPopover } from "@/components/core/modals/gpt-assistant-popover";
 import { RichTextEditor } from "@/components/editor/rich-text";
 // helpers
@@ -77,6 +78,7 @@ export const IssueDescriptionEditor = observer(function IssueDescriptionEditor(p
   const { t } = useTranslation();
   // states
   const [iAmFeelingLucky, setIAmFeelingLucky] = useState(false);
+  const [isEnhanceModalOpen, setIsEnhanceModalOpen] = useState(false);
   // store hooks
   const { getWorkspaceBySlug } = useWorkspace();
   const workspaceId = getWorkspaceBySlug(workspaceSlug?.toString())?.id ?? "";
@@ -243,7 +245,21 @@ export const IssueDescriptionEditor = observer(function IssueDescriptionEditor(p
               />
             )}
           />
-          <div className="border-0.5 z-10 flex items-center justify-end gap-2 p-3">
+          {/*
+            The action bar under the editor. The wrapper had been dropped when
+            the Improve button was added, leaving its `</div>` unmatched further
+            down and the whole file unparseable.
+          */}
+          <div className="z-10 flex items-center justify-end gap-2 p-3">
+            <button
+              type="button"
+              className="border-accent-primary/20 flex items-center gap-1.5 focus-ring rounded-lg border bg-accent-primary/10 px-2.5 py-1 text-12 font-medium text-accent-primary shadow-raised-100 transition-smooth hover:bg-accent-primary/20"
+              onClick={() => setIsEnhanceModalOpen(true)}
+              tabIndex={-1}
+            >
+              <Sparkle className="size-3.5" />
+              Improve with Keel AI
+            </button>
             {issueName && issueName.trim() !== "" && config?.has_llm_configured && (
               <button
                 type="button"
@@ -292,6 +308,32 @@ export const IssueDescriptionEditor = observer(function IssueDescriptionEditor(p
               />
             )}
           </div>
+          {isEnhanceModalOpen && (
+            <EnhanceWorkItemModal
+              isOpen={isEnhanceModalOpen}
+              onClose={() => setIsEnhanceModalOpen(false)}
+              workspaceSlug={workspaceSlug}
+              projectId={projectId}
+              initialTitle={issueName || ""}
+              initialDescriptionHtml={descriptionHtmlData || ""}
+              onAcceptTitle={(newTitle) => {
+                // If title was enhanced from within modal
+                if (submitBtnRef?.current?.form) {
+                  const titleInput = submitBtnRef.current.form.querySelector<HTMLInputElement>("input[name='name']");
+                  if (titleInput) {
+                    titleInput.value = newTitle;
+                    titleInput.dispatchEvent(new Event("input", { bubbles: true }));
+                  }
+                }
+                handleFormChange();
+              }}
+              onAcceptDescription={(newDescriptionHtml) => {
+                editorRef.current?.setEditorValue(newDescriptionHtml, true);
+                handleDescriptionHTMLDataChange(newDescriptionHtml);
+                handleFormChange();
+              }}
+            />
+          )}
         </>
       )}
     </div>

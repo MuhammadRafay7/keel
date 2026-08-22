@@ -39,7 +39,7 @@ export function LayoutSwitcher(props: Props) {
               className={cn(
                 "group grid h-6 w-7 place-items-center overflow-hidden rounded-md transition-all duration-150",
                 {
-                  "shadow-xs bg-surface-1 text-primary": selectedLayout === layout.key,
+                  "bg-surface-1 text-primary shadow-raised-100": selectedLayout === layout.key,
                   "text-tertiary hover:bg-surface-1/50 hover:text-primary": selectedLayout !== layout.key,
                 }
               )}

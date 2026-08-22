@@ -6,7 +6,7 @@
 
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router";
-import { LogOut, MoreHorizontal, Settings, Share2, ArchiveIcon } from "lucide-react";
+import { LogOut, MoreHorizontal, Settings, Share2, ArchiveIcon } from "@keel/propel/icons";
 // keel imports
 import { MEMBER_TRACKER_ELEMENTS } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

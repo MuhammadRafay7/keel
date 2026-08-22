@@ -57,6 +57,42 @@
       "title": "Osobní přístupové tokeny",
       "description": "Generujte bezpečné API tokeny pro integraci vašich dat s externími systémy a aplikacemi."
     },
+    "ai": {
+      "title": "Poskytovatel AI",
+      "description": "Připojte svůj vlastní API klíč a používejte funkce AI. Keel vám za využití modelu nic neúčtuje — účtuje si je váš poskytovatel.",
+      "key_absent": "Není uložen žádný klíč",
+      "key_stored": "Uložený klíč: {hint}",
+      "replace_placeholder": "Zadejte nový klíč, který nahradí ten uložený",
+      "get_key": "Získat API klíč pro {provider}",
+      "save": "Uložit",
+      "update": "Aktualizovat",
+      "remove": "Odebrat",
+      "show_key": "Zobrazit klíč",
+      "hide_key": "Skrýt klíč",
+      "privacy_note": "Klíče se před uložením zašifrují a dešifrují se pouze na serveru ve chvíli, kdy je odeslán požadavek. Nikdy se neposílají zpět do vašeho prohlížeče.",
+      "unavailable": "Funkce AI nejsou dostupné, protože tato instance není připojena k Supabase.",
+      "toast": {
+        "saved": {
+          "title": "Klíč uložen",
+          "message": "Váš API klíč pro {provider} je uložen a připraven k použití."
+        },
+        "removed": {
+          "title": "Klíč odebrán",
+          "message": "Váš API klíč pro {provider} byl smazán."
+        },
+        "error": {
+          "message": "Tento klíč se nepodařilo uložit. Zkontrolujte jej prosím a zkuste to znovu."
+        }
+      },
+      "connected": "Připojeno",
+      "default_badge": "Výchozí",
+      "add_title": "Přidat poskytovatele",
+      "replace_title": "Nahradit uložený klíč",
+      "provider_label": "Poskytovatel",
+      "model_label": "Model",
+      "model_placeholder": "Vyberte model",
+      "key_label": "Klíč API"
+    },
     "activity": {
       "heading": "Aktivita",
       "description": "Sledujte vaše nedávné akce a změny napříč všemi projekty a pracovními položkami."
@@ -103,7 +139,8 @@
       "preferences": "Předvolby",
       "notifications": "Oznámení",
       "api-tokens": "Osobní přístupové tokeny",
-      "connections": "Spojení"
+      "connections": "Spojení",
+      "ai": "Poskytovatel AI"
     },
     "tabs": {
       "summary": "Shrnutí",

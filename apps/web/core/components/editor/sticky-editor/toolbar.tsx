@@ -5,7 +5,7 @@
  */
 
 import React, { useEffect, useState, useCallback } from "react";
-import { Palette } from "lucide-react";
+import { Palette } from "@keel/propel/icons";
 // editor
 import type { EditorRefApi } from "@keel/editor";
 // ui

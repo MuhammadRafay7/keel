@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { CheckCheck, RefreshCw } from "lucide-react";
+import { CheckCheck, RefreshCw } from "@keel/propel/icons";
 // keel imports
 import { ENotificationLoader, ENotificationQueryParamType } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

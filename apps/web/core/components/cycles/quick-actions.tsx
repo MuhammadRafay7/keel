@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal } from "@keel/propel/icons";
 // ui
 import { EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

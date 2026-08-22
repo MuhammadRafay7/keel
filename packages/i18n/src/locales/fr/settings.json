@@ -57,6 +57,42 @@
       "title": "Jetons d’accès personnel",
       "description": "Générez des jetons API sécurisés pour intégrer vos données avec des systèmes et applications externes."
     },
+    "ai": {
+      "title": "Fournisseur d'IA",
+      "description": "Connectez votre propre clé d'API pour utiliser les fonctionnalités d'IA. Keel ne vous facture pas l'utilisation du modèle — votre fournisseur s'en charge.",
+      "key_absent": "Aucune clé enregistrée",
+      "key_stored": "Clé enregistrée : {hint}",
+      "replace_placeholder": "Saisissez une nouvelle clé pour remplacer celle enregistrée",
+      "get_key": "Obtenir une clé d'API {provider}",
+      "save": "Enregistrer",
+      "update": "Mettre à jour",
+      "remove": "Supprimer",
+      "show_key": "Afficher la clé",
+      "hide_key": "Masquer la clé",
+      "privacy_note": "Les clés sont chiffrées avant d'être enregistrées et ne sont déchiffrées que sur le serveur, au moment d'une requête. Elles ne sont jamais renvoyées à votre navigateur.",
+      "unavailable": "Les fonctionnalités d'IA sont indisponibles car cette instance n'est pas connectée à Supabase.",
+      "toast": {
+        "saved": {
+          "title": "Clé enregistrée",
+          "message": "Votre clé d'API {provider} est enregistrée et prête à l'emploi."
+        },
+        "removed": {
+          "title": "Clé supprimée",
+          "message": "Votre clé d'API {provider} a été supprimée."
+        },
+        "error": {
+          "message": "Impossible d'enregistrer cette clé. Veuillez la vérifier et réessayer."
+        }
+      },
+      "connected": "Connecté",
+      "default_badge": "Par défaut",
+      "add_title": "Ajouter un fournisseur",
+      "replace_title": "Remplacer la clé enregistrée",
+      "provider_label": "Fournisseur",
+      "model_label": "Modèle",
+      "model_placeholder": "Sélectionner un modèle",
+      "key_label": "Clé API"
+    },
     "activity": {
       "heading": "Activité",
       "description": "Suivez vos actions et modifications récentes dans tous les projets et éléments de travail."
@@ -103,7 +139,8 @@
       "preferences": "Préférences",
       "notifications": "Notifications",
       "api-tokens": "Jetons d’accès personnel",
-      "connections": "Connexions"
+      "connections": "Connexions",
+      "ai": "Fournisseur d'IA"
     },
     "tabs": {
       "summary": "Résumé",

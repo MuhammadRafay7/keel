@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { isNil } from "lodash-es";
 import { observer } from "mobx-react";
-import { Bell, BellOff } from "lucide-react";
+import { Bell, BellOff } from "@keel/propel/icons";
 // keel-i18n
 import { EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

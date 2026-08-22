@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { BarChart2, Briefcase, FileText, Home, Inbox, Layers, PenSquare, Settings } from "lucide-react";
+import { BarChart2, Briefcase, FileText, Home, Inbox, Layers, PenSquare, Settings } from "@keel/propel/icons";
 // keel imports
 import { EUserPermissionsLevel } from "@keel/constants";
 import { ArchiveIcon, UserActivityIcon, LayersIcon, ContrastIcon, DiceIcon, Intake } from "@keel/propel/icons";

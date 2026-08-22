@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle } from "@keel/propel/icons";
 // types
 import { Button } from "@keel/propel/button";
 import type { IUserLite } from "@keel/types";

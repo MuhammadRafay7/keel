@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { Expand, Shrink } from "lucide-react";
+import { Expand, Shrink } from "@keel/propel/icons";
 import { useTranslation } from "@keel/i18n";
 // keel
 import type { TGanttViews } from "@keel/types";

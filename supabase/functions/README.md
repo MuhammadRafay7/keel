@@ -30,12 +30,14 @@ supabase/
 
 ### 1. `ai-proxy`
 
-- **Purpose**: Proxies requests to AI providers (e.g. OpenAI) using the user's encrypted API key.
-- **Security**: Verifies JWT authentication, enforces server-side system prompts, validates models against an allow-list, enforces per-user DB rate limits (`check_ai_rate_limit`), and logs usage in `ai_usage_logs`.
+- **Purpose**: Proxies requests to AI providers using the caller's own encrypted API key. There is no server-side key and no fallback: a user with no key stored gets a 400.
+- **Providers**: Anthropic, OpenAI, Google, xAI, Mistral, DeepSeek and Groq. The provider is derived from the requested model via `MODELS_BY_PROVIDER` in `_shared/types.ts` — it is never taken from the request body, so a model and an adapter cannot be mismatched. Everything except Anthropic and Google speaks the OpenAI `/chat/completions` shape and shares one parameterized adapter.
+- **Response shape**: whichever provider served the request, the function emits one normalized SSE stream of `data: {"text": "..."}` frames terminated by `data: [DONE]`. An error raised after the headers are sent arrives in-band as `data: {"error": "..."}`.
+- **Security**: Verifies JWT authentication, enforces server-side system prompts, validates models against an allow-list, enforces per-user DB rate limits (`check_ai_rate_limit`), and logs real token counts to `ai_usage_logs` once the stream completes.
 - **Environment Variables**:
   - `SUPABASE_URL`
   - `SUPABASE_SERVICE_ROLE_KEY`
-  - `ENCRYPTION_SECRET` / `JWT_SECRET` (configured in Postgres GUC `app.settings.encryption_secret` / `app.settings.jwt_secret`)
+- **Key encryption secret**: resolved in the database, not from the function environment. `public.ai_encryption_secret()` (migration 0019) reads `app_settings.ai_encryption_secret`, falls back to the legacy `app.settings.encryption_secret` / `app.settings.jwt_secret` GUCs for local stacks, and generates and stores one on first use if neither exists. Set the optional `SUPABASE_AI_ENCRYPTION_SECRET` repository secret to seed an externally-held value instead — see `docs/deploying-the-backend.md`.
 
 ### 2. `send-workspace-invite`
 

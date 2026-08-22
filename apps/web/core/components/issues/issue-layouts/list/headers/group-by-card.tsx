@@ -7,8 +7,8 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { CircleDashed } from "lucide-react";
-import { PlusIcon } from "@keel/propel/icons";
+import { CircleDashed } from "@keel/propel/icons";
+import { ChevronRightIcon, PlusIcon } from "@keel/propel/icons";
 // types
 import { TOAST_TYPE, setToast } from "@keel/propel/toast";
 import type { TIssue, ISearchIssueResponse, TIssueGroupByOptions } from "@keel/types";
@@ -36,6 +36,8 @@ interface IHeaderGroupByCard {
   addIssuesToView?: (issueIds: string[]) => Promise<TIssue>;
   selectionHelpers: TSelectionHelper;
   handleCollapsedGroups: (value: string) => void;
+  /** Whether this group's rows are showing. Drives the disclosure chevron. */
+  isExpanded?: boolean;
   isEpic?: boolean;
 }
 
@@ -51,6 +53,7 @@ export const HeaderGroupByCard = observer(function HeaderGroupByCard(props: IHea
     addIssuesToView,
     selectionHelpers,
     handleCollapsedGroups,
+    isExpanded = true,
     isEpic = false,
   } = props;
   // states
@@ -90,7 +93,7 @@ export const HeaderGroupByCard = observer(function HeaderGroupByCard(props: IHea
 
   return (
     <>
-      <div className="group/list-header flex w-full flex-shrink-0 items-center justify-between gap-2 rounded-lg border border-subtle/70 bg-surface-2/60 px-2.5 py-1.5 transition-all hover:bg-surface-2">
+      <div className="group/list-header flex w-full flex-shrink-0 items-center justify-between gap-2 rounded-lg border border-subtle/70 bg-surface-2/60 px-2.5 py-1.5 transition-smooth hover:bg-surface-2">
         <div className="flex items-center gap-2 overflow-hidden">
           {canSelectIssues && (
             <div className="flex w-3.5 flex-shrink-0 items-center">
@@ -111,23 +114,42 @@ export const HeaderGroupByCard = observer(function HeaderGroupByCard(props: IHea
             {icon ?? <CircleDashed className="size-3.5 text-accent-primary" strokeWidth={2} />}
           </div>
 
-          {/* eslint-disable-next-line jsx_a11y/click-events-have-key-events eslint-disable-next-line jsx_a11y/no-static-element-interactions */}
-          <div
-            className="relative flex cursor-pointer flex-row items-center gap-2 overflow-hidden"
+          {/*
+            The group title is the collapse control, so it is a real button:
+            reachable by keyboard, and announced with its expanded state. It
+            previously had neither, and — worse — no chevron at all, so nothing
+            on screen said the group could be collapsed in the first place.
+          */}
+          <button
+            type="button"
+            aria-expanded={isExpanded}
+            className="relative flex cursor-pointer flex-row items-center gap-1.5 overflow-hidden focus-ring rounded-md text-left"
             onClick={() => handleCollapsedGroups(groupID)}
           >
-            <div className="line-clamp-1 text-13 font-semibold tracking-wide text-primary uppercase">{title}</div>
-            <span className="flex items-center justify-center rounded-full bg-accent-subtle px-2 py-0.5 text-11 font-bold text-accent-primary">
+            <ChevronRightIcon
+              className={cn("size-3.5 flex-shrink-0 text-tertiary transition-transform duration-200 ease-smooth", {
+                "rotate-90": isExpanded,
+              })}
+              strokeWidth={2.5}
+            />
+            {/*
+              Sentence case, not uppercase. These are state and label names the
+              user typed; shouting them back makes a board of ordinary words
+              read as a system log, and uppercase costs the eye word-shape,
+              which is the thing that makes a scanned list quick to read.
+            */}
+            <span className="line-clamp-1 text-13 font-semibold tracking-[-0.01em] text-primary">{title}</span>
+            <span className="ml-0.5 flex min-w-[22px] items-center justify-center rounded-full bg-accent-subtle px-1.5 py-0.5 text-11 font-semibold text-accent-primary tabular-nums">
               {count || 0}
             </span>
-          </div>
+          </button>
         </div>
 
         {!disableIssueCreation &&
           (renderExistingIssueModal ? (
             <CustomMenu
               customButton={
-                <span className="flex h-5 w-5 flex-shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xs transition-all hover:bg-layer-1">
+                <span className="flex size-6 flex-shrink-0 cursor-pointer items-center justify-center overflow-hidden focus-ring rounded-md text-tertiary transition-smooth hover:bg-layer-1 hover:text-primary">
                   <PlusIcon className="h-3.5 w-3.5" strokeWidth={2} />
                 </span>
               }
@@ -148,15 +170,16 @@ export const HeaderGroupByCard = observer(function HeaderGroupByCard(props: IHea
               </CustomMenu.MenuItem>
             </CustomMenu>
           ) : (
-            // oxlint-disable-next-line jsx_a11y/click-events-have-key-events oxlint-disable-next-line jsx_a11y/no-static-element-interactions
-            <div
-              className="flex h-5 w-5 flex-shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xs transition-all hover:bg-layer-1"
+            <button
+              type="button"
+              aria-label={`Add a work item to ${title}`}
+              className="flex size-6 flex-shrink-0 cursor-pointer items-center justify-center overflow-hidden focus-ring rounded-md text-tertiary transition-smooth hover:bg-layer-1 hover:text-primary"
               onClick={() => {
                 setIsOpen(true);
               }}
             >
               <PlusIcon width={14} strokeWidth={2} />
-            </div>
+            </button>
           ))}
 
         {isEpic ? (

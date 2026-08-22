@@ -282,8 +282,15 @@ export const KanbanGroup = observer(function KanbanGroup(props: IKanbanGroup) {
     <div
       id={`${groupId}__${sub_group_id}`}
       className={cn(
-        "shadow-xs relative h-full min-h-[120px] rounded-2xl border border-subtle/60 bg-surface-2/40 p-2 backdrop-blur-md transition-all",
-        { "border-accent-primary/50 shadow-md bg-layer-1": isDraggingOverColumn },
+        /*
+         * A column is a well, not a card: it is the recessed ground the cards
+         * sit in. It had an outward raised shadow, which put it at the same
+         * apparent height as the cards inside it and flattened the board.
+         */
+        "relative h-full min-h-[120px] rounded-2xl border border-subtle bg-surface-2/60 p-2 transition-smooth",
+        // Dropping into a column lights the whole well, so the target is
+        // unmistakable even when the cursor is nowhere near a card.
+        { "border-accent-primary/50 bg-accent-subtle/40": isDraggingOverColumn },
         { "vertical-scrollbar scrollbar-md": !sub_group_by && !shouldOverlayBeVisible }
       )}
       ref={columnRef}
@@ -329,7 +336,9 @@ export const KanbanGroup = observer(function KanbanGroup(props: IKanbanGroup) {
       {enableQuickIssueCreate &&
         !disableIssueCreation &&
         !getIsWorkflowWorkItemCreationDisabled(groupId, sub_group_id) && (
-          <div className="sticky bottom-0 w-full bg-surface-2 py-0.5">
+          // Translucent, so the quick-add strip does not print an opaque bar
+          // across the bottom of a column that is otherwise glass.
+          <div className="sticky bottom-0 w-full bg-surface-2/80 py-0.5 backdrop-blur-sm">
             <QuickAddIssueRoot
               layout={EIssueLayoutTypes.KANBAN}
               QuickAddButton={KanbanQuickAddIssueButton}

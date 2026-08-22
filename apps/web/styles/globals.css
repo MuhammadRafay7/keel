@@ -1,6 +1,14 @@
 @import "@keel/tailwind-config/index.css";
 @import "@keel/editor/styles";
 @import "@keel/propel/styles/react-day-picker.css";
+/*
+ * These two were never imported anywhere. `root.tsx` loads only this file, so
+ * every rule in them was dead: the command palette rendered with no styling at
+ * all beyond cmdk's own defaults (which is why it looked unstyled), and the
+ * emoji picker never received its size overrides.
+ */
+@import "./power-k.css";
+@import "./emoji.css";
 @plugin "@tailwindcss/typography";
 
 @layer base {
@@ -45,26 +53,32 @@ html {
   border-radius: 0.875rem;
   border: 1px solid var(--border-subtle);
   background: var(--bg-surface-1);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  box-shadow:
-    0 2px 8px -3px var(--glass-cast),
-    inset 0 1px 0 0 var(--glass-specular-edge);
+  box-shadow: var(--shadow-raised-100);
+  /* The house curve, from the token layer — not a second copy of it. */
   transition:
-    border-color 220ms cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+    border-color 220ms var(--ease-smooth),
+    box-shadow 220ms var(--ease-smooth),
+    transform 220ms var(--ease-smooth);
 }
 
 .work-item-card:hover {
+  transform: translateY(-1px);
   border-color: var(--border-strong);
-  box-shadow:
-    0 12px 26px -8px var(--glass-cast),
-    inset 0 1px 0 0 var(--glass-specular);
+  box-shadow: var(--shadow-raised-200);
+}
+
+.work-item-card:active {
+  transform: translateY(0);
+  transition-duration: 80ms;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .work-item-card {
-    transition: none;
+  /*
+   * Colour and shadow still change — those carry the state. Only the movement
+   * is dropped, which is the part the setting is actually asking about.
+   */
+  .work-item-card:hover,
+  .work-item-card:active {
+    transform: none;
   }
 }

@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { CircleDashed } from "lucide-react";
+import { CircleDashed } from "@keel/propel/icons";
 import { ALL_ISSUES } from "@keel/constants";
 import { ChevronRightIcon } from "@keel/propel/icons";
 import type { IGroupByColumn, TIssue, TIssueServiceType, TSubIssueOperations } from "@keel/types";

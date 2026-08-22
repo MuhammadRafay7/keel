@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 // keel package imports
-import { Expand, Shrink } from "lucide-react";
+import { Expand, Shrink } from "@keel/propel/icons";
 import { CloseIcon } from "@keel/propel/icons";
 import type { ICycle, IModule } from "@keel/types";
 // icons

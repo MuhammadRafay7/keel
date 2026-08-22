@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { MoreHorizontal, Star } from "lucide-react";
+import { MoreHorizontal, Star } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 import type { IFavorite } from "@keel/types";

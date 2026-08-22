@@ -5,8 +5,8 @@
  */
 
 import type React from "react";
-import type { LucideIcon } from "lucide-react";
-import { Bell, CircleUser, KeyRound, LockIcon, Settings2 } from "lucide-react";
+import type { LucideIcon } from "@keel/propel/icons";
+import { Bell, CircleUser, KeyRound, LockIcon, Settings2, Sparkles } from "@keel/propel/icons";
 import { observer } from "mobx-react";
 import { useParams } from "react-router";
 // keel imports
@@ -28,6 +28,7 @@ const ICONS: Record<TProfileSettingsTabs, LucideIcon | React.FC<ISvgIcons>> = {
   preferences: Settings2,
   notifications: Bell,
   "api-tokens": KeyRound,
+  ai: Sparkles,
 };
 
 type Props = {

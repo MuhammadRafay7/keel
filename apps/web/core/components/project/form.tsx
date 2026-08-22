@@ -6,7 +6,7 @@
 
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Info } from "lucide-react";
+import { Info } from "@keel/propel/icons";
 import { NETWORK_CHOICES } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";
 // keel imports

@@ -6,7 +6,7 @@
 
 import { useCallback } from "react";
 import { observer } from "mobx-react";
-import { ListFilter } from "lucide-react";
+import { ListFilter } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 import type { TPageFilterProps, TPageNavigationTabs } from "@keel/types";

@@ -5,7 +5,7 @@
  */
 
 import { useState } from "react";
-import { XCircle } from "lucide-react";
+import { XCircle } from "@keel/propel/icons";
 // keel imports
 import { PROFILE_SETTINGS_TRACKER_ELEMENTS } from "@keel/constants";
 import { Tooltip } from "@keel/propel/tooltip";

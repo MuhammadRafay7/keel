@@ -6,7 +6,7 @@
 
 import React from "react";
 import { Command } from "cmdk";
-import { X } from "lucide-react";
+import { X } from "@keel/propel/icons";
 import { useTranslation } from "@keel/i18n";
 // keel imports
 import { SearchIcon } from "@keel/propel/icons";
@@ -42,21 +42,25 @@ export function PowerKModalHeader(props: Props) {
       )}
 
       {/* Search Input */}
-      <div className="flex items-center gap-2 px-4 py-3">
-        <SearchIcon className="size-4 shrink-0 text-placeholder" />
+      {/* The search row is the palette's headline: it sets at 15px rather than
+          13px so the thing being typed is the largest text on the surface. */}
+      <div className="flex items-center gap-2.5 px-4 py-3.5">
+        <SearchIcon className="size-[18px] shrink-0 text-tertiary" />
         <Command.Input
           value={searchTerm}
           onValueChange={onSearchChange}
           placeholder={placeholder}
-          className="flex-1 bg-transparent text-13 text-primary placeholder-(--text-color-placeholder) outline-none"
+          className="flex-1 bg-transparent text-15 text-primary placeholder-(--text-color-placeholder) outline-none"
           autoFocus
         />
         {searchTerm && (
           <button
+            type="button"
+            aria-label="Clear search"
             onClick={() => onSearchChange("")}
-            className="flex-shrink-0 rounded-sm p-1 text-placeholder hover:bg-layer-1 hover:text-secondary"
+            className="flex-shrink-0 focus-ring rounded-md p-1 text-tertiary transition-smooth hover:bg-layer-1 hover:text-primary"
           >
-            <X className="h-3 w-3" />
+            <X className="size-3.5" />
           </button>
         )}
       </div>

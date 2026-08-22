@@ -86,14 +86,31 @@ export const DetailedEmptyState = observer(function DetailedEmptyState(props: Pr
     >
       <div className={cn("flex flex-col gap-5", sizeClasses[size])}>
         <div className="flex shrink-0 flex-col gap-1.5">
-          <h3 className={cn("text-18 font-semibold", { "font-medium": !description })}>{title}</h3>
-          {description && <p className="text-13">{description}</p>}
+          <h3 className={cn("text-18 font-semibold tracking-[-0.015em] text-primary", { "font-medium": !description })}>
+            {title}
+          </h3>
+          {/*
+            The description was inheriting body colour, so it read at the same
+            weight as the heading it is meant to sit under. An empty state is
+            mostly explanation, and explanation that competes with its own title
+            is what makes these screens feel like an error rather than a prompt.
+          */}
+          {description && <p className="text-13 leading-relaxed text-secondary">{description}</p>}
         </div>
 
-        {assetPath && <img src={assetPath} alt={title} className="h-auto w-full" loading="lazy" />}
+        {assetPath && (
+          <img
+            src={assetPath}
+            alt=""
+            className="h-auto w-full rounded-xl border border-subtle shadow-raised-100"
+            loading="lazy"
+          />
+        )}
 
         {hasButtons && (
-          <div className="relative flex w-full flex-shrink-0 items-center justify-center gap-2">
+          // Left, with the text. Centred buttons under left-aligned copy leave
+          // the primary action sitting in the middle of nothing.
+          <div className="relative flex w-full flex-shrink-0 items-center justify-start gap-2">
             {/* primary button */}
             {customPrimaryButton ??
               (primaryButton?.text && <CustomButton config={primaryButton} variant="primary" size={size} />)}

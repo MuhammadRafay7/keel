@@ -7,7 +7,7 @@
 import { useCallback, useMemo } from "react";
 import { observer } from "mobx-react";
 // keel imports
-import { ListFilter } from "lucide-react";
+import { ListFilter } from "@keel/propel/icons";
 import { useTranslation } from "@keel/i18n";
 import { Button } from "@keel/propel/button";
 import type { GroupByColumnTypes, TIssue, TIssueServiceType, TSubIssueOperations } from "@keel/types";

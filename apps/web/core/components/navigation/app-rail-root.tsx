@@ -7,7 +7,7 @@
 "use client";
 import { observer } from "mobx-react";
 import { useParams, usePathname } from "next/navigation";
-import { SettingsIcon } from "lucide-react";
+import { SettingsIcon } from "@keel/propel/icons";
 import { ContextMenu } from "@keel/propel/context-menu";
 import { CheckIcon } from "@keel/propel/icons";
 import { cn } from "@keel/utils";
@@ -33,7 +33,7 @@ export const AppRailRoot = observer(() => {
 
   return (
     <div
-      className="z-[26] h-full flex-shrink-0 bg-canvas transition-all duration-300 ease-in-out"
+      className="z-[26] h-full flex-shrink-0 border-r border-subtle bg-surface-1 transition-[width] duration-300 ease-smooth"
       style={{
         width: railWidth,
         display: "block",
@@ -49,7 +49,10 @@ export const AppRailRoot = observer(() => {
               })}
             >
               <AppSidebarItemsRoot showLabel={showLabel} />
-              <div className="mx-2 border-t border-strong" />
+              {/* A hairline, not a rule. This separates two groups of icons that
+                  are already spaced apart; a strong border here reads as the
+                  edge of a panel and cuts the rail in half. */}
+              <div className="mx-2.5 border-t border-subtle" />
               <AppSidebarItem
                 item={{
                   label: "Settings",

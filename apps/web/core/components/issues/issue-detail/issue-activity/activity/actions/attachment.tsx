@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { Paperclip } from "lucide-react";
+import { Paperclip } from "@keel/propel/icons";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 // components

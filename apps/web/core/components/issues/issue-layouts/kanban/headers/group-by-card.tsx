@@ -8,7 +8,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 // lucide icons
-import { Minimize2, Maximize2, Circle } from "lucide-react";
+import { Minimize2, Maximize2, Circle } from "@keel/propel/icons";
 import { PlusIcon } from "@keel/propel/icons";
 import { TOAST_TYPE, setToast } from "@keel/propel/toast";
 import type { TIssue, ISearchIssueResponse, TIssueKanbanFilters, TIssueGroupByOptions } from "@keel/types";
@@ -84,6 +84,13 @@ export const HeaderGroupByCard = observer(function HeaderGroupByCard(props: IHea
     }
   };
 
+  /*
+   * The header's icon buttons. Written once because there are three of them and
+   * they had drifted apart — same intent, three slightly different strings.
+   */
+  const actionButtonClassName =
+    "flex size-6 flex-shrink-0 cursor-pointer items-center justify-center rounded-md text-tertiary transition-smooth focus-ring hover:bg-layer-transparent-hover hover:text-primary";
+
   return (
     <>
       {isEpic ? (
@@ -108,7 +115,7 @@ export const HeaderGroupByCard = observer(function HeaderGroupByCard(props: IHea
         />
       )}
       <div
-        className={`group/column-header shadow-xs relative flex flex-shrink-0 gap-2 rounded-xl border border-subtle bg-surface-2/80 px-2.5 py-1.5 backdrop-blur-md transition-all ${
+        className={`group/column-header relative flex flex-shrink-0 gap-2 rounded-xl border border-subtle bg-surface-2/80 px-2.5 py-1.5 shadow-raised-100 backdrop-blur-md transition-smooth ${
           verticalAlignPosition ? `w-[44px] flex-col items-center` : `w-full flex-row items-center justify-between`
         }`}
       >
@@ -131,7 +138,8 @@ export const HeaderGroupByCard = observer(function HeaderGroupByCard(props: IHea
             >
               {title}
             </span>
-            <span className="flex h-[18px] shrink-0 items-center justify-center rounded-full bg-layer-1 px-1.5 text-11 font-semibold text-secondary tabular-nums">
+            {/* min-w so a column ticking 9 -> 10 does not nudge the title. */}
+            <span className="flex h-[18px] min-w-[22px] shrink-0 items-center justify-center rounded-full bg-layer-1 px-1.5 text-11 font-semibold text-secondary tabular-nums">
               {count || 0}
             </span>
           </div>
@@ -142,8 +150,15 @@ export const HeaderGroupByCard = observer(function HeaderGroupByCard(props: IHea
          * and controls on the right. As three siblings under justify-between,
          * collapse used to float in the middle of the column.
          */}
+        {/*
+         * The controls stay visible, at low emphasis, rather than appearing on
+         * hover. "Add a work item to this column" is the primary action of a
+         * board and hiding it until the pointer lands makes it undiscoverable —
+         * and on a touch screen, where there is no hover at all, unreachable.
+         * Holding them at 60% keeps the column quiet without hiding the way in.
+         */}
         <div
-          className={`flex flex-shrink-0 items-center gap-0.5 opacity-0 transition-opacity duration-150 group-hover/column-header:opacity-100 focus-within:opacity-100 ${
+          className={`flex flex-shrink-0 items-center gap-0.5 opacity-60 transition-smooth group-hover/column-header:opacity-100 focus-within:opacity-100 ${
             verticalAlignPosition ? "flex-col opacity-100" : ""
           }`}
         >
@@ -151,7 +166,7 @@ export const HeaderGroupByCard = observer(function HeaderGroupByCard(props: IHea
             <button
               type="button"
               aria-label={verticalAlignPosition ? "Expand this column" : "Collapse this column"}
-              className="flex size-6 flex-shrink-0 cursor-pointer items-center justify-center rounded-md text-tertiary transition-colors duration-150 hover:bg-layer-transparent-hover hover:text-primary"
+              className={actionButtonClassName}
               onClick={() => handleCollapsedGroups("group_by", column_id)}
             >
               {verticalAlignPosition ? (
@@ -166,7 +181,7 @@ export const HeaderGroupByCard = observer(function HeaderGroupByCard(props: IHea
             (renderExistingIssueModal ? (
               <CustomMenu
                 customButton={
-                  <span className="flex size-6 flex-shrink-0 cursor-pointer items-center justify-center rounded-md text-tertiary transition-colors duration-150 hover:bg-layer-transparent-hover hover:text-primary">
+                  <span className={actionButtonClassName}>
                     <PlusIcon height={14} width={14} strokeWidth={2} />
                   </span>
                 }
@@ -183,7 +198,7 @@ export const HeaderGroupByCard = observer(function HeaderGroupByCard(props: IHea
               <button
                 type="button"
                 aria-label="Add a work item to this column"
-                className="flex size-6 flex-shrink-0 cursor-pointer items-center justify-center rounded-md text-tertiary transition-colors duration-150 hover:bg-layer-transparent-hover hover:text-primary"
+                className={actionButtonClassName}
                 onClick={() => setIsOpen(true)}
               >
                 <PlusIcon width={14} strokeWidth={2} />

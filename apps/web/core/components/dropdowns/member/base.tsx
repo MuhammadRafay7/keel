@@ -6,7 +6,7 @@
 
 import { useRef, useState } from "react";
 import { observer } from "mobx-react";
-import type { LucideIcon } from "lucide-react";
+import type { LucideIcon } from "@keel/propel/icons";
 import { useTranslation } from "@keel/i18n";
 import { ChevronDownIcon } from "@keel/propel/icons";
 // keel imports

@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 // icons
-import { CircleCheck } from "lucide-react";
+import { CircleCheck } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 import { Button, getButtonStyling } from "@keel/propel/button";

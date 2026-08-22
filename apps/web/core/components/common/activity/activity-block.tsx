@@ -5,7 +5,7 @@
  */
 
 import type { FC, ReactNode } from "react";
-import { Network } from "lucide-react";
+import { Network } from "@keel/propel/icons";
 // types
 import { Tooltip } from "@keel/propel/tooltip";
 import type { TWorkspaceBaseActivity } from "@keel/types";

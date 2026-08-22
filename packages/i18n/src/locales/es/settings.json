@@ -57,6 +57,42 @@
       "title": "Tokens de acceso personal",
       "description": "Genera tokens de API seguros para integrar tus datos con sistemas y aplicaciones externas."
     },
+    "ai": {
+      "title": "Proveedor de IA",
+      "description": "Conecte su propia clave de API para usar las funciones de IA. Keel no le cobra por el uso del modelo — lo hace su proveedor.",
+      "key_absent": "No hay ninguna clave guardada",
+      "key_stored": "Clave guardada: {hint}",
+      "replace_placeholder": "Introduzca una clave nueva para sustituir la guardada",
+      "get_key": "Obtener una clave de API de {provider}",
+      "save": "Guardar",
+      "update": "Actualizar",
+      "remove": "Quitar",
+      "show_key": "Mostrar clave",
+      "hide_key": "Ocultar clave",
+      "privacy_note": "Las claves se cifran antes de guardarse y solo se descifran en el servidor cuando se realiza una solicitud. Nunca se envían de vuelta a su navegador.",
+      "unavailable": "Las funciones de IA no están disponibles porque esta instancia no está conectada a Supabase.",
+      "toast": {
+        "saved": {
+          "title": "Clave guardada",
+          "message": "Su clave de API de {provider} está guardada y lista para usar."
+        },
+        "removed": {
+          "title": "Clave eliminada",
+          "message": "Su clave de API de {provider} se ha eliminado."
+        },
+        "error": {
+          "message": "No se ha podido guardar esa clave. Compruébela e inténtelo de nuevo."
+        }
+      },
+      "connected": "Conectado",
+      "default_badge": "Predeterminado",
+      "add_title": "Añadir un proveedor",
+      "replace_title": "Reemplazar la clave guardada",
+      "provider_label": "Proveedor",
+      "model_label": "Modelo",
+      "model_placeholder": "Seleccione un modelo",
+      "key_label": "Clave de API"
+    },
     "activity": {
       "heading": "Actividad",
       "description": "Realiza un seguimiento de tus acciones y cambios recientes en todos los proyectos y elementos de trabajo."
@@ -103,7 +139,8 @@
       "preferences": "Preferencias",
       "notifications": "Notificaciones",
       "api-tokens": "Tokens de acceso personal",
-      "connections": "Conexiones"
+      "connections": "Conexiones",
+      "ai": "Proveedor de IA"
     },
     "tabs": {
       "summary": "Resumen",

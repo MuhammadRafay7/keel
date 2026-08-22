@@ -6,7 +6,7 @@
 
 import { Command } from "cmdk";
 import { observer } from "mobx-react";
-import { Triangle } from "lucide-react";
+import { Triangle } from "@keel/propel/icons";
 // keel types
 import { useTranslation } from "@keel/i18n";
 import { EEstimateSystem } from "@keel/types";

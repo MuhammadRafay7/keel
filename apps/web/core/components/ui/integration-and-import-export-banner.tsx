@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { AlertCircle } from "lucide-react";
+import { AlertCircle } from "@keel/propel/icons";
 
 type Props = {
   bannerName: string;

@@ -5,7 +5,7 @@
  */
 
 import type { ReactNode } from "react";
-import { Network } from "lucide-react";
+import { Network } from "@keel/propel/icons";
 // keel imports
 import { Tooltip } from "@keel/propel/tooltip";
 import { renderFormattedTime, renderFormattedDate, calculateTimeAgo } from "@keel/utils";

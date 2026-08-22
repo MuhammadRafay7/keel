@@ -7,7 +7,7 @@
 import { useCallback } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { ListFilter } from "lucide-react";
+import { ListFilter } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 import { ChevronDownIcon } from "@keel/propel/icons";

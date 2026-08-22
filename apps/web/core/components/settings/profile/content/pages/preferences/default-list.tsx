@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 // components
-import { ThemeSwitcher } from "@/components/appearance";
+import { AccentSwitcher, ThemeSwitcher } from "@/components/appearance";
 
 export const ProfileSettingsDefaultPreferencesList = observer(function ProfileSettingsDefaultPreferencesList() {
   return (
@@ -18,6 +18,7 @@ export const ProfileSettingsDefaultPreferencesList = observer(function ProfileSe
           description: "select_or_customize_your_interface_color_scheme",
         }}
       />
+      <AccentSwitcher />
     </div>
   );
 });

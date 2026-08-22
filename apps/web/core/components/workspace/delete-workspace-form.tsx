@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 import { Controller, useForm } from "react-hook-form";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle } from "@keel/propel/icons";
 // Keel Imports
 import { useTranslation } from "@keel/i18n";
 import { Button } from "@keel/propel/button";

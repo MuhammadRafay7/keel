@@ -17,7 +17,7 @@ import {
   UserMinus2,
   UserPlus2,
   Users,
-} from "lucide-react";
+} from "@keel/propel/icons";
 // keel imports
 import { EUserPermissionsLevel } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

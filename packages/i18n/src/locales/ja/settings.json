@@ -57,6 +57,42 @@
       "title": "個人アクセストークン",
       "description": "外部システムやアプリケーションとデータを統合するための安全なAPIトークンを生成します。"
     },
+    "ai": {
+      "title": "AI プロバイダー",
+      "description": "ご自身の API キーを接続すると AI 機能を利用できます。モデルの利用料は Keel ではなく、ご利用のプロバイダーから請求されます。",
+      "key_absent": "キーは保存されていません",
+      "key_stored": "保存済みのキー：{hint}",
+      "replace_placeholder": "保存済みのキーを置き換える新しいキーを入力してください",
+      "get_key": "{provider} の API キーを取得",
+      "save": "保存",
+      "update": "更新",
+      "remove": "削除",
+      "show_key": "キーを表示",
+      "hide_key": "キーを非表示",
+      "privacy_note": "キーは保存前に暗号化され、リクエスト時にサーバー上でのみ復号されます。ブラウザーに返されることはありません。",
+      "unavailable": "このインスタンスは Supabase に接続されていないため、AI 機能はご利用いただけません。",
+      "toast": {
+        "saved": {
+          "title": "キーを保存しました",
+          "message": "{provider} の API キーを保存しました。ご利用いただけます。"
+        },
+        "removed": {
+          "title": "キーを削除しました",
+          "message": "{provider} の API キーを削除しました。"
+        },
+        "error": {
+          "message": "キーを保存できませんでした。内容をご確認のうえ、もう一度お試しください。"
+        }
+      },
+      "connected": "接続済み",
+      "default_badge": "デフォルト",
+      "add_title": "プロバイダーを追加",
+      "replace_title": "保存されたキーを置き換える",
+      "provider_label": "プロバイダー",
+      "model_label": "モデル",
+      "model_placeholder": "モデルを選択",
+      "key_label": "API キー"
+    },
     "activity": {
       "heading": "アクティビティ",
       "description": "すべてのプロジェクトと作業項目にわたる最近のアクションと変更を追跡します。"
@@ -103,7 +139,8 @@
       "preferences": "環境設定",
       "notifications": "通知",
       "api-tokens": "個人アクセストークン",
-      "connections": "接続"
+      "connections": "接続",
+      "ai": "AI プロバイダー"
     },
     "tabs": {
       "summary": "サマリー",

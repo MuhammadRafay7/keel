@@ -9,14 +9,14 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://keel.ostenmark.com"),
   title: {
-    default: "Keel — Open Source Project & Knowledge Management",
+    default: "Keel — Hosted Work Management for Engineering Teams",
     template: "%s — Keel",
   },
   description:
-    "Keel brings projects, docs, and workflows into one unified workspace so teams can plan, execute, and stay aligned. Cloud and self-hosted.",
+    "Keel connects issues, 5 dynamic work views, sprint cycles, roadmap modules, collaborative docs, and Bring Your Own AI Key into one fast, quiet workspace.",
   openGraph: {
     title: "Keel",
-    description: "Open Source Project & Knowledge Management Platform.",
+    description: "Hosted Work Management for Engineering Teams.",
     url: "https://keel.ostenmark.com",
     siteName: "Keel",
     type: "website",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: "#7c3aed",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

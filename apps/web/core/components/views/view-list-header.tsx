@@ -7,7 +7,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
 // icons
-import { ListFilter } from "lucide-react";
+import { ListFilter } from "@keel/propel/icons";
 import { useOutsideClickDetector } from "@keel/hooks";
 import { SearchIcon, CloseIcon } from "@keel/propel/icons";
 // keel helpers

@@ -6,7 +6,14 @@
 
 // ui
 import { observer } from "mobx-react";
-import { ArrowDownWideNarrow, ArrowUpNarrowWide, CheckIcon, ChevronDownIcon, Eraser, MoveRight } from "lucide-react";
+import {
+  ArrowDownWideNarrow,
+  ArrowUpNarrowWide,
+  CheckIcon,
+  ChevronDownIcon,
+  Eraser,
+  MoveRight,
+} from "@keel/propel/icons";
 // constants
 import type { IProjectMemberDisplayProperties, TMemberOrderByOptions } from "@keel/constants";
 import { MEMBER_PROPERTY_DETAILS } from "@keel/constants";

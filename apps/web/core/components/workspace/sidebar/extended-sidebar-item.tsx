@@ -11,7 +11,7 @@ import { attachInstruction, extractInstruction } from "@atlaskit/pragmatic-drag-
 import { observer } from "mobx-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import { Pin, PinOff } from "lucide-react";
+import { Pin, PinOff } from "@keel/propel/icons";
 // keel imports
 import type { IWorkspaceSidebarNavigationItem } from "@keel/constants";
 import { EUserPermissionsLevel } from "@keel/constants";

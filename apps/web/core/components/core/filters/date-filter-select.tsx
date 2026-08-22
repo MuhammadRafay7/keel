@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import { CalendarDays } from "lucide-react";
+import { CalendarDays } from "@keel/propel/icons";
 // ui
 import { CalendarAfterIcon, CalendarBeforeIcon } from "@keel/propel/icons";
 import { CustomSelect } from "@keel/ui";

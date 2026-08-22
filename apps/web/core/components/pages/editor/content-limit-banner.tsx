@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { TriangleAlert } from "lucide-react";
+import { TriangleAlert } from "@keel/propel/icons";
 import { cn } from "@keel/utils";
 
 type Props = {

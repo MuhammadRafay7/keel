@@ -16,13 +16,15 @@ and not connected to anything. It was used once to generate the schema.
 | 5 — Retire Django              | ⏸️ **on hold — nothing is being deleted** | audit done, see below                                       |
 | 6 — New product surface        | ❌ not started                            | marketing site only                                         |
 
-**14 migrations (8 applied to production); 20 Supabase services; 97 of 340 web
-service methods (29%) have a Supabase path. Neither Edge Function in
-`supabase/functions` is deployed.**
+**19 migrations; 24 Supabase services; 272 of 333 web service methods (81%)
+have a Supabase path. Three Edge Functions in `supabase/functions`, deployed by
+`.github/workflows/supabase-deploy.yml` on every push to `main` that touches
+`supabase/`.**
 
-That 29% is the number to watch. The phases above track _features_, and the
-primary path of each is migrated — but a great deal of secondary surface still
-calls Django. The inventory is at the bottom under "What still calls Django".
+That 81% is the number to watch. The phases above track _features_, and the
+primary path of each is migrated. The remaining 61 methods are inventoried at
+the bottom under "What still calls Django"; most are integrations and
+dashboards that were never wired up rather than regressions.
 
 ### Two things gate everything else
 
@@ -207,10 +209,9 @@ reasons, and both have to clear before deletion is safe:
 # Phase 6 — New product surface ❌
 
 Not started, other than the marketing site. A repo-wide search finds no code for
-any of it: no `VAPID` or service worker, no MCP, no AI proxy, no Realtime channel
-or presence, no attendance or time tracking. There is no `supabase/functions`
-directory at all — and by the analysis below, the AI proxy and MCP both require
-Edge Functions before anything else can be built.
+any of it: no `VAPID` or service worker, no MCP, no attendance or time tracking.
+Chat, notifications and the AI proxy have since been built — see below — so the
+Edge Function foundation that MCP also needs now exists.
 
 Ordered by dependency, not by wish. Each carries the architectural catch that
 decides how it gets built.
@@ -252,13 +253,26 @@ provider directly, the user can open devtools, read the prompt and call the
 provider without it. Anything described as "our rules" therefore requires a
 proxy, and that proxy is the feature.
 
-- [ ] Edge Function proxy: system prompt, tool allow-list, limits applied there
-- [ ] Keys stored encrypted (Vault/pgsodium), never returned to the client,
-      never in the bundle
-- [ ] Per-user rate limits and spend caps — a stolen key is the user's money
-- [ ] Provider adapters, model allow-list
-- [ ] Audit log of AI calls
-- [ ] Streaming responses through the proxy
+- [x] Edge Function proxy: system prompt and model allow-list applied there
+- [x] Keys stored encrypted (`pgp_sym_encrypt`), never returned to the client,
+      never in the bundle. `get_decrypted_user_ai_key` is granted to
+      `service_role` only and fails closed
+- [x] `0019` — the secret those functions encrypt with now resolves through
+      `app_settings`, because `0014`'s GUC cannot be set on hosted Supabase and
+      every save was failing with `55000`
+- [x] Per-user rate limits — `check_ai_rate_limit`, 20 requests/minute
+- [x] Provider adapters, model allow-list — Anthropic, OpenAI, Google, xAI,
+      Mistral, DeepSeek, Groq. The provider is derived from the model, so the
+      allow-list and the adapter registry cannot drift apart
+- [x] Audit log of AI calls — `ai_usage_logs`, written when the stream ends so
+      the token counts on it are real
+- [x] Streaming responses through the proxy, normalized to one SSE shape across
+      every provider
+- [x] Settings → AI provider: add, replace and delete a key per provider
+- [ ] Spend caps — rate limiting is per-minute request count only. A cap in
+      money needs per-model pricing and a running total over `ai_usage_logs`
+- [ ] The editor surfaces await the whole answer before rendering. The proxy
+      and `promptWithProgress` both stream; no UI consumes the tokens yet
 
 ## Attendance
 

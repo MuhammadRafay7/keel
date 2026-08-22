@@ -57,6 +57,42 @@
       "title": "Personal Access Tokens",
       "description": "Generate secure API tokens to integrate your data with external systems and applications."
     },
+    "ai": {
+      "title": "AI provider",
+      "description": "Connect your own API key to use AI features. Keel never bills you for model usage — your provider does.",
+      "key_absent": "No key stored",
+      "key_stored": "Key stored: {hint}",
+      "replace_placeholder": "Enter a new key to replace the stored one",
+      "get_key": "Get your {provider} API key",
+      "save": "Save",
+      "update": "Update",
+      "remove": "Remove",
+      "show_key": "Show key",
+      "hide_key": "Hide key",
+      "privacy_note": "Keys are encrypted before they are stored and are only ever decrypted on the server when a request is made. They are never sent back to your browser.",
+      "unavailable": "AI features are unavailable because this instance is not connected to Supabase.",
+      "toast": {
+        "saved": {
+          "title": "Key saved",
+          "message": "Your {provider} API key is stored and ready to use."
+        },
+        "removed": {
+          "title": "Key removed",
+          "message": "Your {provider} API key has been deleted."
+        },
+        "error": {
+          "message": "We could not save that key. Please check it and try again."
+        }
+      },
+      "connected": "Connected",
+      "default_badge": "Default",
+      "add_title": "Add a provider",
+      "replace_title": "Replace stored key",
+      "provider_label": "Provider",
+      "model_label": "Model",
+      "model_placeholder": "Select a model",
+      "key_label": "API key"
+    },
     "activity": {
       "heading": "Activity",
       "description": "Track your recent actions and changes across all projects and work items."
@@ -103,7 +139,8 @@
       "preferences": "Preferences",
       "notifications": "Notifications",
       "api-tokens": "Personal Access Tokens",
-      "connections": "Connections"
+      "connections": "Connections",
+      "ai": "AI provider"
     },
     "tabs": {
       "summary": "Summary",

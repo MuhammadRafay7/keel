@@ -9,7 +9,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { Eye, ArrowRight, CalendarDays } from "lucide-react";
+import { Eye, ArrowRight, CalendarDays } from "@keel/propel/icons";
 // keel imports
 import { EUserPermissions, EUserPermissionsLevel, IS_FAVORITE_MENU_OPEN } from "@keel/constants";
 import { useLocalStorage } from "@keel/hooks";

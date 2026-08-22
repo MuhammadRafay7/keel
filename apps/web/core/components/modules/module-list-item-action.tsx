@@ -7,7 +7,7 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { SquareUser } from "lucide-react";
+import { SquareUser } from "@keel/propel/icons";
 // Keel imports
 import { MODULE_STATUS, EUserPermissions, EUserPermissionsLevel, IS_FAVORITE_MENU_OPEN } from "@keel/constants";
 import { useLocalStorage } from "@keel/hooks";

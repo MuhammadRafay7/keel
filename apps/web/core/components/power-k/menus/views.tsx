@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { Layers } from "lucide-react";
+import { Layers } from "@keel/propel/icons";
 // keel imports
 import type { IProjectView } from "@keel/types";
 // local imports

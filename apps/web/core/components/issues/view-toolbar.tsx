@@ -6,7 +6,7 @@
 
 import { useCallback, useState } from "react";
 import { observer } from "mobx-react";
-import { ChartNoAxesColumn, SlidersHorizontal } from "lucide-react";
+import { ChartNoAxesColumn, SlidersHorizontal } from "@keel/propel/icons";
 // keel imports
 import {
   EIssueFilterType,
@@ -163,7 +163,7 @@ export const WorkItemViewToolbar = observer(function WorkItemViewToolbar(props: 
         projectDetails={currentProjectDetails ?? undefined}
         isEpic={storeType === EIssuesStoreType.EPIC}
       />
-      <div className="relative z-[19] shrink-0 glass-header">
+      <div className="relative z-[19] shrink-0 border-b border-subtle bg-surface-1">
         <div className="flex items-end justify-between gap-3 px-4">
           <ViewTabs activeLayout={activeLayout} onChange={handleLayoutChange} />
 

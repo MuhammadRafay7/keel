@@ -5,7 +5,7 @@
  */
 
 import { useCallback } from "react";
-import { X } from "lucide-react";
+import { X } from "@keel/propel/icons";
 import { observer } from "mobx-react";
 // keel imports
 import { IconButton } from "@keel/propel/icon-button";

@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { usePopper } from "react-popper";
-import { MoreVerticalIcon } from "lucide-react";
+import { MoreVerticalIcon } from "@keel/propel/icons";
 import { Popover, Transition } from "@headlessui/react";
 // hooks
 // ui

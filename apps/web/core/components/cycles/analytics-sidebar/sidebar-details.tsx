@@ -7,7 +7,7 @@
 import React from "react";
 import { isEmpty } from "lodash-es";
 import { observer } from "mobx-react";
-import { SquareUser } from "lucide-react";
+import { SquareUser } from "@keel/propel/icons";
 // keel types
 import { EEstimateSystem } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

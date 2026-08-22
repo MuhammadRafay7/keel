@@ -7,7 +7,7 @@
 import { useMemo } from "react";
 import { isEmpty } from "lodash-es";
 import { observer } from "mobx-react";
-import { SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal } from "@keel/propel/icons";
 // keel imports
 import type { IIssueDisplayFilterOptions, ILayoutDisplayFiltersOptions, IIssueDisplayProperties } from "@keel/types";
 import { cn } from "@keel/utils";

@@ -56,7 +56,7 @@ export const SidebarWrapper = observer(function SidebarWrapper(props: TSidebarWr
           {/* Workspace switcher and settings */}
 
           <div className="flex items-center justify-between gap-2 px-2">
-            <span className="pt-1 text-16 font-medium text-primary">{title}</span>
+            <h2 className="pt-1 text-16 font-semibold tracking-[-0.015em] text-primary">{title}</h2>
             <div className="flex items-center gap-2">
               {title === "Projects" && (
                 <IconButton
@@ -83,7 +83,12 @@ export const SidebarWrapper = observer(function SidebarWrapper(props: TSidebarWr
           {children}
         </ScrollArea>
         {/* Sidebar Footer with Quick Theme Toggle */}
-        <div className="flex flex-col gap-2 border-t border-subtle bg-surface-1 p-3">
+        {/*
+          The footer sits on a glass panel, so it stays translucent. An opaque
+          fill here would print a hard rectangle across the bottom of the
+          sidebar and break the single pane the panel is meant to read as.
+        */}
+        <div className="flex flex-col gap-2 border-t border-subtle bg-surface-1/40 p-3 backdrop-blur-sm">
           <QuickThemeToggle />
           <div className="flex items-center justify-between">
             <WorkspaceEditionBadge />

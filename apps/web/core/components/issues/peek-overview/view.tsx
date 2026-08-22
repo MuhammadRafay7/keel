@@ -120,7 +120,7 @@ export const IssueView = observer(function IssueView(props: IIssueView) {
 
   const peekOverviewIssueClassName = cn(
     !embedIssue
-      ? "absolute z-[25] flex flex-col overflow-hidden glass-overlay transition-all duration-300"
+      ? "absolute z-[25] flex flex-col overflow-hidden border border-subtle bg-surface-1 transition-all duration-300"
       : `h-full w-full`,
     !embedIssue && {
       // Docked to the edge, so it keeps only the one border that reads as a seam.

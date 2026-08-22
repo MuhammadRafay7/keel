@@ -6,7 +6,7 @@
 
 // keel package imports
 import React from "react";
-import { TrendingDown, TrendingUp } from "lucide-react";
+import { TrendingDown, TrendingUp } from "@keel/propel/icons";
 import { cn } from "@keel/utils";
 // keel web components
 

@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "@keel/propel/icons";
 import { observer } from "mobx-react";
 // keel imports
 import { ROLE_DETAILS } from "@keel/constants";

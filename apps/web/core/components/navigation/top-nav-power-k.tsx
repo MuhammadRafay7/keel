@@ -217,9 +217,9 @@ export const TopNavPowerK = observer(() => {
         <label
           htmlFor="top-nav-power-k-input"
           className={cn(
-            "shadow-xs flex h-8 w-full cursor-text items-center rounded-full border border-subtle bg-surface-2/80 px-3 py-1.5 backdrop-blur-md transition-all duration-200 hover:border-strong",
+            "flex h-8 w-full cursor-text items-center rounded-full border border-subtle bg-surface-2 px-3 py-1.5 shadow-raised-100 transition-all duration-200 hover:border-strong",
             {
-              "shadow-sm border-accent-primary bg-surface-1": isOpen,
+              "border-accent-primary bg-surface-1 shadow-raised-100": isOpen,
             }
           )}
         >
@@ -252,7 +252,7 @@ export const TopNavPowerK = observer(() => {
       </div>
       <div
         className={cn(
-          "absolute -top-[6px] left-1/2 z-20 flex -translate-x-1/2 flex-col overflow-hidden rounded-2xl glass-overlay px-0 pt-11 transition-all duration-300 ease-in-out",
+          "absolute -top-[6px] left-1/2 z-20 flex -translate-x-1/2 flex-col overflow-hidden rounded-2xl border border-subtle bg-surface-1 px-0 pt-11 shadow-overlay-100 transition-all duration-300 ease-in-out",
           {
             "max-h-[80vh] w-[574px] opacity-100": isOpen,
             "pointer-events-none h-0 w-0 opacity-0": !isOpen,

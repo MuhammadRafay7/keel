@@ -5,7 +5,7 @@
  */
 
 import { useMemo } from "react";
-import { XCircle, ArchiveRestoreIcon } from "lucide-react";
+import { XCircle, ArchiveRestoreIcon } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 import { LinkIcon, CopyIcon, NewTabIcon, EditIcon, ArchiveIcon, TrashIcon } from "@keel/propel/icons";

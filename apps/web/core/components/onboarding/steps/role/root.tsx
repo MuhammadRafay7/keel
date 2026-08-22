@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 import { Controller, useForm } from "react-hook-form";
-import { Box, PenTool, Rocket, Monitor, RefreshCw } from "lucide-react";
+import { Box, PenTool, Rocket, Monitor, RefreshCw } from "@keel/propel/icons";
 // keel imports
 import { Button } from "@keel/propel/button";
 import { CheckIcon, ViewsIcon } from "@keel/propel/icons";
