@@ -7,7 +7,7 @@
 import type { ReactNode } from "react";
 import { useRef, useState } from "react";
 import { usePopper } from "react-popper";
-import { SignalHigh } from "lucide-react";
+import { SignalHigh } from "@keel/propel/icons";
 import { Combobox } from "@headlessui/react";
 import { ISSUE_PRIORITIES } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

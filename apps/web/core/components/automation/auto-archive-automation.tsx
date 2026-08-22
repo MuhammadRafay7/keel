@@ -7,7 +7,7 @@
 import { useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { ArchiveRestore } from "lucide-react";
+import { ArchiveRestore } from "@keel/propel/icons";
 // keel imports
 import { PROJECT_AUTOMATION_MONTHS, EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

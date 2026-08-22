@@ -6,7 +6,7 @@
 
 import { Component, Fragment } from "react";
 import type { ErrorInfo, ReactNode } from "react";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle } from "@keel/propel/icons";
 import { useTranslation } from "@keel/i18n";
 import { Button } from "@keel/propel/button";
 

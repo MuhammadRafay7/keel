@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { Clock, FileStack, MoreHorizontal, PanelLeft, MoveRight } from "lucide-react";
+import { Clock, FileStack, MoreHorizontal, PanelLeft, MoveRight } from "@keel/propel/icons";
 import { IconButton, getIconButtonStyling } from "@keel/propel/icon-button";
 import {
   LinkIcon,

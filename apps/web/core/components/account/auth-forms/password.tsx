@@ -8,7 +8,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { observer } from "mobx-react";
 import Link from "next/link";
 // icons
-import { Eye, EyeOff, Info, XCircle } from "lucide-react";
+import { Eye, EyeOff, Info, XCircle } from "@keel/propel/icons";
 // keel imports
 import { API_BASE_URL, E_PASSWORD_STRENGTH, AUTH_TRACKER_ELEMENTS } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

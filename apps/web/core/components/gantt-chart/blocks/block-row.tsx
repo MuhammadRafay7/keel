@@ -6,7 +6,7 @@
 
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight } from "@keel/propel/icons";
 // helpers
 import type { IBlockUpdateData, IGanttBlock } from "@keel/types";
 import { cn } from "@keel/utils";

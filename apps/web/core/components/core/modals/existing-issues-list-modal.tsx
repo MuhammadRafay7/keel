@@ -5,7 +5,7 @@
  */
 
 import { useEffect, useState, useRef } from "react";
-import { Rocket } from "lucide-react";
+import { Rocket } from "@keel/propel/icons";
 import { Combobox } from "@headlessui/react";
 // i18n
 import { useTranslation } from "@keel/i18n";

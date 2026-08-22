@@ -6,7 +6,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { observer } from "mobx-react";
-import { LockKeyhole, LockKeyholeOpen } from "lucide-react";
+import { LockKeyhole, LockKeyholeOpen } from "@keel/propel/icons";
 // keel imports
 import { Tooltip } from "@keel/propel/tooltip";
 // hooks

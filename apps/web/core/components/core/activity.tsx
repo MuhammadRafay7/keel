@@ -22,7 +22,7 @@ import {
   SignalMediumIcon,
   MessageSquareIcon,
   UsersIcon,
-} from "lucide-react";
+} from "@keel/propel/icons";
 import {
   BlockedIcon,
   BlockerIcon,

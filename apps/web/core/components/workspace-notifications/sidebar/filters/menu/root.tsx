@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { ListFilter } from "lucide-react";
+import { ListFilter } from "@keel/propel/icons";
 // keel imports
 import type { ENotificationFilterType } from "@keel/constants";
 import { FILTER_TYPE_OPTIONS } from "@keel/constants";

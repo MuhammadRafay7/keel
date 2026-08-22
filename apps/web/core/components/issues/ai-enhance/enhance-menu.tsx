@@ -12,7 +12,7 @@ import {
   Minimize2,
   ChevronRight,
   SlidersHorizontal,
-} from "lucide-react";
+} from "@keel/propel/icons";
 import { AI_EDITOR_TASKS, LOADING_TEXTS } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";
 import { Button } from "@keel/propel/button";

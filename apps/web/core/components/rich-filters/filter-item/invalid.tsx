@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { CircleAlert } from "lucide-react";
+import { CircleAlert } from "@keel/propel/icons";
 // keel imports
 import type { TExternalFilter, TFilterProperty } from "@keel/types";
 // local imports

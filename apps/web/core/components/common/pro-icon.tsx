@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { Crown } from "lucide-react";
+import { Crown } from "@keel/propel/icons";
 // helpers
 import { cn } from "@keel/utils";
 

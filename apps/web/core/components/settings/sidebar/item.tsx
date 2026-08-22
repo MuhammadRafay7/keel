@@ -8,7 +8,7 @@ import React from "react";
 import Link from "next/link";
 // keel imports
 import { cn } from "@keel/utils";
-import type { LucideIcon } from "lucide-react";
+import type { LucideIcon } from "@keel/propel/icons";
 import type { ISvgIcons } from "@keel/propel/icons";
 
 type Props = {

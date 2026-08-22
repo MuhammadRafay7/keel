@@ -6,7 +6,7 @@
 
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
-import { PanelLeft } from "lucide-react";
+import { PanelLeft } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 import { EmptyStateCompact } from "@keel/propel/empty-state";

@@ -6,7 +6,7 @@
 
 import { useCallback } from "react";
 import { useTheme } from "next-themes";
-import { Calendar, Earth, Languages, Palette } from "lucide-react";
+import { Calendar, Earth, Languages, Palette } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 import { setToast, TOAST_TYPE } from "@keel/propel/toast";

@@ -19,7 +19,7 @@ import { InboxIcon } from "@keel/propel/icons";
 import useSWR from "swr";
 import { useWorkspaceNotifications } from "@/hooks/store/notifications";
 import { toggleAgentChat } from "@/components/ai";
-import { Sparkles } from "lucide-react";
+import { Sparkles } from "@keel/propel/icons";
 
 export const TopNavigationRoot = observer(function TopNavigationRoot() {
   // router
@@ -46,9 +46,12 @@ export const TopNavigationRoot = observer(function TopNavigationRoot() {
 
   return (
     <div
-      className={cn("z-[27] flex min-h-12 w-full items-center glass-header px-3.5 transition-all duration-300", {
-        "px-2": !showLabel,
-      })}
+      className={cn(
+        "z-[27] flex min-h-12 w-full items-center border-b border-subtle bg-surface-1 px-3.5 transition-all duration-300",
+        {
+          "px-2": !showLabel,
+        }
+      )}
     >
       {/* Workspace Menu */}
       <div className="flex-1 shrink-0">

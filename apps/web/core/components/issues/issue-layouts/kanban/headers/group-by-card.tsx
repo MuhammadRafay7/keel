@@ -8,7 +8,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 // lucide icons
-import { Minimize2, Maximize2, Circle } from "lucide-react";
+import { Minimize2, Maximize2, Circle } from "@keel/propel/icons";
 import { PlusIcon } from "@keel/propel/icons";
 import { TOAST_TYPE, setToast } from "@keel/propel/toast";
 import type { TIssue, ISearchIssueResponse, TIssueKanbanFilters, TIssueGroupByOptions } from "@keel/types";

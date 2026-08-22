@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { add } from "date-fns";
 import { Controller, useForm } from "react-hook-form";
-import { Calendar } from "lucide-react";
+import { Calendar } from "@keel/propel/icons";
 // types
 import { useTranslation } from "@keel/i18n";
 import { Button } from "@keel/propel/button";

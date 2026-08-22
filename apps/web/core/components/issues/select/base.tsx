@@ -8,7 +8,7 @@ import React, { useEffect, useRef, useState } from "react";
 import type { Placement } from "@popperjs/core";
 import { observer } from "mobx-react";
 import { usePopper } from "react-popper";
-import { Component, Loader } from "lucide-react";
+import { Component, Loader } from "@keel/propel/icons";
 import { Combobox } from "@headlessui/react";
 import { getRandomLabelColor } from "@keel/constants";
 // keel imports

@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
-import { CircleMinus } from "lucide-react";
+import { CircleMinus } from "@keel/propel/icons";
 import { Disclosure } from "@headlessui/react";
 // keel imports
 import { ROLE, EUserPermissions, MEMBER_TRACKER_ELEMENTS } from "@keel/constants";

@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { CheckCircle2, Minus, MinusCircle } from "lucide-react";
+import { CheckCircle2, Minus, MinusCircle } from "@keel/propel/icons";
 import type { EProductSubscriptionEnum } from "@keel/types";
 // keel imports
 // constants

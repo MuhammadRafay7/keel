@@ -11,7 +11,7 @@ import { useParams } from "next/navigation";
 import { useTheme } from "next-themes";
 import useSWR from "swr";
 // keel package imports
-import { Download } from "lucide-react";
+import { Download } from "@keel/propel/icons";
 import type { ChartXAxisDateGrouping } from "@keel/constants";
 import { ANALYTICS_X_AXIS_VALUES, ANALYTICS_Y_AXIS_VALUES, CHART_COLOR_PALETTES, EChartModels } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

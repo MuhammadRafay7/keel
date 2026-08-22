@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { Earth, Info, Minus } from "lucide-react";
+import { Earth, Info, Minus } from "@keel/propel/icons";
 // keel imports
 import { LockIcon } from "@keel/propel/icons";
 import { Tooltip } from "@keel/propel/tooltip";

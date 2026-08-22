@@ -7,7 +7,7 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { Earth } from "lucide-react";
+import { Earth } from "@keel/propel/icons";
 // keel imports
 import { EUserPermissions, EUserPermissionsLevel, IS_FAVORITE_MENU_OPEN } from "@keel/constants";
 import { useLocalStorage } from "@keel/hooks";

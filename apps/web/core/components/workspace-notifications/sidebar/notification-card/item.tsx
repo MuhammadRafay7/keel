@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { Clock } from "lucide-react";
+import { Clock } from "@keel/propel/icons";
 // keel imports
 import { Avatar, Row } from "@keel/ui";
 import { cn, calculateTimeAgo, renderFormattedDate, renderFormattedTime, getFileURL } from "@keel/utils";

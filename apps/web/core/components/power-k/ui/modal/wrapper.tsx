@@ -150,7 +150,7 @@ export const ProjectsAppPowerKModalWrapper = observer(function ProjectsAppPowerK
                 furthest surface from the page, and it previously sat on
                 `shadow-raised-200`, the same step a hovered card uses.
               */}
-              <Dialog.Panel className="relative flex w-full max-w-2xl transform flex-col items-center justify-center divide-y divide-subtle-1 overflow-hidden squircle-modal glass-overlay shadow-overlay-200 transition-all">
+              <Dialog.Panel className="relative flex w-full max-w-2xl transform flex-col items-center justify-center divide-y divide-subtle-1 overflow-hidden squircle-modal border border-subtle bg-surface-1 shadow-overlay-200 transition-all">
                 <Command
                   filter={(i18nValue: string, search: string) => {
                     if (i18nValue === "no-results") return 1;

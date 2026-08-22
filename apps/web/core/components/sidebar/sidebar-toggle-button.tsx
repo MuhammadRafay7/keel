@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { PanelLeft } from "lucide-react";
+import { PanelLeft } from "@keel/propel/icons";
 // hooks
 import { useAppTheme } from "@/hooks/store/use-app-theme";
 import { IconButton } from "@keel/propel/icon-button";

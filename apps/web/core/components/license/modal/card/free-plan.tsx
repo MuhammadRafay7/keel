@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { CircleX } from "lucide-react";
+import { CircleX } from "@keel/propel/icons";
 // keel constants
 import { FREE_PLAN_UPGRADE_FEATURES } from "@keel/constants";
 // helpers

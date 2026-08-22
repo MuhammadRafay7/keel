@@ -5,7 +5,7 @@
  */
 
 import { Link } from "react-router";
-import { PinOff } from "lucide-react";
+import { PinOff } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 import { ContextMenu } from "@keel/propel/context-menu";

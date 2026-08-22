@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { Controller, useForm } from "react-hook-form";
-import { CircleUserRound } from "lucide-react";
+import { CircleUserRound } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 import { Button } from "@keel/propel/button";

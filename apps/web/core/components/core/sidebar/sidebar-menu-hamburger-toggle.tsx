@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { PanelRight } from "lucide-react";
+import { PanelRight } from "@keel/propel/icons";
 import { useAppTheme } from "@/hooks/store/use-app-theme";
 
 export const SidebarHamburgerToggle = observer(function SidebarHamburgerToggle() {

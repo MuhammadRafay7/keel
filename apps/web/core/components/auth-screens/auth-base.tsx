@@ -44,7 +44,7 @@ export function AuthBase({ authType }: AuthBaseProps) {
       <AuthHeader type={authType} />
 
       <div className="flex w-full flex-grow items-center justify-center">
-        <div className="w-full max-w-[26rem] glass-card px-7 py-8 shadow-overlay-100">
+        <div className="w-full max-w-[26rem] rounded-2xl border border-subtle bg-surface-1 px-7 py-8 shadow-overlay-100">
           <AuthRoot authMode={authType} />
         </div>
       </div>

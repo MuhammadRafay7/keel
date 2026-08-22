@@ -287,7 +287,7 @@ export const KanbanGroup = observer(function KanbanGroup(props: IKanbanGroup) {
          * sit in. It had an outward raised shadow, which put it at the same
          * apparent height as the cards inside it and flattened the board.
          */
-        "relative h-full min-h-[120px] rounded-2xl glass-well p-2 backdrop-blur-md transition-smooth",
+        "relative h-full min-h-[120px] rounded-2xl border border-subtle bg-surface-2/60 p-2 transition-smooth",
         // Dropping into a column lights the whole well, so the target is
         // unmistakable even when the cursor is nowhere near a card.
         { "border-accent-primary/50 bg-accent-subtle/40": isDraggingOverColumn },

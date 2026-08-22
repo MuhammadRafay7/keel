@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 import { useRouter } from "next/navigation";
-import { MinusCircle } from "lucide-react";
+import { MinusCircle } from "@keel/propel/icons";
 import { useTranslation } from "@keel/i18n";
 import type { TIssue } from "@keel/types";
 // component

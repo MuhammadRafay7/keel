@@ -9,7 +9,7 @@ import React, { useRef } from "react";
 import { observer } from "mobx-react";
 import Link from "next/link";
 import { useParams, usePathname, useSearchParams } from "next/navigation";
-import { Info, SquareUser } from "lucide-react";
+import { Info, SquareUser } from "@keel/propel/icons";
 // keel package imports
 import {
   MODULE_STATUS,

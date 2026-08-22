@@ -6,7 +6,7 @@
 
 import { useCallback } from "react";
 import { useParams } from "next/navigation";
-import { Star, StarOff } from "lucide-react";
+import { Star, StarOff } from "@keel/propel/icons";
 // keel imports
 import { EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

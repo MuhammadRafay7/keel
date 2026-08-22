@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { Briefcase, FileText, Layers, LayoutGrid } from "lucide-react";
+import { Briefcase, FileText, Layers, LayoutGrid } from "@keel/propel/icons";
 // keel imports
 import { ContrastIcon, DiceIcon } from "@keel/propel/icons";
 import type {

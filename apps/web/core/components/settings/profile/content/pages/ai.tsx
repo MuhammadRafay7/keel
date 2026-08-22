@@ -7,7 +7,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import useSWR from "swr";
-import { Check, Eye, EyeOff, ExternalLink, Trash2 } from "lucide-react";
+import { Check, Eye, EyeOff, ExternalLink, Trash2 } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 import { Button } from "@keel/propel/button";

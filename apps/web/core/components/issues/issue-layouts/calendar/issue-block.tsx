@@ -7,7 +7,7 @@
 import { useState, useRef, forwardRef } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal } from "@keel/propel/icons";
 // keel imports
 import { useOutsideClickDetector } from "@keel/hooks";
 import { Popover } from "@keel/propel/popover";

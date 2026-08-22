@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { Pencil, ExternalLink, Link, Trash2, ArchiveRestoreIcon } from "lucide-react";
+import { Pencil, ExternalLink, Link, Trash2, ArchiveRestoreIcon } from "@keel/propel/icons";
 import { useTranslation } from "@keel/i18n";
 import { ArchiveIcon } from "@keel/propel/icons";
 import type { TContextMenuItem } from "@keel/ui";

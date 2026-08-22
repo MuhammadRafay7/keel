@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-import type { LucideIcon } from "lucide-react";
-import { Users, Zap } from "lucide-react";
+import type { LucideIcon } from "@keel/propel/icons";
+import { Users, Zap } from "@keel/propel/icons";
 // keel imports
 import type { ISvgIcons } from "@keel/propel/icons";
 import {

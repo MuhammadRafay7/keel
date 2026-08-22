@@ -6,7 +6,7 @@
 
 import React from "react";
 import { Command } from "cmdk";
-import { X } from "lucide-react";
+import { X } from "@keel/propel/icons";
 import { useTranslation } from "@keel/i18n";
 // keel imports
 import { SearchIcon } from "@keel/propel/icons";

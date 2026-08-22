@@ -23,7 +23,7 @@ import useReloadConfirmations from "@/hooks/use-reload-confirmation";
 import useSize from "@/hooks/use-window-size";
 // services
 import { WorkItemVersionService } from "@/services/issue";
-import { Sparkles } from "lucide-react";
+import { Sparkles } from "@keel/propel/icons";
 // local imports
 import { EnhanceWorkItemModal } from "../ai-enhance";
 import { IssueDetailWidgets } from "../issue-detail-widgets";

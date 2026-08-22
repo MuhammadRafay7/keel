@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { AlignLeft } from "lucide-react";
+import { AlignLeft } from "@keel/propel/icons";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 // components

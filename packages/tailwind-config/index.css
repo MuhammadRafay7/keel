@@ -232,69 +232,6 @@ h6 {
  * utility from them, and @theme is tree-shaken against utility usage, so a
  * token consumed only by hand-written CSS does not belong there.
  */
-:root {
-  --glass-specular: rgba(255, 255, 255, 0.9);
-  --glass-specular-edge: rgba(255, 255, 255, 0.55);
-  --glass-cast: rgba(41, 47, 61, 0.08);
-}
-
-[data-theme*="dark"] {
-  --glass-specular: rgba(255, 255, 255, 0.14);
-  --glass-specular-edge: rgba(255, 255, 255, 0.08);
-  --glass-cast: rgba(0, 0, 0, 0.55);
-}
-
-@utility glass-panel {
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  background-color: color-mix(in srgb, var(--background-color-surface-1) 78%, transparent);
-  border: 1px solid var(--border-color-subtle);
-  box-shadow:
-    0 8px 28px -12px var(--glass-cast),
-    inset 0 1px 0 0 var(--glass-specular-edge);
-}
-
-@utility glass-card {
-  backdrop-filter: blur(16px) saturate(170%);
-  -webkit-backdrop-filter: blur(16px) saturate(170%);
-  background-color: color-mix(in srgb, var(--background-color-surface-2) 74%, transparent);
-  border: 1px solid var(--border-color-subtle);
-  border-radius: 1rem;
-  box-shadow:
-    0 10px 30px -14px var(--glass-cast),
-    inset 0 1px 0 0 var(--glass-specular-edge);
-}
-
-@utility glass-pill {
-  backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
-  background-color: color-mix(in srgb, var(--background-color-surface-1) 80%, transparent);
-  border: 1px solid var(--border-color-subtle);
-  border-radius: 9999px;
-  box-shadow:
-    0 2px 8px -4px var(--glass-cast),
-    inset 0 1px 0 0 var(--glass-specular-edge);
-}
-
-@utility glass-header {
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  background-color: color-mix(in srgb, var(--background-color-canvas) 72%, transparent);
-  border-bottom: 1px solid var(--border-color-subtle);
-  box-shadow: inset 0 1px 0 0 var(--glass-specular-edge);
-}
-
-/* A floating pane — dropdowns, popovers, the peek panel. */
-@utility glass-overlay {
-  backdrop-filter: blur(28px) saturate(190%);
-  -webkit-backdrop-filter: blur(28px) saturate(190%);
-  background-color: color-mix(in srgb, var(--background-color-surface-1) 82%, transparent);
-  border: 1px solid var(--border-color-subtle);
-  box-shadow:
-    0 24px 60px -18px var(--glass-cast),
-    0 2px 8px -4px var(--glass-cast),
-    inset 0 1px 0 0 var(--glass-specular);
-}
 
 /*
  * The lit rim, as a standalone layer. Put it on a `relative` element whose
@@ -432,28 +369,6 @@ h6 {
     opacity: 1;
     transform: scaleY(1);
   }
-}
-
-/*
- * The vertical app rail. Same glass recipe as the panels, but lit from the
- * left edge rather than the top, because that is the edge the light hits on a
- * surface standing against the side of the window.
- */
-@utility glass-rail {
-  backdrop-filter: blur(22px) saturate(180%);
-  -webkit-backdrop-filter: blur(22px) saturate(180%);
-  background-color: color-mix(in srgb, var(--background-color-surface-1) 76%, transparent);
-  border-right: 1px solid var(--border-color-subtle);
-  box-shadow:
-    var(--shadow-direction-right),
-    inset -1px 0 0 0 var(--glass-specular-edge);
-}
-
-/* A recessed well — the ground a board column or a grouped list sits in. */
-@utility glass-well {
-  background-color: color-mix(in srgb, var(--background-color-surface-2) 55%, transparent);
-  border: 1px solid color-mix(in srgb, var(--border-color-subtle) 70%, transparent);
-  box-shadow: inset 0 1px 2px 0 var(--elevation-tint-100);
 }
 
 /*

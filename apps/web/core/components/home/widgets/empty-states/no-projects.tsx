@@ -9,7 +9,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Hotel } from "lucide-react";
+import { Hotel } from "@keel/propel/icons";
 // keel ui
 import { EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
 import { useLocalStorage } from "@keel/hooks";

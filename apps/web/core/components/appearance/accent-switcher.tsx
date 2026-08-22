@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { Check } from "lucide-react";
+import { Check } from "@keel/propel/icons";
 import { cn } from "@keel/utils";
 // hooks
 import { ACCENTS, useAccent, type TAccent } from "@/hooks/use-accent";

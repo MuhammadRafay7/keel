@@ -6,7 +6,7 @@
 
 import type { MutableRefObject } from "react";
 import { useRef, useState } from "react";
-import type { LucideIcon } from "lucide-react";
+import type { LucideIcon } from "@keel/propel/icons";
 // keel helpers
 import { PROJECT_SETTINGS_TRACKER_ELEMENTS } from "@keel/constants";
 import { useOutsideClickDetector } from "@keel/hooks";

@@ -6,7 +6,7 @@
 
 import { useMemo } from "react";
 import { observer } from "mobx-react";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal } from "@keel/propel/icons";
 // keel imports
 import { EIssueCommentAccessSpecifier } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

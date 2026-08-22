@@ -6,7 +6,7 @@
 
 import React, { useCallback, useState } from "react";
 import { observer } from "mobx-react";
-import { ListFilterPlus } from "lucide-react";
+import { ListFilterPlus } from "@keel/propel/icons";
 import { Transition } from "@headlessui/react";
 // keel imports
 import { Button } from "@keel/propel/button";

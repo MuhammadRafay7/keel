@@ -7,7 +7,7 @@
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
-import { Info } from "lucide-react";
+import { Info } from "@keel/propel/icons";
 import { EEstimateSystem, MAX_ESTIMATE_POINT_INPUT_LENGTH } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";
 import { CheckIcon, CloseIcon } from "@keel/propel/icons";

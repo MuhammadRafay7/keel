@@ -9,7 +9,7 @@ import { range } from "lodash-es";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 // icons
-import { Eye, EyeOff, RefreshCw } from "lucide-react";
+import { Eye, EyeOff, RefreshCw } from "@keel/propel/icons";
 import { useTranslation } from "@keel/i18n";
 import { Button } from "@keel/propel/button";
 import { CopyIcon } from "@keel/propel/icons";

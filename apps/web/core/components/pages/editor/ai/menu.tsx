@@ -5,8 +5,8 @@
  */
 
 import React, { useEffect, useRef, useState } from "react";
-import type { LucideIcon } from "lucide-react";
-import { CornerDownRight, RefreshCcw, Sparkles, TriangleAlert } from "lucide-react";
+import type { LucideIcon } from "@keel/propel/icons";
+import { CornerDownRight, RefreshCcw, Sparkles, TriangleAlert } from "@keel/propel/icons";
 // keel editor
 import type { EditorRefApi } from "@keel/editor";
 import { ChevronRightIcon } from "@keel/propel/icons";

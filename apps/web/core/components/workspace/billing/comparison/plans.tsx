@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { Mail, MessageCircle, MessageSquare } from "lucide-react";
+import { Mail, MessageCircle, MessageSquare } from "@keel/propel/icons";
 import { EProductSubscriptionEnum } from "@keel/types";
 // keel imports
 import { cn } from "@keel/utils";

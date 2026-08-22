@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 // icons
-import { Circle, UploadCloud } from "lucide-react";
+import { Circle, UploadCloud } from "@keel/propel/icons";
 // keel imports
 import {
   EUserPermissions,

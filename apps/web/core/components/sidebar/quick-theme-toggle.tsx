@@ -7,7 +7,7 @@
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { useTheme } from "next-themes";
-import { Sun, Moon, Monitor } from "lucide-react";
+import { Sun, Moon, Monitor } from "@keel/propel/icons";
 import { useUserProfile } from "@/hooks/store/user";
 
 export const QuickThemeToggle = observer(function QuickThemeToggle() {

@@ -6,7 +6,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react";
-import { Clock, FileStack, MoreHorizontal, MoveRight } from "lucide-react";
+import { Clock, FileStack, MoreHorizontal, MoveRight } from "@keel/propel/icons";
 // keel imports
 import { EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

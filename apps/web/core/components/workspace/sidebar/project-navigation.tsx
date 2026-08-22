@@ -8,7 +8,7 @@ import React, { useCallback, useMemo } from "react";
 import { observer } from "mobx-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import { MessagesSquare } from "lucide-react";
+import { MessagesSquare } from "@keel/propel/icons";
 import { EUserPermissionsLevel, EUserPermissions } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";
 import { CycleIcon, IntakeIcon, ModuleIcon, PageIcon, ViewsIcon, WorkItemsIcon } from "@keel/propel/icons";

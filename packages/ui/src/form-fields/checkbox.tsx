@@ -71,7 +71,7 @@ const Checkbox = React.forwardRef(function Checkbox(props: CheckboxProps, ref: R
       </svg>
       <svg
         className={cn(
-          "pointer-events-none absolute top-1/2 left-1/2 hidden size-4 -translate-x-1/2 -translate-y-1/2 stroke-white p-0.5 outline-none",
+          "pointer-events-none absolute top-1/2 left-1/2 hidden size-4 -translate-x-1/2 -translate-y-1/2 p-0.5 text-on-color outline-none",
           {
             "stroke-placeholder opacity-40": disabled,
             block: indeterminate && !checked,

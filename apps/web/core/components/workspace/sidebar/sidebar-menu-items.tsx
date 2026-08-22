@@ -6,7 +6,7 @@
 
 import React, { useMemo } from "react";
 import { observer } from "mobx-react";
-import { Ellipsis } from "lucide-react";
+import { Ellipsis } from "@keel/propel/icons";
 import { Disclosure, Transition } from "@headlessui/react";
 // keel imports
 import {

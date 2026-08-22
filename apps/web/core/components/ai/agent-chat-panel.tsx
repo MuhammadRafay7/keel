@@ -14,7 +14,7 @@ import {
   Plus,
   Trash2,
   Layers,
-} from "lucide-react";
+} from "@keel/propel/icons";
 import { useTranslation } from "@keel/i18n";
 import { Button } from "@keel/propel/button";
 import { setToast, TOAST_TYPE } from "@keel/propel/toast";

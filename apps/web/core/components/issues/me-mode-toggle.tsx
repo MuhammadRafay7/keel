@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { User } from "lucide-react";
+import { User } from "@keel/propel/icons";
 // keel imports
 import type { TWorkItemFilterConditionData, TWorkItemFilterExpression } from "@keel/types";
 import { EIssuesStoreType } from "@keel/types";

@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle } from "@keel/propel/icons";
 import { SearchIcon, CycleIcon, TransferIcon, CloseIcon } from "@keel/propel/icons";
 import { TOAST_TYPE, setToast } from "@keel/propel/toast";
 import { EIssuesStoreType } from "@keel/types";

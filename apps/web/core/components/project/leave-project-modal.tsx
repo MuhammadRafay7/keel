@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
-import { AlertTriangleIcon } from "lucide-react";
+import { AlertTriangleIcon } from "@keel/propel/icons";
 // Keel imports
 import { Button } from "@keel/propel/button";
 import { TOAST_TYPE, setToast } from "@keel/propel/toast";

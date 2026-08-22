@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { ListFilter } from "lucide-react";
+import { ListFilter } from "@keel/propel/icons";
 // keel imports
 import type { TActivityFilters, TActivityFilterOption } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

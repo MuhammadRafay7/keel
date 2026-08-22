@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { Controller, useForm } from "react-hook-form";
-import { CircleCheck } from "lucide-react";
+import { CircleCheck } from "@keel/propel/icons";
 // keel imports
 import { ORGANIZATION_SIZE, RESTRICTED_URLS } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

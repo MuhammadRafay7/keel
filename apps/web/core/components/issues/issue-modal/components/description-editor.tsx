@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import type { Control } from "react-hook-form";
 import { Controller } from "react-hook-form";
-import { Sparkle } from "lucide-react";
+import { Sparkle } from "@keel/propel/icons";
 // keel imports
 import { ETabIndices } from "@keel/constants";
 import type { EditorRefApi } from "@keel/editor";

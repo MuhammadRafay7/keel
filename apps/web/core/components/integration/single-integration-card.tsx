@@ -8,7 +8,7 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import useSWR, { mutate } from "swr";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle } from "@keel/propel/icons";
 import { EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
 import { Button } from "@keel/propel/button";
 import { TOAST_TYPE, setToast } from "@keel/propel/toast";

@@ -11,7 +11,7 @@ import { draggable, dropTargetForElements } from "@atlaskit/pragmatic-drag-and-d
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 // keel helpers
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal } from "@keel/propel/icons";
 import { useOutsideClickDetector } from "@keel/hooks";
 // types
 import { TOAST_TYPE, setToast } from "@keel/propel/toast";

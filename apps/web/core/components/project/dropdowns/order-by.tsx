@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { ArrowDownWideNarrow } from "lucide-react";
+import { ArrowDownWideNarrow } from "@keel/propel/icons";
 // keel imports
 import { PROJECT_ORDER_BY_OPTIONS } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

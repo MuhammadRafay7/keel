@@ -8,7 +8,7 @@ import type { FormEvent } from "react";
 import { useMemo, useRef, useState } from "react";
 import { observer } from "mobx-react";
 // icons
-import { CircleAlert, XCircle } from "lucide-react";
+import { CircleAlert, XCircle } from "@keel/propel/icons";
 // keel imports
 import { useTranslation } from "@keel/i18n";
 import { Button } from "@keel/propel/button";

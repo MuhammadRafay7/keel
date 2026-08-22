@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { Star } from "lucide-react";
+import { Star } from "@keel/propel/icons";
 // ui
 import { IconButton } from "@keel/propel/icon-button";
 // hooks

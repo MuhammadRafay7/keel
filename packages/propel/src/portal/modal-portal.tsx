@@ -84,7 +84,7 @@ export function ModalPortal({
     const positionClass = fullScreen ? "" : PORTAL_POSITION_CLASSES[position];
 
     return cn(
-      "absolute top-0 h-full bg-white shadow-overlay-200 transition-transform duration-300 ease-out",
+      "absolute top-0 h-full border-l border-subtle bg-surface-1 shadow-overlay-200 transition-transform duration-300 ease-out",
       widthClass,
       positionClass,
       contentClassName

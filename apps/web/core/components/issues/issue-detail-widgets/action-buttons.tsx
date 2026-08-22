@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import { Paperclip } from "lucide-react";
+import { Paperclip } from "@keel/propel/icons";
 import { useTranslation } from "@keel/i18n";
 import { LinkIcon, ViewsIcon, RelationPropertyIcon } from "@keel/propel/icons";
 // keel imports

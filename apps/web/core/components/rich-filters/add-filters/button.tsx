@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { ListFilter } from "lucide-react";
+import { ListFilter } from "@keel/propel/icons";
 // keel imports
 import type { TButtonSize, TButtonVariant } from "@keel/propel/button";
 import { getButtonStyling } from "@keel/propel/button";

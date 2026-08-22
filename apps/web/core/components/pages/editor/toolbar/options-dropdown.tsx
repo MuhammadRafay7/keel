@@ -6,7 +6,7 @@
 
 import { useMemo, useState } from "react";
 import { observer } from "mobx-react";
-import { ArrowUpToLine, Clipboard, History } from "lucide-react";
+import { ArrowUpToLine, Clipboard, History } from "@keel/propel/icons";
 // keel imports
 import { TOAST_TYPE, setToast } from "@keel/propel/toast";
 import { ToggleSwitch } from "@keel/ui";

@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import { ArrowUp, Paperclip } from "lucide-react";
+import { ArrowUp, Paperclip } from "@keel/propel/icons";
 // constants
 import type { ToolbarMenuItem } from "@keel/editor";
 import { IMAGE_ITEM } from "@keel/editor";

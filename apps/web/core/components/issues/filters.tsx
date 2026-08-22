@@ -6,7 +6,7 @@
 
 import { useCallback, useState } from "react";
 import { observer } from "mobx-react";
-import { ChartNoAxesColumn, SlidersHorizontal, User } from "lucide-react";
+import { ChartNoAxesColumn, SlidersHorizontal, User } from "@keel/propel/icons";
 // keel imports
 import { EIssueFilterType, ISSUE_STORE_TO_FILTERS_MAP } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

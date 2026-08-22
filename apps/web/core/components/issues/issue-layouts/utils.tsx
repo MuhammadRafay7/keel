@@ -10,7 +10,7 @@ import { extractInstruction } from "@atlaskit/pragmatic-drag-and-drop-hitbox/tre
 import { clone, isNil, pull, uniq, concat } from "lodash-es";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
 import type { FC } from "react";
-import { CalendarDays, LayersIcon, Paperclip } from "lucide-react";
+import { CalendarDays, LayersIcon, Paperclip } from "@keel/propel/icons";
 // keel types
 import { EIconSize, ISSUE_PRIORITIES, STATE_GROUPS } from "@keel/constants";
 import { Logo } from "@keel/propel/emoji-icon-picker";

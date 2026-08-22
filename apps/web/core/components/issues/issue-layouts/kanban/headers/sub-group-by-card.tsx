@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { Circle } from "lucide-react";
+import { Circle } from "@keel/propel/icons";
 import { ChevronDownIcon, ChevronUpIcon } from "@keel/propel/icons";
 // Keel
 import type { TIssueGroupByOptions, TIssueKanbanFilters } from "@keel/types";

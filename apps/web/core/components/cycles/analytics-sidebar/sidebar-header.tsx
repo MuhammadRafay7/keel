@@ -7,7 +7,7 @@
 import { useEffect } from "react";
 import { observer } from "mobx-react";
 import { Controller, useForm } from "react-hook-form";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight } from "@keel/propel/icons";
 // Keel Imports
 import { CYCLE_STATUS, EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

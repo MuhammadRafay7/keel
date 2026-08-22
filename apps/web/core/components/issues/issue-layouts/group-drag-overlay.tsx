@@ -5,7 +5,7 @@
  */
 
 import { useRef } from "react";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle } from "@keel/propel/icons";
 // keel imports
 import { ISSUE_ORDER_BY_OPTIONS } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

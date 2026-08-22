@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { SmilePlus } from "lucide-react";
+import { SmilePlus } from "@keel/propel/icons";
 // keel imports
 import { EmojiPicker, EmojiIconPickerTypes } from "@keel/propel/emoji-icon-picker";
 import { cn } from "@keel/utils";

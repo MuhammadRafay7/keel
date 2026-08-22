@@ -6,7 +6,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
-import { GripVertical } from "lucide-react";
+import { GripVertical } from "@keel/propel/icons";
 // keel imports
 import { EEstimateSystem, estimateCount } from "@keel/constants";
 import { useTranslation } from "@keel/i18n";

@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-export type { ISvgIcons } from "./type";
+export type { ISvgIcons, LucideIcon } from "./type";
 export type { IconName } from "./registry";
 export { ICON_REGISTRY } from "./registry";
 export * from "./actions";
@@ -71,3 +71,4 @@ export * from "./updates-icon";
 export * from "./user-activity-icon";
 export * from "./workspace-icon";
 export * from "./workspace";
+export * from "./lucide-compat";

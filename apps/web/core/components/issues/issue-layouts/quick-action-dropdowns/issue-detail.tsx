@@ -8,7 +8,7 @@ import { useState } from "react";
 import { omit } from "lodash-es";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { Ellipsis } from "lucide-react";
+import { Ellipsis } from "@keel/propel/icons";
 // keel imports
 import { ARCHIVABLE_STATE_GROUPS, EUserPermissions, EUserPermissionsLevel } from "@keel/constants";
 import type { TIssue } from "@keel/types";

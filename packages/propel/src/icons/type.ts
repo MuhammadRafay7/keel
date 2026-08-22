@@ -7,4 +7,7 @@
 export interface ISvgIcons extends React.SVGAttributes<SVGElement> {
   className?: string | undefined;
   percentage?: number;
+  size?: number;
 }
+
+export type LucideIcon = React.FC<ISvgIcons>;
