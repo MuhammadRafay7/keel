@@ -25,6 +25,24 @@ const toChannelSlug = (name: string): string =>
     .slice(0, 60) || "channel";
 
 export class ChatService {
+  /**
+   * Resolves what a caller's `projectId` argument actually means.
+   *
+   * The view passes the literal "global" for workspace-level chat, and a real
+   * project id otherwise. That distinction used to be carried as an empty
+   * string in `project_id`, which is not a uuid — every workspace-level write
+   * was rejected by Postgres and swallowed by the UI. A workspace channel now
+   * carries a genuine `null`.
+   */
+  private async resolveScope(
+    workspaceSlugOrId: string,
+    projectId: string
+  ): Promise<{ workspaceId: string; projectId: string | null }> {
+    const workspaceId = await this.getWorkspaceId(workspaceSlugOrId || projectId);
+    const isWorkspaceLevel = !projectId || projectId === "global" || projectId === workspaceId;
+    return { workspaceId, projectId: isWorkspaceLevel ? null : projectId };
+  }
+
   /** Resolves the workspace a project belongs to — both chat tables are keyed on it. */
   private async getWorkspaceId(projectIdOrSlug: string): Promise<string> {
     const supabase = getSupabase();
@@ -47,24 +65,27 @@ export class ChatService {
    */
   async getChannels(_workspaceSlug: string, projectId: string): Promise<IChatChannel[]> {
     const supabase = getSupabase();
-    const workspaceId = await this.getWorkspaceId(_workspaceSlug || projectId);
+    const scope = await this.resolveScope(_workspaceSlug, projectId);
 
-    const { data, error } = await supabase
-      .from("chat_channels")
-      .select("*")
-      .or(`project_id.eq.${projectId},workspace_id.eq.${workspaceId}`)
-      .order("created_at", { ascending: true });
+    // Two distinct queries rather than one `.or(...)`. The old filter
+    // interpolated the literal "global" into `project_id.eq.…`, which
+    // PostgREST hands to Postgres as a uuid comparison and which fails the
+    // whole request — so the list came back empty every time.
+    let query = supabase.from("chat_channels").select("*").eq("workspace_id", scope.workspaceId);
+
+    query = scope.projectId ? query.eq("project_id", scope.projectId) : query.is("project_id", null);
+
+    const { data, error } = await query.order("created_at", { ascending: true });
 
     if (error) throw error;
     if (data && data.length > 0) return data as IChatChannel[];
 
-    return this.seedDefaultChannels(projectId === "global" ? _workspaceSlug : projectId);
+    return this.seedDefaultChannels(_workspaceSlug, projectId);
   }
 
-  private async seedDefaultChannels(projectId: string): Promise<IChatChannel[]> {
+  private async seedDefaultChannels(workspaceSlugOrId: string, projectId: string): Promise<IChatChannel[]> {
     const supabase = getSupabase();
-    const workspaceId = await this.getWorkspaceId(projectId);
-    const actualProjectId = projectId === "global" || projectId === workspaceId ? "" : projectId;
+    const scope = await this.resolveScope(workspaceSlugOrId, projectId);
 
     const { data, error } = await supabase
       .from("chat_channels")
@@ -72,18 +93,23 @@ export class ChatService {
         DEFAULT_CHANNELS.map((channel) => ({
           name: channel.name,
           description: channel.description,
-          project_id: actualProjectId,
-          workspace_id: workspaceId,
+          project_id: scope.projectId,
+          workspace_id: scope.workspaceId,
         }))
       )
       .select();
 
     if (error) {
-      const { data: existing } = await supabase
-        .from("chat_channels")
-        .select("*")
-        .eq("workspace_id", workspaceId)
-        .order("created_at", { ascending: true });
+      // Two tabs opening chat at the same moment both try to seed. The unique
+      // index added in 0023 makes the loser fail, and the right answer is
+      // whatever the winner wrote — not an error and not a second set.
+      let existingQuery = supabase.from("chat_channels").select("*").eq("workspace_id", scope.workspaceId);
+
+      existingQuery = scope.projectId
+        ? existingQuery.eq("project_id", scope.projectId)
+        : existingQuery.is("project_id", null);
+
+      const { data: existing } = await existingQuery.order("created_at", { ascending: true });
 
       if (existing && existing.length > 0) return existing as IChatChannel[];
       throw error;
@@ -98,8 +124,7 @@ export class ChatService {
     channel: Partial<IChatChannel>
   ): Promise<IChatChannel> {
     const supabase = getSupabase();
-    const workspaceId = await this.getWorkspaceId(_workspaceSlug || projectId);
-    const actualProjectId = projectId === "global" || projectId === workspaceId ? "" : projectId;
+    const scope = await this.resolveScope(_workspaceSlug, projectId);
 
     const { data, error } = await supabase
       .from("chat_channels")
@@ -107,8 +132,8 @@ export class ChatService {
         {
           name: toChannelSlug(channel.name ?? ""),
           description: channel.description ?? "",
-          project_id: actualProjectId,
-          workspace_id: workspaceId,
+          project_id: scope.projectId,
+          workspace_id: scope.workspaceId,
         },
       ])
       .select()
@@ -132,25 +157,44 @@ export class ChatService {
     return (data ?? []) as IChatMessage[];
   }
 
+  /**
+   * Posts into a channel.
+   *
+   * Scope comes from the channel row rather than from the caller's argument.
+   * The first parameter has always been "a workspace slug or a project id
+   * depending on where you are", and guessing which produced rows whose
+   * `project_id` disagreed with their own channel's — invisible to their
+   * author under RLS, which is what "my messages vanished" looked like.
+   * A message belongs wherever its channel belongs, so ask the channel.
+   */
   async sendMessage(
-    projectId: string,
+    _projectIdOrSlug: string,
     channelId: string,
     messageText: string,
     senderName: string = "User",
     mentions: string[] = []
   ): Promise<IChatMessage> {
     const supabase = getSupabase();
-    const workspaceId = await this.getWorkspaceId(projectId);
     const user = (await supabase.auth.getUser())?.data?.user;
-    const actualProjectId = projectId === "global" || projectId === workspaceId ? "" : projectId;
+
+    const { data: channel, error: channelError } = await supabase
+      .from("chat_channels")
+      .select("workspace_id, project_id")
+      .eq("id", channelId)
+      .maybeSingle();
+
+    if (channelError) throw channelError;
+    if (!channel) throw new Error("That channel no longer exists. Reload and try again.");
+
+    const scope = { workspaceId: channel.workspace_id as string, projectId: channel.project_id as string | null };
 
     const { data, error } = await supabase
       .from("chat_messages")
       .insert([
         {
           channel_id: channelId,
-          project_id: actualProjectId,
-          workspace_id: workspaceId,
+          project_id: scope.projectId,
+          workspace_id: scope.workspaceId,
           message: messageText,
           sender_id: user?.id ?? null,
           sender_name: senderName,

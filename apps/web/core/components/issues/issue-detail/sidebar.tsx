@@ -9,6 +9,7 @@ import { observer } from "mobx-react";
 import { useTranslation } from "@keel/i18n";
 // ui
 import {
+  Clock,
   CycleIcon,
   StatePropertyIcon,
   ModuleIcon,
@@ -38,6 +39,7 @@ import { useProjectState } from "@/hooks/store/use-project-state";
 // components
 import { IssueParentSelectRoot } from "@/components/issues/parent-select-root";
 import { SidebarPropertyListItem } from "@/components/common/layout/sidebar/property-list-item";
+import { WorkItemTimer } from "@/components/attendance/work-item-timer";
 import { IssueCycleSelect } from "./cycle-select";
 import { IssueLabel } from "./label";
 import { IssueModuleSelect } from "./module-select";
@@ -200,6 +202,18 @@ export const IssueDetailsSidebar = observer(function IssueDetailsSidebar(props: 
                   dropdownArrow
                   dropdownArrowClassName="h-3.5 w-3.5 hidden group-hover:inline"
                 />
+              </SidebarPropertyListItem>
+            )}
+
+            {/*
+              Sits directly under the estimate on purpose: what a work item was
+              expected to cost and what it has actually cost belong next to each
+              other, and reading one without the other is how estimates stay
+              wrong.
+            */}
+            {projectId && projectDetails?.is_time_tracking_enabled && (
+              <SidebarPropertyListItem icon={Clock} label="Time">
+                <WorkItemTimer issueId={issueId.toString()} projectId={projectId.toString()} disabled={!isEditable} />
               </SidebarPropertyListItem>
             )}
 

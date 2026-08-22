@@ -373,6 +373,10 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
   const [newChannelName, setNewChannelName] = useState("");
   const [mentionQuery, setMentionQuery] = useState<string | null>(null);
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
+  // Chat used to fail silently in six places. These two carry the reason out
+  // to the person rather than leaving them to discover it after a reload.
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [sendError, setSendError] = useState<string | null>(null);
   const [editingText, setEditingText] = useState("");
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
 
@@ -389,21 +393,25 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
 
   const handleSaveEdit = async (msgId: string) => {
     if (!editingText.trim()) return;
+    const previous = messages;
     setMessages((prev) => prev.map((m) => (m.id === msgId ? { ...m, message: editingText.trim() } : m)));
     setEditingMessageId(null);
     try {
       await supabaseChatService.editMessage(msgId, editingText.trim());
-    } catch (_err) {
-      // state updated
+    } catch (err) {
+      setMessages(previous);
+      setSendError(err instanceof Error ? err.message : "That edit did not save.");
     }
   };
 
   const handleDeleteMessage = async (msgId: string) => {
+    const previous = messages;
     setMessages((prev) => prev.filter((m) => m.id !== msgId));
     try {
       await supabaseChatService.deleteMessage(msgId);
-    } catch (_err) {
-      // state updated
+    } catch (err) {
+      setMessages(previous);
+      setSendError(err instanceof Error ? err.message : "That message was not deleted.");
     }
   };
 
@@ -437,33 +445,16 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
         if (cancelled) return;
         setChannels(fetchedChannels);
         if (fetchedChannels.length > 0) setActiveChannel(fetchedChannels[0]);
-      } catch (_err) {
+      } catch (err) {
+        // These used to be replaced with three invented channels carrying ids
+        // like "general". Nothing could be posted into them — the ids are not
+        // uuids — but the view looked healthy, so a real outage read as a chat
+        // that quietly forgot everything on reload. An empty list and a
+        // message is the honest answer.
         if (!cancelled) {
-          const fallbackChannels = [
-            {
-              id: "general",
-              name: "general",
-              workspace_id: workspaceSlug,
-              project_id: "",
-              description: "General discussions",
-            },
-            {
-              id: "dev-team",
-              name: "dev-team",
-              workspace_id: workspaceSlug,
-              project_id: "",
-              description: "Engineering chat",
-            },
-            {
-              id: "design-ui",
-              name: "design-ui",
-              workspace_id: workspaceSlug,
-              project_id: "",
-              description: "UI/UX specs",
-            },
-          ];
-          setChannels(fallbackChannels);
-          setActiveChannel(fallbackChannels[0]);
+          setChannels([]);
+          setActiveChannel(null);
+          setLoadError(err instanceof Error ? err.message : "Could not load channels.");
         }
       } finally {
         if (!cancelled) setIsLoadingChannels(false);
@@ -486,8 +477,11 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
       try {
         const fetchedMessages = await supabaseChatService.getMessages(channelId);
         if (!cancelled) setMessages(fetchedMessages);
-      } catch (_err) {
-        if (!cancelled) setMessages([]);
+      } catch (err) {
+        if (!cancelled) {
+          setMessages([]);
+          setLoadError(err instanceof Error ? err.message : "Could not load this conversation.");
+        }
       } finally {
         if (!cancelled) setIsLoadingMessages(false);
       }
@@ -516,6 +510,7 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
     const textToSend = inputMessage.trim();
     setInputMessage("");
     setMentionQuery(null);
+    setSendError(null);
     setIsSending(true);
 
     const userName = currentUser?.display_name || currentUser?.first_name || currentUser?.email?.split("@")[0] || "You";
@@ -546,8 +541,13 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
         const withoutTemp = prev.filter((m) => m.id !== tempMsg.id);
         return withoutTemp.some((m) => m.id === created.id) ? withoutTemp : [...withoutTemp, created];
       });
-    } catch (_err) {
-      // optimistic state preserved
+    } catch (err) {
+      // The optimistic message used to be left on screen when the insert
+      // failed, which is precisely why chat "lost" messages on reload: they
+      // had never been written. Take it back out and say so.
+      setMessages((prev) => prev.filter((m) => m.id !== tempMsg.id));
+      setInputMessage(textToSend);
+      setSendError(err instanceof Error ? err.message : "That message did not send.");
     } finally {
       setIsSending(false);
     }
@@ -564,15 +564,11 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
       });
       setChannels((prev) => [...prev, created]);
       setActiveChannel(created);
-    } catch {
-      const fallbackCh: IChatChannel = {
-        id: `ch-${Date.now()}`,
-        name: newChName,
-        workspace_id: workspaceSlug,
-        project_id: "",
-      };
-      setChannels((prev) => [...prev, fallbackCh]);
-      setActiveChannel(fallbackCh);
+    } catch (err) {
+      // Same reasoning as the channel list: a locally invented channel accepts
+      // messages that can never be stored.
+      setSendError(err instanceof Error ? err.message : "Could not create that channel.");
+      return;
     }
     setActiveDirectMemberId(null);
     setNewChannelName("");
@@ -705,6 +701,22 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
 
       {/* Chat Messages Main Panel */}
       <div className="flex flex-1 flex-col overflow-hidden">
+        {loadError && (
+          <div
+            role="alert"
+            className="mx-5 mt-4 flex items-start justify-between gap-3 rounded-xl border border-danger-subtle bg-danger-subtle px-4 py-3"
+          >
+            <p className="text-13 text-danger-primary">{loadError}</p>
+            <button
+              type="button"
+              onClick={() => setLoadError(null)}
+              className="shrink-0 focus-ring rounded-sm text-12 font-medium text-danger-primary underline-offset-2 hover:underline"
+            >
+              Dismiss
+            </button>
+          </div>
+        )}
+
         <div className="flex-1 space-y-2 overflow-y-auto px-5 py-4">
           {isLoadingMessages && (
             <p className="flex h-full items-center justify-center text-13 text-tertiary">Loading messages…</p>
@@ -899,6 +911,22 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
                   <span className="truncate">{member.name}</span>
                 </button>
               ))}
+            </div>
+          )}
+
+          {sendError && (
+            <div
+              role="alert"
+              className="mb-2 flex items-start justify-between gap-3 rounded-xl border border-danger-subtle bg-danger-subtle px-4 py-2.5"
+            >
+              <p className="text-13 text-danger-primary">{sendError}</p>
+              <button
+                type="button"
+                onClick={() => setSendError(null)}
+                className="shrink-0 focus-ring rounded-sm text-12 font-medium text-danger-primary underline-offset-2 hover:underline"
+              >
+                Dismiss
+              </button>
             </div>
           )}
 
