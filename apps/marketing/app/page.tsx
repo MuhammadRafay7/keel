@@ -14,17 +14,31 @@ const REPO = "https://github.com/MuhammadRafay7/keel";
 export default function Home() {
   return (
     <>
-      {/* 1. HERO SECTION WITH APPLE-STYLE THREE.JS FLUID MESH & INTERACTIVE PREVIEW */}
+      {/* 1. HERO SECTION WITH APPLE-STYLE THREE.JS FLUID AMBIENT VISUAL & INTERACTIVE PREVIEW */}
       <section aria-label="Hero section" className="hero-section" id="hero">
         <HullScene />
 
         <div className="shell hero-content">
-          <div className="hero-eyebrow">✨ Modern Open-Source Work Management</div>
+          <Link href="/changelog" className="hero-eyebrow">
+            <span className="hero-eyebrow-pulse" />
+            <span className="hero-eyebrow-text">Keel 1.4 Released</span>
+            <span className="hero-eyebrow-sep">·</span>
+            <span className="hero-eyebrow-sub">Modern Open-Source Work Management</span>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="hero-eyebrow-arrow">
+              <path
+                d="M4.5 2.5L8 6L4.5 9.5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Link>
 
           <h1 className="hero-title font-satoshi">
             Project management built for
             <br />
-            speed, precision, and craft.
+            <span className="hero-title-gradient">speed, precision, and craft.</span>
           </h1>
 
           <p className="hero-subtitle">
@@ -33,8 +47,17 @@ export default function Home() {
           </p>
 
           <div className="hero-cta-group">
-            <a className="btn btn-inverse btn-lg" href={`${APP}/sign-up`}>
-              Get Started Free
+            <a className="btn btn-brand btn-lg" href={`${APP}/sign-up`}>
+              <span>Get Started Free</span>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M6 3L11 8L6 13"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </a>
             <a className="btn btn-secondary btn-lg" href={REPO} target="_blank" rel="noreferrer">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -43,10 +66,74 @@ export default function Home() {
               <span>Star on GitHub</span>
             </a>
           </div>
+
+          <div className="hero-trust-row">
+            <span className="hero-trust-item">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              AGPL-3.0 Open Source
+            </span>
+            <span className="hero-trust-item">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              Docker &amp; Cloud Ready
+            </span>
+            <span className="hero-trust-item">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              100% Data Sovereignty
+            </span>
+            <span className="hero-trust-item">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              Sub-50ms Keyboard First
+            </span>
+          </div>
         </div>
 
-        {/* Apple Window Dashboard Preview */}
+        {/* Apple Window Dashboard Preview with Cinematic Glow Aura */}
         <div className="hero-dashboard-preview shell">
+          <div className="hero-dashboard-glow" aria-hidden="true" />
           <div className="hero-dashboard-wrapper">
             <HeroDashboardMockup />
           </div>
@@ -221,7 +308,15 @@ export default function Home() {
             <h2 className="font-satoshi" style={{ margin: "1rem 0 1.25rem" }}>
               Take control of your team&apos;s work.
             </h2>
-            <p style={{ color: "var(--fg-muted)", fontSize: "1.1rem", lineHeight: "1.6", margin: "0 auto 2.25rem", maxWidth: "36rem" }}>
+            <p
+              style={{
+                color: "var(--fg-muted)",
+                fontSize: "1.1rem",
+                lineHeight: "1.6",
+                margin: "0 auto 2.25rem",
+                maxWidth: "36rem",
+              }}
+            >
               Experience the speed, responsiveness, and freedom of a modern open-source work management platform.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>

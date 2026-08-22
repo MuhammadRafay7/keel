@@ -5,9 +5,9 @@ import * as THREE from "three";
 import { useTheme } from "next-themes";
 
 /**
- * Three.js Apple-Style Interactive Ambient Fluid Wave Canvas:
- * Features cursor-driven 3D fluid wave ripples, interactive mouse lighting,
- * smooth drag-to-orbit tilting, and floating specular ambient particles.
+ * Three.js Apple/Linear-Grade Ambient Fluid Horizon Canvas:
+ * Features silky-smooth harmonic fluid ribbons, subtle pointer-tracking specular highlights,
+ * and floating specular bokeh particles with elegant depth-of-field.
  */
 export function HullScene() {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -22,8 +22,8 @@ export function HullScene() {
 
     // 1. Scene, Camera & WebGL Renderer
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, mount.clientWidth / mount.clientHeight, 0.1, 100);
-    camera.position.set(0, 2.2, 7.8);
+    const camera = new THREE.PerspectiveCamera(42, mount.clientWidth / mount.clientHeight, 0.1, 100);
+    camera.position.set(0, 2.0, 8.5);
     camera.lookAt(0, 0, 0);
 
     const renderer = new THREE.WebGLRenderer({
@@ -33,30 +33,35 @@ export function HullScene() {
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(mount.clientWidth, mount.clientHeight);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = isLight ? 1.1 : 1.25;
+
     mount.appendChild(renderer.domElement);
     renderer.domElement.style.display = "block";
     renderer.domElement.style.width = "100%";
     renderer.domElement.style.height = "100%";
 
-    // 2. Lighting Rig
-    const ambientLight = new THREE.AmbientLight(0xffffff, isLight ? 0.95 : 0.65);
+    // 2. Lighting Architecture
+    const ambientLight = new THREE.AmbientLight(isLight ? 0xffffff : 0x0f172a, isLight ? 1.2 : 0.8);
     scene.add(ambientLight);
 
-    const dirLight1 = new THREE.DirectionalLight(isLight ? 0x0284c7 : 0x38bdf8, isLight ? 1.6 : 2.4);
-    dirLight1.position.set(5, 6, 4);
-    scene.add(dirLight1);
+    const mainKeyLight = new THREE.DirectionalLight(isLight ? 0x0284c7 : 0x38bdf8, isLight ? 1.8 : 2.5);
+    mainKeyLight.position.set(6, 8, 5);
+    scene.add(mainKeyLight);
 
-    const dirLight2 = new THREE.DirectionalLight(isLight ? 0x006399 : 0x0ea5e9, isLight ? 1.2 : 1.8);
-    dirLight2.position.set(-5, -3, 2);
-    scene.add(dirLight2);
+    const fillLight = new THREE.DirectionalLight(isLight ? 0x0ea5e9 : 0x0369a1, isLight ? 0.8 : 1.4);
+    fillLight.position.set(-6, -4, 3);
+    scene.add(fillLight);
 
-    // Interactive Cursor Spotlight
-    const cursorLight = new THREE.PointLight(isLight ? 0x38bdf8 : 0x67e8f9, isLight ? 3.0 : 4.5, 9);
-    cursorLight.position.set(0, 1, 3);
-    scene.add(cursorLight);
+    // Interactive Floating Cursor Glow
+    const cursorGlow = new THREE.PointLight(isLight ? 0x38bdf8 : 0x67e8f9, isLight ? 2.5 : 4.0, 12);
+    cursorGlow.position.set(0, 1, 3);
+    scene.add(cursorGlow);
 
-    // 3. Organic Fluid Wave Mesh
-    const planeGeo = new THREE.PlaneGeometry(18, 14, 80, 80);
+    // 3. Fluid Organic Ribbon Geometry
+    const gridX = 90;
+    const gridY = 70;
+    const planeGeo = new THREE.PlaneGeometry(22, 16, gridX, gridY);
     const planePos = planeGeo.attributes.position;
     const initialZ = new Float32Array(planePos.count);
     const initialX = new Float32Array(planePos.count);
@@ -68,106 +73,71 @@ export function HullScene() {
       initialZ[i] = planePos.getZ(i);
     }
 
+    // High-end Material with Specular Sheen
     const planeMat = new THREE.MeshPhysicalMaterial({
-      color: isLight ? 0x006399 : 0x0284c7,
-      emissive: isLight ? 0x0284c7 : 0x003366,
-      emissiveIntensity: isLight ? 0.18 : 0.45,
-      roughness: 0.18,
-      metalness: 0.15,
-      clearcoat: 0.9,
-      clearcoatRoughness: 0.12,
+      color: isLight ? 0x0284c7 : 0x0369a1,
+      emissive: isLight ? 0x0284c7 : 0x0c4a6e,
+      emissiveIntensity: isLight ? 0.12 : 0.4,
+      roughness: isLight ? 0.25 : 0.2,
+      metalness: 0.1,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.1,
       transparent: true,
-      opacity: isLight ? 0.16 : 0.32,
+      opacity: isLight ? 0.18 : 0.35,
       side: THREE.DoubleSide,
+      depthWrite: false,
     });
 
-    const waveMesh = new THREE.Mesh(planeGeo, planeMat);
-    waveMesh.rotation.x = -Math.PI / 2.5;
-    waveMesh.position.set(0, -0.6, 0);
-    scene.add(waveMesh);
+    const fluidMesh = new THREE.Mesh(planeGeo, planeMat);
+    fluidMesh.rotation.x = -Math.PI / 2.35;
+    fluidMesh.position.set(0, -0.85, 0);
+    scene.add(fluidMesh);
 
-    // Technical Wireframe Overlay
-    const wireMat = new THREE.MeshBasicMaterial({
-      color: isLight ? 0x0284c7 : 0x38bdf8,
-      wireframe: true,
-      transparent: true,
-      opacity: isLight ? 0.07 : 0.14,
-    });
-    const wireMesh = new THREE.Mesh(planeGeo, wireMat);
-    wireMesh.rotation.x = -Math.PI / 2.5;
-    wireMesh.position.set(0, -0.59, 0);
-    scene.add(wireMesh);
-
-    // 4. Floating Specular Particles
-    const PARTICLE_COUNT = 100;
+    // 4. Floating Specular Bokeh Particles
+    const PARTICLE_COUNT = 75;
     const partGeo = new THREE.BufferGeometry();
     const partPositions = new Float32Array(PARTICLE_COUNT * 3);
+    const partScales = new Float32Array(PARTICLE_COUNT);
 
     for (let i = 0; i < PARTICLE_COUNT; i++) {
-      partPositions[i * 3] = (Math.random() - 0.5) * 15;
-      partPositions[i * 3 + 1] = (Math.random() - 0.5) * 9;
-      partPositions[i * 3 + 2] = (Math.random() - 0.5) * 7;
+      partPositions[i * 3] = (Math.random() - 0.5) * 16;
+      partPositions[i * 3 + 1] = (Math.random() - 0.5) * 8 + 0.5;
+      partPositions[i * 3 + 2] = (Math.random() - 0.5) * 6 + 1;
+      partScales[i] = Math.random() * 0.05 + 0.02;
     }
 
     partGeo.setAttribute("position", new THREE.BufferAttribute(partPositions, 3));
 
+    // Particle Material
     const partMat = new THREE.PointsMaterial({
-      color: isLight ? 0x006399 : 0x67e8f9,
-      size: 0.05,
+      color: isLight ? 0x0284c7 : 0x7dd3fc,
+      size: isLight ? 0.045 : 0.055,
       transparent: true,
-      opacity: isLight ? 0.45 : 0.7,
+      opacity: isLight ? 0.45 : 0.75,
       blending: THREE.AdditiveBlending,
+      depthWrite: false,
     });
 
     const particles = new THREE.Points(partGeo, partMat);
     scene.add(particles);
 
-    // 5. Interactive Cursor & Drag Handlers
+    // 5. Smooth Pointer Tracking with Damping
     const mouse = {
       x: 0,
       y: 0,
       targetX: 0,
       targetY: 0,
-      isDragging: false,
-      prevX: 0,
-      prevY: 0,
-      rotX: 0,
-      rotY: 0,
-      targetRotX: 0,
-      targetRotY: 0,
     };
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = mount.getBoundingClientRect();
       const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       const ny = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
-
       mouse.targetX = nx;
       mouse.targetY = ny;
-
-      if (mouse.isDragging) {
-        const deltaX = e.clientX - mouse.prevX;
-        const deltaY = e.clientY - mouse.prevY;
-        mouse.targetRotY += deltaX * 0.005;
-        mouse.targetRotX += deltaY * 0.005;
-        mouse.prevX = e.clientX;
-        mouse.prevY = e.clientY;
-      }
-    };
-
-    const handleMouseDown = (e: MouseEvent) => {
-      mouse.isDragging = true;
-      mouse.prevX = e.clientX;
-      mouse.prevY = e.clientY;
-    };
-
-    const handleMouseUp = () => {
-      mouse.isDragging = false;
     };
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    window.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("mouseup", handleMouseUp);
 
     // 6. Animation Loop
     let animId: number;
@@ -177,58 +147,48 @@ export function HullScene() {
       animId = requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
 
-      // Smooth pointer interpolation
-      mouse.x += (mouse.targetX - mouse.x) * 0.06;
-      mouse.y += (mouse.targetY - mouse.y) * 0.06;
-      mouse.rotX += (mouse.targetRotX - mouse.rotX) * 0.08;
-      mouse.rotY += (mouse.targetRotY - mouse.rotY) * 0.08;
+      // Smooth pointer interpolation (low-pass filter)
+      mouse.x += (mouse.targetX - mouse.x) * 0.045;
+      mouse.y += (mouse.targetY - mouse.y) * 0.045;
 
       // Update Cursor Light Position in 3D Space
-      cursorLight.position.x = mouse.x * 4.5;
-      cursorLight.position.y = mouse.y * 2.5 + 0.5;
-      cursorLight.position.z = 2.5;
+      cursorGlow.position.x = mouse.x * 5.0;
+      cursorGlow.position.y = mouse.y * 2.8 + 0.8;
+      cursorGlow.position.z = 2.8;
 
-      // Camera Parallax with Drag Rotation
-      camera.position.x = mouse.x * 0.8;
-      camera.position.y = 2.2 + mouse.y * 0.5;
-      camera.position.z = 7.8;
-
-      waveMesh.rotation.z = mouse.rotY * 0.4;
-      wireMesh.rotation.z = mouse.rotY * 0.4;
-      waveMesh.rotation.y = mouse.rotY * 0.3;
-      wireMesh.rotation.y = mouse.rotY * 0.3;
-
+      // Gentle Camera Parallax
+      camera.position.x = mouse.x * 0.5;
+      camera.position.y = 2.0 + mouse.y * 0.3;
       camera.lookAt(0, 0, 0);
 
-      // Animate Fluid Wave Vertices with Cursor Proximity Ripples
+      // Subtle Mesh Undulation (Smooth Harmonic Waves)
       if (!prefersReduced) {
         const positions = planeGeo.attributes.position;
-        // Project mouse position onto plane coords
-        const cursorPlaneX = mouse.x * 6;
-        const cursorPlaneY = mouse.y * 4;
+        const speed = 0.55;
 
         for (let i = 0; i < positions.count; i++) {
           const u = initialX[i];
           const v = initialY[i];
 
-          // Natural undulating wave
-          const waveZ =
-            Math.sin(u * 0.55 + elapsed * 0.9) * 0.38 +
-            Math.cos(v * 0.48 + elapsed * 0.75) * 0.32 +
-            Math.sin((u + v) * 0.35 + elapsed * 0.6) * 0.22;
+          // Harmonic layered waves
+          const wave1 = Math.sin(u * 0.4 + elapsed * speed) * 0.32;
+          const wave2 = Math.cos(v * 0.35 + elapsed * (speed * 0.8)) * 0.28;
+          const wave3 = Math.sin((u + v) * 0.25 + elapsed * (speed * 0.6)) * 0.18;
 
-          // Interactive cursor ripple displacement
-          const distSq = (u - cursorPlaneX) ** 2 + (v - cursorPlaneY) ** 2;
-          const ripple = Math.exp(-distSq / 4.5) * Math.sin(Math.sqrt(distSq) * 3.5 - elapsed * 4.0) * 0.45;
+          // Subtle cursor proximity elevation
+          const dx = u - mouse.x * 5.5;
+          const dy = v - mouse.y * 3.5;
+          const distSq = dx * dx + dy * dy;
+          const cursorFactor = Math.exp(-distSq / 12.0) * 0.25;
 
-          positions.setZ(i, initialZ[i] + waveZ + ripple);
+          positions.setZ(i, initialZ[i] + wave1 + wave2 + wave3 + cursorFactor);
         }
         positions.needsUpdate = true;
         planeGeo.computeVertexNormals();
 
-        // Rotate ambient particles gently
-        particles.rotation.y = elapsed * 0.03 + mouse.x * 0.1;
-        particles.rotation.x = elapsed * 0.015 + mouse.y * 0.08;
+        // Slow organic drift for ambient particles
+        particles.rotation.y = elapsed * 0.02 + mouse.x * 0.05;
+        particles.rotation.x = elapsed * 0.01 + mouse.y * 0.03;
       }
 
       renderer.render(scene, camera);
@@ -248,16 +208,13 @@ export function HullScene() {
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mousedown", handleMouseDown);
-      window.removeEventListener("mouseup", handleMouseUp);
       window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(animId);
-      if (mount && renderer.domElement) {
+      if (mount && renderer.domElement && mount.contains(renderer.domElement)) {
         mount.removeChild(renderer.domElement);
       }
       planeGeo.dispose();
       planeMat.dispose();
-      wireMat.dispose();
       partGeo.dispose();
       partMat.dispose();
       renderer.dispose();
