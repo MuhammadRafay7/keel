@@ -17,6 +17,9 @@ type TRequestsProps = {
   workspaceId: string;
   memberId: string;
   onChange: () => void;
+  /** A day the timesheet asked to fix, so nobody has to retype a date. */
+  seedDate?: string | null;
+  onSeedConsumed?: () => void;
 };
 
 const inputClass =
@@ -32,7 +35,13 @@ const labelClass = "text-11 font-medium tracking-wide text-placeholder uppercase
  * changes what it offers. RLS already narrows the list to those two cases, so
  * any row that is not yours is one you can act on.
  */
-export const Requests = observer(function Requests({ workspaceId, memberId, onChange }: TRequestsProps) {
+export const Requests = observer(function Requests({
+  workspaceId,
+  memberId,
+  onChange,
+  seedDate,
+  onSeedConsumed,
+}: TRequestsProps) {
   const { getUserDetails } = useMember();
 
   const [corrections, setCorrections] = useState<IAttendanceCorrection[]>([]);
@@ -41,6 +50,14 @@ export const Requests = observer(function Requests({ workspaceId, memberId, onCh
   const [balances, setBalances] = useState<ILeaveBalance[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isBusy, setIsBusy] = useState(false);
+  // Both forms used to sit open above the lists, so the page opened with a
+  // dozen empty fields and you had to read them to find out you did not need
+  // them. Now it opens on what happened, and asking for something is a choice.
+  const [openForm, setOpenForm] = useState<"none" | "correction" | "leave">("none");
+
+  useEffect(() => {
+    if (seedDate) setOpenForm("correction");
+  }, [seedDate]);
 
   const load = useCallback(async () => {
     if (!workspaceId) return;
@@ -104,7 +121,35 @@ export const Requests = observer(function Requests({ workspaceId, memberId, onCh
         </p>
       )}
 
-      <CorrectionForm workspaceId={workspaceId} isBusy={isBusy} onSubmit={act} />
+      <div className="flex flex-wrap items-center gap-2">
+        <Button
+          variant={openForm === "correction" ? "primary" : "secondary"}
+          size="base"
+          onClick={() => setOpenForm(openForm === "correction" ? "none" : "correction")}
+        >
+          Fix a day
+        </Button>
+        <Button
+          variant={openForm === "leave" ? "primary" : "secondary"}
+          size="base"
+          onClick={() => setOpenForm(openForm === "leave" ? "none" : "leave")}
+        >
+          Book time off
+        </Button>
+      </div>
+
+      {openForm === "correction" && (
+        <CorrectionForm
+          workspaceId={workspaceId}
+          isBusy={isBusy}
+          seedDate={seedDate}
+          onSubmit={act}
+          onDone={() => {
+            setOpenForm("none");
+            onSeedConsumed?.();
+          }}
+        />
+      )}
 
       <section aria-label="Timesheet corrections">
         <h2 className="mb-3 text-14 font-semibold text-primary">
@@ -140,14 +185,17 @@ export const Requests = observer(function Requests({ workspaceId, memberId, onCh
         )}
       </section>
 
-      <LeaveForm
-        workspaceId={workspaceId}
-        memberId={memberId}
-        leaveTypes={leaveTypes}
-        balances={balances}
-        isBusy={isBusy}
-        onSubmit={act}
-      />
+      {openForm === "leave" && (
+        <LeaveForm
+          workspaceId={workspaceId}
+          memberId={memberId}
+          leaveTypes={leaveTypes}
+          balances={balances}
+          isBusy={isBusy}
+          onSubmit={act}
+          onDone={() => setOpenForm("none")}
+        />
+      )}
 
       <section aria-label="Leave requests">
         <h2 className="mb-3 text-14 font-semibold text-primary">
@@ -268,37 +316,78 @@ function StatusPill({ status }: { status: string }) {
   );
 }
 
+/**
+ * Asking for a day to be corrected.
+ *
+ * Was two `datetime-local` boxes, which make you enter a date twice and read
+ * as a developer's idea of a time. A shift happens on one day between two
+ * clock times, so that is what it asks for — and when the timesheet sent you
+ * here, the day is already filled in.
+ */
+/**
+ * A shift that ends earlier than it starts ran past midnight, so the end
+ * belongs to the next day. Working that out here means nobody has to think
+ * about it at 2am.
+ */
+const toIsoAt = (date: string, time: string, nextDay = false): string => {
+  const base = new Date(`${date}T${time}`);
+  if (nextDay) base.setDate(base.getDate() + 1);
+  return base.toISOString();
+};
+
 function CorrectionForm({
   workspaceId,
   isBusy,
+  seedDate,
   onSubmit,
+  onDone,
 }: {
   workspaceId: string;
   isBusy: boolean;
+  seedDate?: string | null;
   onSubmit: (action: () => Promise<unknown>) => Promise<void>;
+  onDone: () => void;
 }) {
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
+  const [day, setDay] = useState(seedDate ?? toISODate(new Date()));
+  const [from, setFrom] = useState("09:00");
+  const [to, setTo] = useState("17:00");
   const [reason, setReason] = useState("");
 
-  const canSubmit = Boolean(from && reason.trim());
+  useEffect(() => {
+    if (seedDate) setDay(seedDate);
+  }, [seedDate]);
+
+  const canSubmit = Boolean(day && from && reason.trim());
+
+  const isOvernight = Boolean(from && to && to <= from);
 
   return (
     <section className="squircle-card border border-subtle bg-surface-1 p-5" aria-label="Ask for a correction">
-      <h2 className="text-14 font-semibold text-primary">Something wrong with a day?</h2>
+      <h2 className="text-14 font-semibold text-primary">What should the day have said?</h2>
       <p className="mt-1 text-12 text-tertiary">
-        Say what the times should have been. Your approver decides, and the original stays on the record.
+        Your approver decides, and the original stays on the record either way.
       </p>
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_1fr_2fr_auto] sm:items-end">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-[1.1fr_auto_auto_2fr]">
         <label className="flex flex-col gap-1">
-          <span className={labelClass}>Started</span>
-          <input type="datetime-local" value={from} onChange={(e) => setFrom(e.target.value)} className={inputClass} />
+          <span className={labelClass}>Day</span>
+          <input
+            type="date"
+            value={day}
+            max={toISODate(new Date())}
+            onChange={(e) => setDay(e.target.value)}
+            className={inputClass}
+          />
         </label>
 
         <label className="flex flex-col gap-1">
-          <span className={labelClass}>Ended</span>
-          <input type="datetime-local" value={to} onChange={(e) => setTo(e.target.value)} className={inputClass} />
+          <span className={labelClass}>From</span>
+          <input type="time" value={from} onChange={(e) => setFrom(e.target.value)} className={inputClass} />
+        </label>
+
+        <label className="flex flex-col gap-1">
+          <span className={labelClass}>To</span>
+          <input type="time" value={to} onChange={(e) => setTo(e.target.value)} className={inputClass} />
         </label>
 
         <label className="flex flex-col gap-1">
@@ -311,22 +400,28 @@ function CorrectionForm({
             className={inputClass}
           />
         </label>
+      </div>
 
+      {isOvernight && <p className="mt-2 text-12 text-tertiary">Counted as finishing the next morning.</p>}
+
+      <div className="mt-4 flex items-center justify-end gap-2">
+        <Button variant="tertiary" size="base" onClick={onDone} disabled={isBusy}>
+          Cancel
+        </Button>
         <Button
-          variant="secondary"
+          variant="primary"
           size="base"
           disabled={!canSubmit || isBusy}
           onClick={() =>
             void onSubmit(async () => {
               await supabaseAttendanceService.requestCorrection({
                 workspaceId,
-                requestedClockInAt: new Date(from).toISOString(),
-                requestedClockOutAt: to ? new Date(to).toISOString() : null,
+                requestedClockInAt: toIsoAt(day, from),
+                requestedClockOutAt: to ? toIsoAt(day, to, isOvernight) : null,
                 reason,
               });
-              setFrom("");
-              setTo("");
               setReason("");
+              onDone();
             })
           }
         >
@@ -344,6 +439,7 @@ function LeaveForm({
   balances,
   isBusy,
   onSubmit,
+  onDone,
 }: {
   workspaceId: string;
   memberId: string;
@@ -351,6 +447,7 @@ function LeaveForm({
   balances: ILeaveBalance[];
   isBusy: boolean;
   onSubmit: (action: () => Promise<unknown>) => Promise<void>;
+  onDone: () => void;
 }) {
   const today = toISODate(new Date());
   const [typeId, setTypeId] = useState("");
@@ -449,19 +546,20 @@ function LeaveForm({
           />
         </label>
 
-        <label className="flex flex-col gap-1">
-          <span className={labelClass}>Length</span>
-          <select
-            value={portion}
-            onChange={(e) => setPortion(e.target.value as TLeaveDayPortion)}
-            className={inputClass}
-            disabled={!selectedType?.allows_half_day}
-          >
-            <option value="full">Full days</option>
-            <option value="first_half">Morning only</option>
-            <option value="second_half">Afternoon only</option>
-          </select>
-        </label>
+        {selectedType?.allows_half_day && (
+          <label className="flex flex-col gap-1">
+            <span className={labelClass}>Length</span>
+            <select
+              value={portion}
+              onChange={(e) => setPortion(e.target.value as TLeaveDayPortion)}
+              className={inputClass}
+            >
+              <option value="full">Full days</option>
+              <option value="first_half">Morning only</option>
+              <option value="second_half">Afternoon only</option>
+            </select>
+          </label>
+        )}
 
         <label className="flex flex-col gap-1">
           <span className={labelClass}>Note</span>
@@ -474,8 +572,12 @@ function LeaveForm({
           />
         </label>
 
+        <Button variant="tertiary" size="base" onClick={onDone} disabled={isBusy}>
+          Cancel
+        </Button>
+
         <Button
-          variant="secondary"
+          variant="primary"
           size="base"
           disabled={!typeId || isBusy || days === 0}
           onClick={() =>
@@ -489,6 +591,7 @@ function LeaveForm({
                 reason,
               });
               setReason("");
+              onDone();
             })
           }
         >

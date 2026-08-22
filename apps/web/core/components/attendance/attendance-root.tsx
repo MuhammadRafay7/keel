@@ -17,7 +17,7 @@ type TTab = "today" | "team" | "requests";
 
 const TABS: { key: TTab; label: string }[] = [
   { key: "today", label: "Your time" },
-  { key: "team", label: "Team" },
+  { key: "team", label: "Who's in" },
   { key: "requests", label: "Requests" },
 ];
 
@@ -36,6 +36,14 @@ export const AttendanceRoot = observer(function AttendanceRoot() {
   // showing a day that ended a moment ago.
   const [revision, setRevision] = useState(0);
   const bump = useCallback(() => setRevision((r) => r + 1), []);
+
+  // "Fix this day" on a timesheet row opens the correction form on the tab
+  // next door with that day already chosen.
+  const [seedDate, setSeedDate] = useState<string | null>(null);
+  const fixDay = useCallback((businessDate: string) => {
+    setSeedDate(businessDate);
+    setTab("requests");
+  }, []);
 
   useEffect(() => {
     bump();
@@ -74,6 +82,7 @@ export const AttendanceRoot = observer(function AttendanceRoot() {
           memberId={attendance.memberId}
           now={attendance.now}
           revision={revision}
+          onFixDay={fixDay}
         />
       )}
 
@@ -83,6 +92,8 @@ export const AttendanceRoot = observer(function AttendanceRoot() {
         <Requests
           workspaceId={attendance.workspaceId}
           memberId={attendance.memberId}
+          seedDate={seedDate}
+          onSeedConsumed={() => setSeedDate(null)}
           onChange={() => {
             bump();
             void attendance.refresh();

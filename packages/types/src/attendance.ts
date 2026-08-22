@@ -177,6 +177,11 @@ export interface IAttendanceSettings {
   default_grace_minutes: number;
   is_task_tracking_enabled: boolean;
   is_manual_entry_enabled: boolean;
+  /**
+   * Reviews everyone who has no approver of their own. Null falls through to
+   * the workspace admins.
+   */
+  default_approver_id?: string | null;
 }
 
 export interface IAttendanceApprover {

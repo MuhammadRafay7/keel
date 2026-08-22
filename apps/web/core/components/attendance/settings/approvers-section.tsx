@@ -8,12 +8,14 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import { Button } from "@keel/propel/button";
 import { supabaseAttendanceService } from "@keel/services";
-import type { IAttendanceApprover } from "@keel/types";
+import type { IAttendanceApprover, IAttendanceSettings } from "@keel/types";
 import { useMember } from "@/hooks/store/use-member";
 import { EmptyState, InlineError, SettingsRow, SettingsSection, settingsInputClass } from "./shared";
 
 type TApproversSectionProps = {
   workspaceId: string;
+  settings: IAttendanceSettings | null;
+  onSettingsSaved: (settings: IAttendanceSettings) => void;
 };
 
 /**
@@ -25,12 +27,17 @@ type TApproversSectionProps = {
  * nothing configured, and it is also why assigning one approver quietly takes
  * the admins off that person's queue.
  */
-export const ApproversSection = observer(function ApproversSection({ workspaceId }: TApproversSectionProps) {
+export const ApproversSection = observer(function ApproversSection({
+  workspaceId,
+  settings,
+  onSettingsSaved,
+}: TApproversSectionProps) {
   const {
     workspace: { workspaceMemberIds },
     getUserDetails,
   } = useMember();
 
+  const memberIds = useMemo(() => workspaceMemberIds ?? [], [workspaceMemberIds]);
   const [approvers, setApprovers] = useState<IAttendanceApprover[]>([]);
   const [memberId, setMemberId] = useState("");
   const [approverId, setApproverId] = useState("");
@@ -74,8 +81,6 @@ export const ApproversSection = observer(function ApproversSection({ workspaceId
     [load]
   );
 
-  const memberIds = useMemo(() => workspaceMemberIds ?? [], [workspaceMemberIds]);
-
   const onAdmins = useMemo(
     () => memberIds.filter((id) => !approvers.some((a) => a.member_id === id)),
     [memberIds, approvers]
@@ -86,8 +91,43 @@ export const ApproversSection = observer(function ApproversSection({ workspaceId
   return (
     <SettingsSection
       title="Approvers"
-      description="Who signs off corrections and leave. Anyone not listed here is reviewed by the workspace admins — so this is only worth filling in when you want somebody other than an admin doing it."
+      description="Who signs off corrections and leave. Name one person for the whole workspace, and add exceptions below only where somebody needs a different approver."
     >
+      <div className="mb-5 squircle-card border border-subtle bg-surface-1 p-4">
+        <SettingsRow
+          label="Approver for everyone"
+          hint={
+            settings?.default_approver_id
+              ? "Their own requests go to the workspace admins."
+              : "Nobody named — every request goes to the workspace admins."
+          }
+        >
+          <select
+            value={settings?.default_approver_id ?? ""}
+            disabled={isBusy}
+            onChange={(e) =>
+              void act(async () => {
+                onSettingsSaved(
+                  await supabaseAttendanceService.updateSettings(workspaceId, {
+                    default_approver_id: e.target.value || null,
+                  })
+                );
+              })
+            }
+            className={settingsInputClass}
+          >
+            <option value="">The workspace admins</option>
+            {memberIds.map((id) => (
+              <option key={id} value={id}>
+                {nameOf(id)}
+              </option>
+            ))}
+          </select>
+        </SettingsRow>
+      </div>
+
+      <h4 className="mb-2 text-body-xs-medium text-primary">Exceptions</h4>
+
       <div className="grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
         <SettingsRow label="Requests from">
           <select value={memberId} onChange={(e) => setMemberId(e.target.value)} className={settingsInputClass}>
@@ -131,7 +171,7 @@ export const ApproversSection = observer(function ApproversSection({ workspaceId
 
       <div className="mt-4 flex flex-col gap-2">
         {approvers.length === 0 ? (
-          <EmptyState>Nobody assigned. Every request goes to the workspace admins.</EmptyState>
+          <EmptyState>No exceptions. Everyone is reviewed by the person named above.</EmptyState>
         ) : (
           approvers.map((row) => (
             <article
@@ -156,9 +196,10 @@ export const ApproversSection = observer(function ApproversSection({ workspaceId
         )}
       </div>
 
-      {onAdmins.length > 0 && approvers.length > 0 && (
+      {onAdmins.length > 0 && (
         <p className="mt-3 text-11 text-placeholder">
-          {onAdmins.length} member{onAdmins.length === 1 ? "" : "s"} still reviewed by admins.
+          {onAdmins.length} member{onAdmins.length === 1 ? "" : "s"} reviewed by{" "}
+          {settings?.default_approver_id ? nameOf(settings.default_approver_id) : "the workspace admins"}.
         </p>
       )}
 

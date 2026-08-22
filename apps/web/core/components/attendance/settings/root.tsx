@@ -67,7 +67,7 @@ export const AttendanceSettingsRoot = observer(function AttendanceSettingsRoot()
       <LeaveTypesSection workspaceId={workspaceId} />
       <HolidaysSection workspaceId={workspaceId} />
       <SchedulesSection workspaceId={workspaceId} settings={settings} />
-      <ApproversSection workspaceId={workspaceId} />
+      <ApproversSection workspaceId={workspaceId} settings={settings} onSettingsSaved={setSettings} />
     </div>
   );
 });

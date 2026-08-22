@@ -20,6 +20,8 @@ type TTimesheetProps = {
   now: number;
   /** Bumped by the clock card so the sheet redraws the moment anything changes. */
   revision: number;
+  /** Hands a day to the correction form, so the date never has to be retyped. */
+  onFixDay: (businessDate: string) => void;
 };
 
 /**
@@ -29,7 +31,7 @@ type TTimesheetProps = {
  * is how much of it landed against work items. Summing them would count the
  * same hour twice, and the distance between them is the number worth seeing.
  */
-export function Timesheet({ workspaceId, memberId, now, revision }: TTimesheetProps) {
+export function Timesheet({ workspaceId, memberId, now, revision, onFixDay }: TTimesheetProps) {
   const [range, setRange] = useState<TRange>("week");
   const [records, setRecords] = useState<IAttendanceRecord[]>([]);
   const [breaks, setBreaks] = useState<IAttendanceBreak[]>([]);
@@ -141,7 +143,7 @@ export function Timesheet({ workspaceId, memberId, now, revision }: TTimesheetPr
 
       <div className="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
         <SummaryTile label="On the clock" value={formatDuration(summary.worked)} emphasis />
-        <SummaryTile label="Attributed to work items" value={formatDuration(summary.tracked)} />
+        <SummaryTile label="On work items" value={formatDuration(summary.tracked)} />
         <SummaryTile label="Days worked" value={String(summary.days)} />
         <SummaryTile
           label="Need review"
@@ -169,7 +171,7 @@ export function Timesheet({ workspaceId, memberId, now, revision }: TTimesheetPr
         {totals.map((day) => (
           <article
             key={day.business_date}
-            className="interactive-row squircle-card border border-subtle bg-surface-1 px-4 py-3"
+            className="group interactive-row squircle-card border border-subtle bg-surface-1 px-4 py-3"
           >
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
               <div className="flex items-baseline gap-3">
@@ -189,8 +191,17 @@ export function Timesheet({ workspaceId, memberId, now, revision }: TTimesheetPr
                   {formatDuration(day.shift_seconds)}
                 </span>
                 <span className="font-code text-12 text-placeholder tabular-nums">
-                  {formatDuration(day.task_seconds)} attributed
+                  {formatDuration(day.task_seconds)} on work items
                 </span>
+                {/* The fix belongs on the day that is wrong, not on a form
+                    somewhere else that asks which day you meant. */}
+                <button
+                  type="button"
+                  onClick={() => onFixDay(day.business_date)}
+                  className="focus-ring rounded-sm text-12 font-medium text-tertiary underline-offset-2 opacity-0 transition-smooth group-hover:opacity-100 hover:text-accent-primary hover:underline focus-visible:opacity-100"
+                >
+                  Fix this day
+                </button>
               </div>
             </div>
 
