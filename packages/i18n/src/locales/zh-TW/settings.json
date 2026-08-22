@@ -61,9 +61,9 @@
       "title": "AI 供應商",
       "description": "連接您自己的 API 金鑰即可使用 AI 功能。Keel 不會就模型用量向您收費，收費方是您的供應商。",
       "key_absent": "未儲存金鑰",
-      "key_stored": "已儲存的金鑰：{{hint}}",
+      "key_stored": "已儲存的金鑰：{hint}",
       "replace_placeholder": "輸入新金鑰以取代已儲存的金鑰",
-      "get_key": "取得 {{provider}} API 金鑰",
+      "get_key": "取得 {provider} API 金鑰",
       "save": "儲存",
       "update": "更新",
       "remove": "移除",
@@ -74,16 +74,24 @@
       "toast": {
         "saved": {
           "title": "金鑰已儲存",
-          "message": "您的 {{provider}} API 金鑰已儲存，可以開始使用。"
+          "message": "您的 {provider} API 金鑰已儲存，可以開始使用。"
         },
         "removed": {
           "title": "金鑰已移除",
-          "message": "您的 {{provider}} API 金鑰已刪除。"
+          "message": "您的 {provider} API 金鑰已刪除。"
         },
         "error": {
           "message": "無法儲存該金鑰。請檢查後再試一次。"
         }
-      }
+      },
+      "connected": "已連接",
+      "default_badge": "預設",
+      "add_title": "新增供應商",
+      "replace_title": "取代已儲存的金鑰",
+      "provider_label": "供應商",
+      "model_label": "模型",
+      "model_placeholder": "選擇模型",
+      "key_label": "API 金鑰"
     },
     "activity": {
       "heading": "活動",

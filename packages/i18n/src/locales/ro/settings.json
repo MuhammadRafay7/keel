@@ -61,9 +61,9 @@
       "title": "Furnizor de IA",
       "description": "Conectați propria cheie API pentru a folosi funcțiile de IA. Keel nu vă facturează utilizarea modelului — o face furnizorul dumneavoastră.",
       "key_absent": "Nicio cheie salvată",
-      "key_stored": "Cheie salvată: {{hint}}",
+      "key_stored": "Cheie salvată: {hint}",
       "replace_placeholder": "Introduceți o cheie nouă pentru a o înlocui pe cea salvată",
-      "get_key": "Obțineți o cheie API {{provider}}",
+      "get_key": "Obțineți o cheie API {provider}",
       "save": "Salvați",
       "update": "Actualizați",
       "remove": "Eliminați",
@@ -74,16 +74,24 @@
       "toast": {
         "saved": {
           "title": "Cheie salvată",
-          "message": "Cheia API {{provider}} este salvată și gata de utilizare."
+          "message": "Cheia API {provider} este salvată și gata de utilizare."
         },
         "removed": {
           "title": "Cheie eliminată",
-          "message": "Cheia API {{provider}} a fost ștearsă."
+          "message": "Cheia API {provider} a fost ștearsă."
         },
         "error": {
           "message": "Nu am putut salva această cheie. Vă rugăm să o verificați și să încercați din nou."
         }
-      }
+      },
+      "connected": "Conectat",
+      "default_badge": "Implicit",
+      "add_title": "Adăugați un furnizor",
+      "replace_title": "Înlocuiți cheia salvată",
+      "provider_label": "Furnizor",
+      "model_label": "Model",
+      "model_placeholder": "Selectați un model",
+      "key_label": "Cheie API"
     },
     "activity": {
       "heading": "Activitate",

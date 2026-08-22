@@ -247,21 +247,31 @@ export default function Home() {
 
           <div className="feature-spotlight-grid">
             <div className="feature-spotlight-card">
-              <div className="feature-icon-circle">
-                <ZapIcon size={20} />
+              <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+                <ZapIcon size={18} style={{ color: "var(--accent)", flexShrink: 0 }} />
+                <h3 style={{ fontSize: "1.15rem", margin: 0, fontWeight: 600 }}>Cmd+K Command Palette</h3>
               </div>
-              <h3 style={{ fontSize: "1.2rem", margin: 0 }}>Cmd+K Command Palette</h3>
               <p style={{ color: "var(--fg-muted)", margin: 0, fontSize: "0.9375rem", lineHeight: "1.6" }}>
-                Universal <code style={{ color: "var(--accent)" }}>Cmd+K</code> palette to jump between projects, toggle
-                views, create work items, and search context instantly.
+                Universal{" "}
+                <code
+                  style={{
+                    color: "var(--accent)",
+                    background: "var(--badge-bg)",
+                    padding: "0.15rem 0.4rem",
+                    borderRadius: "6px",
+                  }}
+                >
+                  Cmd+K
+                </code>{" "}
+                palette to jump between projects, toggle views, create work items, and search context instantly.
               </p>
             </div>
 
             <div className="feature-spotlight-card">
-              <div className="feature-icon-circle">
-                <TargetIcon size={20} />
+              <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+                <TargetIcon size={18} style={{ color: "var(--accent)", flexShrink: 0 }} />
+                <h3 style={{ fontSize: "1.15rem", margin: 0, fontWeight: 600 }}>Modules &amp; Roadmaps</h3>
               </div>
-              <h3 style={{ fontSize: "1.2rem", margin: 0 }}>Modules &amp; Roadmaps</h3>
               <p style={{ color: "var(--fg-muted)", margin: 0, fontSize: "0.9375rem", lineHeight: "1.6" }}>
                 Group complex initiatives into strategic modules. Track multi-quarter engineering progress with
                 automatic completion rollups and assignees.
@@ -269,10 +279,10 @@ export default function Home() {
             </div>
 
             <div className="feature-spotlight-card">
-              <div className="feature-icon-circle">
-                <TriageIcon size={20} />
+              <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+                <TriageIcon size={18} style={{ color: "var(--accent)", flexShrink: 0 }} />
+                <h3 style={{ fontSize: "1.15rem", margin: 0, fontWeight: 600 }}>Triage Inbox &amp; Project Chat</h3>
               </div>
-              <h3 style={{ fontSize: "1.2rem", margin: 0 }}>Triage Inbox &amp; Project Chat</h3>
               <p style={{ color: "var(--fg-muted)", margin: 0, fontSize: "0.9375rem", lineHeight: "1.6" }}>
                 Accept inbound requests into an isolated triage inbox, and converse with your team directly inside
                 per-project discussion threads.
@@ -280,10 +290,10 @@ export default function Home() {
             </div>
 
             <div className="feature-spotlight-card">
-              <div className="feature-icon-circle">
-                <PaletteIcon size={20} />
+              <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+                <PaletteIcon size={18} style={{ color: "var(--accent)", flexShrink: 0 }} />
+                <h3 style={{ fontSize: "1.15rem", margin: 0, fontWeight: 600 }}>Theming &amp; Accent Pickers</h3>
               </div>
-              <h3 style={{ fontSize: "1.2rem", margin: 0 }}>Theming &amp; Accent Pickers</h3>
               <p style={{ color: "var(--fg-muted)", margin: 0, fontSize: "0.9375rem", lineHeight: "1.6" }}>
                 First-class Light, Dark, and High-Contrast modes, plus eight accent colors that users select
                 independently of light-vs-dark settings.
@@ -291,10 +301,12 @@ export default function Home() {
             </div>
 
             <div className="feature-spotlight-card">
-              <div className="feature-icon-circle">
-                <LinkIcon size={20} />
+              <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+                <LinkIcon size={18} style={{ color: "var(--accent)", flexShrink: 0 }} />
+                <h3 style={{ fontSize: "1.15rem", margin: 0, fontWeight: 600 }}>
+                  Custom States &amp; Work Item Relations
+                </h3>
               </div>
-              <h3 style={{ fontSize: "1.2rem", margin: 0 }}>Custom States &amp; Work Item Relations</h3>
               <p style={{ color: "var(--fg-muted)", margin: 0, fontSize: "0.9375rem", lineHeight: "1.6" }}>
                 Define custom workflow states, priority levels, estimates, sub-items, and relations (blocking,
                 duplicate, related) to reflect your engineering flow.
@@ -302,10 +314,10 @@ export default function Home() {
             </div>
 
             <div className="feature-spotlight-card">
-              <div className="feature-icon-circle">
-                <LockIcon size={20} />
+              <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+                <LockIcon size={18} style={{ color: "var(--accent)", flexShrink: 0 }} />
+                <h3 style={{ fontSize: "1.15rem", margin: 0, fontWeight: 600 }}>Role-Based Access &amp; Saved Views</h3>
               </div>
-              <h3 style={{ fontSize: "1.2rem", margin: 0 }}>Role-Based Access &amp; Saved Views</h3>
               <p style={{ color: "var(--fg-muted)", margin: 0, fontSize: "0.9375rem", lineHeight: "1.6" }}>
                 Granular member, admin, and guest permissions across projects, combined with saved shareable filter sets
                 for every teammate.

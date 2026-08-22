@@ -61,9 +61,9 @@
       "title": "Dostawca AI",
       "description": "Prosimy podłączyć własny klucz API, aby korzystać z funkcji AI. Keel nie nalicza opłat za korzystanie z modelu — robi to dostawca.",
       "key_absent": "Brak zapisanego klucza",
-      "key_stored": "Zapisany klucz: {{hint}}",
+      "key_stored": "Zapisany klucz: {hint}",
       "replace_placeholder": "Prosimy wprowadzić nowy klucz, który zastąpi zapisany",
-      "get_key": "Uzyskaj klucz API {{provider}}",
+      "get_key": "Uzyskaj klucz API {provider}",
       "save": "Zapisz",
       "update": "Zaktualizuj",
       "remove": "Usuń",
@@ -74,16 +74,24 @@
       "toast": {
         "saved": {
           "title": "Klucz zapisany",
-          "message": "Klucz API {{provider}} został zapisany i jest gotowy do użycia."
+          "message": "Klucz API {provider} został zapisany i jest gotowy do użycia."
         },
         "removed": {
           "title": "Klucz usunięty",
-          "message": "Klucz API {{provider}} został usunięty."
+          "message": "Klucz API {provider} został usunięty."
         },
         "error": {
           "message": "Nie udało się zapisać tego klucza. Prosimy go sprawdzić i spróbować ponownie."
         }
-      }
+      },
+      "connected": "Połączono",
+      "default_badge": "Domyślny",
+      "add_title": "Dodaj dostawcę",
+      "replace_title": "Zastąp zapisany klucz",
+      "provider_label": "Dostawca",
+      "model_label": "Model",
+      "model_placeholder": "Wybierz model",
+      "key_label": "Klucz API"
     },
     "activity": {
       "heading": "Aktywność",

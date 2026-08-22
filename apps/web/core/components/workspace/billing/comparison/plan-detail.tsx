@@ -34,7 +34,9 @@ export const PlanDetail = observer(function PlanDetail(props: TPlanDetailProps) 
   const isSubscriptionActive = planDetail.isActive;
   // pricing details
   const displayPrice = billingFrequency === "month" ? planDetail.monthlyPrice : planDetail.yearlyPrice;
-  const pricingDescription = isSubscriptionActive ? "a user per month" : "Quote on request";
+  // Prices are never rendered — Keel quotes per workspace. See the note in
+  // `license/modal/card/checkout-button.tsx`.
+  const pricingDescription = "Quote on request";
   const pricingSecondaryDescription =
     billingFrequency === "month"
       ? planDetail.monthlyPriceSecondaryDescription
@@ -61,17 +63,6 @@ export const PlanDetail = observer(function PlanDetail(props: TPlanDetailProps) 
           )}
         </div>
         <div className="flex items-start gap-x-2 pb-1 text-tertiary">
-          {isSubscriptionActive && displayPrice !== undefined && (
-            <div className="flex items-center gap-1 text-h3-semibold text-primary">
-              <DiscountInfo
-                currency="$"
-                frequency={billingFrequency ?? "month"}
-                price={displayPrice}
-                subscriptionType={subscriptionType}
-                className="mr-1.5"
-              />
-            </div>
-          )}
           <div className="pt-1">
             {pricingDescription && <div>{pricingDescription}</div>}
             {pricingSecondaryDescription && (

@@ -22,6 +22,8 @@ export interface UserApiKeyStatus {
   key_hint: string;
   is_active: boolean;
   updated_at: string;
+  /** Preferred model id. Null means use the provider's own default. */
+  model: string | null;
 }
 
 export interface PromptPayload {
@@ -48,7 +50,7 @@ export class SupabaseAIService {
   /**
    * Encrypts and stores the user's AI provider API key.
    */
-  async saveUserApiKey(provider: string, apiKey: string): Promise<UserApiKeyStatus> {
+  async saveUserApiKey(provider: string, apiKey: string, model?: string | null): Promise<UserApiKeyStatus> {
     const supabase = getSupabase();
     const { data: sessionData } = await supabase.auth.getSession();
     if (!sessionData.session) throw new Error("Not signed in.");
@@ -56,6 +58,7 @@ export class SupabaseAIService {
     const { data, error } = await supabase.rpc("save_user_ai_key", {
       p_provider: provider,
       p_api_key: apiKey,
+      p_model: model ?? null,
     });
 
     if (error) {
@@ -68,7 +71,29 @@ export class SupabaseAIService {
       key_hint: row.key_hint,
       is_active: row.is_active,
       updated_at: row.updated_at,
+      model: row.model ?? null,
     };
+  }
+
+  /**
+   * Changes the preferred model for a provider whose key is already stored.
+   *
+   * Separate from `saveUserApiKey` so switching model does not require pasting
+   * the API key again — the user already proved ownership when it was saved.
+   */
+  async setUserApiModel(provider: string, model: string | null): Promise<void> {
+    const supabase = getSupabase();
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (!sessionData.session) throw new Error("Not signed in.");
+
+    const { error } = await supabase.rpc("set_user_ai_model", {
+      p_provider: provider,
+      p_model: model,
+    });
+
+    if (error) {
+      throw new Error(`Failed to update model: ${error.message}`);
+    }
   }
 
   /**
@@ -81,7 +106,7 @@ export class SupabaseAIService {
 
     const { data, error } = await supabase
       .from("user_ai_keys")
-      .select("provider, key_hint, is_active, updated_at")
+      .select("provider, key_hint, is_active, updated_at, model")
       .eq("user_id", sessionData.session.user.id)
       .eq("provider", provider.toLowerCase())
       .is("deleted_at", null)

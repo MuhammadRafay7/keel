@@ -61,9 +61,9 @@
       "title": "Poskytovatel AI",
       "description": "Připojte svůj vlastní API klíč a používejte funkce AI. Keel vám za využití modelu nic neúčtuje — účtuje si je váš poskytovatel.",
       "key_absent": "Není uložen žádný klíč",
-      "key_stored": "Uložený klíč: {{hint}}",
+      "key_stored": "Uložený klíč: {hint}",
       "replace_placeholder": "Zadejte nový klíč, který nahradí ten uložený",
-      "get_key": "Získat API klíč pro {{provider}}",
+      "get_key": "Získat API klíč pro {provider}",
       "save": "Uložit",
       "update": "Aktualizovat",
       "remove": "Odebrat",
@@ -74,16 +74,24 @@
       "toast": {
         "saved": {
           "title": "Klíč uložen",
-          "message": "Váš API klíč pro {{provider}} je uložen a připraven k použití."
+          "message": "Váš API klíč pro {provider} je uložen a připraven k použití."
         },
         "removed": {
           "title": "Klíč odebrán",
-          "message": "Váš API klíč pro {{provider}} byl smazán."
+          "message": "Váš API klíč pro {provider} byl smazán."
         },
         "error": {
           "message": "Tento klíč se nepodařilo uložit. Zkontrolujte jej prosím a zkuste to znovu."
         }
-      }
+      },
+      "connected": "Připojeno",
+      "default_badge": "Výchozí",
+      "add_title": "Přidat poskytovatele",
+      "replace_title": "Nahradit uložený klíč",
+      "provider_label": "Poskytovatel",
+      "model_label": "Model",
+      "model_placeholder": "Vyberte model",
+      "key_label": "Klíč API"
     },
     "activity": {
       "heading": "Aktivita",

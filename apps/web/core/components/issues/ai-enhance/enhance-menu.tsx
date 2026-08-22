@@ -248,7 +248,7 @@ export function EnhanceWorkItemModal(props: EnhanceWorkItemProps) {
                   >
                     <div className="flex items-center gap-2.5 truncate">
                       <Icon className={cn("size-4 shrink-0", isSelected ? "text-accent-primary" : "text-tertiary")} />
-                      <span className="truncate">{t(task.labelKey, task.defaultLabel)}</span>
+                      <span className="truncate">{task.defaultLabel}</span>
                     </div>
                     <ChevronRight
                       className={cn("size-3.5 shrink-0 opacity-40", isSelected && "text-accent-primary opacity-100")}
@@ -273,7 +273,7 @@ export function EnhanceWorkItemModal(props: EnhanceWorkItemProps) {
                     className={cn(
                       "flex-1 rounded-lg py-1.5 text-11 font-medium text-secondary transition-all",
                       selectedTone === tone.key
-                        ? "shadow-2xs bg-accent-primary/10 font-semibold text-accent-primary"
+                        ? "bg-accent-primary/10 font-semibold text-accent-primary shadow-raised-100"
                         : "hover:bg-layer-1"
                     )}
                   >

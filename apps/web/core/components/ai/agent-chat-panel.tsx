@@ -283,7 +283,7 @@ export function AgentChatPanel(props: AgentChatPanelProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="shadow-2xl animate-in slide-in-from-right fixed inset-y-0 right-0 z-50 flex w-full max-w-lg flex-col border-l border-subtle bg-surface-1/95 backdrop-blur-2xl duration-200">
+    <div className="animate-in slide-in-from-right fixed inset-y-0 right-0 z-50 flex w-full max-w-lg flex-col border-l border-subtle bg-surface-1/95 shadow-overlay-200 backdrop-blur-2xl duration-200">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-subtle bg-surface-1 px-4 py-3.5">
         <div className="flex items-center gap-2.5">
@@ -399,7 +399,7 @@ export function AgentChatPanel(props: AgentChatPanelProps) {
           if (msg.role === "user") {
             return (
               <div key={msg.id || idx} className="flex justify-end gap-2.5">
-                <div className="shadow-xs max-w-[85%] rounded-2xl rounded-tr-sm bg-accent-primary px-4 py-2.5 text-13 text-white">
+                <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-accent-primary px-4 py-2.5 text-13 text-white shadow-raised-100">
                   <p className="whitespace-pre-wrap">{msg.content.text}</p>
                 </div>
                 <span className="mt-1 grid size-7 shrink-0 place-items-center rounded-full bg-accent-primary/20 text-accent-primary">
@@ -434,7 +434,7 @@ export function AgentChatPanel(props: AgentChatPanelProps) {
 
                   {/* Assistant Text */}
                   {msg.content.text && (
-                    <div className="shadow-2xs rounded-2xl rounded-tl-sm border border-subtle bg-surface-2/60 px-4 py-3 text-13 leading-relaxed text-primary">
+                    <div className="rounded-2xl rounded-tl-sm border border-subtle bg-surface-2/60 px-4 py-3 text-13 leading-relaxed text-primary shadow-raised-100">
                       <div className="prose-sm dark:prose-invert max-w-none whitespace-pre-wrap prose">
                         {msg.content.text}
                       </div>
@@ -528,7 +528,7 @@ export function AgentChatPanel(props: AgentChatPanelProps) {
             className={cn(
               "absolute right-2.5 grid size-8 place-items-center rounded-xl transition-all",
               inputText.trim() && !isStreaming
-                ? "shadow-xs bg-accent-primary text-white hover:bg-accent-primary/90"
+                ? "bg-accent-primary text-white shadow-raised-100 hover:bg-accent-primary/90"
                 : "cursor-not-allowed text-tertiary opacity-50 hover:bg-layer-1"
             )}
           >

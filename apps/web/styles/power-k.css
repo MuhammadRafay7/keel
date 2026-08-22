@@ -1,27 +1,94 @@
+/*
+ * Command palette.
+ *
+ * cmdk renders unstyled elements and tags them with `[cmdk-*]` attributes, so
+ * the palette's entire appearance lives here rather than in the components.
+ *
+ * The previous treatment was a flat list: every group heading at the same weight
+ * as the items under it, and selection shown only as a slightly lighter row. In
+ * a palette you navigate by keyboard, at speed, the two things that must be
+ * unmistakable are *where the cursor is* and *which section you are in* — so
+ * both get real emphasis here.
+ */
 @layer components {
   [cmdk-group] {
-    @apply mt-2 px-[0.45rem];
+    @apply mt-3 px-2 first:mt-1;
   }
 
+  /*
+   * Section headings. Small caps with wide tracking reads as a label rather
+   * than as a very short list item — at 11px, letter-spacing is what separates
+   * the two, since weight alone is ambiguous at that size.
+   */
   [cmdk-group-heading] {
-    @apply text-tertiary text-12 font-medium mb-2 px-[0.45rem];
+    @apply mb-1.5 px-2 text-11 font-semibold tracking-[0.08em] text-tertiary uppercase;
   }
 
   [cmdk-item] {
-    @apply flex items-center justify-between cursor-pointer bg-layer-transparent text-body-xs-regular p-2 rounded-md;
+    @apply relative flex cursor-pointer items-center justify-between gap-3;
+    @apply rounded-lg bg-layer-transparent p-2.5 text-body-xs-regular text-secondary;
+    transition:
+      background-color 120ms var(--ease-smooth),
+      color 120ms var(--ease-smooth);
+
+    /*
+     * The leading rail marks the cursor. A background wash alone is easy to
+     * lose while holding the arrow key down, because the eye tracks the moving
+     * edge rather than the fill — the rail gives it a hard edge to follow.
+     */
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0.375rem;
+      bottom: 0.375rem;
+      left: 0;
+      width: 3px;
+      border-radius: 9999px;
+      background: var(--border-color-accent-strong);
+      opacity: 0;
+      transition: opacity 120ms var(--ease-smooth);
+    }
 
     &:focus,
     &[aria-selected="true"] {
-      @apply bg-layer-transparent-active;
+      @apply bg-accent-subtle text-primary;
+
+      &::before {
+        opacity: 1;
+      }
+    }
+
+    /* Icons follow the row: muted at rest, accent under the cursor. */
+    & svg {
+      @apply text-tertiary;
+    }
+
+    &[aria-selected="true"] svg {
+      @apply text-accent-primary;
     }
 
     &[aria-disabled="true"],
     &[data-disabled="true"] {
-      @apply bg-layer-transparent opacity-50 cursor-not-allowed;
+      @apply cursor-not-allowed bg-layer-transparent opacity-50;
 
       &:focus {
         @apply bg-layer-1/70;
+
+        &::before {
+          opacity: 0;
+        }
       }
+    }
+  }
+
+  [cmdk-empty] {
+    @apply px-4 py-10 text-center text-13 text-tertiary;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [cmdk-item],
+    [cmdk-item]::before {
+      transition: none;
     }
   }
 }

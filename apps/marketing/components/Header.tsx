@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Mark } from "./Mark";
 import { ThemeToggle } from "./ThemeToggle";
+import { ListIcon, CycleIcon, ModuleIcon, DocIcon, SparklesIcon } from "./Icons";
 
 const APP = "https://app.keel.ostenmark.com";
 const SALES_EMAIL = "sales@ostenmark.com";
@@ -72,27 +73,52 @@ export function Header() {
             {activeDropdown === "product" && (
               <div className="nav-dropdown" onMouseEnter={() => handleMouseEnter("product")}>
                 <Link href="/features" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">📋 5 Dynamic Work Views</span>
+                  <span
+                    className="dropdown-item-title"
+                    style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}
+                  >
+                    <ListIcon size={14} style={{ color: "var(--accent)" }} /> 5 Dynamic Work Views
+                  </span>
                   <span className="dropdown-item-desc">
                     List, Board, Calendar, Table spreadsheet &amp; Timeline Gantt
                   </span>
                 </Link>
                 <Link href="/features" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">🔄 Cycles &amp; Sprints</span>
+                  <span
+                    className="dropdown-item-title"
+                    style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}
+                  >
+                    <CycleIcon size={14} style={{ color: "var(--accent)" }} /> Cycles &amp; Sprints
+                  </span>
                   <span className="dropdown-item-desc">
                     Time-boxed iterations, scope locking &amp; burndown tracking
                   </span>
                 </Link>
                 <Link href="/features" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">📦 Modules &amp; Roadmaps</span>
+                  <span
+                    className="dropdown-item-title"
+                    style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}
+                  >
+                    <ModuleIcon size={14} style={{ color: "var(--accent)" }} /> Modules &amp; Roadmaps
+                  </span>
                   <span className="dropdown-item-desc">Multi-sprint feature initiatives and milestone rollups</span>
                 </Link>
                 <Link href="/features" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">📖 Pages &amp; Collaborative Docs</span>
+                  <span
+                    className="dropdown-item-title"
+                    style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}
+                  >
+                    <DocIcon size={14} style={{ color: "var(--accent)" }} /> Pages &amp; Collaborative Docs
+                  </span>
                   <span className="dropdown-item-desc">Rich documents tied directly to active work items</span>
                 </Link>
                 <Link href="/features" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">🔑 Bring Your Own AI Key</span>
+                  <span
+                    className="dropdown-item-title"
+                    style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}
+                  >
+                    <SparklesIcon size={14} style={{ color: "var(--accent)" }} /> Bring Your Own AI Key
+                  </span>
                   <span className="dropdown-item-desc">Direct Anthropic, OpenAI, Google, Groq API key integration</span>
                 </Link>
               </div>

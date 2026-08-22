@@ -176,8 +176,38 @@ export function ResizableSidebar({
     onCollapsedChange?.(isCollapsed);
   }, [isCollapsed, onCollapsedChange]);
 
+  const handleTriggerEnter = useCallback(() => {
+    if (!isCollapsed) return;
+    setIsHoveringTrigger(true);
+    setShowPeek(true);
+    if (peekTimeoutRef.current) clearTimeout(peekTimeoutRef.current);
+  }, [isCollapsed, setShowPeek]);
+
   return (
     <>
+      {/*
+        The hover target that opens the peek panel.
+
+        Everything else the peek needs already existed — the panel, the open and
+        close timers, the "stay open while a dropdown is open" guards — but
+        nothing ever set `showPeek` to true, so a collapsed sidebar could only
+        be reopened by clicking the toggle. This is the missing trigger: a strip
+        along the window's leading edge, invisible and only present while the
+        sidebar is collapsed.
+
+        It is 12px rather than 1–2px because this is a "throw the pointer at the
+        edge" gesture; a hairline target turns it into aiming. It sits under the
+        sidebar's own z-index so it can never intercept clicks meant for the
+        panel it opens.
+      */}
+      {isCollapsed && (
+        <div
+          className="absolute inset-y-0 left-0 z-10 w-3"
+          onMouseEnter={handleTriggerEnter}
+          aria-hidden="true"
+          data-testid="sidebar-peek-trigger"
+        />
+      )}
       {/* Main Sidebar */}
       <div
         id="main-sidebar"

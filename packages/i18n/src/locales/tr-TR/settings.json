@@ -61,9 +61,9 @@
       "title": "Yapay zekâ sağlayıcısı",
       "description": "Yapay zekâ özelliklerini kullanmak için kendi API anahtarınızı bağlayın. Model kullanımı için sizden Keel değil, sağlayıcınız ücret alır.",
       "key_absent": "Kayıtlı anahtar yok",
-      "key_stored": "Kayıtlı anahtar: {{hint}}",
+      "key_stored": "Kayıtlı anahtar: {hint}",
       "replace_placeholder": "Kayıtlı anahtarın yerine geçecek yeni bir anahtar girin",
-      "get_key": "{{provider}} API anahtarı edinin",
+      "get_key": "{provider} API anahtarı edinin",
       "save": "Kaydet",
       "update": "Güncelle",
       "remove": "Kaldır",
@@ -74,16 +74,24 @@
       "toast": {
         "saved": {
           "title": "Anahtar kaydedildi",
-          "message": "{{provider}} API anahtarınız kaydedildi ve kullanıma hazır."
+          "message": "{provider} API anahtarınız kaydedildi ve kullanıma hazır."
         },
         "removed": {
           "title": "Anahtar kaldırıldı",
-          "message": "{{provider}} API anahtarınız silindi."
+          "message": "{provider} API anahtarınız silindi."
         },
         "error": {
           "message": "Bu anahtarı kaydedemedik. Lütfen kontrol edip yeniden deneyin."
         }
-      }
+      },
+      "connected": "Bağlandı",
+      "default_badge": "Varsayılan",
+      "add_title": "Sağlayıcı ekleyin",
+      "replace_title": "Kayıtlı anahtarı değiştirin",
+      "provider_label": "Sağlayıcı",
+      "model_label": "Model",
+      "model_placeholder": "Bir model seçin",
+      "key_label": "API anahtarı"
     },
     "activity": {
       "heading": "Aktivite",

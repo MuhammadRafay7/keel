@@ -1,6 +1,14 @@
 @import "@keel/tailwind-config/index.css";
 @import "@keel/editor/styles";
 @import "@keel/propel/styles/react-day-picker.css";
+/*
+ * These two were never imported anywhere. `root.tsx` loads only this file, so
+ * every rule in them was dead: the command palette rendered with no styling at
+ * all beyond cmdk's own defaults (which is why it looked unstyled), and the
+ * emoji picker never received its size overrides.
+ */
+@import "./power-k.css";
+@import "./emoji.css";
 @plugin "@tailwindcss/typography";
 
 @layer base {

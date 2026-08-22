@@ -18,20 +18,20 @@
   --fg-muted: #64748b;
   --fg-subtle: #94a3b8;
 
-  /* Violet Accent Palette */
-  --accent: #7c3aed;
-  --accent-hover: #6d28d9;
-  --accent-brand: #7c3aed;
-  --accent-brand-bright: #8b5cf6;
-  --accent-muted: rgba(124, 58, 237, 0.08);
+  /* Electric Indigo Engineering Palette */
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --accent-brand: #4f46e5;
+  --accent-brand-bright: #6366f1;
+  --accent-muted: rgba(79, 70, 229, 0.08);
   --accent-fg: #ffffff;
 
-  --badge-bg: rgba(124, 58, 237, 0.08);
-  --badge-border: rgba(124, 58, 237, 0.2);
+  --badge-bg: rgba(79, 70, 229, 0.07);
+  --badge-border: rgba(79, 70, 229, 0.18);
 
   --card-bg: rgba(255, 255, 255, 0.75);
   --card-border: rgba(226, 232, 240, 0.8);
-  --card-hover-border: #7c3aed;
+  --card-hover-border: #6366f1;
 
   --btn-inverse-bg: #0f172a;
   --btn-inverse-fg: #ffffff;
@@ -64,20 +64,20 @@
   --fg-muted: #94a3b8;
   --fg-subtle: #64748b;
 
-  /* Violet Accent Palette - Dark Mode */
-  --accent: #a78bfa;
-  --accent-hover: #8b5cf6;
-  --accent-brand: #8b5cf6;
-  --accent-brand-bright: #a78bfa;
-  --accent-muted: rgba(167, 139, 250, 0.12);
+  /* Electric Indigo Engineering Palette - Dark Mode */
+  --accent: #818cf8;
+  --accent-hover: #6366f1;
+  --accent-brand: #6366f1;
+  --accent-brand-bright: #818cf8;
+  --accent-muted: rgba(129, 140, 248, 0.12);
   --accent-fg: #07090e;
 
-  --badge-bg: rgba(167, 139, 250, 0.12);
-  --badge-border: rgba(167, 139, 250, 0.25);
+  --badge-bg: rgba(129, 140, 248, 0.12);
+  --badge-border: rgba(129, 140, 248, 0.22);
 
   --card-bg: rgba(15, 23, 42, 0.65);
   --card-border: rgba(255, 255, 255, 0.08);
-  --card-hover-border: #a78bfa;
+  --card-hover-border: #818cf8;
 
   --btn-inverse-bg: #f8fafc;
   --btn-inverse-fg: #07090e;
@@ -422,15 +422,17 @@ h3,
 }
 
 .btn-brand {
-  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  background: var(--accent-brand);
   color: #ffffff;
-  box-shadow: 0 4px 18px rgba(124, 58, 237, 0.35);
+  box-shadow:
+    0 4px 14px rgba(79, 70, 229, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .btn-brand:hover {
-  opacity: 0.95;
+  background: var(--accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 8px 26px rgba(124, 58, 237, 0.5);
+  box-shadow: 0 8px 22px rgba(79, 70, 229, 0.35);
 }
 
 /* Hero Section */
@@ -968,6 +970,98 @@ h3,
   color: var(--fg-muted);
   flex-wrap: wrap;
   gap: 1rem;
+}
+
+/* Engineering Trust / Discipline Grid Section */
+.engineering-trust-section {
+  padding: 3.5rem 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--ground);
+}
+
+.engineering-trust-heading {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-subtle);
+  margin: 0 0 1.75rem;
+}
+
+.engineering-discipline-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 36rem) {
+  .engineering-discipline-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 60rem) {
+  .engineering-discipline-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.discipline-card {
+  display: flex;
+  align-items: center;
+  gap: 0.95rem;
+  padding: 0.95rem 1.25rem;
+  border-radius: 18px;
+  background: var(--surface-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--surface-glass-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: all 0.22s var(--ease);
+  text-align: left;
+}
+
+.discipline-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--card-hover-border);
+  box-shadow: var(--shadow-glass);
+}
+
+.discipline-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: var(--badge-bg);
+  color: var(--accent);
+  border: 1px solid var(--badge-border);
+  flex-shrink: 0;
+}
+
+.discipline-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.discipline-card-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--fg);
+  line-height: 1.25;
+}
+
+.discipline-card-tech {
+  font-size: 0.75rem;
+  font-family: var(--mono);
+  color: var(--fg-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 @media (prefers-reduced-motion: reduce) {

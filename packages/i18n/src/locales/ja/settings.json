@@ -61,9 +61,9 @@
       "title": "AI プロバイダー",
       "description": "ご自身の API キーを接続すると AI 機能を利用できます。モデルの利用料は Keel ではなく、ご利用のプロバイダーから請求されます。",
       "key_absent": "キーは保存されていません",
-      "key_stored": "保存済みのキー：{{hint}}",
+      "key_stored": "保存済みのキー：{hint}",
       "replace_placeholder": "保存済みのキーを置き換える新しいキーを入力してください",
-      "get_key": "{{provider}} の API キーを取得",
+      "get_key": "{provider} の API キーを取得",
       "save": "保存",
       "update": "更新",
       "remove": "削除",
@@ -74,16 +74,24 @@
       "toast": {
         "saved": {
           "title": "キーを保存しました",
-          "message": "{{provider}} の API キーを保存しました。ご利用いただけます。"
+          "message": "{provider} の API キーを保存しました。ご利用いただけます。"
         },
         "removed": {
           "title": "キーを削除しました",
-          "message": "{{provider}} の API キーを削除しました。"
+          "message": "{provider} の API キーを削除しました。"
         },
         "error": {
           "message": "キーを保存できませんでした。内容をご確認のうえ、もう一度お試しください。"
         }
-      }
+      },
+      "connected": "接続済み",
+      "default_badge": "デフォルト",
+      "add_title": "プロバイダーを追加",
+      "replace_title": "保存されたキーを置き換える",
+      "provider_label": "プロバイダー",
+      "model_label": "モデル",
+      "model_placeholder": "モデルを選択",
+      "key_label": "API キー"
     },
     "activity": {
       "heading": "アクティビティ",

@@ -61,9 +61,9 @@
       "title": "Fournisseur d'IA",
       "description": "Connectez votre propre clé d'API pour utiliser les fonctionnalités d'IA. Keel ne vous facture pas l'utilisation du modèle — votre fournisseur s'en charge.",
       "key_absent": "Aucune clé enregistrée",
-      "key_stored": "Clé enregistrée : {{hint}}",
+      "key_stored": "Clé enregistrée : {hint}",
       "replace_placeholder": "Saisissez une nouvelle clé pour remplacer celle enregistrée",
-      "get_key": "Obtenir une clé d'API {{provider}}",
+      "get_key": "Obtenir une clé d'API {provider}",
       "save": "Enregistrer",
       "update": "Mettre à jour",
       "remove": "Supprimer",
@@ -74,16 +74,24 @@
       "toast": {
         "saved": {
           "title": "Clé enregistrée",
-          "message": "Votre clé d'API {{provider}} est enregistrée et prête à l'emploi."
+          "message": "Votre clé d'API {provider} est enregistrée et prête à l'emploi."
         },
         "removed": {
           "title": "Clé supprimée",
-          "message": "Votre clé d'API {{provider}} a été supprimée."
+          "message": "Votre clé d'API {provider} a été supprimée."
         },
         "error": {
           "message": "Impossible d'enregistrer cette clé. Veuillez la vérifier et réessayer."
         }
-      }
+      },
+      "connected": "Connecté",
+      "default_badge": "Par défaut",
+      "add_title": "Ajouter un fournisseur",
+      "replace_title": "Remplacer la clé enregistrée",
+      "provider_label": "Fournisseur",
+      "model_label": "Modèle",
+      "model_placeholder": "Sélectionner un modèle",
+      "key_label": "Clé API"
     },
     "activity": {
       "heading": "Activité",

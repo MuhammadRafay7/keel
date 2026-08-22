@@ -4,11 +4,13 @@
  * See the LICENSE file for details.
  */
 
+import { useEffect } from "react";
 import type { ReactNode } from "react";
 import Script from "next/script";
 import { Links, Meta, Outlet, Scripts } from "react-router";
 import type { LinksFunction } from "react-router";
 import { ThemeProvider, useTheme } from "next-themes";
+import { applyAccent, readAccent } from "@/hooks/use-accent";
 // keel imports
 import { SITE_DESCRIPTION, SITE_NAME } from "@keel/constants";
 import { cn } from "@keel/utils";
@@ -24,7 +26,7 @@ import globalStyles from "@/styles/globals.css?url";
 import type { Route } from "./+types/root";
 // components
 import { LogoSpinner } from "@/components/common/logo-spinner";
-import { AgentChatFloatingToggle } from "@/components/ai";
+import { AgentChatRoot } from "@/components/ai";
 // lib
 import { isStaleAssetError, recoverFromStaleAsset } from "@/lib/stale-asset-error";
 // local
@@ -133,13 +135,20 @@ export const meta: Route.MetaFunction = () => [
 ];
 
 export default function Root() {
+  // Re-apply the stored accent on every boot. `data-accent` re-points the
+  // `--brand-*` ramp that every accent token resolves through, so without this
+  // a reload silently drops the user back to the default colour.
+  useEffect(() => {
+    applyAccent(readAccent());
+  }, []);
+
   return (
     <AppProvider>
       <div className={cn("relative flex h-screen w-full flex-col overflow-hidden bg-canvas", "desktop-app-container")}>
         <main className="relative h-full w-full overflow-hidden">
           <Outlet />
         </main>
-        <AgentChatFloatingToggle />
+        <AgentChatRoot />
       </div>
     </AppProvider>
   );

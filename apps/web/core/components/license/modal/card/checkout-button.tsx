@@ -50,22 +50,21 @@ export const PlanCheckoutButton = observer(function PlanCheckoutButton(props: Pr
   return (
     <>
       <div className="pb-4 text-center">
+        {/*
+          No figure is shown. Keel quotes per workspace rather than publishing a
+          per-seat price, so the card states that and points at sales instead of
+          rendering a number the buyer would have to un-learn on the call.
+        */}
         <div className="h-9 text-20 font-semibold">
           {isLoading ? (
             <Loader className="flex flex-col items-center justify-center">
               <Loader.Item height="36px" width="4rem" />
             </Loader>
           ) : (
-            <DiscountInfo
-              currency={price.currency}
-              frequency={price.recurring}
-              price={price.price}
-              subscriptionType={planVariant}
-              className="mr-1.5"
-            />
+            <>Quote on request</>
           )}
         </div>
-        <div className="text-caption-md-medium text-tertiary">per user per month</div>
+        <div className="text-caption-md-medium text-tertiary">Pricing is quoted per workspace</div>
       </div>
       {isLoading ? (
         <Loader className="flex flex-col items-center justify-center">

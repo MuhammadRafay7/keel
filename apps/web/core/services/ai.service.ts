@@ -12,6 +12,13 @@ import { isSupabaseConfigured, supabaseAIService } from "@keel/services";
 import { markdownToHtml } from "@keel/utils";
 import { APIService } from "@/services/api.service";
 
+export type TTaskPayload = {
+  task: AI_EDITOR_TASKS;
+  text_input: string;
+  casual_score?: number;
+  formal_score?: number;
+};
+
 export type TEnhanceWorkItemPayload = {
   task: AI_EDITOR_TASKS;
   title?: string;

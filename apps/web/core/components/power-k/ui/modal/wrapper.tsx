@@ -122,28 +122,35 @@ export const ProjectsAppPowerKModalWrapper = observer(function ProjectsAppPowerK
         {/* Backdrop */}
         <Transition.Child
           as={React.Fragment}
-          enter="ease-out duration-300"
+          enter="ease-smooth duration-300"
           enterFrom="opacity-0"
           enterTo="opacity-100"
-          leave="ease-in duration-200"
+          leave="ease-smooth duration-200"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-backdrop transition-opacity" />
+          {/* A blurred scrim, so the palette reads as sitting above the page
+              rather than pasted onto it. */}
+          <div className="fixed inset-0 bg-backdrop backdrop-blur-[2px] transition-opacity" />
         </Transition.Child>
         {/* Modal Container */}
         <div className="fixed inset-0 z-30 overflow-y-auto">
           <div className="flex items-center justify-center p-4 sm:p-6 md:p-20">
             <Transition.Child
               as={React.Fragment}
-              enter="ease-out duration-300"
+              enter="ease-smooth duration-300"
               enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               enterTo="opacity-100 translate-y-0 sm:scale-100"
-              leave="ease-in duration-200"
+              leave="ease-smooth duration-200"
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="divide-opacity-10 relative flex w-full max-w-2xl transform flex-col items-center justify-center divide-y divide-subtle-1 rounded-lg bg-surface-1 shadow-raised-200 transition-all">
+              {/*
+                Glass and the deepest cast in the elevation scale: this is the
+                furthest surface from the page, and it previously sat on
+                `shadow-raised-200`, the same step a hovered card uses.
+              */}
+              <Dialog.Panel className="relative flex w-full max-w-2xl transform flex-col items-center justify-center divide-y divide-subtle-1 overflow-hidden squircle-modal glass-overlay shadow-overlay-200 transition-all">
                 <Command
                   filter={(i18nValue: string, search: string) => {
                     if (i18nValue === "no-results") return 1;
@@ -160,7 +167,7 @@ export const ProjectsAppPowerKModalWrapper = observer(function ProjectsAppPowerK
                     onSearchChange={setSearchTerm}
                     searchTerm={searchTerm}
                   />
-                  <Command.List className="vertical-scrollbar scrollbar-sm max-h-96 overflow-scroll outline-none">
+                  <Command.List className="vertical-scrollbar scrollbar-sm max-h-[26rem] overflow-scroll pb-2 outline-none">
                     <CommandsListComponent
                       activePage={activePage}
                       context={context}

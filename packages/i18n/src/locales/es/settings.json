@@ -61,9 +61,9 @@
       "title": "Proveedor de IA",
       "description": "Conecte su propia clave de API para usar las funciones de IA. Keel no le cobra por el uso del modelo — lo hace su proveedor.",
       "key_absent": "No hay ninguna clave guardada",
-      "key_stored": "Clave guardada: {{hint}}",
+      "key_stored": "Clave guardada: {hint}",
       "replace_placeholder": "Introduzca una clave nueva para sustituir la guardada",
-      "get_key": "Obtener una clave de API de {{provider}}",
+      "get_key": "Obtener una clave de API de {provider}",
       "save": "Guardar",
       "update": "Actualizar",
       "remove": "Quitar",
@@ -74,16 +74,24 @@
       "toast": {
         "saved": {
           "title": "Clave guardada",
-          "message": "Su clave de API de {{provider}} está guardada y lista para usar."
+          "message": "Su clave de API de {provider} está guardada y lista para usar."
         },
         "removed": {
           "title": "Clave eliminada",
-          "message": "Su clave de API de {{provider}} se ha eliminado."
+          "message": "Su clave de API de {provider} se ha eliminado."
         },
         "error": {
           "message": "No se ha podido guardar esa clave. Compruébela e inténtelo de nuevo."
         }
-      }
+      },
+      "connected": "Conectado",
+      "default_badge": "Predeterminado",
+      "add_title": "Añadir un proveedor",
+      "replace_title": "Reemplazar la clave guardada",
+      "provider_label": "Proveedor",
+      "model_label": "Modelo",
+      "model_placeholder": "Seleccione un modelo",
+      "key_label": "Clave de API"
     },
     "activity": {
       "heading": "Actividad",

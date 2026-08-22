@@ -61,9 +61,9 @@
       "title": "AI 提供商",
       "description": "连接您自己的 API 密钥即可使用 AI 功能。Keel 不会就模型用量向您收费，收费方是您的提供商。",
       "key_absent": "未保存密钥",
-      "key_stored": "已保存的密钥：{{hint}}",
+      "key_stored": "已保存的密钥：{hint}",
       "replace_placeholder": "输入新密钥以替换已保存的密钥",
-      "get_key": "获取 {{provider}} API 密钥",
+      "get_key": "获取 {provider} API 密钥",
       "save": "保存",
       "update": "更新",
       "remove": "移除",
@@ -74,16 +74,24 @@
       "toast": {
         "saved": {
           "title": "密钥已保存",
-          "message": "您的 {{provider}} API 密钥已保存，可以使用了。"
+          "message": "您的 {provider} API 密钥已保存，可以使用了。"
         },
         "removed": {
           "title": "密钥已移除",
-          "message": "您的 {{provider}} API 密钥已删除。"
+          "message": "您的 {provider} API 密钥已删除。"
         },
         "error": {
           "message": "无法保存该密钥。请检查后重试。"
         }
-      }
+      },
+      "connected": "已连接",
+      "default_badge": "默认",
+      "add_title": "添加提供商",
+      "replace_title": "替换已保存的密钥",
+      "provider_label": "提供商",
+      "model_label": "模型",
+      "model_placeholder": "选择模型",
+      "key_label": "API 密钥"
     },
     "activity": {
       "heading": "活动",

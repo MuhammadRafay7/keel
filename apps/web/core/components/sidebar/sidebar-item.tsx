@@ -4,6 +4,7 @@
  * See the LICENSE file for details.
  */
 
+import { forwardRef } from "react";
 import Link from "next/link";
 import { cn } from "@keel/utils";
 
@@ -106,23 +107,42 @@ function AppSidebarItemIcon({ icon, highlight }: AppSidebarItemIconProps) {
   );
 }
 
-function AppSidebarLinkItem({ href, children, className }: AppSidebarLinkItemProps) {
+/*
+ * These forward their ref because `Tooltip` anchors by cloning its child and
+ * attaching a ref to it. Without forwarding, React logs "Function components
+ * cannot be given refs" and the tooltip has nothing to position against — which
+ * is exactly what the top navigation's Inbox tooltip was doing.
+ */
+const AppSidebarLinkItem = forwardRef<HTMLAnchorElement, AppSidebarLinkItemProps>(function AppSidebarLinkItem(
+  { href, children, className, ...rest },
+  ref
+) {
   if (!href) return null;
 
   return (
-    <Link href={href} className={cn(styles.base, className)}>
+    <Link href={href} ref={ref} className={cn(styles.base, className)} {...rest}>
       {children}
     </Link>
   );
-}
+});
 
-function AppSidebarButtonItem({ children, onClick, disabled = false, className }: AppSidebarButtonItemProps) {
+const AppSidebarButtonItem = forwardRef<HTMLButtonElement, AppSidebarButtonItemProps>(function AppSidebarButtonItem(
+  { children, onClick, disabled = false, className, ...rest },
+  ref
+) {
   return (
-    <button className={cn(styles.base, className)} onClick={onClick} disabled={disabled} type="button">
+    <button
+      ref={ref}
+      className={cn(styles.base, className)}
+      onClick={onClick}
+      disabled={disabled}
+      type="button"
+      {...rest}
+    >
       {children}
     </button>
   );
-}
+});
 
 // ============================================================================
 // MAIN COMPONENT
@@ -135,7 +155,10 @@ export type AppSidebarItemComponent = React.FC<AppSidebarItemProps> & {
   Button: React.FC<AppSidebarButtonItemProps>;
 };
 
-function AppSidebarItem({ variant = "link", item }: AppSidebarItemProps) {
+const AppSidebarItem = forwardRef<HTMLElement, AppSidebarItemProps>(function AppSidebarItem(
+  { variant = "link", item, ...rest },
+  ref
+) {
   if (!item) return null;
 
   const { icon, isActive, label, href, onClick, disabled, showLabel = true } = item;
@@ -148,24 +171,30 @@ function AppSidebarItem({ variant = "link", item }: AppSidebarItemProps) {
   );
 
   if (variant === "link") {
-    return <AppSidebarLinkItem href={href}>{commonItems}</AppSidebarLinkItem>;
+    return (
+      <AppSidebarLinkItem href={href} ref={ref as React.Ref<HTMLAnchorElement>} {...rest}>
+        {commonItems}
+      </AppSidebarLinkItem>
+    );
   }
 
   return (
-    <AppSidebarButtonItem onClick={onClick} disabled={disabled}>
+    <AppSidebarButtonItem onClick={onClick} disabled={disabled} ref={ref as React.Ref<HTMLButtonElement>} {...rest}>
       {commonItems}
     </AppSidebarButtonItem>
   );
-}
+});
 
 // ============================================================================
 // COMPOUND COMPONENT ASSIGNMENT
 // ============================================================================
 
-AppSidebarItem.Label = AppSidebarItemLabel;
-AppSidebarItem.Icon = AppSidebarItemIcon;
-AppSidebarItem.Link = AppSidebarLinkItem;
-AppSidebarItem.Button = AppSidebarButtonItem;
+const AppSidebarItemWithSlots = Object.assign(AppSidebarItem, {
+  Label: AppSidebarItemLabel,
+  Icon: AppSidebarItemIcon,
+  Link: AppSidebarLinkItem,
+  Button: AppSidebarButtonItem,
+});
 
-export { AppSidebarItem };
+export { AppSidebarItemWithSlots as AppSidebarItem };
 export type { AppSidebarItemData, AppSidebarItemProps };

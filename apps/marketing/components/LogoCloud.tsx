@@ -1,44 +1,60 @@
+import React from "react";
+import { CodeIcon, ServerIcon, SmartphoneIcon, CpuIcon, SparklesIcon, ShieldCheckIcon } from "@/components/Icons";
+
+const DISCIPLINES = [
+  {
+    icon: CodeIcon,
+    name: "Frontend & UI Teams",
+    tech: "React · Next.js · Design Systems",
+  },
+  {
+    icon: ServerIcon,
+    name: "Infrastructure & DevOps",
+    tech: "CI/CD · Docker · K8s · Terraform",
+  },
+  {
+    icon: SmartphoneIcon,
+    name: "Mobile & iOS Teams",
+    tech: "Swift · React Native · Expo",
+  },
+  {
+    icon: CpuIcon,
+    name: "Core API & Backend",
+    tech: "Python · Rust · Microservices",
+  },
+  {
+    icon: SparklesIcon,
+    name: "AI Platform Teams",
+    tech: "Anthropic · OpenAI · Custom Keys",
+  },
+  {
+    icon: ShieldCheckIcon,
+    name: "Security & Platform",
+    tech: "SOC2 · RBAC · Audit Logging",
+  },
+];
+
 export function LogoCloud() {
   return (
-    <section aria-label="Engineering Teams" style={{ padding: "3rem 0", borderBottom: "1px solid var(--line)" }}>
+    <section aria-label="Engineering Disciplines" className="engineering-trust-section">
       <div className="shell" style={{ textAlign: "center" }}>
-        <p
-          style={{
-            fontFamily: "var(--mono)",
-            fontSize: "0.75rem",
-            textTransform: "uppercase",
-            letterSpacing: "0.08em",
-            color: "var(--fg-subtle)",
-            margin: "0 0 1.5rem",
-          }}
-        >
-          Built for high-velocity software engineering teams
-        </p>
+        <p className="engineering-trust-heading">Built for high-velocity software engineering teams</p>
 
-        <div className="logo-grid">
-          {[
-            "[Frontend Engineering Teams]",
-            "[Infrastructure & DevOps]",
-            "[Mobile & iOS Teams]",
-            "[Core API & Backend]",
-            "[AI Platform Teams]",
-            "[Security & Platform]",
-          ].map((item) => (
-            <div
-              key={item}
-              style={{
-                border: "1px dashed var(--line-strong)",
-                borderRadius: "12px",
-                padding: "0.6rem 1rem",
-                fontSize: "0.75rem",
-                fontFamily: "var(--mono)",
-                color: "var(--fg-muted)",
-                background: "var(--surface-glass)",
-              }}
-            >
-              {item}
-            </div>
-          ))}
+        <div className="engineering-discipline-grid">
+          {DISCIPLINES.map((item) => {
+            const Icon = item.icon;
+            return (
+              <div key={item.name} className="discipline-card">
+                <div className="discipline-card-icon">
+                  <Icon size={16} />
+                </div>
+                <div className="discipline-card-info">
+                  <span className="discipline-card-name">{item.name}</span>
+                  <span className="discipline-card-tech">{item.tech}</span>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

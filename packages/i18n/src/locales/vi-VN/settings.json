@@ -61,9 +61,9 @@
       "title": "Nhà cung cấp AI",
       "description": "Kết nối khóa API của riêng bạn để sử dụng các tính năng AI. Keel không tính phí bạn cho việc sử dụng mô hình — nhà cung cấp của bạn mới tính phí.",
       "key_absent": "Chưa lưu khóa nào",
-      "key_stored": "Khóa đã lưu: {{hint}}",
+      "key_stored": "Khóa đã lưu: {hint}",
       "replace_placeholder": "Nhập khóa mới để thay thế khóa đã lưu",
-      "get_key": "Lấy khóa API {{provider}}",
+      "get_key": "Lấy khóa API {provider}",
       "save": "Lưu",
       "update": "Cập nhật",
       "remove": "Xóa",
@@ -74,16 +74,24 @@
       "toast": {
         "saved": {
           "title": "Đã lưu khóa",
-          "message": "Khóa API {{provider}} của bạn đã được lưu và sẵn sàng sử dụng."
+          "message": "Khóa API {provider} của bạn đã được lưu và sẵn sàng sử dụng."
         },
         "removed": {
           "title": "Đã xóa khóa",
-          "message": "Khóa API {{provider}} của bạn đã bị xóa."
+          "message": "Khóa API {provider} của bạn đã bị xóa."
         },
         "error": {
           "message": "Chúng tôi không thể lưu khóa đó. Vui lòng kiểm tra lại và thử lần nữa."
         }
-      }
+      },
+      "connected": "Đã kết nối",
+      "default_badge": "Mặc định",
+      "add_title": "Thêm nhà cung cấp",
+      "replace_title": "Thay thế khóa đã lưu",
+      "provider_label": "Nhà cung cấp",
+      "model_label": "Mô hình",
+      "model_placeholder": "Chọn một mô hình",
+      "key_label": "Khóa API"
     },
     "activity": {
       "heading": "Hoạt động",

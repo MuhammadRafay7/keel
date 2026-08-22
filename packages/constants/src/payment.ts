@@ -6,6 +6,7 @@
 
 import type { IPaymentProduct, TBillingFrequency, TProductBillingFrequency } from "@keel/types";
 import { EProductSubscriptionEnum } from "@keel/types";
+import { SALES_EMAIL } from "./endpoints";
 
 /**
  * Default billing frequency for each product subscription type
@@ -117,7 +118,11 @@ export const KEEL_COMMUNITY_PRODUCTS: Record<string, IPaymentProduct> = {
 /**
  * URL for the "Talk to Sales" page where users can contact sales team
  */
-export const TALK_TO_SALES_URL = "https://keel.ostenmark.com/contact";
+/**
+ * Where "Talk to sales" goes. A mailto rather than a marketing page: there is
+ * no pricing page to send people to, and the address is the thing they need.
+ */
+export const TALK_TO_SALES_URL = `mailto:${SALES_EMAIL}?subject=${encodeURIComponent("Keel pricing enquiry")}`;
 
 /**
  * Mapping of subscription types to their respective upgrade/redirection URLs based on billing frequency

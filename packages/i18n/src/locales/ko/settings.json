@@ -61,9 +61,9 @@
       "title": "AI 제공업체",
       "description": "직접 발급한 API 키를 연결하면 AI 기능을 사용할 수 있습니다. 모델 사용료는 Keel이 아니라 사용 중인 제공업체가 청구합니다.",
       "key_absent": "저장된 키 없음",
-      "key_stored": "저장된 키: {{hint}}",
+      "key_stored": "저장된 키: {hint}",
       "replace_placeholder": "저장된 키를 대체할 새 키를 입력하세요",
-      "get_key": "{{provider}} API 키 발급받기",
+      "get_key": "{provider} API 키 발급받기",
       "save": "저장",
       "update": "업데이트",
       "remove": "삭제",
@@ -74,16 +74,24 @@
       "toast": {
         "saved": {
           "title": "키 저장됨",
-          "message": "{{provider}} API 키가 저장되어 사용할 준비가 되었습니다."
+          "message": "{provider} API 키가 저장되어 사용할 준비가 되었습니다."
         },
         "removed": {
           "title": "키 삭제됨",
-          "message": "{{provider}} API 키가 삭제되었습니다."
+          "message": "{provider} API 키가 삭제되었습니다."
         },
         "error": {
           "message": "키를 저장하지 못했습니다. 키를 확인한 후 다시 시도해 주세요."
         }
-      }
+      },
+      "connected": "연결됨",
+      "default_badge": "기본값",
+      "add_title": "제공자 추가",
+      "replace_title": "저장된 키 교체",
+      "provider_label": "제공자",
+      "model_label": "모델",
+      "model_placeholder": "모델 선택",
+      "key_label": "API 키"
     },
     "activity": {
       "heading": "활동",

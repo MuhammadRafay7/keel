@@ -61,9 +61,9 @@
       "title": "KI-Anbieter",
       "description": "Verbinden Sie Ihren eigenen API-Schlüssel, um KI-Funktionen zu nutzen. Keel stellt die Modellnutzung nicht in Rechnung — das übernimmt Ihr Anbieter.",
       "key_absent": "Kein Schlüssel gespeichert",
-      "key_stored": "Gespeicherter Schlüssel: {{hint}}",
+      "key_stored": "Gespeicherter Schlüssel: {hint}",
       "replace_placeholder": "Neuen Schlüssel eingeben, um den gespeicherten zu ersetzen",
-      "get_key": "API-Schlüssel für {{provider}} abrufen",
+      "get_key": "API-Schlüssel für {provider} abrufen",
       "save": "Speichern",
       "update": "Aktualisieren",
       "remove": "Entfernen",
@@ -74,16 +74,24 @@
       "toast": {
         "saved": {
           "title": "Schlüssel gespeichert",
-          "message": "Ihr API-Schlüssel für {{provider}} ist gespeichert und einsatzbereit."
+          "message": "Ihr API-Schlüssel für {provider} ist gespeichert und einsatzbereit."
         },
         "removed": {
           "title": "Schlüssel entfernt",
-          "message": "Ihr API-Schlüssel für {{provider}} wurde gelöscht."
+          "message": "Ihr API-Schlüssel für {provider} wurde gelöscht."
         },
         "error": {
           "message": "Dieser Schlüssel konnte nicht gespeichert werden. Bitte prüfen Sie ihn und versuchen Sie es erneut."
         }
-      }
+      },
+      "connected": "Verbunden",
+      "default_badge": "Standard",
+      "add_title": "Anbieter hinzufügen",
+      "replace_title": "Gespeicherten Schlüssel ersetzen",
+      "provider_label": "Anbieter",
+      "model_label": "Modell",
+      "model_placeholder": "Modell auswählen",
+      "key_label": "API-Schlüssel"
     },
     "activity": {
       "heading": "Aktivität",
