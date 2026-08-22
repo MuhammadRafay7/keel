@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { HullScene } from "@/components/HullScene";
 import { LogoCloud } from "@/components/LogoCloud";
 import {
   HeroDashboardMockup,
@@ -8,6 +7,18 @@ import {
   CyclesBentoVisual,
   SelfHostBentoVisual,
 } from "@/components/ProductMockups";
+import {
+  ListIcon,
+  CycleIcon,
+  DocIcon,
+  ServerIcon,
+  ZapIcon,
+  TargetIcon,
+  TriageIcon,
+  PaletteIcon,
+  LinkIcon,
+  LockIcon,
+} from "@/components/Icons";
 
 const APP = "https://app.keel.ostenmark.com";
 const REPO = "https://github.com/MuhammadRafay7/keel";
@@ -15,42 +26,20 @@ const REPO = "https://github.com/MuhammadRafay7/keel";
 export default function Home() {
   return (
     <>
-      {/* 1. HERO SECTION (CLICKUP-GRADE HIGH-CONVERTING WORKSPACE SHOWCASE) */}
+      {/* 1. HERO SECTION */}
       <section aria-label="Hero section" className="hero-section" id="hero">
-        <HullScene />
-
         <div className="shell hero-content">
-          {/* Eyebrow Status Pill */}
-          <Link href="/changelog" className="hero-eyebrow">
-            <span className="hero-eyebrow-pulse" />
-            <span className="hero-eyebrow-text">Keel 1.4 is Live</span>
-            <span className="hero-eyebrow-sep">·</span>
-            <span className="hero-eyebrow-sub">Open-Source Everything App for Work</span>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="hero-eyebrow-arrow">
-              <path
-                d="M4.5 2.5L8 6L4.5 9.5"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Link>
-
-          {/* Main Title */}
           <h1 className="hero-title font-satoshi">
-            The modern workspace to
+            The work management platform
             <br />
-            <span className="hero-title-gradient">plan, track, and ship at speed.</span>
+            for high-velocity engineering.
           </h1>
 
-          {/* Subtitle */}
           <p className="hero-subtitle">
-            Keel unites issues, agile sprint cycles, multi-quarter roadmap modules, and collaborative markdown wikis
-            into one fast, customizable platform. 100% open-source, air-gapped Docker ready, and zero telemetry lock-in.
+            Keel connects issues, agile sprint cycles, roadmap modules, and living docs into one fast, keyboard-first
+            workspace. 100% open source, air-gapped Docker ready, and zero telemetry lock-in.
           </p>
 
-          {/* ClickUp-Style Inline Email Signup Form */}
           <div className="hero-signup-container">
             <form action={`${APP}/sign-up`} method="GET" className="hero-signup-form">
               <div className="hero-input-wrapper">
@@ -98,11 +87,7 @@ export default function Home() {
             </a>
           </div>
 
-          {/* Social Proof & Guarantee Chips */}
           <div className="hero-trust-row">
-            <span className="hero-trust-item hero-rating-pill">
-              <span style={{ color: "#fbbf24" }}>★★★★★</span> Rated 4.9/5 by 10k+ teams
-            </span>
             <span className="hero-trust-item">
               <svg
                 width="14"
@@ -116,7 +101,7 @@ export default function Home() {
               >
                 <polyline points="20 6 9 17 4 12" />
               </svg>
-              Free forever · No card required
+              Free forever · No credit card required
             </span>
             <span className="hero-trust-item">
               <svg
@@ -148,12 +133,26 @@ export default function Home() {
               </svg>
               Docker &amp; Self-Host Ready
             </span>
+            <span className="hero-trust-item">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              Sub-50ms Interaction
+            </span>
           </div>
         </div>
 
-        {/* ClickUp-Style Interactive Multi-View Dashboard Showcase */}
+        {/* Dashboard Showcase Frame */}
         <div className="hero-dashboard-preview shell">
-          <div className="hero-dashboard-glow" aria-hidden="true" />
           <div className="hero-dashboard-wrapper">
             <HeroDashboardMockup />
           </div>
@@ -163,16 +162,11 @@ export default function Home() {
       {/* Enterprise Social Proof Logo Cloud */}
       <LogoCloud />
 
-      {/* 2. CORE CAPABILITIES (BENTO GRID WITH GLASS CARDS) */}
+      {/* 2. CORE CAPABILITIES (BENTO GRID) */}
       <section aria-label="Core Capabilities" className="section-pad" id="features">
         <div className="shell">
           <div className="section-header center">
-            <span className="label-badge">ARCHITECTURE &amp; FEATURES</span>
-            <h2 className="font-satoshi">
-              Everything your team needs
-              <br />
-              to plan, execute, and deliver
-            </h2>
+            <h2 className="font-satoshi">Everything your team needs to plan, execute, and deliver</h2>
           </div>
 
           <div className="products-bento">
@@ -180,7 +174,7 @@ export default function Home() {
             <Link href="/features" className="product-bento-card">
               <div className="product-bento-header">
                 <div className="product-tag">
-                  <span>📋</span> 5 Dynamic Work Views
+                  <ListIcon size={14} /> 5 Dynamic Work Views
                 </div>
                 <h3>List, Kanban, Calendar, Gantt &amp; Spreadsheet</h3>
                 <p>
@@ -197,7 +191,7 @@ export default function Home() {
             <Link href="/features" className="product-bento-card">
               <div className="product-bento-header">
                 <div className="product-tag">
-                  <span>🔄</span> Agile Cycles &amp; Sprints
+                  <CycleIcon size={14} /> Agile Cycles &amp; Sprints
                 </div>
                 <h3>Sprint planning and velocity tracking</h3>
                 <p>
@@ -214,7 +208,7 @@ export default function Home() {
             <Link href="/docs" className="product-bento-card">
               <div className="product-bento-header">
                 <div className="product-tag">
-                  <span>📖</span> Pages &amp; Collaborative Docs
+                  <DocIcon size={14} /> Pages &amp; Collaborative Docs
                 </div>
                 <h3>Living documentation tied directly to work</h3>
                 <p>
@@ -231,7 +225,7 @@ export default function Home() {
             <Link href="/about" className="product-bento-card">
               <div className="product-bento-header">
                 <div className="product-tag">
-                  <span>🐳</span> 100% Data Sovereignty
+                  <ServerIcon size={14} /> 100% Data Sovereignty
                 </div>
                 <h3>Self-host anywhere with Docker Compose</h3>
                 <p>
@@ -251,13 +245,14 @@ export default function Home() {
       <section className="section-pad" style={{ background: "var(--surface-product)" }}>
         <div className="shell">
           <div className="section-header center">
-            <span className="label-badge">CRAFTED FOR SPEED</span>
             <h2 className="font-satoshi">Engineered for high-performing engineering teams</h2>
           </div>
 
           <div className="feature-spotlight-grid">
             <div className="feature-spotlight-card">
-              <div className="feature-icon-circle">⚡️</div>
+              <div className="feature-icon-circle">
+                <ZapIcon size={20} />
+              </div>
               <h3 style={{ fontSize: "1.2rem", margin: 0 }}>Power-K Command Palette</h3>
               <p style={{ color: "var(--fg-muted)", margin: 0, fontSize: "0.9375rem", lineHeight: "1.6" }}>
                 Universal <code style={{ color: "var(--accent)" }}>Cmd+K</code> search to instantly jump between
@@ -266,7 +261,9 @@ export default function Home() {
             </div>
 
             <div className="feature-spotlight-card">
-              <div className="feature-icon-circle">🎯</div>
+              <div className="feature-icon-circle">
+                <TargetIcon size={20} />
+              </div>
               <h3 style={{ fontSize: "1.2rem", margin: 0 }}>Modules &amp; Roadmaps</h3>
               <p style={{ color: "var(--fg-muted)", margin: 0, fontSize: "0.9375rem", lineHeight: "1.6" }}>
                 Group complex initiatives into strategic modules. Track multi-quarter progress with automatic completion
@@ -275,7 +272,9 @@ export default function Home() {
             </div>
 
             <div className="feature-spotlight-card">
-              <div className="feature-icon-circle">📥</div>
+              <div className="feature-icon-circle">
+                <TriageIcon size={20} />
+              </div>
               <h3 style={{ fontSize: "1.2rem", margin: 0 }}>Intake &amp; Triage Inbox</h3>
               <p style={{ color: "var(--fg-muted)", margin: 0, fontSize: "0.9375rem", lineHeight: "1.6" }}>
                 Accept inbound requests into an isolated triage inbox. Accept, reject, or convert them into backlog
@@ -284,7 +283,9 @@ export default function Home() {
             </div>
 
             <div className="feature-spotlight-card">
-              <div className="feature-icon-circle">🎨</div>
+              <div className="feature-icon-circle">
+                <PaletteIcon size={20} />
+              </div>
               <h3 style={{ fontSize: "1.2rem", margin: 0 }}>Dark &amp; Light Theming</h3>
               <p style={{ color: "var(--fg-muted)", margin: 0, fontSize: "0.9375rem", lineHeight: "1.6" }}>
                 Tailored high-contrast and subtle tinted neutral palettes for day and night. Seamlessly matches your
@@ -293,7 +294,9 @@ export default function Home() {
             </div>
 
             <div className="feature-spotlight-card">
-              <div className="feature-icon-circle">🔗</div>
+              <div className="feature-icon-circle">
+                <LinkIcon size={20} />
+              </div>
               <h3 style={{ fontSize: "1.2rem", margin: 0 }}>Custom Fields &amp; Labels</h3>
               <p style={{ color: "var(--fg-muted)", margin: 0, fontSize: "0.9375rem", lineHeight: "1.6" }}>
                 Define custom states, estimates, priority levels, labels, and relations (blocking, duplicate, related)
@@ -302,7 +305,9 @@ export default function Home() {
             </div>
 
             <div className="feature-spotlight-card">
-              <div className="feature-icon-circle">🔐</div>
+              <div className="feature-icon-circle">
+                <LockIcon size={20} />
+              </div>
               <h3 style={{ fontSize: "1.2rem", margin: 0 }}>Role-Based Access Control</h3>
               <p style={{ color: "var(--fg-muted)", margin: 0, fontSize: "0.9375rem", lineHeight: "1.6" }}>
                 Granular member, admin, and guest permissions across workspaces and projects to keep sensitive planning
@@ -318,17 +323,14 @@ export default function Home() {
         <div className="shell" style={{ maxWidth: "48rem" }}>
           <div
             style={{
-              background: "var(--surface-glass)",
-              backdropFilter: "blur(24px)",
-              WebkitBackdropFilter: "blur(24px)",
-              border: "1px solid var(--surface-glass-border)",
-              borderRadius: "32px",
+              background: "var(--surface)",
+              border: "1px solid var(--line)",
+              borderRadius: "24px",
               padding: "3.5rem 2rem",
-              boxShadow: "var(--shadow-glass-lg)",
+              boxShadow: "var(--shadow-card)",
             }}
           >
-            <span className="label-badge">GET STARTED TODAY</span>
-            <h2 className="font-satoshi" style={{ margin: "1rem 0 1.25rem" }}>
+            <h2 className="font-satoshi" style={{ margin: "0 0 1.25rem" }}>
               Take control of your team&apos;s work.
             </h2>
             <p

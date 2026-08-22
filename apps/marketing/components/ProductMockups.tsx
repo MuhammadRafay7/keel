@@ -1,34 +1,48 @@
 "use client";
 
 import { useState } from "react";
+import {
+  ListIcon,
+  KanbanIcon,
+  CalendarIcon,
+  GanttIcon,
+  TableIcon,
+  CycleIcon,
+  ModuleIcon,
+  DocIcon,
+  TriageIcon,
+} from "./Icons";
 
 export function HeroDashboardMockup() {
   const [activeTab, setActiveTab] = useState<"list" | "board" | "calendar" | "gantt" | "table">("list");
   const [activeSidebar, setActiveSidebar] = useState<"issues" | "cycles" | "modules" | "pages" | "triage">("issues");
 
   const featureTabs = [
-    { id: "issues", label: "Projects & 5 Views", icon: "📋" },
-    { id: "cycles", label: "Agile Cycles & Sprints", icon: "🔄" },
-    { id: "modules", label: "Modules & Epics", icon: "📦" },
-    { id: "pages", label: "Pages & Wikis", icon: "📖" },
-    { id: "triage", label: "Intake & Triage", icon: "📥" },
+    { id: "issues", label: "Projects & 5 Views", Icon: ListIcon },
+    { id: "cycles", label: "Agile Cycles & Sprints", Icon: CycleIcon },
+    { id: "modules", label: "Modules & Epics", Icon: ModuleIcon },
+    { id: "pages", label: "Pages & Wikis", Icon: DocIcon },
+    { id: "triage", label: "Intake & Triage", Icon: TriageIcon },
   ];
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", width: "100%", alignItems: "center" }}>
       {/* ClickUp-Style Feature Switcher Bar */}
       <div className="hero-feature-switcher-bar">
-        {featureTabs.map((f) => (
-          <button
-            key={f.id}
-            type="button"
-            className={`hero-feature-tab ${activeSidebar === f.id ? "active" : ""}`}
-            onClick={() => setActiveSidebar(f.id as typeof activeSidebar)}
-          >
-            <span className="hero-feature-tab-icon">{f.icon}</span>
-            <span className="hero-feature-tab-label">{f.label}</span>
-          </button>
-        ))}
+        {featureTabs.map((f) => {
+          const TabIcon = f.Icon;
+          return (
+            <button
+              key={f.id}
+              type="button"
+              className={`hero-feature-tab ${activeSidebar === f.id ? "active" : ""}`}
+              onClick={() => setActiveSidebar(f.id as typeof activeSidebar)}
+            >
+              <TabIcon size={14} className="hero-feature-tab-icon" />
+              <span className="hero-feature-tab-label">{f.label}</span>
+            </button>
+          );
+        })}
       </div>
 
       <div
@@ -91,7 +105,7 @@ export function HeroDashboardMockup() {
               />
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontWeight: 600, color: "#f1f5f9" }}>
-              <span>⚡️ Keel Workspace &gt; Platform Core</span>
+              <span>Keel Workspace / Platform Core</span>
             </div>
           </div>
 
@@ -107,36 +121,43 @@ export function HeroDashboardMockup() {
             }}
           >
             {[
-              { id: "list", label: "📋 List" },
-              { id: "board", label: "📊 Board" },
-              { id: "calendar", label: "📅 Calendar" },
-              { id: "gantt", label: "📈 Gantt" },
-              { id: "table", label: "📑 Table" },
-            ].map((v) => (
-              <button
-                key={v.id}
-                type="button"
-                onClick={() => {
-                  setActiveSidebar("issues");
-                  setActiveTab(v.id as "list" | "board" | "calendar" | "gantt" | "table");
-                }}
-                style={{
-                  border: "none",
-                  background: activeSidebar === "issues" && activeTab === v.id ? "#0284c7" : "transparent",
-                  color: activeSidebar === "issues" && activeTab === v.id ? "#ffffff" : "#94a3b8",
-                  fontWeight: 600,
-                  fontSize: "0.75rem",
-                  padding: "0.35rem 0.8rem",
-                  borderRadius: "9999px",
-                  cursor: "pointer",
-                  transition: "all 0.15s ease",
-                  boxShadow:
-                    activeSidebar === "issues" && activeTab === v.id ? "0 2px 8px rgba(2, 132, 199, 0.4)" : "none",
-                }}
-              >
-                {v.label}
-              </button>
-            ))}
+              { id: "list", label: "List", Icon: ListIcon },
+              { id: "board", label: "Board", Icon: KanbanIcon },
+              { id: "calendar", label: "Calendar", Icon: CalendarIcon },
+              { id: "gantt", label: "Gantt", Icon: GanttIcon },
+              { id: "table", label: "Table", Icon: TableIcon },
+            ].map((v) => {
+              const VIcon = v.Icon;
+              return (
+                <button
+                  key={v.id}
+                  type="button"
+                  onClick={() => {
+                    setActiveSidebar("issues");
+                    setActiveTab(v.id as "list" | "board" | "calendar" | "gantt" | "table");
+                  }}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                    border: "none",
+                    background: activeSidebar === "issues" && activeTab === v.id ? "#0284c7" : "transparent",
+                    color: activeSidebar === "issues" && activeTab === v.id ? "#ffffff" : "#94a3b8",
+                    fontWeight: 600,
+                    fontSize: "0.75rem",
+                    padding: "0.35rem 0.75rem",
+                    borderRadius: "9999px",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease",
+                    boxShadow:
+                      activeSidebar === "issues" && activeTab === v.id ? "0 2px 8px rgba(2, 132, 199, 0.4)" : "none",
+                  }}
+                >
+                  <VIcon size={12} />
+                  <span>{v.label}</span>
+                </button>
+              );
+            })}
           </div>
 
           {/* Active Cycle Pill */}
@@ -187,34 +208,40 @@ export function HeroDashboardMockup() {
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
                 {[
-                  { id: "issues", label: "📋 Issues (48)" },
-                  { id: "cycles", label: "🔄 Cycles & Sprints" },
-                  { id: "modules", label: "📦 Modules & Epics" },
-                  { id: "pages", label: "📖 Pages & Docs" },
-                  { id: "triage", label: "📥 Intake Triage" },
-                ].map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => setActiveSidebar(item.id as typeof activeSidebar)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      padding: "0.45rem 0.75rem",
-                      background: activeSidebar === item.id ? "rgba(2, 132, 199, 0.2)" : "transparent",
-                      color: activeSidebar === item.id ? "#38bdf8" : "#94a3b8",
-                      borderRadius: "10px",
-                      fontWeight: 600,
-                      fontSize: "0.8125rem",
-                      border: activeSidebar === item.id ? "1px solid rgba(56, 189, 248, 0.2)" : "1px solid transparent",
-                      cursor: "pointer",
-                      textAlign: "left",
-                      transition: "all 0.15s ease",
-                    }}
-                  >
-                    {item.label}
-                  </button>
-                ))}
+                  { id: "issues", label: "Issues (48)", Icon: ListIcon },
+                  { id: "cycles", label: "Cycles & Sprints", Icon: CycleIcon },
+                  { id: "modules", label: "Modules & Epics", Icon: ModuleIcon },
+                  { id: "pages", label: "Pages & Docs", Icon: DocIcon },
+                  { id: "triage", label: "Intake Triage", Icon: TriageIcon },
+                ].map((item) => {
+                  const SIcon = item.Icon;
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => setActiveSidebar(item.id as typeof activeSidebar)}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                        padding: "0.45rem 0.75rem",
+                        background: activeSidebar === item.id ? "rgba(2, 132, 199, 0.2)" : "transparent",
+                        color: activeSidebar === item.id ? "#38bdf8" : "#94a3b8",
+                        borderRadius: "10px",
+                        fontWeight: 600,
+                        fontSize: "0.8125rem",
+                        border:
+                          activeSidebar === item.id ? "1px solid rgba(56, 189, 248, 0.2)" : "1px solid transparent",
+                        cursor: "pointer",
+                        textAlign: "left",
+                        transition: "all 0.15s ease",
+                      }}
+                    >
+                      <SIcon size={14} />
+                      <span>{item.label}</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -234,11 +261,11 @@ export function HeroDashboardMockup() {
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
                 <div style={{ padding: "0.45rem 0.75rem", color: "#94a3b8", fontSize: "0.8125rem" }}>
-                  🌐 Web Application
+                  Web Application
                 </div>
-                <div style={{ padding: "0.45rem 0.75rem", color: "#94a3b8", fontSize: "0.8125rem" }}>⚡️ API Engine</div>
+                <div style={{ padding: "0.45rem 0.75rem", color: "#94a3b8", fontSize: "0.8125rem" }}>API Engine</div>
                 <div style={{ padding: "0.45rem 0.75rem", color: "#94a3b8", fontSize: "0.8125rem" }}>
-                  📱 Mobile Clients
+                  Mobile Clients
                 </div>
               </div>
             </div>
@@ -328,7 +355,7 @@ export function HeroDashboardMockup() {
                 >
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <div>
-                      <h4 style={{ margin: 0, fontSize: "1rem", color: "#f8fafc" }}>⚡️ Sprint Cycle #14 (Current)</h4>
+                      <h4 style={{ margin: 0, fontSize: "1rem", color: "#f8fafc" }}>Sprint Cycle 14 (Active)</h4>
                       <span style={{ fontSize: "0.75rem", color: "#94a3b8" }}>
                         Aug 15 - Aug 29 · 14 Work Items · Scope Locked
                       </span>
@@ -390,9 +417,9 @@ export function HeroDashboardMockup() {
               /* MODULES VIEW */
               <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                 {[
-                  { name: "⚡️ Realtime Presence Engine", status: "In Progress", progress: "74%", count: "12 issues" },
-                  { name: "🔐 SAML SSO & RBAC Engine", status: "In Progress", progress: "90%", count: "8 issues" },
-                  { name: "📱 iOS & macOS Native Clients", status: "Planning", progress: "35%", count: "18 issues" },
+                  { name: "Realtime Presence Engine", status: "In Progress", progress: "74%", count: "12 issues" },
+                  { name: "SAML SSO & RBAC Engine", status: "In Progress", progress: "90%", count: "8 issues" },
+                  { name: "iOS & macOS Native Clients", status: "Planning", progress: "35%", count: "18 issues" },
                 ].map((m) => (
                   <div
                     key={m.name}
@@ -444,7 +471,7 @@ export function HeroDashboardMockup() {
                 }}
               >
                 <div style={{ fontSize: "1.125rem", fontWeight: 700, color: "#f8fafc" }}>
-                  📄 Technical Architecture Spec v2.4
+                  Technical Architecture Spec v2.4
                 </div>
                 <p style={{ color: "#94a3b8", margin: 0, lineHeight: 1.6 }}>
                   Keel provides a unified workspace architecture with MobX reactive state management, Django REST
