@@ -6,7 +6,7 @@ import { Mark } from "./Mark";
 import { ThemeToggle } from "./ThemeToggle";
 
 const APP = "https://app.keel.ostenmark.com";
-const REPO = "https://github.com/MuhammadRafay7/keel";
+const SALES_EMAIL = "sales@ostenmark.com";
 
 export function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -25,7 +25,6 @@ export function Header() {
     }, 150);
   };
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
       if (navRef.current && !navRef.current.contains(e.target as Node)) {
@@ -43,13 +42,13 @@ export function Header() {
     <header className="site-header">
       <div className="shell nav">
         {/* Brand Logo */}
-        <Link href="/" className="logo">
+        <Link href="/" className="logo" aria-label="Keel Home">
           <Mark className="logo-mark" />
-          <b style={{ color: "var(--fg)", fontSize: "1.25rem" }}>Keel</b>
+          <span style={{ color: "var(--fg)", fontWeight: 700, fontSize: "1.25rem" }}>Keel</span>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav ref={navRef} className="nav-menu" onMouseLeave={handleMouseLeave}>
+        <nav ref={navRef} className="nav-menu" aria-label="Main Navigation" onMouseLeave={handleMouseLeave}>
           {/* Product Dropdown */}
           <div className="nav-item" onMouseEnter={() => handleMouseEnter("product")}>
             <button
@@ -74,68 +73,35 @@ export function Header() {
               <div className="nav-dropdown" onMouseEnter={() => handleMouseEnter("product")}>
                 <Link href="/features" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
                   <span className="dropdown-item-title">📋 5 Dynamic Work Views</span>
-                  <span className="dropdown-item-desc">List, Kanban, Calendar, Gantt, and Spreadsheet grids</span>
+                  <span className="dropdown-item-desc">
+                    List, Board, Calendar, Table spreadsheet &amp; Timeline Gantt
+                  </span>
                 </Link>
                 <Link href="/features" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
                   <span className="dropdown-item-title">🔄 Cycles &amp; Sprints</span>
-                  <span className="dropdown-item-desc">Sprint planning, scope locking, and burndown velocity</span>
+                  <span className="dropdown-item-desc">
+                    Time-boxed iterations, scope locking &amp; burndown tracking
+                  </span>
                 </Link>
                 <Link href="/features" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">📦 Modules &amp; Epics</span>
-                  <span className="dropdown-item-desc">Strategic milestones, roadmap tracking, and rollups</span>
+                  <span className="dropdown-item-title">📦 Modules &amp; Roadmaps</span>
+                  <span className="dropdown-item-desc">Multi-sprint feature initiatives and milestone rollups</span>
                 </Link>
-                <Link href="/docs" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
+                <Link href="/features" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
                   <span className="dropdown-item-title">📖 Pages &amp; Collaborative Docs</span>
-                  <span className="dropdown-item-desc">Rich markdown with slash commands linked to tasks</span>
+                  <span className="dropdown-item-desc">Rich documents tied directly to active work items</span>
+                </Link>
+                <Link href="/features" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
+                  <span className="dropdown-item-title">🔑 Bring Your Own AI Key</span>
+                  <span className="dropdown-item-desc">Direct Anthropic, OpenAI, Google, Groq API key integration</span>
                 </Link>
               </div>
             )}
           </div>
 
-          {/* Solutions / Platform Dropdown */}
-          <div className="nav-item" onMouseEnter={() => handleMouseEnter("platform")}>
-            <button
-              type="button"
-              className={`nav-link-btn ${activeDropdown === "platform" ? "active" : ""}`}
-              onClick={() => setActiveDropdown(activeDropdown === "platform" ? null : "platform")}
-              aria-expanded={activeDropdown === "platform"}
-            >
-              Platform
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ marginLeft: "2px" }}>
-                <path
-                  d="M2.5 4.5L6 8L9.5 4.5"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-
-            {activeDropdown === "platform" && (
-              <div className="nav-dropdown" onMouseEnter={() => handleMouseEnter("platform")}>
-                <Link href="/about" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">🐳 Docker Self-Hosting</span>
-                  <span className="dropdown-item-desc">Deploy in minutes with Docker Compose or Kubernetes</span>
-                </Link>
-                <a
-                  href={REPO}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="dropdown-item"
-                  onClick={() => setActiveDropdown(null)}
-                >
-                  <span className="dropdown-item-title">🔓 Open Source (AGPL-3.0)</span>
-                  <span className="dropdown-item-desc">Full source code access and true data sovereignty</span>
-                </a>
-                <Link href="/docs" className="dropdown-item" onClick={() => setActiveDropdown(null)}>
-                  <span className="dropdown-item-title">⚡️ Architecture &amp; REST APIs</span>
-                  <span className="dropdown-item-desc">Next.js, MobX reactive state, and Django backend</span>
-                </Link>
-              </div>
-            )}
-          </div>
-
+          <Link href="/features" className="nav-link-btn">
+            Features
+          </Link>
           <Link href="/about" className="nav-link-btn">
             About
           </Link>
@@ -150,20 +116,11 @@ export function Header() {
         {/* Action Buttons */}
         <div className="nav-actions">
           <ThemeToggle />
-          <a
-            href={REPO}
-            target="_blank"
-            rel="noreferrer"
-            className="btn btn-secondary btn-sm"
-            style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-            </svg>
-            <span>GitHub</span>
+          <a href={`mailto:${SALES_EMAIL}`} className="btn btn-secondary btn-sm">
+            Talk to sales
           </a>
-          <a href={`${APP}/sign-in`} className="btn btn-inverse btn-sm">
-            Launch App
+          <a href={`${APP}/sign-in`} className="btn btn-brand btn-sm">
+            Launch Workspace
           </a>
 
           {/* Mobile Menu Button */}
@@ -199,11 +156,14 @@ export function Header() {
           <Link href="/changelog" className="nav-link-btn" onClick={() => setMobileMenuOpen(false)}>
             Changelog
           </Link>
-          <a href={REPO} target="_blank" rel="noreferrer" className="btn btn-secondary">
-            GitHub Repository
+          <Link href="/contact" className="nav-link-btn" onClick={() => setMobileMenuOpen(false)}>
+            Contact
+          </Link>
+          <a href={`mailto:${SALES_EMAIL}`} className="btn btn-secondary">
+            Talk to sales
           </a>
-          <a href={`${APP}/sign-in`} className="btn btn-inverse">
-            Launch App
+          <a href={`${APP}/sign-in`} className="btn btn-brand">
+            Launch Workspace
           </a>
         </div>
       )}

@@ -1,18 +1,18 @@
 import Link from "next/link";
 import { Mark } from "./Mark";
 
-const REPO = "https://github.com/MuhammadRafay7/keel";
 const APP = "https://app.keel.ostenmark.com";
+const SALES_EMAIL = "sales@ostenmark.com";
 
 export function Footer() {
   return (
     <footer className="mega-footer">
       <div className="shell">
-        {/* Footer Top: Logo & Open Source License Badge */}
+        {/* Footer Top: Brand & Hosted Status Badges */}
         <div className="footer-top">
-          <Link href="/" className="logo">
+          <Link href="/" className="logo" aria-label="Keel Home">
             <Mark className="logo-mark" />
-            <b style={{ color: "var(--fg)" }}>Keel</b>
+            <span style={{ color: "var(--fg)", fontWeight: 700 }}>Keel</span>
           </Link>
 
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
@@ -20,7 +20,7 @@ export function Footer() {
               style={{
                 fontSize: "0.75rem",
                 fontFamily: "var(--mono)",
-                border: "1px solid var(--surface-glass-border)",
+                border: "1px solid var(--badge-border)",
                 background: "var(--badge-bg)",
                 padding: "0.35rem 0.85rem",
                 borderRadius: "9999px",
@@ -28,7 +28,7 @@ export function Footer() {
                 fontWeight: 600,
               }}
             >
-              🔓 AGPL-3.0 Open Source
+              ⚡️ Hosted &amp; Ready Immediately
             </span>
             <span
               style={{
@@ -41,7 +41,7 @@ export function Footer() {
                 color: "var(--fg-muted)",
               }}
             >
-              🐳 Docker Ready
+              🔑 Bring Your Own AI Key
             </span>
             <span
               style={{
@@ -54,7 +54,7 @@ export function Footer() {
                 color: "var(--fg-muted)",
               }}
             >
-              🔒 100% Data Sovereignty
+              🛡️ Enterprise Ready
             </span>
           </div>
         </div>
@@ -66,7 +66,7 @@ export function Footer() {
             <h4>Product</h4>
             <ul>
               <li>
-                <Link href="/features">5 Dynamic Views</Link>
+                <Link href="/features">5 Dynamic Work Views</Link>
               </li>
               <li>
                 <Link href="/features">Cycles &amp; Sprints</Link>
@@ -75,30 +75,32 @@ export function Footer() {
                 <Link href="/features">Modules &amp; Roadmaps</Link>
               </li>
               <li>
-                <Link href="/docs">Pages &amp; Docs</Link>
+                <Link href="/features">Pages &amp; Collaborative Docs</Link>
+              </li>
+              <li>
+                <Link href="/features">Bring Your Own AI Key</Link>
               </li>
             </ul>
           </div>
 
-          {/* Col 2: Platform */}
+          {/* Col 2: Capabilities */}
           <div className="footer-col">
-            <h4>Platform</h4>
+            <h4>Capabilities</h4>
             <ul>
               <li>
-                <Link href="/about">Docker Self-Hosting</Link>
+                <Link href="/features">Cmd+K Command Palette</Link>
               </li>
               <li>
-                <Link href="/about">Data Sovereignty</Link>
+                <Link href="/features">Project Chat &amp; Triage</Link>
               </li>
               <li>
-                <a href={REPO} target="_blank" rel="noreferrer">
-                  GitHub Repository
-                </a>
+                <Link href="/features">Saved Filters &amp; Views</Link>
               </li>
               <li>
-                <a href={`${REPO}/blob/staging/COPYRIGHT.txt`} target="_blank" rel="noreferrer">
-                  AGPL-3.0 License
-                </a>
+                <Link href="/features">Custom Workflow States</Link>
+              </li>
+              <li>
+                <Link href="/about">Quiet Chrome UX</Link>
               </li>
             </ul>
           </div>
@@ -117,7 +119,10 @@ export function Footer() {
                 <Link href="/about">About Keel</Link>
               </li>
               <li>
-                <Link href="/contact">Contact &amp; Support</Link>
+                <Link href="/contact">Contact Support</Link>
+              </li>
+              <li>
+                <a href={`mailto:${SALES_EMAIL}`}>Talk to sales</a>
               </li>
             </ul>
           </div>
@@ -130,7 +135,7 @@ export function Footer() {
                 <a href={`${APP}/sign-in`}>Sign In</a>
               </li>
               <li>
-                <a href={`${APP}/sign-up`}>Create Workspace</a>
+                <a href={`${APP}/sign-up`}>Launch Workspace</a>
               </li>
               <li>
                 <Link href="/privacy">Privacy Policy</Link>
@@ -144,13 +149,11 @@ export function Footer() {
 
         {/* Footer Bottom */}
         <div className="footer-bottom">
-          <div>&copy; {new Date().getFullYear()} Keel Contributors. Open source work management.</div>
+          <div>&copy; {new Date().getFullYear()} Keel. Hosted work management for software teams.</div>
           <div style={{ display: "flex", gap: "1.25rem" }}>
             <Link href="/privacy">Privacy</Link>
             <Link href="/terms">Terms</Link>
-            <a href={REPO} target="_blank" rel="noreferrer">
-              GitHub
-            </a>
+            <a href={`mailto:${SALES_EMAIL}`}>Talk to sales</a>
           </div>
         </div>
       </div>
