@@ -6,7 +6,7 @@
 
 import { Button } from "@keel/propel/button";
 import { cn } from "@keel/utils";
-import { formatClockTime, formatElapsed } from "./helpers";
+import { formatClockTime, formatDuration, formatElapsed } from "./helpers";
 import type { useAttendance } from "./use-attendance";
 
 type TClockCardProps = {
@@ -27,6 +27,7 @@ export function ClockCard({ attendance, className }: TClockCardProps) {
     state,
     openShift,
     openTask,
+    today,
     shiftSeconds,
     taskSeconds,
     breakSeconds,
@@ -43,8 +44,12 @@ export function ClockCard({ attendance, className }: TClockCardProps) {
   const isOut = state === "out";
   const isOnBreak = state === "break";
 
+  const hasWorkedToday = today.workedSeconds > 0 || today.sessions > 0;
+
   const statusLabel = isOut
-    ? "Not clocked in"
+    ? hasWorkedToday
+      ? "Done for now"
+      : "Not clocked in"
     : isOnBreak
       ? `On a break since ${formatClockTime(attendance.openBreak?.started_at)}`
       : `Clocked in at ${formatClockTime(openShift?.clock_in_at)}`;
@@ -80,15 +85,21 @@ export function ClockCard({ attendance, className }: TClockCardProps) {
             // re-announced every second.
             aria-live="off"
           >
-            {formatElapsed(isOnBreak ? breakSeconds : shiftSeconds)}
+            {isOut
+              ? hasWorkedToday
+                ? formatDuration(today.workedSeconds)
+                : "--:--"
+              : formatElapsed(isOnBreak ? breakSeconds : shiftSeconds)}
           </div>
 
           <p className="mt-2 text-12 text-tertiary">
             {isOut
-              ? "Your day starts when you clock in."
+              ? hasWorkedToday
+                ? `Worked today across ${today.sessions} session${today.sessions === 1 ? "" : "s"}`
+                : "Your day starts when you clock in."
               : isOnBreak
-                ? `Shift running ${formatElapsed(shiftSeconds)}, breaks not deducted yet`
-                : "Time on the clock today"}
+                ? `Break so far. Today's total is ${formatDuration(today.workedSeconds)}`
+                : `This session. Today's total is ${formatDuration(today.workedSeconds)}`}
           </p>
         </div>
 
@@ -109,6 +120,18 @@ export function ClockCard({ attendance, className }: TClockCardProps) {
           )}
         </div>
       </div>
+
+      {(hasWorkedToday || !isOut) && (
+        <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-3 border-t border-subtle pt-4 sm:grid-cols-4">
+          <Fact label="Today" value={formatDuration(today.workedSeconds)} emphasis />
+          <Fact label="Came in" value={formatClockTime(today.arrivedAt)} />
+          <Fact label="Breaks" value={today.breakSeconds > 0 ? formatDuration(today.breakSeconds) : "None"} />
+          <Fact
+            label="On work items"
+            value={today.taskSeconds > 0 ? formatDuration(today.taskSeconds) : "Not tracked"}
+          />
+        </dl>
+      )}
 
       {openTask && (
         <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-accent-subtle bg-accent-subtle/60 px-4 py-3">
@@ -143,5 +166,25 @@ export function ClockCard({ attendance, className }: TClockCardProps) {
         </div>
       )}
     </section>
+  );
+}
+
+/**
+ * One fact about today. A description list rather than divs: these are
+ * label/value pairs, and a screen reader should hear them as such.
+ */
+function Fact({ label, value, emphasis }: { label: string; value: string; emphasis?: boolean }) {
+  return (
+    <div>
+      <dt className="text-11 font-medium tracking-wide text-placeholder uppercase">{label}</dt>
+      <dd
+        className={cn(
+          "mt-0.5 font-code tabular-nums",
+          emphasis ? "text-18 font-medium text-primary" : "text-14 text-secondary"
+        )}
+      >
+        {value}
+      </dd>
+    </div>
   );
 }

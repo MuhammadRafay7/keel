@@ -514,7 +514,13 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
     setIsSending(true);
 
     const userName = currentUser?.display_name || currentUser?.first_name || currentUser?.email?.split("@")[0] || "You";
-    const channelId = activeChannel?.id || "general";
+    const channelId = activeChannel?.id;
+    if (!channelId) {
+      setInputMessage(textToSend);
+      setSendError("No channel is open yet. Reload, or create a channel first.");
+      setIsSending(false);
+      return;
+    }
 
     const tempMsg: IChatMessage = {
       id: `temp-${Date.now()}`,
@@ -1037,7 +1043,7 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
                 <span className="hidden text-11 text-tertiary sm:inline">Enter to send · Shift+Enter for line</span>
                 <Button
                   type="submit"
-                  disabled={!inputMessage.trim() || isSending}
+                  disabled={!inputMessage.trim() || isSending || !activeChannel}
                   variant="primary"
                   size="sm"
                   className="h-7 gap-1.5 px-3 text-12 font-semibold"

@@ -9,6 +9,7 @@ import { supabaseAttendanceService } from "@keel/services";
 import type { IAttendanceBreak, IAttendanceRecord, IAttendanceSettings } from "@keel/types";
 import { useUser } from "@/hooks/store/user";
 import { useWorkspace } from "@/hooks/store/use-workspace";
+import { recordSeconds, toISODate } from "./helpers";
 
 export type TClockState = "out" | "in" | "break";
 
@@ -31,6 +32,8 @@ export function useAttendance() {
   const [openShift, setOpenShift] = useState<IAttendanceRecord | null>(null);
   const [openTask, setOpenTask] = useState<IAttendanceRecord | null>(null);
   const [openBreak, setOpenBreak] = useState<IAttendanceBreak | null>(null);
+  const [todayRecords, setTodayRecords] = useState<IAttendanceRecord[]>([]);
+  const [todayBreaks, setTodayBreaks] = useState<IAttendanceBreak[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isBusy, setIsBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -59,6 +62,21 @@ export function useAttendance() {
       const activeBreak = shift ? await supabaseAttendanceService.getOpenBreak(shift.id) : null;
       if (!isMounted.current) return;
       setOpenBreak(activeBreak);
+
+      // The whole day, not just the session that happens to be open. Somebody
+      // who clocked out for an appointment and back in again has two shifts,
+      // and the number they want is the total.
+      const today = toISODate(new Date());
+      const dayRecords = await supabaseAttendanceService.getRecords({
+        workspaceId,
+        memberId,
+        from: today,
+        to: today,
+      });
+      if (!isMounted.current) return;
+      setTodayRecords(dayRecords);
+
+      setTodayBreaks(await supabaseAttendanceService.getBreaks(dayRecords.map((r) => r.id)));
     } catch (e) {
       if (isMounted.current) setError(e instanceof Error ? e.message : "Could not read your attendance");
     }
@@ -132,6 +150,42 @@ export function useAttendance() {
     [run, workspaceId]
   );
 
+  /**
+   * Today's totals, ticking.
+   *
+   * Deliberately the same arithmetic as `attendance_day_totals` in 0022 —
+   * worked time is shift time with breaks taken out, and task time is reported
+   * beside it rather than added to it. The server owns that sum for every
+   * other view; this one recomputes it client-side only because it has to
+   * advance every second, and a request per second is not a clock.
+   */
+  const today = useMemo(() => {
+    const shifts = todayRecords.filter((r) => r.kind === "shift");
+    const tasks = todayRecords.filter((r) => r.kind === "task");
+    const shiftIds = new Set(shifts.map((r) => r.id));
+
+    const grossSeconds = shifts.reduce((total, record) => total + recordSeconds(record, now), 0);
+
+    const breakSecondsToday = todayBreaks
+      .filter((b) => shiftIds.has(b.record_id))
+      .reduce((total, b) => {
+        const from = new Date(b.started_at).getTime();
+        const to = b.ended_at ? new Date(b.ended_at).getTime() : now;
+        return total + Math.max(0, (to - from) / 1000);
+      }, 0);
+
+    const arrivals = shifts.map((r) => new Date(r.clock_in_at).getTime()).filter((t) => Number.isFinite(t));
+
+    return {
+      workedSeconds: Math.max(0, grossSeconds - breakSecondsToday),
+      breakSeconds: breakSecondsToday,
+      taskSeconds: tasks.reduce((total, record) => total + recordSeconds(record, now), 0),
+      arrivedAt: arrivals.length > 0 ? new Date(Math.min(...arrivals)).toISOString() : null,
+      sessions: shifts.length,
+      needsReview: shifts.some((r) => r.needs_review),
+    };
+  }, [todayRecords, todayBreaks, now]);
+
   const shiftSeconds = openShift ? (now - new Date(openShift.clock_in_at).getTime()) / 1000 : 0;
   const taskSeconds = openTask ? (now - new Date(openTask.clock_in_at).getTime()) / 1000 : 0;
   const breakSeconds = openBreak ? (now - new Date(openBreak.started_at).getTime()) / 1000 : 0;
@@ -147,6 +201,7 @@ export function useAttendance() {
     shiftSeconds,
     taskSeconds,
     breakSeconds,
+    today,
     now,
     isLoading,
     isBusy,

@@ -43,16 +43,25 @@ export class ChatService {
     return { workspaceId, projectId: isWorkspaceLevel ? null : projectId };
   }
 
+  /** A uuid, as opposed to a workspace slug. */
+  private static readonly UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
   /** Resolves the workspace a project belongs to — both chat tables are keyed on it. */
   private async getWorkspaceId(projectIdOrSlug: string): Promise<string> {
     const supabase = getSupabase();
 
-    const { data: projData } = await supabase
-      .from("projects")
-      .select("workspace_id")
-      .eq("id", projectIdOrSlug)
-      .maybeSingle();
-    if (projData?.workspace_id) return projData.workspace_id;
+    // Only ask the projects table when the argument could actually be a project
+    // id. A workspace slug sent to `id=eq.…` is not a uuid, so PostgREST
+    // answers 400 — harmless, because the slug lookup below then succeeds, but
+    // it filled the console with failures that looked like the real fault.
+    if (ChatService.UUID.test(projectIdOrSlug)) {
+      const { data: projData } = await supabase
+        .from("projects")
+        .select("workspace_id")
+        .eq("id", projectIdOrSlug)
+        .maybeSingle();
+      if (projData?.workspace_id) return projData.workspace_id;
+    }
 
     const { data: wsData } = await supabase.from("workspaces").select("id").eq("slug", projectIdOrSlug).maybeSingle();
     if (wsData?.id) return wsData.id;
