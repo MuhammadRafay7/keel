@@ -5,9 +5,9 @@ import * as THREE from "three";
 import { useTheme } from "next-themes";
 
 /**
- * Three.js Apple/Linear-Grade Ambient Fluid Horizon Canvas:
- * Features silky-smooth harmonic fluid ribbons, subtle pointer-tracking specular highlights,
- * and floating specular bokeh particles with elegant depth-of-field.
+ * High-Precision Ambient Interactive Canvas (ClickUp / Stripe / Linear style):
+ * Features an interactive spotlight-illuminated dot matrix grid, soft ambient glow auras,
+ * and delicate floating specular dust particles. Non-distracting, clean, and modern.
  */
 export function HullScene() {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -22,9 +22,8 @@ export function HullScene() {
 
     // 1. Scene, Camera & WebGL Renderer
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(42, mount.clientWidth / mount.clientHeight, 0.1, 100);
-    camera.position.set(0, 2.0, 8.5);
-    camera.lookAt(0, 0, 0);
+    const camera = new THREE.PerspectiveCamera(50, mount.clientWidth / mount.clientHeight, 0.1, 100);
+    camera.position.set(0, 0, 10);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -33,95 +32,94 @@ export function HullScene() {
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(mount.clientWidth, mount.clientHeight);
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = isLight ? 1.1 : 1.25;
 
     mount.appendChild(renderer.domElement);
     renderer.domElement.style.display = "block";
     renderer.domElement.style.width = "100%";
     renderer.domElement.style.height = "100%";
 
-    // 2. Lighting Architecture
-    const ambientLight = new THREE.AmbientLight(isLight ? 0xffffff : 0x0f172a, isLight ? 1.2 : 0.8);
-    scene.add(ambientLight);
+    // 2. High-Precision Interactive Dot Matrix Grid
+    const cols = 48;
+    const rows = 28;
+    const totalDots = cols * rows;
+    const spacingX = 0.55;
+    const spacingY = 0.45;
+    const offsetX = ((cols - 1) * spacingX) / 2;
+    const offsetY = ((rows - 1) * spacingY) / 2;
 
-    const mainKeyLight = new THREE.DirectionalLight(isLight ? 0x0284c7 : 0x38bdf8, isLight ? 1.8 : 2.5);
-    mainKeyLight.position.set(6, 8, 5);
-    scene.add(mainKeyLight);
+    const gridGeo = new THREE.BufferGeometry();
+    const gridPositions = new Float32Array(totalDots * 3);
+    const gridBaseColors = new Float32Array(totalDots * 3);
+    const gridColors = new Float32Array(totalDots * 3);
 
-    const fillLight = new THREE.DirectionalLight(isLight ? 0x0ea5e9 : 0x0369a1, isLight ? 0.8 : 1.4);
-    fillLight.position.set(-6, -4, 3);
-    scene.add(fillLight);
+    const baseColorLight = new THREE.Color(0x94a3b8);
+    const baseColorDark = new THREE.Color(0x1e293b);
+    const glowColor = new THREE.Color(isLight ? 0x0284c7 : 0x38bdf8);
+    const centerColor = new THREE.Color(isLight ? 0x0ea5e9 : 0x0284c7);
 
-    // Interactive Floating Cursor Glow
-    const cursorGlow = new THREE.PointLight(isLight ? 0x38bdf8 : 0x67e8f9, isLight ? 2.5 : 4.0, 12);
-    cursorGlow.position.set(0, 1, 3);
-    scene.add(cursorGlow);
+    let idx = 0;
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const x = c * spacingX - offsetX;
+        const y = -(r * spacingY - offsetY);
+        const z = 0;
 
-    // 3. Fluid Organic Ribbon Geometry
-    const gridX = 90;
-    const gridY = 70;
-    const planeGeo = new THREE.PlaneGeometry(22, 16, gridX, gridY);
-    const planePos = planeGeo.attributes.position;
-    const initialZ = new Float32Array(planePos.count);
-    const initialX = new Float32Array(planePos.count);
-    const initialY = new Float32Array(planePos.count);
+        gridPositions[idx * 3] = x;
+        gridPositions[idx * 3 + 1] = y;
+        gridPositions[idx * 3 + 2] = z;
 
-    for (let i = 0; i < planePos.count; i++) {
-      initialX[i] = planePos.getX(i);
-      initialY[i] = planePos.getY(i);
-      initialZ[i] = planePos.getZ(i);
+        const base = isLight ? baseColorLight : baseColorDark;
+        gridBaseColors[idx * 3] = base.r;
+        gridBaseColors[idx * 3 + 1] = base.g;
+        gridBaseColors[idx * 3 + 2] = base.b;
+
+        gridColors[idx * 3] = base.r;
+        gridColors[idx * 3 + 1] = base.g;
+        gridColors[idx * 3 + 2] = base.b;
+
+        idx++;
+      }
     }
 
-    // High-end Material with Specular Sheen
-    const planeMat = new THREE.MeshPhysicalMaterial({
-      color: isLight ? 0x0284c7 : 0x0369a1,
-      emissive: isLight ? 0x0284c7 : 0x0c4a6e,
-      emissiveIntensity: isLight ? 0.12 : 0.4,
-      roughness: isLight ? 0.25 : 0.2,
-      metalness: 0.1,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.1,
+    gridGeo.setAttribute("position", new THREE.BufferAttribute(gridPositions, 3));
+    gridGeo.setAttribute("color", new THREE.BufferAttribute(gridColors, 3));
+
+    const gridMat = new THREE.PointsMaterial({
+      size: isLight ? 0.04 : 0.045,
+      vertexColors: true,
       transparent: true,
-      opacity: isLight ? 0.18 : 0.35,
-      side: THREE.DoubleSide,
-      depthWrite: false,
+      opacity: isLight ? 0.45 : 0.6,
+      blending: THREE.NormalBlending,
     });
 
-    const fluidMesh = new THREE.Mesh(planeGeo, planeMat);
-    fluidMesh.rotation.x = -Math.PI / 2.35;
-    fluidMesh.position.set(0, -0.85, 0);
-    scene.add(fluidMesh);
+    const gridPoints = new THREE.Points(gridGeo, gridMat);
+    scene.add(gridPoints);
 
-    // 4. Floating Specular Bokeh Particles
-    const PARTICLE_COUNT = 75;
-    const partGeo = new THREE.BufferGeometry();
-    const partPositions = new Float32Array(PARTICLE_COUNT * 3);
-    const partScales = new Float32Array(PARTICLE_COUNT);
+    // 3. Delicate Floating Specular Bokeh Dust
+    const DUST_COUNT = 45;
+    const dustGeo = new THREE.BufferGeometry();
+    const dustPositions = new Float32Array(DUST_COUNT * 3);
 
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      partPositions[i * 3] = (Math.random() - 0.5) * 16;
-      partPositions[i * 3 + 1] = (Math.random() - 0.5) * 8 + 0.5;
-      partPositions[i * 3 + 2] = (Math.random() - 0.5) * 6 + 1;
-      partScales[i] = Math.random() * 0.05 + 0.02;
+    for (let i = 0; i < DUST_COUNT; i++) {
+      dustPositions[i * 3] = (Math.random() - 0.5) * 22;
+      dustPositions[i * 3 + 1] = (Math.random() - 0.5) * 12;
+      dustPositions[i * 3 + 2] = (Math.random() - 0.5) * 6 + 1;
     }
 
-    partGeo.setAttribute("position", new THREE.BufferAttribute(partPositions, 3));
+    dustGeo.setAttribute("position", new THREE.BufferAttribute(dustPositions, 3));
 
-    // Particle Material
-    const partMat = new THREE.PointsMaterial({
-      color: isLight ? 0x0284c7 : 0x7dd3fc,
-      size: isLight ? 0.045 : 0.055,
+    const dustMat = new THREE.PointsMaterial({
+      color: isLight ? 0x0284c7 : 0x67e8f9,
+      size: isLight ? 0.035 : 0.04,
       transparent: true,
-      opacity: isLight ? 0.45 : 0.75,
+      opacity: isLight ? 0.35 : 0.55,
       blending: THREE.AdditiveBlending,
-      depthWrite: false,
     });
 
-    const particles = new THREE.Points(partGeo, partMat);
-    scene.add(particles);
+    const dustPoints = new THREE.Points(dustGeo, dustMat);
+    scene.add(dustPoints);
 
-    // 5. Smooth Pointer Tracking with Damping
+    // 4. Pointer Interaction
     const mouse = {
       x: 0,
       y: 0,
@@ -133,13 +131,14 @@ export function HullScene() {
       const rect = mount.getBoundingClientRect();
       const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       const ny = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
-      mouse.targetX = nx;
-      mouse.targetY = ny;
+      // Map to world coordinates approx at z=0
+      mouse.targetX = nx * (cols * spacingX * 0.5);
+      mouse.targetY = ny * (rows * spacingY * 0.5);
     };
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
-    // 6. Animation Loop
+    // 5. Animation Loop
     let animId: number;
     const clock = new THREE.Clock();
 
@@ -147,48 +146,57 @@ export function HullScene() {
       animId = requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
 
-      // Smooth pointer interpolation (low-pass filter)
-      mouse.x += (mouse.targetX - mouse.x) * 0.045;
-      mouse.y += (mouse.targetY - mouse.y) * 0.045;
+      // Smooth pointer interpolation
+      mouse.x += (mouse.targetX - mouse.x) * 0.06;
+      mouse.y += (mouse.targetY - mouse.y) * 0.06;
 
-      // Update Cursor Light Position in 3D Space
-      cursorGlow.position.x = mouse.x * 5.0;
-      cursorGlow.position.y = mouse.y * 2.8 + 0.8;
-      cursorGlow.position.z = 2.8;
+      // Update dot grid colors based on distance to cursor spotlight
+      const colorsAttr = gridGeo.attributes.color;
+      const spotlightRadiusSq = 12.0;
 
-      // Gentle Camera Parallax
-      camera.position.x = mouse.x * 0.5;
-      camera.position.y = 2.0 + mouse.y * 0.3;
-      camera.lookAt(0, 0, 0);
+      for (let i = 0; i < totalDots; i++) {
+        const px = gridPositions[i * 3];
+        const py = gridPositions[i * 3 + 1];
 
-      // Subtle Mesh Undulation (Smooth Harmonic Waves)
-      if (!prefersReduced) {
-        const positions = planeGeo.attributes.position;
-        const speed = 0.55;
+        const dx = px - mouse.x;
+        const dy = py - mouse.y;
+        const distSq = dx * dx + dy * dy;
 
-        for (let i = 0; i < positions.count; i++) {
-          const u = initialX[i];
-          const v = initialY[i];
+        const baseR = gridBaseColors[i * 3];
+        const baseG = gridBaseColors[i * 3 + 1];
+        const baseB = gridBaseColors[i * 3 + 2];
 
-          // Harmonic layered waves
-          const wave1 = Math.sin(u * 0.4 + elapsed * speed) * 0.32;
-          const wave2 = Math.cos(v * 0.35 + elapsed * (speed * 0.8)) * 0.28;
-          const wave3 = Math.sin((u + v) * 0.25 + elapsed * (speed * 0.6)) * 0.18;
+        if (distSq < spotlightRadiusSq) {
+          const t = Math.max(0, 1 - distSq / spotlightRadiusSq);
+          // Ease curve
+          const intensity = t * t;
 
-          // Subtle cursor proximity elevation
-          const dx = u - mouse.x * 5.5;
-          const dy = v - mouse.y * 3.5;
-          const distSq = dx * dx + dy * dy;
-          const cursorFactor = Math.exp(-distSq / 12.0) * 0.25;
+          colorsAttr.setXYZ(
+            i,
+            baseR + (glowColor.r - baseR) * intensity,
+            baseG + (glowColor.g - baseG) * intensity,
+            baseB + (glowColor.b - baseB) * intensity
+          );
+        } else {
+          // Center subtle ambient pulse
+          const centerDistSq = px * px * 0.3 + py * py;
+          const centerGlow = Math.max(0, 1 - centerDistSq / 40.0) * 0.25;
 
-          positions.setZ(i, initialZ[i] + wave1 + wave2 + wave3 + cursorFactor);
+          colorsAttr.setXYZ(
+            i,
+            baseR + (centerColor.r - baseR) * centerGlow,
+            baseG + (centerColor.g - baseG) * centerGlow,
+            baseB + (centerColor.b - baseB) * centerGlow
+          );
         }
-        positions.needsUpdate = true;
-        planeGeo.computeVertexNormals();
+      }
 
-        // Slow organic drift for ambient particles
-        particles.rotation.y = elapsed * 0.02 + mouse.x * 0.05;
-        particles.rotation.x = elapsed * 0.01 + mouse.y * 0.03;
+      colorsAttr.needsUpdate = true;
+
+      // Gentle floating dust drift
+      if (!prefersReduced) {
+        dustPoints.position.y = Math.sin(elapsed * 0.3) * 0.2;
+        dustPoints.position.x = Math.cos(elapsed * 0.2) * 0.2;
       }
 
       renderer.render(scene, camera);
@@ -196,7 +204,7 @@ export function HullScene() {
 
     animate();
 
-    // 7. Responsive Resize Handler
+    // 6. Responsive Resize Handler
     const handleResize = () => {
       if (!mount) return;
       camera.aspect = mount.clientWidth / mount.clientHeight;
@@ -213,10 +221,10 @@ export function HullScene() {
       if (mount && renderer.domElement && mount.contains(renderer.domElement)) {
         mount.removeChild(renderer.domElement);
       }
-      planeGeo.dispose();
-      planeMat.dispose();
-      partGeo.dispose();
-      partMat.dispose();
+      gridGeo.dispose();
+      gridMat.dispose();
+      dustGeo.dispose();
+      dustMat.dispose();
       renderer.dispose();
     };
   }, [resolvedTheme]);
