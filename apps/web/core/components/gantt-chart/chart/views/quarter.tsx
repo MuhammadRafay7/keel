@@ -45,7 +45,7 @@ export const QuarterChartView = observer(function QuarterChartView(_props: any) 
                 >
                   {quarterBlock?.title}
                   {quarterBlock.today && (
-                    <span className={cn("ml-2 rounded-sm bg-accent-primary px-1 text-9 font-medium text-on-color")}>
+                    <span className={cn("ml-2 rounded-sm bg-accent-primary px-1 text-9 font-medium text-on-accent")}>
                       Current
                     </span>
                   )}
@@ -70,7 +70,7 @@ export const QuarterChartView = observer(function QuarterChartView(_props: any) 
                     <div className="flex h-full items-center justify-center space-x-1 text-11 font-medium">
                       <span
                         className={cn({
-                          "rounded-lg bg-accent-primary px-2 text-on-color": monthBlock.today,
+                          "rounded-lg bg-accent-primary px-2 text-on-accent": monthBlock.today,
                         })}
                       >
                         {monthBlock.monthData.shortTitle}

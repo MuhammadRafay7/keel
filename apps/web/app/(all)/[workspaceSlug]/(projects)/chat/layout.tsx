@@ -20,11 +20,8 @@ function WorkspaceChatHeader() {
 
 export default function WorkspaceChatLayout() {
   return (
-    <>
-      <AppHeader header={<WorkspaceChatHeader />} />
-      <ContentWrapper className="h-full w-full overflow-hidden p-0">
-        <Outlet />
-      </ContentWrapper>
-    </>
+    <ContentWrapper className="h-full w-full overflow-hidden p-0">
+      <Outlet />
+    </ContentWrapper>
   );
 }

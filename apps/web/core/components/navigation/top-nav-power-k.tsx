@@ -244,9 +244,16 @@ export const TopNavPowerK = observer(() => {
               <CloseIcon className="size-3.5 text-placeholder hover:text-primary" />
             </button>
           ) : (
-            <span className="font-mono bg-surface-3/70 hidden items-center gap-0.5 rounded-md border border-subtle/50 px-1.5 py-0.5 text-[10px] text-tertiary sm:inline-flex">
-              ⌘K
-            </span>
+            <div className="flex items-center gap-1.5">
+              <span className="font-mono bg-surface-3/70 hidden items-center gap-0.5 rounded-md border border-subtle/50 px-1.5 py-0.5 text-[10px] font-semibold text-tertiary sm:inline-flex">
+                ⌘K
+              </span>
+              <span className="from-pink-500 via-purple-500 to-sky-400 shadow-xs flex size-4.5 items-center justify-center rounded-full bg-gradient-to-tr p-0.5 text-white">
+                <span className="flex size-full items-center justify-center rounded-full bg-surface-1/20 text-[10px]">
+                  ✨
+                </span>
+              </span>
+            </div>
           )}
         </label>
       </div>

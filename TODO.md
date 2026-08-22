@@ -14,9 +14,9 @@ and not connected to anything. It was used once to generate the schema.
 | 3 — File storage               | 🔶 mostly                                 | 3 items open (sweep schedule, editor paste, orphan objects) |
 | 4 — Collaborative editing      | 🔶 done as single-writer                  | no real-time co-editing; concurrent editors overwrite       |
 | 5 — Retire Django              | ⏸️ **on hold — nothing is being deleted** | audit done, see below                                       |
-| 6 — New product surface        | ❌ not started                            | marketing site only                                         |
+| 6 — New product surface        | 🔶 partly built                           | chat, notifications, AI, attendance; MCP and push open      |
 
-**19 migrations; 24 Supabase services; 272 of 333 web service methods (81%)
+**22 migrations; 27 Supabase services; 272 of 333 web service methods (81%)
 have a Supabase path. Three Edge Functions in `supabase/functions`, deployed by
 `.github/workflows/supabase-deploy.yml` on every push to `main` that touches
 `supabase/`.**
@@ -206,12 +206,12 @@ reasons, and both have to clear before deletion is safe:
 
 ---
 
-# Phase 6 — New product surface ❌
+# Phase 6 — New product surface 🔶
 
-Not started, other than the marketing site. A repo-wide search finds no code for
-any of it: no `VAPID` or service worker, no MCP, no attendance or time tracking.
-Chat, notifications and the AI proxy have since been built — see below — so the
-Edge Function foundation that MCP also needs now exists.
+Partly built. Chat, notifications, the AI proxy and now attendance all exist —
+see below — so the Edge Function foundation that MCP also needs is in place.
+What a repo-wide search still finds no code for: `VAPID`, a service worker, and
+MCP.
 
 Ordered by dependency, not by wish. Each carries the architectural catch that
 decides how it gets built.
@@ -274,14 +274,40 @@ proxy, and that proxy is the feature.
 - [ ] The editor surfaces await the whole answer before rendering. The proxy
       and `promptWithProgress` both stream; no UI consumes the tokens yet
 
-## Attendance
+## Attendance 🔶 built, not deployed
 
-- [ ] Decide what this is: clock in/out and leave (an HR product), or time
-      tracked against work items (`projects.is_time_tracking_enabled` already
-      exists in the schema). They are different builds.
-- [ ] Records, corrections, approvals
-- [ ] Reports and export
-- [ ] Holiday and leave calendar
+Both halves, as decided: shift clocking **and** time against work items, in one
+table separated by `kind`. Honour system — no geofence, no kiosk, no PIN.
+
+`0022_attendance.sql` applies and re-applies cleanly against a reproduced
+schema in a `postgres:15` container, and the clocking, correction, leave and
+sweep paths were exercised there. It has **not** run against the live project,
+which is still at `0008`.
+
+- [x] Schema: records, breaks, corrections, leave types/balances/requests,
+      schedules, holidays, approvers, period locks
+- [x] Clock in/out, breaks, task timers, manual entry — all `SECURITY DEFINER`
+      RPCs, so the clock is the server's and no table that records time has an
+      INSERT or UPDATE policy
+- [x] Corrections and leave, with approvals. Approver is a mapping table
+      falling back to workspace admins, so it works unconfigured
+- [x] Auto-close sweep on pg_cron: closes at the scheduled end, marks
+      `needs_review`, never invents midnight hours
+- [x] Reports (`attendance_day_totals`, `attendance_team_today`) and CSV export
+- [x] UI: clock card, day ribbon, timesheet, live team board, request queues,
+      and a timer on the work item detail panel gated on
+      `projects.is_time_tracking_enabled`
+- [ ] **Blocked on the `0009`–`0021` backlog reaching the live database.**
+      Approval notifications also degrade to in-app only until transactional
+      email exists
+- [x] Admin settings UI under Settings → Features → Attendance: policy,
+      leave types, holiday calendar, per-member working hours, approvers.
+      Writes go straight at the config tables; the `write as admin` policies
+      were tested with a real non-admin role and refuse with `42501`
+- [ ] Retention: 3 years then anonymise, to reconcile mandated working-time
+      records with GDPR erasure
+- [ ] Tests. Attendance is arithmetic over time, which is where wrong numbers
+      stay invisible longest — it should get the first real suite in the repo
 
 ## MCP integrations
 

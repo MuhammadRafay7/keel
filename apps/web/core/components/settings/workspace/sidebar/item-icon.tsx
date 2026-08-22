@@ -5,7 +5,7 @@
  */
 
 import type { LucideIcon } from "@keel/propel/icons";
-import { ArrowUpToLine, Building, CreditCard, Users, Webhook } from "@keel/propel/icons";
+import { ArrowUpToLine, Building, Clock, CreditCard, Users, Webhook } from "@keel/propel/icons";
 // keel imports
 import type { ISvgIcons } from "@keel/propel/icons";
 import type { TWorkspaceSettingsTabs } from "@keel/types";
@@ -16,4 +16,5 @@ export const WORKSPACE_SETTINGS_ICONS: Record<TWorkspaceSettingsTabs, LucideIcon
   export: ArrowUpToLine,
   "billing-and-plans": CreditCard,
   webhooks: Webhook,
+  attendance: Clock,
 };
