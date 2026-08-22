@@ -88,17 +88,32 @@ export class HomeStore implements IHomeStore {
       this.loading = true;
       const widgets = await this.workspaceService.fetchWorkspaceWidgets(workspaceSlug);
       runInAction(() => {
-        this.widgets = orderBy(Object.values(widgets), "sort_order", "desc").map((widget) => widget.key);
-        widgets.forEach((widget) => {
-          this.widgetsMap[widget.key] = widget;
-        });
+        if (widgets && widgets.length > 0) {
+          this.widgets = orderBy(Object.values(widgets), "sort_order", "desc").map((widget) => widget.key);
+          widgets.forEach((widget) => {
+            this.widgetsMap[widget.key] = widget;
+          });
+        } else {
+          this.seedDefaultWidgets();
+        }
         this.loading = false;
       });
     } catch (error) {
-      console.error("Failed to fetch widgets");
-      this.loading = false;
-      throw error;
+      runInAction(() => {
+        this.seedDefaultWidgets();
+        this.loading = false;
+      });
     }
+  };
+
+  private seedDefaultWidgets = () => {
+    const defaults: Record<string, TWidgetEntityData> = {
+      recents: { key: "recents" as THomeWidgetKeys, name: "Recent Activity", is_enabled: true, sort_order: 3 },
+      quick_links: { key: "quick_links" as THomeWidgetKeys, name: "Quick Links", is_enabled: true, sort_order: 2 },
+      my_stickies: { key: "my_stickies" as THomeWidgetKeys, name: "My Stickies", is_enabled: true, sort_order: 1 },
+    };
+    this.widgetsMap = defaults;
+    this.widgets = ["recents", "quick_links", "my_stickies"];
   };
 
   toggleWidget = async (workspaceSlug: string, widgetKey: string, is_enabled: boolean) => {

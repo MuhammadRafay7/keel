@@ -50,10 +50,12 @@ html {
  * the one card style that is genuinely local to the board.
  */
 .work-item-card {
-  border-radius: 0.875rem;
+  border-radius: 1.125rem;
   border: 1px solid var(--border-subtle);
   background: var(--bg-surface-1);
-  box-shadow: var(--shadow-raised-100);
+  box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.04),
+    0 1px 2px -1px rgba(0, 0, 0, 0.04);
   /* The house curve, from the token layer — not a second copy of it. */
   transition:
     border-color 220ms var(--ease-smooth),
@@ -62,9 +64,11 @@ html {
 }
 
 .work-item-card:hover {
-  transform: translateY(-1px);
+  transform: translateY(-1.5px);
   border-color: var(--border-strong);
-  box-shadow: var(--shadow-raised-200);
+  box-shadow:
+    0 4px 12px 0 rgba(0, 0, 0, 0.06),
+    0 2px 4px -1px rgba(0, 0, 0, 0.04);
 }
 
 .work-item-card:active {

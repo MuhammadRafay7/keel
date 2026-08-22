@@ -178,7 +178,7 @@ export function NotificationSnoozeModal(props: TNotificationSnoozeModal) {
                         setValue("period", "AM");
                       }}
                       className={cn("flex h-full w-1/2 cursor-pointer items-center justify-center text-center", {
-                        "bg-accent-primary/90 text-on-color": watch("period") === "AM",
+                        "bg-accent-primary/90 text-on-accent": watch("period") === "AM",
                         "bg-layer-1": watch("period") !== "AM",
                       })}
                     >
@@ -189,7 +189,7 @@ export function NotificationSnoozeModal(props: TNotificationSnoozeModal) {
                         setValue("period", "PM");
                       }}
                       className={cn("flex h-full w-1/2 cursor-pointer items-center justify-center text-center", {
-                        "bg-accent-primary/90 text-on-color": watch("period") === "PM",
+                        "bg-accent-primary/90 text-on-accent": watch("period") === "PM",
                         "bg-layer-1": watch("period") !== "PM",
                       })}
                     >

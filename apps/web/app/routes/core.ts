@@ -87,6 +87,10 @@ export const coreRoutes: RouteConfigEntry[] = [
           route(":workspaceSlug/chat", "./(all)/[workspaceSlug]/(projects)/chat/page.tsx"),
         ]),
 
+        layout("./(all)/[workspaceSlug]/(projects)/attendance/layout.tsx", [
+          route(":workspaceSlug/attendance", "./(all)/[workspaceSlug]/(projects)/attendance/page.tsx"),
+        ]),
+
         // Notifications
         layout("./(all)/[workspaceSlug]/(projects)/notifications/layout.tsx", [
           route(":workspaceSlug/notifications", "./(all)/[workspaceSlug]/(projects)/notifications/page.tsx"),
@@ -285,6 +289,10 @@ export const coreRoutes: RouteConfigEntry[] = [
           route(
             ":workspaceSlug/settings/exports",
             "./(all)/[workspaceSlug]/(settings)/settings/(workspace)/exports/page.tsx"
+          ),
+          route(
+            ":workspaceSlug/settings/attendance",
+            "./(all)/[workspaceSlug]/(settings)/settings/(workspace)/attendance/page.tsx"
           ),
           route(
             ":workspaceSlug/settings/webhooks",

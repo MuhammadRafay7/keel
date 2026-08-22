@@ -51,7 +51,7 @@ export const AccentSwitcher = observer(function AccentSwitcher() {
                 // there and inherits down already resolved — the swatch's own
                 // ramp override would never reach it. Pointing at the ramp makes
                 // the substitution happen on the swatch, where the override is.
-                "bg-[var(--brand-default)] text-on-color",
+                "bg-[var(--brand-default)] text-on-accent",
                 // The ring sits outside the swatch so it never eats into the
                 // colour the swatch exists to show.
                 isActive ? "ring-offset-surface-1 ring-2 ring-accent-strong ring-offset-2" : "hover:scale-110"

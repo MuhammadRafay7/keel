@@ -189,7 +189,7 @@ export const OnFileCard: Story = {
         <ContextMenu.Trigger>
           <div className="w-64 cursor-pointer rounded-lg border border-subtle p-4 hover:bg-layer-1">
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-sm bg-accent-primary text-16 text-on-color">
+              <div className="flex h-12 w-12 items-center justify-center rounded-sm bg-accent-primary text-16 text-on-accent">
                 📄
               </div>
               <div className="flex-1">

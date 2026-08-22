@@ -26,7 +26,7 @@ export function FilterOption(props: Props) {
     >
       <div
         className={`grid h-3 w-3 flex-shrink-0 place-items-center border ${
-          isChecked ? "border-accent-strong bg-accent-primary text-on-color" : "border-strong"
+          isChecked ? "border-accent-strong bg-accent-primary text-on-accent" : "border-strong"
         } ${multiple ? "rounded-xs" : "rounded-full"}`}
       >
         {isChecked && <CheckIcon width={10} height={10} strokeWidth={3} />}
