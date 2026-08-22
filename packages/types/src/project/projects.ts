@@ -30,6 +30,9 @@ export interface IPartialProject {
   module_view: boolean;
   page_view: boolean;
   inbox_view: boolean;
+  /** Whether work items in this project offer a timer. The column has existed
+   *  since the schema was generated; attendance is the first thing to read it. */
+  is_time_tracking_enabled?: boolean;
   guest_view_all_features?: boolean;
   project_lead?: IUserLite | string | null;
   network?: number;

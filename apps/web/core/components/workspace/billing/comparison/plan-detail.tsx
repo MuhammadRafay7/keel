@@ -57,7 +57,7 @@ export const PlanDetail = observer(function PlanDetail(props: TPlanDetailProps) 
         <div className="flex w-full items-center gap-2 text-h4-semibold">
           <span>{subscriptionName}</span>
           {subscriptionType === EProductSubscriptionEnum.PRO && (
-            <span className="rounded-sm bg-accent-primary px-2 py-0.5 text-caption-sm-medium text-on-color">
+            <span className="rounded-sm bg-accent-primary px-2 py-0.5 text-caption-sm-medium text-on-accent">
               Popular
             </span>
           )}

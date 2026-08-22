@@ -50,15 +50,18 @@ export class SupabaseUserService {
     const session = sessionData.session;
     if (!session) throw new Error("Not signed in.");
 
+    const updatePayload: Record<string, unknown> = {
+      updated_at: new Date().toISOString(),
+    };
+    if (patch.first_name !== undefined) updatePayload.first_name = patch.first_name;
+    if (patch.last_name !== undefined) updatePayload.last_name = patch.last_name;
+    if (patch.display_name !== undefined) updatePayload.display_name = patch.display_name;
+    if (patch.user_timezone !== undefined) updatePayload.user_timezone = patch.user_timezone;
+    if (patch.avatar_url !== undefined) updatePayload.avatar = patch.avatar_url;
+
     const { data, error } = await supabase
       .from("users")
-      .update({
-        first_name: patch.first_name,
-        last_name: patch.last_name,
-        display_name: patch.display_name,
-        user_timezone: patch.user_timezone,
-        updated_at: new Date().toISOString(),
-      })
+      .update(updatePayload)
       .eq("id", session.user.id)
       .select()
       .single();

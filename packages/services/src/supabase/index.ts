@@ -5,6 +5,7 @@
  */
 
 export * from "./client";
+export * from "./attendance.service";
 export * from "./auth.service";
 export * from "./user.service";
 export * from "./profile.service";

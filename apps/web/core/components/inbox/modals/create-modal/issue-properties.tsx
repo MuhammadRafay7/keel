@@ -179,9 +179,9 @@ export const InboxIssueProperties = observer(function InboxIssueProperties(props
               customButton={
                 <button
                   type="button"
-                  className="flex h-full cursor-pointer items-center justify-between gap-1 rounded-sm border-[0.5px] border-strong px-2 py-0.5 text-11 hover:bg-layer-1"
+                  className="shadow-2xs flex h-7 cursor-pointer items-center justify-between gap-1.5 rounded-full border border-subtle/80 bg-surface-1 px-3 py-1 text-12 font-medium text-secondary transition-all hover:border-strong hover:bg-surface-2 hover:text-primary"
                 >
-                  <ParentPropertyIcon className="h-3 w-3 flex-shrink-0" />
+                  <ParentPropertyIcon className="size-3.5 flex-shrink-0 text-tertiary" />
                   <span className="whitespace-nowrap">
                     {selectedParentIssue
                       ? `${selectedParentIssue.project__identifier}-${selectedParentIssue.sequence_id}`
@@ -212,10 +212,10 @@ export const InboxIssueProperties = observer(function InboxIssueProperties(props
           ) : (
             <button
               type="button"
-              className="flex h-full cursor-pointer items-center justify-between gap-1 rounded-sm border-[0.5px] border-strong px-2 py-0.5 text-11 hover:bg-layer-1"
+              className="shadow-2xs flex h-7 cursor-pointer items-center justify-between gap-1.5 rounded-full border border-subtle/80 bg-surface-1 px-3 py-1 text-12 font-medium text-secondary transition-all hover:border-strong hover:bg-surface-2 hover:text-primary"
               onClick={() => setParentIssueModalOpen(true)}
             >
-              <ParentPropertyIcon className="h-3 w-3 flex-shrink-0" />
+              <ParentPropertyIcon className="size-3.5 flex-shrink-0 text-tertiary" />
               <span className="whitespace-nowrap">Add parent</span>
             </button>
           )}

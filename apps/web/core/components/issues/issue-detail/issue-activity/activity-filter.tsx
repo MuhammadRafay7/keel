@@ -51,7 +51,7 @@ export const ActivityFilter = observer(function ActivityFilter(props: TActivityF
             className={cn(
               "flex h-3 w-3 flex-shrink-0 items-center justify-center rounded-xs bg-surface-2 transition-all",
               {
-                "bg-accent-primary text-on-color": item.isSelected,
+                "bg-accent-primary text-on-accent": item.isSelected,
                 "bg-layer-1 text-placeholder": item.isSelected && selectedFilters.length === 1,
                 "bg-surface-2": !item.isSelected,
               }

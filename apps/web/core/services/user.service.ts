@@ -60,6 +60,7 @@ export class UserService extends APIService {
   }
 
   async currentUser(): Promise<IUser> {
+    if (isSupabaseConfigured) return (await supabaseUserService.currentUser()) as IUser;
     // Using validateStatus: null to bypass interceptors for unauthorized errors.
     return this.get("/api/users/me/", { validateStatus: null })
       .then((response) => response?.data)
@@ -69,6 +70,7 @@ export class UserService extends APIService {
   }
 
   async getCurrentUserProfile(): Promise<TUserProfile> {
+    if (isSupabaseConfigured) return supabaseProfileService.profile();
     return this.get("/api/users/me/profile/")
       .then((response) => response?.data)
       .catch((error) => {
@@ -76,6 +78,7 @@ export class UserService extends APIService {
       });
   }
   async updateCurrentUserProfile(data: any): Promise<any> {
+    if (isSupabaseConfigured) return supabaseProfileService.updateProfile(data);
     return this.patch("/api/users/me/profile/", data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -119,6 +122,7 @@ export class UserService extends APIService {
   }
 
   async updateUser(data: Partial<IUser>): Promise<any> {
+    if (isSupabaseConfigured) return supabaseUserService.updateCurrentUser(data);
     return this.patch("/api/users/me/", data)
       .then((response) => response?.data)
       .catch((error) => {

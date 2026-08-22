@@ -152,7 +152,7 @@ export const Countdown: Story = {
             <AnimatedCounter count={count} size="lg" className="text-20" />
           </div>
           <button
-            className="rounded-lg bg-accent-primary px-6 py-2 font-medium text-on-color hover:bg-accent-primary/80"
+            className="rounded-lg bg-accent-primary px-6 py-2 font-medium text-on-accent hover:bg-accent-primary/80"
             onClick={handleStart}
             disabled={isRunning}
           >
@@ -289,7 +289,7 @@ export const InBadge: Story = {
             </div>
           </div>
           <button
-            className="rounded-sm bg-accent-primary px-4 py-2 text-on-color hover:bg-accent-primary/80"
+            className="rounded-sm bg-accent-primary px-4 py-2 text-on-accent hover:bg-accent-primary/80"
             onClick={() => setNotifications((prev) => prev + 1)}
           >
             Add Notification
@@ -318,7 +318,7 @@ export const FastAnimation: Story = {
           </div>
           <div className="flex gap-2">
             <button
-              className="rounded-sm bg-accent-primary px-4 py-2 text-on-color hover:bg-accent-primary/80"
+              className="rounded-sm bg-accent-primary px-4 py-2 text-on-accent hover:bg-accent-primary/80"
               onClick={incrementFast}
             >
               +10 Fast

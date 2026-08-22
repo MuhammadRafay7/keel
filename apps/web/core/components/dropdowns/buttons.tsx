@@ -82,9 +82,9 @@ function BorderButton(props: ButtonProps) {
         variant="ghost"
         size="sm"
         className={cn(
-          "flex h-full w-full items-center justify-start gap-1.5 border-[0.5px] border-strong",
+          "shadow-2xs flex h-7 items-center justify-start gap-1.5 rounded-full border border-subtle/80 bg-surface-1 px-3 py-1 text-12 font-medium text-secondary transition-all duration-150 hover:border-strong hover:bg-surface-2 hover:text-primary",
           {
-            "bg-layer-transparent-active": isActive,
+            "border-accent-primary/50 bg-accent-primary/10 font-semibold text-accent-primary": isActive,
           },
           className
         )}
@@ -110,7 +110,7 @@ function BackgroundButton(props: ButtonProps) {
         variant="ghost"
         size="sm"
         className={cn(
-          "flex h-full w-full items-center justify-between gap-1.5 bg-layer-3 hover:bg-layer-1-hover",
+          "hover:bg-surface-3 flex h-7 items-center justify-between gap-1.5 rounded-full border border-subtle/50 bg-surface-2 px-3 py-1 text-12 font-medium text-secondary transition-colors duration-150",
           className
         )}
       >
@@ -135,9 +135,9 @@ function TransparentButton(props: ButtonProps) {
         variant="ghost"
         size="sm"
         className={cn(
-          "flex h-full w-full items-center justify-between gap-1.5",
+          "flex h-7 items-center justify-between gap-1.5 rounded-full px-2.5 py-1 text-12 font-medium transition-colors duration-150 hover:bg-surface-2",
           {
-            "bg-layer-transparent-active": isActive,
+            "bg-accent-primary/10 font-semibold text-accent-primary": isActive,
           },
           className
         )}

@@ -282,12 +282,7 @@ export const KanbanGroup = observer(function KanbanGroup(props: IKanbanGroup) {
     <div
       id={`${groupId}__${sub_group_id}`}
       className={cn(
-        /*
-         * A column is a well, not a card: it is the recessed ground the cards
-         * sit in. It had an outward raised shadow, which put it at the same
-         * apparent height as the cards inside it and flattened the board.
-         */
-        "relative h-full min-h-[120px] rounded-2xl border border-subtle bg-surface-2/60 p-2 transition-smooth",
+        "shadow-2xs relative h-full min-h-[120px] rounded-2xl border border-subtle/70 bg-surface-2/40 p-2.5 transition-smooth dark:bg-surface-2/30",
         // Dropping into a column lights the whole well, so the target is
         // unmistakable even when the cursor is nowhere near a card.
         { "border-accent-primary/50 bg-accent-subtle/40": isDraggingOverColumn },
