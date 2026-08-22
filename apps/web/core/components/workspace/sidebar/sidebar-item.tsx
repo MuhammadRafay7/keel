@@ -47,9 +47,16 @@ export const SidebarItemBase = observer(function SidebarItemBase({
     if (isExtendedSidebarOpened) toggleExtendedSidebar(false);
   };
 
+  /*
+   * Items shown without the user having to pin them first. Workspace chat
+   * belongs here: its route and nav entry were added but the key was left out
+   * of this list, so the entry rendered only for someone who had already
+   * pinned it — which nobody can do for an item they cannot see.
+   */
   const staticItems = [
     "home",
     "pi_chat",
+    "chat",
     "projects",
     "your_work",
     "stickies",
