@@ -14,6 +14,7 @@ import { TOAST_TYPE, setToast } from "@keel/propel/toast";
 import type { TIssue, ISearchIssueResponse, TIssueKanbanFilters, TIssueGroupByOptions } from "@keel/types";
 // ui
 import { CustomMenu } from "@keel/ui";
+import { cn } from "@keel/utils";
 // components
 import { ExistingIssuesListModal } from "@/components/core/modals/existing-issues-list-modal";
 import { CreateUpdateIssueModal } from "@/components/issues/issue-modal/modal";
@@ -115,9 +116,12 @@ export const HeaderGroupByCard = observer(function HeaderGroupByCard(props: IHea
         />
       )}
       <div
-        className={`group/column-header relative flex flex-shrink-0 gap-2 rounded-xl border border-subtle bg-surface-2/80 px-2.5 py-1.5 shadow-raised-100 backdrop-blur-md transition-smooth ${
-          verticalAlignPosition ? `w-[44px] flex-col items-center` : `w-full flex-row items-center justify-between`
-        }`}
+        className={cn(
+          "group/column-header shadow-2xs relative flex flex-shrink-0 gap-2 rounded-2xl border border-subtle/80 bg-surface-1/90 px-3.5 py-2 backdrop-blur-md transition-smooth",
+          verticalAlignPosition
+            ? "bg-sky-500/10 dark:bg-sky-500/20 border-sky-500/30 text-sky-600 dark:text-sky-400 w-[48px] flex-col items-center py-4"
+            : "w-full flex-row items-center justify-between"
+        )}
       >
         <div
           className={`flex min-w-0 items-center gap-2 ${verticalAlignPosition ? "flex-col" : "flex-row overflow-hidden"}`}
@@ -127,19 +131,19 @@ export const HeaderGroupByCard = observer(function HeaderGroupByCard(props: IHea
           </span>
 
           <div
-            className={`relative flex min-w-0 gap-1.5 ${
+            className={`relative flex min-w-0 gap-2 ${
               verticalAlignPosition ? `flex-col items-center` : `flex-row items-center overflow-hidden`
             }`}
           >
             <span
-              className={`truncate text-13 font-semibold text-primary ${
+              className={`truncate text-13 font-bold text-primary ${
                 verticalAlignPosition ? `max-h-[400px] vertical-lr` : ``
               }`}
             >
               {title}
             </span>
             {/* min-w so a column ticking 9 -> 10 does not nudge the title. */}
-            <span className="flex h-[18px] min-w-[22px] shrink-0 items-center justify-center rounded-full bg-layer-1 px-1.5 text-11 font-semibold text-secondary tabular-nums">
+            <span className="shadow-2xs flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-layer-2 px-2 text-11 font-semibold text-secondary tabular-nums">
               {count || 0}
             </span>
           </div>

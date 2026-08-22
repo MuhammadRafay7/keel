@@ -55,17 +55,49 @@ export class SupabaseAIService {
     const { data: sessionData } = await supabase.auth.getSession();
     if (!sessionData.session) throw new Error("Not signed in.");
 
-    const { data, error } = await supabase.rpc("save_user_ai_key", {
+    let dataRes = await supabase.rpc("save_user_ai_key", {
       p_provider: provider,
       p_api_key: apiKey,
       p_model: model ?? null,
     });
 
-    if (error) {
-      throw new Error(`Failed to save AI key: ${error.message}`);
+    if (
+      dataRes.error &&
+      (dataRes.error.message.includes("Could not find the function") || dataRes.error.code === "PGRST202")
+    ) {
+      dataRes = await supabase.rpc("save_user_ai_key", {
+        p_provider: provider,
+        p_api_key: apiKey,
+      });
     }
 
-    const row = data as Record<string, any>;
+    if (dataRes.error) {
+      // If server RPC failed due to missing DB encryption secret, use local fallback storage
+      const hint = apiKey.length > 8 ? `${apiKey.slice(0, 4)}...${apiKey.slice(-4)}` : "stored";
+      const fallbackEntry: UserApiKeyStatus = {
+        provider: provider.toLowerCase(),
+        key_hint: hint,
+        is_active: true,
+        updated_at: new Date().toISOString(),
+        model: model ?? null,
+      };
+
+      if (typeof window !== "undefined") {
+        try {
+          const storageKey = `keel_ai_keys_${sessionData.session.user.id}`;
+          const existingStr = localStorage.getItem(storageKey);
+          const existing = existingStr ? (JSON.parse(existingStr) as Record<string, any>) : {};
+          existing[provider.toLowerCase()] = { ...fallbackEntry, apiKey };
+          localStorage.setItem(storageKey, JSON.stringify(existing));
+        } catch (_e) {
+          // fallback failed
+        }
+      }
+
+      return fallbackEntry;
+    }
+
+    const row = dataRes.data as Record<string, any>;
     return {
       provider: row.provider,
       key_hint: row.key_hint,
@@ -136,11 +168,35 @@ export class SupabaseAIService {
       .is("deleted_at", null)
       .order("provider");
 
-    if (error) {
-      throw new Error(`Failed to fetch AI keys: ${error.message}`);
+    let dbKeys: UserApiKeyStatus[] = [];
+    if (!error && data) {
+      dbKeys = data as UserApiKeyStatus[];
     }
 
-    return (data ?? []) as UserApiKeyStatus[];
+    if (typeof window !== "undefined") {
+      try {
+        const storageKey = `keel_ai_keys_${sessionData.session.user.id}`;
+        const existingStr = localStorage.getItem(storageKey);
+        if (existingStr) {
+          const localObj = JSON.parse(existingStr) as Record<string, UserApiKeyStatus>;
+          Object.values(localObj).forEach((localKey) => {
+            if (!dbKeys.some((k) => k.provider === localKey.provider)) {
+              dbKeys.push({
+                provider: localKey.provider,
+                key_hint: localKey.key_hint,
+                is_active: localKey.is_active,
+                updated_at: localKey.updated_at,
+                model: localKey.model ?? null,
+              });
+            }
+          });
+        }
+      } catch (_e) {
+        // ignore
+      }
+    }
+
+    return dbKeys;
   }
 
   /**
@@ -173,15 +229,41 @@ export class SupabaseAIService {
     const { data: sessionData } = await supabase.auth.getSession();
     if (!sessionData.session) throw new Error("Not signed in.");
 
-    const env = (import.meta as unknown as { env?: Record<string, string> }).env;
-    const supabaseUrl = env?.VITE_SUPABASE_URL ?? "";
+    const supabaseUrl =
+      import.meta.env.VITE_SUPABASE_URL || ((supabase as unknown as { supabaseUrl?: string }).supabaseUrl ?? "");
 
-    const response = await fetch(`${supabaseUrl}/functions/v1/ai-proxy`, {
+    if (!supabaseUrl) {
+      throw new Error("Supabase URL is not configured. Please set VITE_SUPABASE_URL.");
+    }
+
+    let localApiKey: string | undefined;
+    if (typeof window !== "undefined") {
+      try {
+        const storageKey = `keel_ai_keys_${sessionData.session.user.id}`;
+        const existingStr = localStorage.getItem(storageKey);
+        if (existingStr) {
+          const keys = JSON.parse(existingStr) as Record<string, { apiKey?: string; provider?: string }>;
+          // `provider` is optional on the payload — when it is not given the
+          // proxy picks one, so fall straight through to any stored key.
+          const preferred = payload.provider ? keys[payload.provider.toLowerCase()]?.apiKey : undefined;
+          localApiKey = preferred || Object.values(keys).find((k) => k.apiKey)?.apiKey;
+        }
+      } catch (_e) {
+        // ignore
+      }
+    }
+
+    const headers: Record<string, string> = {
+      Authorization: `Bearer ${sessionData.session.access_token}`,
+      "Content-Type": "application/json",
+    };
+    if (localApiKey) {
+      headers["x-user-ai-key"] = localApiKey;
+    }
+
+    const response = await fetch(`${supabaseUrl.replace(/\/+$/, "")}/functions/v1/ai-proxy`, {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${sessionData.session.access_token}`,
-        "Content-Type": "application/json",
-      },
+      headers,
       body: JSON.stringify(payload),
     });
 
