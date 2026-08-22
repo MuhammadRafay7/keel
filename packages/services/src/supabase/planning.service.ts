@@ -143,7 +143,10 @@ export class SupabasePlanningService {
   }
 
   async createCycle(workspaceSlug: string, projectId: string, data: Partial<ICycle>): Promise<ICycle> {
-    const { data: created, error } = await getSupabase().rpc("create_cycle", {
+    const supabase = getSupabase();
+    let created: Record<string, unknown> | null = null;
+
+    const rpcRes = await supabase.rpc("create_cycle", {
       p_project_id: projectId,
       p_name: data.name ?? "",
       p_description: data.description ?? "",
@@ -151,8 +154,32 @@ export class SupabasePlanningService {
       p_end_date: data.end_date ?? null,
     });
 
-    if (error) throw new Error(error.message);
-    return this.toCycle(created as Record<string, unknown>);
+    if (rpcRes.error) {
+      const projectRes = await supabase.from("projects").select("workspace_id").eq("id", projectId).single();
+      const workspaceId = projectRes.data?.workspace_id;
+      const session = (await supabase.auth.getSession()).data.session;
+      const { data: directData, error: directErr } = await supabase
+        .from("cycles")
+        .insert({
+          project_id: projectId,
+          workspace_id: workspaceId,
+          name: data.name ?? "",
+          description: data.description ?? "",
+          start_date: data.start_date ?? null,
+          end_date: data.end_date ?? null,
+          created_by: session?.user?.id ?? null,
+          owned_by: session?.user?.id ?? null,
+        })
+        .select(CYCLE_FIELDS)
+        .single();
+
+      if (directErr) throw new Error(directErr.message);
+      created = directData as unknown as Record<string, unknown>;
+    } else {
+      created = rpcRes.data as Record<string, unknown>;
+    }
+
+    return this.toCycle(created);
   }
 
   async patchCycle(workspaceSlug: string, projectId: string, cycleId: string, patch: Partial<ICycle>): Promise<ICycle> {

@@ -55,17 +55,27 @@ export class SupabaseAIService {
     const { data: sessionData } = await supabase.auth.getSession();
     if (!sessionData.session) throw new Error("Not signed in.");
 
-    const { data, error } = await supabase.rpc("save_user_ai_key", {
+    let dataRes = await supabase.rpc("save_user_ai_key", {
       p_provider: provider,
       p_api_key: apiKey,
       p_model: model ?? null,
     });
 
-    if (error) {
-      throw new Error(`Failed to save AI key: ${error.message}`);
+    if (
+      dataRes.error &&
+      (dataRes.error.message.includes("Could not find the function") || dataRes.error.code === "PGRST202")
+    ) {
+      dataRes = await supabase.rpc("save_user_ai_key", {
+        p_provider: provider,
+        p_api_key: apiKey,
+      });
     }
 
-    const row = data as Record<string, any>;
+    if (dataRes.error) {
+      throw new Error(`Failed to save AI key: ${dataRes.error.message}`);
+    }
+
+    const row = dataRes.data as Record<string, any>;
     return {
       provider: row.provider,
       key_hint: row.key_hint,

@@ -26,40 +26,45 @@ const toChannelSlug = (name: string): string =>
 
 export class ChatService {
   /** Resolves the workspace a project belongs to — both chat tables are keyed on it. */
-  private async getWorkspaceId(projectId: string): Promise<string> {
+  private async getWorkspaceId(projectIdOrSlug: string): Promise<string> {
     const supabase = getSupabase();
 
-    const { data, error } = await supabase.from("projects").select("workspace_id").eq("id", projectId).single();
+    const { data: projData } = await supabase
+      .from("projects")
+      .select("workspace_id")
+      .eq("id", projectIdOrSlug)
+      .maybeSingle();
+    if (projData?.workspace_id) return projData.workspace_id;
 
-    if (error || !data) throw error ?? new Error("That project does not exist.");
+    const { data: wsData } = await supabase.from("workspaces").select("id").eq("slug", projectIdOrSlug).maybeSingle();
+    if (wsData?.id) return wsData.id;
 
-    return (data as { workspace_id: string }).workspace_id;
+    return projectIdOrSlug;
   }
 
   /**
    * Lists a project's channels, seeding the defaults the first time it is opened.
-   *
-   * The rows have to be real, because everything downstream — reading messages,
-   * sending them, subscribing — joins on the channel's uuid.
    */
   async getChannels(_workspaceSlug: string, projectId: string): Promise<IChatChannel[]> {
     const supabase = getSupabase();
+    const workspaceId = await this.getWorkspaceId(_workspaceSlug || projectId);
 
     const { data, error } = await supabase
       .from("chat_channels")
       .select("*")
-      .eq("project_id", projectId)
+      .or(`project_id.eq.${projectId},workspace_id.eq.${workspaceId}`)
       .order("created_at", { ascending: true });
 
     if (error) throw error;
     if (data && data.length > 0) return data as IChatChannel[];
 
-    return this.seedDefaultChannels(projectId);
+    return this.seedDefaultChannels(projectId === "global" ? _workspaceSlug : projectId);
   }
 
   private async seedDefaultChannels(projectId: string): Promise<IChatChannel[]> {
     const supabase = getSupabase();
     const workspaceId = await this.getWorkspaceId(projectId);
+    const actualProjectId = projectId === "global" || projectId === workspaceId ? "" : projectId;
 
     const { data, error } = await supabase
       .from("chat_channels")
@@ -67,18 +72,17 @@ export class ChatService {
         DEFAULT_CHANNELS.map((channel) => ({
           name: channel.name,
           description: channel.description,
-          project_id: projectId,
+          project_id: actualProjectId,
           workspace_id: workspaceId,
         }))
       )
       .select();
 
-    // A second tab may have won the race; re-read rather than fail the view.
     if (error) {
       const { data: existing } = await supabase
         .from("chat_channels")
         .select("*")
-        .eq("project_id", projectId)
+        .eq("workspace_id", workspaceId)
         .order("created_at", { ascending: true });
 
       if (existing && existing.length > 0) return existing as IChatChannel[];
@@ -94,7 +98,8 @@ export class ChatService {
     channel: Partial<IChatChannel>
   ): Promise<IChatChannel> {
     const supabase = getSupabase();
-    const workspaceId = await this.getWorkspaceId(projectId);
+    const workspaceId = await this.getWorkspaceId(_workspaceSlug || projectId);
+    const actualProjectId = projectId === "global" || projectId === workspaceId ? "" : projectId;
 
     const { data, error } = await supabase
       .from("chat_channels")
@@ -102,7 +107,7 @@ export class ChatService {
         {
           name: toChannelSlug(channel.name ?? ""),
           description: channel.description ?? "",
-          project_id: projectId,
+          project_id: actualProjectId,
           workspace_id: workspaceId,
         },
       ])
@@ -137,13 +142,14 @@ export class ChatService {
     const supabase = getSupabase();
     const workspaceId = await this.getWorkspaceId(projectId);
     const user = (await supabase.auth.getUser())?.data?.user;
+    const actualProjectId = projectId === "global" || projectId === workspaceId ? "" : projectId;
 
     const { data, error } = await supabase
       .from("chat_messages")
       .insert([
         {
           channel_id: channelId,
-          project_id: projectId,
+          project_id: actualProjectId,
           workspace_id: workspaceId,
           message: messageText,
           sender_id: user?.id ?? null,

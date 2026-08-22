@@ -9,8 +9,7 @@ import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 // keel propel & icons
 import { Button } from "@keel/propel/button";
-import { CommentFillIcon, PlusIcon, SearchIcon, LinkIcon } from "@keel/propel/icons";
-import { setToast, TOAST_TYPE } from "@keel/propel/toast";
+import { CommentFillIcon, PlusIcon, SearchIcon, LinkIcon, CheckIcon } from "@keel/propel/icons";
 import type { IChatChannel, IChatMessage } from "@keel/types";
 import { cn } from "@keel/utils";
 // services & hooks
@@ -69,7 +68,7 @@ const startsBlock = (message: IChatMessage, previous: IChatMessage | undefined):
   return !Number.isFinite(gap) || gap > GROUPING_WINDOW_MS;
 };
 
-// Inline SVG Icon components matching 16px/20px optical size spec
+// Inline SVG Icon components matching optical specs
 function HashIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -150,6 +149,205 @@ function AtSignIcon({ className }: { className?: string }) {
   );
 }
 
+function BoldIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M14 12a4 4 0 0 0 0-8H6v8" />
+      <path d="M15 20a4 4 0 0 0 0-8H6v8" />
+    </svg>
+  );
+}
+
+function ItalicIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <line x1="19" y1="4" x2="10" y2="4" />
+      <line x1="14" y1="20" x2="5" y2="20" />
+      <line x1="15" y1="4" x2="9" y2="20" />
+    </svg>
+  );
+}
+
+function CodeIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polyline points="16 18 22 12 16 6" />
+      <polyline points="8 6 2 12 8 18" />
+    </svg>
+  );
+}
+
+function CodeBlockIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+      <path d="M7 8l4 4-4 4" />
+      <path d="M13 16h4" />
+    </svg>
+  );
+}
+
+function ListIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <line x1="8" y1="6" x2="21" y2="6" />
+      <line x1="8" y1="12" x2="21" y2="12" />
+      <line x1="8" y1="18" x2="21" y2="18" />
+      <line x1="3" y1="6" x2="3.01" y2="6" />
+      <line x1="3" y1="12" x2="3.01" y2="12" />
+      <line x1="3" y1="18" x2="3.01" y2="18" />
+    </svg>
+  );
+}
+
+/** Rich Markdown Renderer for Slack/ClickUp-style chat messages */
+function ChatMessageContent({ text }: { text: string }) {
+  if (!text) return null;
+
+  // Split code blocks first
+  const codeBlockRegex = /```([a-z]*)\n?([\s\S]*?)```/g;
+  const parts = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = codeBlockRegex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push({ type: "text", content: text.slice(lastIndex, match.index) });
+    }
+    parts.push({ type: "codeblock", language: match[1], content: match[2] });
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < text.length) {
+    parts.push({ type: "text", content: text.slice(lastIndex) });
+  }
+
+  return (
+    <div className="space-y-1.5 text-13 leading-relaxed break-words text-primary">
+      {parts.map((part, pIdx) => {
+        if (part.type === "codeblock") {
+          return (
+            <div
+              key={pIdx}
+              className="font-mono my-2 overflow-x-auto rounded-lg border border-subtle bg-surface-2 p-3 text-12 text-primary shadow-raised-100"
+            >
+              <div className="tracking-wider mb-1 flex items-center justify-between text-10 font-semibold text-tertiary uppercase">
+                <span>{part.language || "code"}</span>
+              </div>
+              <pre className="font-mono text-12 leading-normal whitespace-pre">{part.content}</pre>
+            </div>
+          );
+        }
+
+        // Parse inline formatting (code, bold, italic)
+        const lines = part.content.split("\n");
+        return lines.map((line, lIdx) => {
+          if (line.startsWith("> ")) {
+            return (
+              <blockquote key={lIdx} className="border-accent-primary my-1 border-l-2 pl-2.5 text-secondary italic">
+                {line.slice(2)}
+              </blockquote>
+            );
+          }
+          if (line.startsWith("- ") || line.startsWith("* ")) {
+            return (
+              <div key={lIdx} className="flex items-start gap-2 pl-2">
+                <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent-primary" />
+                <span>{line.slice(2)}</span>
+              </div>
+            );
+          }
+
+          // Inline formatting tags
+          const inlineRegex = /(`[^`]+`|\*\*[^*]+\*\*|\*[^*]+\*)/g;
+          const tokens = line.split(inlineRegex);
+
+          return (
+            <p key={lIdx} className="whitespace-pre-wrap">
+              {tokens.map((token, tIdx) => {
+                if (token.startsWith("`") && token.endsWith("`")) {
+                  return (
+                    <code
+                      key={tIdx}
+                      className="font-mono mx-0.5 rounded border border-subtle bg-surface-2 px-1.5 py-0.5 text-12 text-accent-primary"
+                    >
+                      {token.slice(1, -1)}
+                    </code>
+                  );
+                }
+                if (token.startsWith("**") && token.endsWith("**")) {
+                  return (
+                    <strong key={tIdx} className="font-semibold">
+                      {token.slice(2, -2)}
+                    </strong>
+                  );
+                }
+                if (token.startsWith("*") && token.endsWith("*")) {
+                  return (
+                    <em key={tIdx} className="italic">
+                      {token.slice(1, -1)}
+                    </em>
+                  );
+                }
+                return token;
+              })}
+            </p>
+          );
+        });
+      })}
+    </div>
+  );
+}
+
 export const WorkspaceChatView = observer(function WorkspaceChatView({
   workspaceSlug: propSlug,
 }: {
@@ -203,29 +401,31 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
         if (fetchedChannels.length > 0) setActiveChannel(fetchedChannels[0]);
       } catch (_err) {
         if (!cancelled) {
-          setChannels([
+          const fallbackChannels = [
             {
               id: "general",
               name: "general",
               workspace_id: workspaceSlug,
               project_id: "",
-              description: "Workspace-wide general channel",
+              description: "General discussions",
             },
             {
-              id: "random",
-              name: "random",
+              id: "dev-team",
+              name: "dev-team",
               workspace_id: workspaceSlug,
               project_id: "",
-              description: "Non-work banters & random chatter",
+              description: "Engineering chat",
             },
-          ]);
-          setActiveChannel({
-            id: "general",
-            name: "general",
-            workspace_id: workspaceSlug,
-            project_id: "",
-            description: "Workspace-wide general channel",
-          });
+            {
+              id: "design-ui",
+              name: "design-ui",
+              workspace_id: workspaceSlug,
+              project_id: "",
+              description: "UI/UX specs",
+            },
+          ];
+          setChannels(fallbackChannels);
+          setActiveChannel(fallbackChannels[0]);
         }
       } finally {
         if (!cancelled) setIsLoadingChannels(false);
@@ -297,13 +497,19 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
     setMessages((prev) => [...prev, tempMsg]);
 
     try {
-      const created = await supabaseChatService.sendMessage("global", channelId, textToSend, userName, []);
+      const created = await supabaseChatService.sendMessage(
+        workspaceSlug || "global",
+        channelId,
+        textToSend,
+        userName,
+        []
+      );
       setMessages((prev) => {
         const withoutTemp = prev.filter((m) => m.id !== tempMsg.id);
         return withoutTemp.some((m) => m.id === created.id) ? withoutTemp : [...withoutTemp, created];
       });
     } catch (_err) {
-      // keep optimistic UI for dev/preview
+      // optimistic state preserved
     } finally {
       setIsSending(false);
     }
@@ -312,17 +518,44 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
   const handleCreateChannel = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newChannelName.trim() || !workspaceSlug) return;
-    const newCh: IChatChannel = {
-      id: `ch-${Date.now()}`,
-      name: newChannelName.toLowerCase().replace(/\s+/g, "-"),
-      workspace_id: workspaceSlug,
-      project_id: "",
-    };
-    setChannels((prev) => [...prev, newCh]);
-    setActiveChannel(newCh);
+    const newChName = newChannelName.toLowerCase().replace(/\s+/g, "-");
+    try {
+      const created = await supabaseChatService.createChannel(workspaceSlug, workspaceSlug, {
+        name: newChName,
+        description: `Channel #${newChName}`,
+      });
+      setChannels((prev) => [...prev, created]);
+      setActiveChannel(created);
+    } catch {
+      const fallbackCh: IChatChannel = {
+        id: `ch-${Date.now()}`,
+        name: newChName,
+        workspace_id: workspaceSlug,
+        project_id: "",
+      };
+      setChannels((prev) => [...prev, fallbackCh]);
+      setActiveChannel(fallbackCh);
+    }
     setActiveDirectMemberId(null);
     setNewChannelName("");
     setIsCreatingChannel(false);
+  };
+
+  const insertFormatting = (prefix: string, suffix: string = "") => {
+    const textarea = inputRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selected = inputMessage.slice(start, end);
+    const replacement = `${prefix}${selected || "text"}${suffix}`;
+    const nextText = inputMessage.slice(0, start) + replacement + inputMessage.slice(end);
+
+    setInputMessage(nextText);
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + prefix.length, start + prefix.length + (selected.length || 4));
+    }, 0);
   };
 
   const activeDirectUser = activeDirectMemberId ? getUserDetails(activeDirectMemberId) : null;
@@ -331,186 +564,127 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
     : null;
 
   return (
-    <div className="flex h-full w-full overflow-hidden bg-canvas text-primary">
-      {/* Channel & Direct Message Sidebar */}
-      <aside className="flex w-[260px] shrink-0 flex-col border-r border-subtle bg-surface-1">
-        <header className="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-subtle px-4">
-          <div className="flex min-w-0 items-center gap-2">
-            <CommentFillIcon className="size-4 shrink-0 text-accent-primary" />
-            <h2 className="truncate text-14 font-semibold text-primary">Workspace Chat</h2>
+    <div className="flex h-full w-full flex-col overflow-hidden bg-canvas text-primary">
+      {/* Top Integrated Channel Header & Switcher (No duplicate sidebar) */}
+      <header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-subtle bg-surface-1 px-5 py-3">
+        <div className="flex items-center gap-3 overflow-x-auto py-0.5">
+          <div className="flex items-center gap-2 border-r border-subtle pr-2">
+            <CommentFillIcon className="size-5 shrink-0 text-accent-primary" />
+            <span className="text-14 font-semibold text-primary">Workspace Chat</span>
           </div>
+
+          <div className="flex items-center gap-1.5">
+            {channels.map((ch) => {
+              const isActive = activeChannel?.id === ch.id && !activeDirectMemberId;
+              return (
+                <button
+                  key={ch.id}
+                  type="button"
+                  onClick={() => {
+                    setActiveChannel(ch);
+                    setActiveDirectMemberId(null);
+                  }}
+                  className={cn(
+                    "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-13 font-medium transition-colors duration-150",
+                    isActive
+                      ? "shadow-sm bg-accent-primary/10 text-accent-primary"
+                      : "text-secondary hover:bg-layer-transparent-hover hover:text-primary"
+                  )}
+                >
+                  <HashIcon className={cn("size-3.5", isActive ? "text-accent-primary" : "text-tertiary")} />
+                  <span>{ch.name}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {/* Member Direct Messages Dropdown / Switcher */}
+          {members.length > 0 && (
+            <div className="flex items-center gap-1">
+              <span className="text-11 font-medium text-tertiary">DMs:</span>
+              {members.slice(0, 3).map((m) => (
+                <button
+                  key={m.id}
+                  type="button"
+                  onClick={() => {
+                    setActiveDirectMemberId(m.id);
+                  }}
+                  className={cn(
+                    "flex items-center gap-1 rounded-full px-2.5 py-1 text-12 font-medium transition-colors",
+                    activeDirectMemberId === m.id
+                      ? "bg-accent-primary text-on-color"
+                      : "bg-surface-2 text-secondary hover:bg-surface-2/80"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "flex size-4 items-center justify-center rounded-full text-10 font-bold",
+                      tintFor(m.id)
+                    )}
+                  >
+                    {initialOf(m.name)}
+                  </span>
+                  <span>{m.name.split(" ")[0]}</span>
+                </button>
+              ))}
+            </div>
+          )}
+
           <button
             type="button"
             onClick={() => setIsCreatingChannel(!isCreatingChannel)}
-            title="Create a channel"
-            aria-label="Create a channel"
-            className="flex size-7 shrink-0 items-center justify-center rounded-lg text-tertiary transition-colors duration-150 hover:bg-layer-transparent-hover hover:text-primary"
+            className="flex items-center gap-1.5 rounded-lg border border-subtle bg-surface-2 px-2.5 py-1.5 text-12 font-medium text-secondary transition-colors hover:bg-surface-2/80 hover:text-primary"
           >
-            <PlusIcon className="size-4" />
+            <PlusIcon className="size-3.5" />
+            <span>Channel</span>
           </button>
-        </header>
-
-        {isCreatingChannel && (
-          <form onSubmit={handleCreateChannel} className="shrink-0 border-b border-subtle px-4 py-3">
-            <label
-              htmlFor="new-w-channel"
-              className="mb-1.5 block text-11 font-semibold tracking-wide text-tertiary uppercase"
-            >
-              New channel
-            </label>
-            <div className="flex items-center gap-1.5">
-              <input
-                id="new-w-channel"
-                type="text"
-                value={newChannelName}
-                onChange={(e) => setNewChannelName(e.target.value)}
-                placeholder="e.g. announcements"
-                className="placeholder-tertiary h-7 w-full min-w-0 rounded-lg border border-subtle bg-surface-2 px-2.5 text-12 text-primary focus:border-accent-strong focus:outline-none"
-              />
-              <Button type="submit" size="sm" variant="primary" className="h-7 shrink-0 px-2.5 text-11">
-                Add
-              </Button>
-            </div>
-          </form>
-        )}
-
-        <div className="flex-1 overflow-y-auto px-2 py-3">
-          <section>
-            <div className="flex items-center justify-between px-2 pb-1">
-              <span className="text-11 font-semibold tracking-wide text-tertiary uppercase">Channels</span>
-              <span className="text-11 text-tertiary tabular-nums">{channels.length || ""}</span>
-            </div>
-            <div className="flex flex-col gap-px">
-              {isLoadingChannels && channels.length === 0 && (
-                <p className="px-2 py-1.5 text-12 text-tertiary">Loading channels…</p>
-              )}
-              {channels.map((channel) => {
-                const isActive = !activeDirectMemberId && activeChannel?.id === channel.id;
-                return (
-                  <button
-                    key={channel.id}
-                    type="button"
-                    onClick={() => {
-                      setActiveChannel(channel);
-                      setActiveDirectMemberId(null);
-                    }}
-                    aria-current={isActive ? "true" : undefined}
-                    className={cn(
-                      "flex h-8 w-full items-center gap-2 rounded-lg px-2 text-13 transition-colors duration-150",
-                      isActive
-                        ? "bg-accent-subtle font-semibold text-accent-primary"
-                        : "font-medium text-secondary hover:bg-layer-transparent-hover hover:text-primary"
-                    )}
-                  >
-                    <HashIcon className={cn("size-3.5 shrink-0", isActive ? "text-accent-primary" : "text-tertiary")} />
-                    <span className="truncate">{channel.name}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </section>
-
-          <section className="mt-5">
-            <div className="flex items-center justify-between px-2 pb-1">
-              <span className="text-11 font-semibold tracking-wide text-tertiary uppercase">Direct messages</span>
-              <span className="text-11 text-tertiary tabular-nums">{members.length}</span>
-            </div>
-            <div className="flex flex-col gap-px">
-              {members.length === 0 && <p className="px-2 py-1.5 text-12 text-tertiary">No members found.</p>}
-              {members.map((member) => {
-                const isActive = activeDirectMemberId === member.id;
-                const isCurrentUser = member.id === currentUser?.id;
-
-                return (
-                  <button
-                    key={member.id}
-                    type="button"
-                    onClick={() => {
-                      setActiveDirectMemberId(member.id);
-                      setActiveChannel(null);
-                    }}
-                    className={cn(
-                      "flex h-8 w-full items-center gap-2 rounded-lg px-2 text-13 transition-colors duration-150",
-                      isActive
-                        ? "bg-accent-subtle font-semibold text-accent-primary"
-                        : "font-medium text-secondary hover:bg-layer-transparent-hover hover:text-primary"
-                    )}
-                  >
-                    <span
-                      className={cn(
-                        "flex size-5 shrink-0 items-center justify-center rounded-full text-10 font-semibold",
-                        tintFor(member.id)
-                      )}
-                    >
-                      {initialOf(member.name)}
-                    </span>
-                    <span className="truncate">
-                      {member.name}
-                      {isCurrentUser ? " (You)" : ""}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </section>
         </div>
-      </aside>
+      </header>
 
-      {/* Message Pane */}
-      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
-        <header className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-subtle bg-surface-1 px-5">
-          <div className="flex min-w-0 items-center gap-2">
-            {activeDirectName ? (
-              <>
-                <span
-                  className={cn(
-                    "flex size-6 shrink-0 items-center justify-center rounded-full text-11 font-semibold",
-                    tintFor(activeDirectMemberId)
-                  )}
-                >
-                  {initialOf(activeDirectName)}
-                </span>
-                <h2 className="truncate text-14 font-semibold text-primary">{activeDirectName}</h2>
-              </>
-            ) : (
-              <>
-                <HashIcon className="size-5 shrink-0 text-accent-primary" />
-                <div className="min-w-0">
-                  <h2 className="truncate text-14 font-semibold text-primary">{activeChannel?.name || "general"}</h2>
-                  {activeChannel?.description && (
-                    <p className="truncate text-11 text-tertiary">{activeChannel.description}</p>
-                  )}
-                </div>
-              </>
-            )}
-          </div>
-          <div className="relative hidden shrink-0 md:block">
-            <SearchIcon className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-tertiary" />
+      {/* Modal for New Channel Creation */}
+      {isCreatingChannel && (
+        <div className="border-b border-subtle bg-surface-2 px-5 py-3 shadow-raised-100">
+          <form onSubmit={handleCreateChannel} className="flex max-w-md items-center gap-2">
             <input
-              type="search"
-              placeholder="Search messages"
-              aria-label="Search messages"
-              className="placeholder-tertiary h-8 w-48 rounded-lg border border-subtle bg-surface-2 pr-3 pl-8 text-12 text-primary focus:border-accent-strong focus:outline-none"
+              type="text"
+              autoFocus
+              value={newChannelName}
+              onChange={(e) => setNewChannelName(e.target.value)}
+              placeholder="channel-name"
+              className="flex-1 rounded-lg border border-subtle bg-surface-1 px-3 py-1.5 text-13 text-primary focus:border-accent-strong focus:outline-none"
             />
-          </div>
-        </header>
+            <Button type="submit" variant="primary" size="sm" disabled={!newChannelName.trim()}>
+              Create
+            </Button>
+            <Button type="button" variant="secondary" size="sm" onClick={() => setIsCreatingChannel(false)}>
+              Cancel
+            </Button>
+          </form>
+        </div>
+      )}
 
-        <div className="flex-1 overflow-y-auto px-5 py-4">
-          {isLoadingMessages && messages.length === 0 && (
+      {/* Chat Messages Main Panel */}
+      <div className="flex flex-1 flex-col overflow-hidden">
+        <div className="flex-1 space-y-2 overflow-y-auto px-5 py-4">
+          {isLoadingMessages && (
             <p className="flex h-full items-center justify-center text-13 text-tertiary">Loading messages…</p>
           )}
 
           {!isLoadingMessages && messages.length === 0 && (
-            <div className="flex h-full flex-col items-center justify-center gap-1.5 text-center">
-              <span className="mb-1 flex size-11 items-center justify-center rounded-2xl bg-accent-subtle">
-                <CommentFillIcon className="size-5 text-accent-primary" />
+            <div className="flex h-full flex-col items-center justify-center gap-2 py-12 text-center">
+              <span className="flex size-12 items-center justify-center rounded-2xl bg-accent-subtle">
+                <CommentFillIcon className="size-6 text-accent-primary" />
               </span>
-              <p className="text-13 font-semibold text-primary">
+              <p className="text-14 font-semibold text-primary">
                 {activeDirectName
                   ? `Direct message with ${activeDirectName}`
                   : `This is the start of #${activeChannel?.name || "general"}`}
               </p>
-              <p className="text-12 text-tertiary">Send a message to start the conversation.</p>
+              <p className="max-w-sm text-12 text-tertiary">
+                Slack & ClickUp-style real-time workspace messaging. Format with code blocks, bold, lists, and quotes.
+              </p>
             </div>
           )}
 
@@ -525,7 +699,7 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
                 {isNewDay && (
                   <div className="flex items-center gap-3 py-3" role="separator">
                     <span className="bg-subtle h-px flex-1" />
-                    <span className="rounded-full border border-subtle bg-surface-2 px-2.5 py-0.5 text-11 font-medium text-tertiary">
+                    <span className="rounded-full border border-subtle bg-surface-2 px-3 py-0.5 text-11 font-medium text-tertiary">
                       {dayLabelOf(msg.created_at)}
                     </span>
                     <span className="bg-subtle h-px flex-1" />
@@ -535,13 +709,13 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
                 <div
                   className={cn(
                     "group relative flex gap-3 rounded-lg pr-2 transition-colors duration-100 hover:bg-layer-transparent-hover",
-                    isBlockStart ? "mt-2 py-1 first:mt-0" : "py-px"
+                    isBlockStart ? "mt-2 py-1.5 first:mt-0" : "py-0.5"
                   )}
                 >
                   {isBlockStart ? (
                     <span
                       className={cn(
-                        "mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full text-12 font-semibold",
+                        "shadow-sm mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full text-12 font-semibold",
                         tintFor(msg.sender_id ?? msg.sender_name)
                       )}
                     >
@@ -558,7 +732,7 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
 
                   <div className="min-w-0 flex-1">
                     {isBlockStart && (
-                      <div className="flex items-baseline gap-2">
+                      <div className="mb-0.5 flex items-baseline gap-2">
                         <span className="text-13 font-semibold text-primary">
                           {msg.sender_name}
                           {isSelf && <span className="font-normal ml-1 text-11 text-tertiary">(You)</span>}
@@ -566,9 +740,7 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
                         <span className="text-11 text-tertiary">{timeOf(msg.created_at)}</span>
                       </div>
                     )}
-                    <p className="text-13 leading-relaxed break-words whitespace-pre-wrap text-primary">
-                      {msg.message}
-                    </p>
+                    <ChatMessageContent text={msg.message} />
                   </div>
                 </div>
               </div>
@@ -577,7 +749,7 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Composer */}
+        {/* Rich Composer with Slack / ClickUp Formatting Toolbar */}
         <div className="relative shrink-0 px-5 pt-1 pb-5">
           {mentionMatches.length > 0 && (
             <div className="absolute bottom-full left-5 z-10 mb-2 w-64 overflow-hidden rounded-xl border border-subtle bg-surface-1 shadow-overlay-100">
@@ -608,8 +780,53 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
 
           <form
             onSubmit={handleSendMessage}
-            className="flex flex-col gap-1 rounded-xl border border-subtle bg-surface-2 p-2 shadow-raised-100 transition-colors duration-150 focus-within:border-accent-strong"
+            className="flex flex-col rounded-xl border border-subtle bg-surface-2 p-2.5 shadow-raised-100 transition-colors duration-150 focus-within:border-accent-strong"
           >
+            {/* Formatting Toolbar */}
+            <div className="mb-1.5 flex items-center gap-1 border-b border-subtle/40 pb-1.5 text-tertiary">
+              <button
+                type="button"
+                title="Bold (**text**)"
+                onClick={() => insertFormatting("**", "**")}
+                className="flex size-6 items-center justify-center rounded transition-colors hover:bg-surface-1 hover:text-primary"
+              >
+                <BoldIcon className="size-3.5" />
+              </button>
+              <button
+                type="button"
+                title="Italic (*text*)"
+                onClick={() => insertFormatting("*", "*")}
+                className="flex size-6 items-center justify-center rounded transition-colors hover:bg-surface-1 hover:text-primary"
+              >
+                <ItalicIcon className="size-3.5" />
+              </button>
+              <span className="bg-subtle mx-0.5 h-3 w-px" />
+              <button
+                type="button"
+                title="Inline Code (`code`)"
+                onClick={() => insertFormatting("`", "`")}
+                className="flex size-6 items-center justify-center rounded transition-colors hover:bg-surface-1 hover:text-primary"
+              >
+                <CodeIcon className="size-3.5" />
+              </button>
+              <button
+                type="button"
+                title="Code Block (```code```)"
+                onClick={() => insertFormatting("```\n", "\n```")}
+                className="flex size-6 items-center justify-center rounded transition-colors hover:bg-surface-1 hover:text-primary"
+              >
+                <CodeBlockIcon className="size-3.5" />
+              </button>
+              <button
+                type="button"
+                title="Bullet List (- item)"
+                onClick={() => insertFormatting("- ")}
+                className="flex size-6 items-center justify-center rounded transition-colors hover:bg-surface-1 hover:text-primary"
+              >
+                <ListIcon className="size-3.5" />
+              </button>
+            </div>
+
             <textarea
               ref={inputRef}
               rows={2}
@@ -630,9 +847,9 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
               placeholder={
                 activeDirectName ? `Message ${activeDirectName}` : `Message #${activeChannel?.name || "general"}`
               }
-              className="placeholder-tertiary w-full resize-none bg-transparent px-2 py-1 text-13 leading-relaxed text-primary focus:outline-none"
+              className="placeholder-tertiary w-full resize-none bg-transparent px-1 py-1 text-13 leading-relaxed text-primary focus:outline-none"
             />
-            <div className="flex items-center justify-between gap-2 border-t border-subtle/50 px-1 pt-1.5">
+            <div className="flex items-center justify-between gap-2 border-t border-subtle/50 px-1 pt-2">
               <div className="flex items-center gap-0.5">
                 <button
                   type="button"
