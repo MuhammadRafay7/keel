@@ -229,15 +229,41 @@ export class SupabaseAIService {
     const { data: sessionData } = await supabase.auth.getSession();
     if (!sessionData.session) throw new Error("Not signed in.");
 
-    const env = (import.meta as unknown as { env?: Record<string, string> }).env;
-    const supabaseUrl = env?.VITE_SUPABASE_URL ?? "";
+    const supabaseUrl =
+      import.meta.env.VITE_SUPABASE_URL || ((supabase as unknown as { supabaseUrl?: string }).supabaseUrl ?? "");
 
-    const response = await fetch(`${supabaseUrl}/functions/v1/ai-proxy`, {
+    if (!supabaseUrl) {
+      throw new Error("Supabase URL is not configured. Please set VITE_SUPABASE_URL.");
+    }
+
+    let localApiKey: string | undefined;
+    if (typeof window !== "undefined") {
+      try {
+        const storageKey = `keel_ai_keys_${sessionData.session.user.id}`;
+        const existingStr = localStorage.getItem(storageKey);
+        if (existingStr) {
+          const keys = JSON.parse(existingStr) as Record<string, { apiKey?: string; provider?: string }>;
+          // `provider` is optional on the payload — when it is not given the
+          // proxy picks one, so fall straight through to any stored key.
+          const preferred = payload.provider ? keys[payload.provider.toLowerCase()]?.apiKey : undefined;
+          localApiKey = preferred || Object.values(keys).find((k) => k.apiKey)?.apiKey;
+        }
+      } catch (_e) {
+        // ignore
+      }
+    }
+
+    const headers: Record<string, string> = {
+      Authorization: `Bearer ${sessionData.session.access_token}`,
+      "Content-Type": "application/json",
+    };
+    if (localApiKey) {
+      headers["x-user-ai-key"] = localApiKey;
+    }
+
+    const response = await fetch(`${supabaseUrl.replace(/\/+$/, "")}/functions/v1/ai-proxy`, {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${sessionData.session.access_token}`,
-        "Content-Type": "application/json",
-      },
+      headers,
       body: JSON.stringify(payload),
     });
 

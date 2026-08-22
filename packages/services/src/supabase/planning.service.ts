@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import type { ICycle, IModule, IProjectView, TIssuesResponse } from "@keel/types";
+import type { ICycle, IModule, IProjectView, TCycleGroups, TIssuesResponse } from "@keel/types";
 
 import { getSupabase } from "./client";
 import { buildIssuesResponse } from "./work-item-grouping";
@@ -395,10 +395,37 @@ export class SupabasePlanningService {
 
   // -- Mapping --------------------------------------------------------------
 
+  /**
+   * Derives a cycle's status from its dates.
+   *
+   * `status` is not a column — Django computed it in the API layer, and nothing
+   * replaced it when cycles moved to Supabase. Every cycle therefore arrived
+   * with `status: undefined`, and `orderCycles()` keeps only cycles whose status
+   * is current, upcoming or draft — so it discarded all of them and the cycles
+   * page showed "No matching cycles" for a project that had several.
+   *
+   * A cycle without both dates is a draft: it has been created but not
+   * scheduled, which is exactly what the board means by draft.
+   */
+  private cycleStatus(startDate: unknown, endDate: unknown): TCycleGroups {
+    const start = startDate ? new Date(String(startDate)) : null;
+    const end = endDate ? new Date(String(endDate)) : null;
+    if (!start || !end || Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return "draft";
+
+    const now = Date.now();
+    // End dates are stored as midnight, so the closing day counts as inside the
+    // cycle rather than a day already past.
+    const endOfEndDate = end.getTime() + 24 * 60 * 60 * 1000 - 1;
+    if (now < start.getTime()) return "upcoming";
+    if (now > endOfEndDate) return "completed";
+    return "current";
+  }
+
   private toCycle(row: Record<string, unknown>, progress?: TProgressCounts): ICycle {
     return {
       ...(row as unknown as ICycle),
       owned_by_id: (row.owned_by_id as string) ?? "",
+      status: this.cycleStatus(row.start_date, row.end_date),
       // A cycle with no work items is absent from the aggregate rather than
       // present with zeros, so a missing entry means empty.
       ...(progress ?? EMPTY_PROGRESS),
