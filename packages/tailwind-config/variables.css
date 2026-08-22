@@ -288,6 +288,20 @@
     --txt-accent-primary: var(--brand-default);
     --txt-accent-secondary: var(--brand-700);
     --txt-on-color: var(--neutral-100);
+    /*
+     * Text sitting on an ACCENT fill, as distinct from any coloured fill.
+     *
+     * `--txt-on-color` cannot serve both: in dark mode the danger fill is dark
+     * (red-300, L 0.44) and wants light text, while the accent, success and
+     * warning fills are light (L 0.75-0.79) and want dark text. One shared
+     * value meant white-on-light-violet at 2.12:1 for every primary button in
+     * dark mode — well under the 4.5:1 minimum.
+     *
+     * Deliberately not redefined in the dark block: `--neutral-100` already
+     * flips from near-white to near-black with the theme, which is exactly the
+     * inversion an accent fill needs, since the accent ramp flips the other way.
+     */
+    --txt-on-accent: var(--neutral-100);
     --txt-on-color-disabled: var(--alpha-black-400);
     --txt-inverse: var(--neutral-white);
     --txt-success-primary: var(--green-900);
@@ -883,6 +897,7 @@
   --text-color-accent-primary: var(--txt-accent-primary);
   --text-color-accent-secondary: var(--txt-accent-secondary);
   --text-color-on-color: var(--txt-on-color);
+  --text-color-on-accent: var(--txt-on-accent);
   --text-color-on-color-disabled: var(--txt-on-color-disabled);
   --text-color-inverse: var(--txt-inverse);
   --text-color-success-primary: var(--txt-success-primary);
