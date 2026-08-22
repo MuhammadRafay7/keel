@@ -47,7 +47,10 @@ export const SpreadsheetHeader = observer(function SpreadsheetHeader(props: Prop
   const canSelectIssues = canEditProperties(projectId?.toString()) && !selectionHelpers.isSelectionDisabled;
 
   return (
-    <thead className="sticky top-0 left-0 z-[12] border-b-[0.5px] border-subtle">
+    // The header stays put while rows scroll under it, so it casts a shadow as
+    // well as drawing a border. A hairline alone leaves the top row looking like
+    // it is overlapping the header rather than passing beneath it.
+    <thead className="sticky top-0 left-0 z-[12] border-b-[0.5px] border-subtle shadow-raised-100">
       <tr>
         {/* Single header column containing both identifier and workitem */}
         <th

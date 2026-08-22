@@ -51,6 +51,15 @@ well as the name it replaces, or the second run fails with
 
 `0014` needs `pgsodium` and `vault`, which hosted Supabase projects have.
 
+`0019` supersedes `0014`'s key-encryption secret. `0014` read it from
+`app.settings.encryption_secret`, which cannot be set on a hosted project for
+the same reason `0018` had to move the email settings into a table — so on
+Supabase, storing an AI key failed with `55000` every time. `0019` routes both
+key functions through `public.ai_encryption_secret()`, which reads
+`app_settings`, still honours the GUC on a local stack, and provisions a
+secret on first use if neither is present. Nothing has to be configured for
+the feature to work; see step 3 for the stronger option.
+
 ## 2. Point the invitation trigger at the project
 
 `0013`'s trigger reads two database settings and falls back to
@@ -85,6 +94,27 @@ supabase secrets set RESEND_API_KEY=<key> \
 Without `RESEND_API_KEY` the invitation function deploys and then fails per
 request, which is worse than not deploying it — set the secret in the same pass.
 
+`ai-proxy` needs no provider secrets. Every model call is billed to the
+caller's own key, which users add under Settings → AI provider and which is
+stored encrypted; there is deliberately no server-side fallback key, so a
+misconfigured deploy cannot quietly spend your money.
+
+The one thing worth deciding is where the key-encryption secret comes from. By
+default `0019` generates one and stores it in `app_settings`, which works
+immediately but keeps the secret in the same database as the ciphertext. To
+hold it outside the database instead, set it before anyone stores a key:
+
+```sql
+insert into public.app_settings (key, value, updated_at)
+values ('ai_encryption_secret', '<32+ random bytes>', now())
+on conflict (key) do nothing;
+```
+
+or add a `SUPABASE_AI_ENCRYPTION_SECRET` repository secret and let the workflow
+seed it. Both use `on conflict do nothing`: once a key has been encrypted,
+changing this value makes every stored key undecryptable, so rotation is a
+deliberate manual operation and users have to re-enter their keys.
+
 ## 4. Confirm it took
 
 Sign in as a normal user and check that these stop returning `404 PGRST202`:
@@ -100,7 +130,7 @@ is `0009`'s trigger, and it is the single best signal that the batch landed.
 
 ## 5. One-time setup for the automatic deploy
 
-Three repository secrets, under Settings → Secrets → Actions (the workflow uses
+Three required repository secrets, under Settings → Secrets → Actions (the workflow uses
 a `production` environment, so add them there if you want a required reviewer on
 database changes):
 
@@ -109,6 +139,12 @@ database changes):
 | `SUPABASE_ACCESS_TOKEN` | `supabase login`, or Account → Access Tokens |
 | `SUPABASE_DB_PASSWORD`  | Project Settings → Database                  |
 | `SUPABASE_PROJECT_REF`  | the subdomain of your project URL            |
+
+One optional fourth:
+
+| Secret                          | Where it comes from                                              |
+| ------------------------------- | ---------------------------------------------------------------- |
+| `SUPABASE_AI_ENCRYPTION_SECRET` | your own secret store; omit to let `0019` generate and store one |
 
 Rotate the database password first if it is still the one shared in a session
 transcript — `TODO.md` lists that as outstanding.

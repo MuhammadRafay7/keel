@@ -128,6 +128,11 @@ function Menu(props: TMenuProps) {
     if (menuButtonOnClick) menuButtonOnClick();
   };
 
+  const menuContextValue = React.useMemo(
+    () => ({ closeAllSubmenus, registerSubmenu }),
+    [closeAllSubmenus, registerSubmenu]
+  );
+
   return (
     <BaseMenu.Root openOnHover={openOnHover} onOpenChange={handleOpenChange}>
       {customButton ? (
@@ -161,7 +166,7 @@ function Menu(props: TMenuProps) {
               type="button"
               className={`flex items-center justify-between gap-1 rounded-md px-2.5 py-1 text-11 whitespace-nowrap duration-300 outline-none ${
                 isOpen ? "bg-surface-2 text-primary" : "text-secondary"
-              } ${noBorder ? "" : "shadow-sm border border-strong focus:outline-none"} ${
+              } ${noBorder ? "" : "border border-strong shadow-raised-100 focus:outline-none"} ${
                 disabled ? "cursor-not-allowed text-secondary" : "cursor-pointer hover:bg-layer-1"
               } ${buttonClassName}`}
               onClick={handleMenuButtonClick}
@@ -186,7 +191,7 @@ function Menu(props: TMenuProps) {
           <BaseMenu.Popup
             tabIndex={tabIndex}
             className={cn(
-              "my-1 min-w-[12rem] overflow-y-scroll rounded-md border-[0.5px] border-strong bg-surface-1 px-2 py-2.5 text-11 whitespace-nowrap shadow-raised-200 focus:outline-none",
+              "my-1 min-w-[12rem] overflow-y-scroll rounded-md border-[0.5px] border-strong bg-surface-1 px-2 py-2.5 text-11 whitespace-nowrap shadow-overlay-100 focus:outline-none",
               {
                 "max-h-60": maxHeight === "lg",
                 "max-h-48": maxHeight === "md",
@@ -197,7 +202,7 @@ function Menu(props: TMenuProps) {
             )}
             data-main-menu="true"
           >
-            <MenuContext.Provider value={{ closeAllSubmenus, registerSubmenu }}>{children}</MenuContext.Provider>
+            <MenuContext.Provider value={menuContextValue}>{children}</MenuContext.Provider>
           </BaseMenu.Popup>
         </BaseMenu.Positioner>
       </BaseMenu.Portal>

@@ -152,7 +152,7 @@ export const HeaderFilters: React.FC<Props> = observer(function HeaderFilters(pr
           className={cn(
             "flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-12 font-medium transition-all duration-150",
             isMeModeActive
-              ? "shadow-xs border-accent-subtle bg-accent-subtle font-semibold text-accent-primary"
+              ? "border-accent-subtle bg-accent-subtle font-semibold text-accent-primary shadow-raised-100"
               : "border-subtle bg-surface-2 text-secondary hover:bg-surface-1/80 hover:text-primary"
           )}
         >

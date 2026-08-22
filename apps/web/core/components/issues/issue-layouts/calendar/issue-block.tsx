@@ -104,7 +104,7 @@ export const CalendarIssueBlock = observer(
               id={`issue-${issue.id}`}
               href={workItemLink}
               onClick={() => handleIssuePeekOverview(issue)}
-              className="block w-full rounded-sm border-b border-subtle text-13 text-primary hover:border-subtle-1 md:border-[1px]"
+              className="block w-full focus-ring rounded-md border-b border-subtle text-13 text-primary transition-smooth hover:border-subtle-1 md:border-[1px]"
               disabled={!!issue?.tempId || isMobile}
               ref={ref}
             >
@@ -116,11 +116,14 @@ export const CalendarIssueBlock = observer(
                 <div
                   ref={blockRef}
                   className={cn(
-                    "group/calendar-block flex h-10 w-full items-center justify-between gap-1.5 rounded-sm px-4 py-1.5 md:h-8 md:px-1",
+                    "group/calendar-block flex h-10 w-full items-center justify-between gap-1.5 rounded-md px-4 py-1.5 transition-smooth md:h-8 md:px-1",
                     {
-                      "border-accent-strong bg-surface-2 shadow-raised-200": isDragging,
+                      // Lifted clear of the tile while it is being carried.
+                      "border-accent-strong bg-surface-2 shadow-overlay-100": isDragging,
                       "bg-surface-1 hover:bg-surface-2": !isDragging,
-                      "border border-accent-strong hover:border-accent-strong": getIsIssuePeeked(issue.id),
+                      "border border-accent-strong bg-accent-subtle hover:border-accent-strong": getIsIssuePeeked(
+                        issue.id
+                      ),
                     }
                   )}
                 >

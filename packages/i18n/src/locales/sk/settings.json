@@ -57,6 +57,34 @@
       "title": "Osobné prístupové tokeny",
       "description": "Generujte bezpečné API tokeny na integráciu vašich údajov s externými systémami a aplikáciami."
     },
+    "ai": {
+      "title": "Poskytovateľ AI",
+      "description": "Pripojte svoj vlastný API kľúč a používajte funkcie AI. Keel vám za využitie modelu nič neúčtuje — účtuje si to váš poskytovateľ.",
+      "key_absent": "Nie je uložený žiadny kľúč",
+      "key_stored": "Uložený kľúč: {{hint}}",
+      "replace_placeholder": "Zadajte nový kľúč, ktorý nahradí ten uložený",
+      "get_key": "Získať API kľúč pre {{provider}}",
+      "save": "Uložiť",
+      "update": "Aktualizovať",
+      "remove": "Odstrániť",
+      "show_key": "Zobraziť kľúč",
+      "hide_key": "Skryť kľúč",
+      "privacy_note": "Kľúče sa pred uložením zašifrujú a dešifrujú sa iba na serveri vo chvíli, keď je odoslaná požiadavka. Nikdy sa neposielajú späť do vášho prehliadača.",
+      "unavailable": "Funkcie AI nie sú dostupné, pretože táto inštancia nie je pripojená k Supabase.",
+      "toast": {
+        "saved": {
+          "title": "Kľúč uložený",
+          "message": "Váš API kľúč pre {{provider}} je uložený a pripravený na použitie."
+        },
+        "removed": {
+          "title": "Kľúč odstránený",
+          "message": "Váš API kľúč pre {{provider}} bol odstránený."
+        },
+        "error": {
+          "message": "Tento kľúč sa nepodarilo uložiť. Skontrolujte ho, prosím, a skúste to znova."
+        }
+      }
+    },
     "activity": {
       "heading": "Aktivita",
       "description": "Sledujte svoje nedávne akcie a zmeny naprieč všetkými projektmi a pracovnými položkami."
@@ -103,7 +131,8 @@
       "preferences": "Predvoľby",
       "notifications": "Oznámenia",
       "api-tokens": "Osobné prístupové tokeny",
-      "connections": "Pripojenia"
+      "connections": "Pripojenia",
+      "ai": "Poskytovateľ AI"
     },
     "tabs": {
       "summary": "Zhrnutie",

@@ -183,7 +183,7 @@ export function ResizableSidebar({
         id="main-sidebar"
         className={cn(
           "z-20 h-full border-r border-subtle bg-surface-1",
-          !isResizing && "transition-all duration-300 ease-in-out",
+          !isResizing && "transition-[width,min-width,max-width,transform,opacity] duration-300 ease-smooth",
           isCollapsed ? "w-0 translate-x-[-100%] opacity-0" : "translate-x-0 opacity-100",
           isMobile && "absolute",
           className
@@ -205,13 +205,21 @@ export function ResizableSidebar({
         >
           {children}
 
-          {/* Resize Handle */}
+          {/*
+            Resize handle.
+
+            The hit area is 8px wide and invisible; the line the user sees is
+            2px and painted by the ::after. Splitting the two is what makes a
+            resize edge feel accurate — a 2px target is genuinely hard to grab,
+            but an 8px visible bar looks like a piece of chrome nobody asked
+            for. It only lights up once the pointer is on it, or while dragging.
+          */}
           <div
             className={cn(
-              "absolute z-[20] h-full w-1 cursor-ew-resize transition-all duration-200",
-              !isResizing && "hover:bg-surface-2",
-              isResizing && "w-1.5 bg-layer-1",
-              "top-0 right-0"
+              "group/resize absolute top-0 right-0 z-[20] h-full w-2 translate-x-1/2 cursor-ew-resize",
+              "after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] after:-translate-x-1/2",
+              "after:rounded-full after:bg-accent-primary after:transition-smooth",
+              isResizing ? "after:opacity-100" : "after:opacity-0 hover:after:opacity-100"
             )}
             // onDoubleClick toggle sidebar
             onDoubleClick={() => toggleCollapsed()}
@@ -224,8 +232,10 @@ export function ResizableSidebar({
       {/* Peek View */}
       <div
         className={cn(
-          "shadow-sm absolute left-0 z-20 h-full bg-surface-1",
-          !isResizing && "transition-all duration-300 ease-in-out",
+          // The peek panel floats over the content, so it casts sideways rather
+          // than carrying a flat all-round shadow that reads as a seam.
+          "absolute left-0 z-20 h-full bg-surface-1 shadow-direction-right",
+          !isResizing && "transition-[width,transform,opacity] duration-300 ease-smooth",
           isCollapsed && showPeek ? "translate-x-0 opacity-100" : "translate-x-[-100%] opacity-0",
           "pointer-events-none",
           isCollapsed && showPeek && "pointer-events-auto",
@@ -247,13 +257,13 @@ export function ResizableSidebar({
           )}
         >
           {children}
-          {/* Resize Handle */}
+          {/* Resize handle — see the note on the main sidebar's handle above. */}
           <div
             className={cn(
-              "absolute z-[20] h-full w-1 cursor-ew-resize transition-all duration-200",
-              !isResizing && "hover:bg-surface-2",
-              isResizing && "bg-layer-1",
-              "top-0 right-0"
+              "group/resize absolute top-0 right-0 z-[20] h-full w-2 translate-x-1/2 cursor-ew-resize",
+              "after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] after:-translate-x-1/2",
+              "after:rounded-full after:bg-accent-primary after:transition-smooth",
+              isResizing ? "after:opacity-100" : "after:opacity-0 hover:after:opacity-100"
             )}
             // onDoubleClick toggle sidebar
             onDoubleClick={() => toggleCollapsed()}

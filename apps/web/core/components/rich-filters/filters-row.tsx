@@ -125,7 +125,7 @@ export const FiltersRow = observer(function FiltersRow<K extends TFilterProperty
   );
 
   const mainContent = (
-    <div className="shadow-xs flex w-full items-start gap-2 rounded-xl border border-subtle bg-surface-2/60 px-3.5 py-1.5 backdrop-blur-md">
+    <div className="flex w-full items-start gap-2 rounded-xl border border-subtle bg-surface-2/60 px-3.5 py-1.5 shadow-raised-100 backdrop-blur-md">
       <div className="flex w-full flex-wrap items-center gap-2">{leftContent}</div>
       <div
         className={cn("flex items-center gap-2 border-l border-subtle pl-3", {

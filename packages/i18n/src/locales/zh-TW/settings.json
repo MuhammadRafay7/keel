@@ -57,6 +57,34 @@
       "title": "個人存取權杖",
       "description": "產生安全的 API 權杖，以將您的資料與外部系統和應用程式整合。"
     },
+    "ai": {
+      "title": "AI 供應商",
+      "description": "連接您自己的 API 金鑰即可使用 AI 功能。Keel 不會就模型用量向您收費，收費方是您的供應商。",
+      "key_absent": "未儲存金鑰",
+      "key_stored": "已儲存的金鑰：{{hint}}",
+      "replace_placeholder": "輸入新金鑰以取代已儲存的金鑰",
+      "get_key": "取得 {{provider}} API 金鑰",
+      "save": "儲存",
+      "update": "更新",
+      "remove": "移除",
+      "show_key": "顯示金鑰",
+      "hide_key": "隱藏金鑰",
+      "privacy_note": "金鑰在儲存前會先加密，且僅在發出請求時於伺服器上解密，絕不會回傳到您的瀏覽器。",
+      "unavailable": "此執行個體未連接到 Supabase，因此 AI 功能無法使用。",
+      "toast": {
+        "saved": {
+          "title": "金鑰已儲存",
+          "message": "您的 {{provider}} API 金鑰已儲存，可以開始使用。"
+        },
+        "removed": {
+          "title": "金鑰已移除",
+          "message": "您的 {{provider}} API 金鑰已刪除。"
+        },
+        "error": {
+          "message": "無法儲存該金鑰。請檢查後再試一次。"
+        }
+      }
+    },
     "activity": {
       "heading": "活動",
       "description": "追蹤您在所有專案和工作事項中的近期操作和變更。"
@@ -103,7 +131,8 @@
       "preferences": "偏好設定",
       "notifications": "通知",
       "api-tokens": "個人存取權杖",
-      "connections": "連接"
+      "connections": "連接",
+      "ai": "AI 供應商"
     },
     "tabs": {
       "summary": "摘要",

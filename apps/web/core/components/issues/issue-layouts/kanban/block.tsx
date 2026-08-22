@@ -106,8 +106,13 @@ const KanbanIssueDetailsBlock = observer(function KanbanIssueDetailsBlock(props:
         )}
         {/* oxlint-disable-next-line jsx_a11y/click-events-have-key-events oxlint-disable-next-line jsx_a11y/no-static-element-interactions */}
         <div
+          /*
+           * `focus-within` as well as hover: the menu is hidden until the
+           * pointer arrives, which leaves it unreachable by keyboard unless
+           * tabbing into it also reveals it.
+           */
           className={cn("absolute -top-1 right-0", {
-            "hidden group-hover/kanban-block:block": !isMobile,
+            "hidden group-hover/kanban-block:block focus-within:!block": !isMobile,
             "!block": isMenuActive,
           })}
           onClick={handleEventPropagation}
@@ -262,10 +267,17 @@ export const KanbanIssueBlock = observer(function KanbanIssueBlock(props: IssueB
           href={workItemLink}
           ref={cardRef}
           className={cn(
-            "work-item-card block w-full p-3 text-13 outline-[0.5px] outline-transparent hover:-translate-y-px",
+            "work-item-card block w-full focus-ring p-3 text-13 outline-transparent",
             { "hover:cursor-pointer": isDragAllowed },
-            { "border-1.5 border-accent-primary shadow-md hover:border-accent-primary": getIsIssuePeeked(issue.id) },
-            { "z-[100] bg-surface-2 opacity-80": isCurrentBlockDragging }
+            {
+              "border-1.5 border-accent-primary hover:border-accent-primary shadow-raised-300": getIsIssuePeeked(
+                issue.id
+              ),
+            },
+            // The card being dragged is a stand-in for the real one: it lifts
+            // clear of the column and goes translucent so the drop target
+            // underneath stays readable.
+            { "z-[100] rotate-[0.6deg] bg-surface-2 opacity-85 shadow-overlay-100": isCurrentBlockDragging }
           )}
           onClick={() => handleIssuePeekOverview(issue)}
           disabled={!!issue?.tempId}

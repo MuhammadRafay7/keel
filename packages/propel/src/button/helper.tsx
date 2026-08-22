@@ -8,12 +8,21 @@ import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 
 export const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-1 whitespace-nowrap transition-colors focus-visible:outline-none disabled:pointer-events-none",
+  /*
+   * The base every button in the app is built from.
+   *
+   * It used to end in `focus-visible:outline-none` with nothing put back, which
+   * removed the keyboard focus indicator from every button in the product —
+   * there was no way to see where focus was without a pointer. The outline is
+   * restored here as an accent ring, offset so it clears the button's own
+   * border and any elevation shadow underneath it.
+   */
+  "inline-flex items-center justify-center gap-1 whitespace-nowrap transition-smooth focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong disabled:pointer-events-none",
   {
     variants: {
       variant: {
         primary:
-          "bg-accent-primary text-on-color hover:bg-accent-primary-hover active:bg-accent-primary-active disabled:bg-layer-disabled disabled:text-on-color-disabled",
+          "bg-accent-primary text-on-color shadow-raised-100 hover:bg-accent-primary-hover hover:shadow-raised-200 active:bg-accent-primary-active active:shadow-raised-100 disabled:bg-layer-disabled disabled:text-on-color-disabled disabled:shadow-none",
         "error-fill":
           "bg-danger-primary text-on-color hover:bg-danger-primary-hover active:bg-danger-primary-active disabled:bg-layer-disabled disabled:text-disabled",
         "error-outline":

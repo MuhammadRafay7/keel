@@ -50,21 +50,40 @@ html {
   box-shadow:
     0 2px 8px -3px var(--glass-cast),
     inset 0 1px 0 0 var(--glass-specular-edge);
+  /* The house curve, from the token layer — not a second copy of it. */
   transition:
-    border-color 220ms cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+    border-color 220ms var(--ease-smooth),
+    box-shadow 220ms var(--ease-smooth),
+    transform 220ms var(--ease-smooth);
 }
 
+/*
+ * The lift lives here rather than as a `hover:-translate-y-px` utility on the
+ * card, so it runs on the same curve and the same duration as the shadow it is
+ * paired with. Split across two declarations they drifted: the transform
+ * animated on Tailwind's default 150ms ease, the shadow on 220ms ease-smooth,
+ * and the card appeared to rise before its shadow caught up.
+ */
 .work-item-card:hover {
+  transform: translateY(-1px);
   border-color: var(--border-strong);
   box-shadow:
     0 12px 26px -8px var(--glass-cast),
     inset 0 1px 0 0 var(--glass-specular);
 }
 
+.work-item-card:active {
+  transform: translateY(0);
+  transition-duration: 80ms;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .work-item-card {
-    transition: none;
+  /*
+   * Colour and shadow still change — those carry the state. Only the movement
+   * is dropped, which is the part the setting is actually asking about.
+   */
+  .work-item-card:hover,
+  .work-item-card:active {
+    transform: none;
   }
 }

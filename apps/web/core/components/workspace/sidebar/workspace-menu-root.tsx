@@ -113,7 +113,7 @@ export const WorkspaceMenuRoot = observer(function WorkspaceMenuRoot(props: Work
             {variant === "top-navigation" && (
               <Menu.Button
                 className={cn(
-                  "group/menu-button shadow-xs flex flex-grow items-center justify-between gap-1.5 truncate rounded-xl border border-transparent px-2.5 py-1 text-13 font-medium text-secondary transition-all duration-150 hover:border-subtle hover:bg-surface-2/80 focus:outline-none",
+                  "group/menu-button flex flex-grow items-center justify-between gap-1.5 truncate rounded-xl border border-transparent px-2.5 py-1 text-13 font-medium text-secondary shadow-raised-100 transition-all duration-150 hover:border-subtle hover:bg-surface-2/80 focus:outline-none",
                   {
                     "border-subtle bg-surface-2": open,
                   }
@@ -124,7 +124,7 @@ export const WorkspaceMenuRoot = observer(function WorkspaceMenuRoot(props: Work
                   <WorkspaceLogo
                     logo={activeWorkspace?.logo_url}
                     name={activeWorkspace?.name}
-                    classNames="border border-subtle rounded-lg size-7 shadow-xs"
+                    classNames="border border-subtle rounded-lg size-7 shadow-raised-100"
                   />
                   <h4 className="truncate text-14 font-semibold text-primary">
                     {activeWorkspace?.name ?? t("loading")}

@@ -23,7 +23,9 @@ import useReloadConfirmations from "@/hooks/use-reload-confirmation";
 import useSize from "@/hooks/use-window-size";
 // services
 import { WorkItemVersionService } from "@/services/issue";
+import { Sparkles } from "lucide-react";
 // local imports
+import { EnhanceWorkItemModal } from "../ai-enhance";
 import { IssueDetailWidgets } from "../issue-detail-widgets";
 import { NameDescriptionUpdateStatus } from "../issue-update-status";
 import { PeekOverviewProperties } from "../peek-overview/properties";
@@ -50,6 +52,7 @@ export const IssueMainContent = observer(function IssueMainContent(props: Props)
   const editorRef = useRef<EditorRefApi>(null);
   // states
   const [isSubmitting, setIsSubmitting] = useState<TNameDescriptionLoader>("saved");
+  const [isEnhanceModalOpen, setIsEnhanceModalOpen] = useState(false);
   // hooks
   const windowSize = useSize();
   const { data: currentUser } = useUser();
@@ -91,9 +94,43 @@ export const IssueMainContent = observer(function IssueMainContent(props: Props)
         <div className="mb-2.5 flex items-center justify-between gap-4">
           <IssueTypeSwitcher issueId={issueId} disabled={isArchived || !isEditable} />
           <div className="flex items-center gap-3">
+            {isEditable && !isArchived && (
+              <button
+                type="button"
+                onClick={() => setIsEnhanceModalOpen(true)}
+                className="border-accent-primary/20 flex items-center gap-1.5 rounded-lg border bg-accent-primary/10 px-2.5 py-1 text-12 font-medium text-accent-primary shadow-raised-100 transition-all hover:bg-accent-primary/20"
+              >
+                <Sparkles className="size-3.5" />
+                Improve with Keel AI
+              </button>
+            )}
             <NameDescriptionUpdateStatus isSubmitting={isSubmitting} />
           </div>
         </div>
+
+        {isEnhanceModalOpen && (
+          <EnhanceWorkItemModal
+            isOpen={isEnhanceModalOpen}
+            onClose={() => setIsEnhanceModalOpen(false)}
+            workspaceSlug={workspaceSlug}
+            projectId={projectId}
+            initialTitle={issue.name || ""}
+            initialDescriptionHtml={issue.description_html || ""}
+            onAcceptTitle={async (newTitle) => {
+              if (!issue.id || !issue.project_id) return;
+              await issueOperations.update(workspaceSlug, issue.project_id, issue.id, {
+                name: newTitle,
+              });
+            }}
+            onAcceptDescription={async (newDescriptionHtml) => {
+              if (!issue.id || !issue.project_id) return;
+              editorRef.current?.setEditorValue(newDescriptionHtml, true);
+              await issueOperations.update(workspaceSlug, issue.project_id, issue.id, {
+                description_html: newDescriptionHtml,
+              });
+            }}
+          />
+        )}
 
         <IssueTitleInput
           workspaceSlug={workspaceSlug}

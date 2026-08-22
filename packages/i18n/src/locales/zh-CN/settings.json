@@ -57,6 +57,34 @@
       "title": "个人访问令牌",
       "description": "生成安全的 API 令牌，将您的数据与外部系统和应用程序集成。"
     },
+    "ai": {
+      "title": "AI 提供商",
+      "description": "连接您自己的 API 密钥即可使用 AI 功能。Keel 不会就模型用量向您收费，收费方是您的提供商。",
+      "key_absent": "未保存密钥",
+      "key_stored": "已保存的密钥：{{hint}}",
+      "replace_placeholder": "输入新密钥以替换已保存的密钥",
+      "get_key": "获取 {{provider}} API 密钥",
+      "save": "保存",
+      "update": "更新",
+      "remove": "移除",
+      "show_key": "显示密钥",
+      "hide_key": "隐藏密钥",
+      "privacy_note": "密钥在保存前会被加密，且仅在发起请求时于服务器上解密，绝不会回传到您的浏览器。",
+      "unavailable": "此实例未连接到 Supabase，因此 AI 功能不可用。",
+      "toast": {
+        "saved": {
+          "title": "密钥已保存",
+          "message": "您的 {{provider}} API 密钥已保存，可以使用了。"
+        },
+        "removed": {
+          "title": "密钥已移除",
+          "message": "您的 {{provider}} API 密钥已删除。"
+        },
+        "error": {
+          "message": "无法保存该密钥。请检查后重试。"
+        }
+      }
+    },
     "activity": {
       "heading": "活动",
       "description": "跟踪您在所有项目和工作项中的最近操作和更改。"
@@ -103,7 +131,8 @@
       "preferences": "偏好设置",
       "notifications": "通知",
       "api-tokens": "个人访问令牌",
-      "connections": "连接"
+      "connections": "连接",
+      "ai": "AI 提供商"
     },
     "tabs": {
       "summary": "摘要",

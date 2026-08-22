@@ -217,9 +217,9 @@ export const TopNavPowerK = observer(() => {
         <label
           htmlFor="top-nav-power-k-input"
           className={cn(
-            "shadow-xs flex h-8 w-full cursor-text items-center rounded-full border border-subtle bg-surface-2/80 px-3 py-1.5 backdrop-blur-md transition-all duration-200 hover:border-strong",
+            "flex h-8 w-full cursor-text items-center rounded-full border border-subtle bg-surface-2/80 px-3 py-1.5 shadow-raised-100 backdrop-blur-md transition-all duration-200 hover:border-strong",
             {
-              "shadow-sm border-accent-primary bg-surface-1": isOpen,
+              "border-accent-primary bg-surface-1 shadow-raised-100": isOpen,
             }
           )}
         >

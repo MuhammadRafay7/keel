@@ -396,8 +396,25 @@
     --bg-plans-brand-subtle: var(--brand-200);
     --bg-plans-brand-solid: var(--brand-1200);
 
+    /* ---------- Elevation ---------- */
+    /*
+     * The colour every shadow in the app is cast in, in four depths. On light
+     * ground a shadow is a soft slate wash; on dark ground it has to be much
+     * closer to true black and much stronger, because a dark surface sitting on
+     * a dark canvas has no luminance gap of its own to separate the two.
+     */
+    --elevation-tint-100: oklch(0.28 0.02 260 / 4%);
+    --elevation-tint-200: oklch(0.28 0.02 260 / 7%);
+    --elevation-tint-300: oklch(0.28 0.02 260 / 10%);
+    --elevation-tint-400: oklch(0.28 0.02 260 / 14%);
+
     /* ---------- Dark mode color tokens ---------- */
     @variant dark {
+      /* Elevation — near-black and far stronger; see the note in light mode. */
+      --elevation-tint-100: oklch(0 0 0 / 22%);
+      --elevation-tint-200: oklch(0 0 0 / 32%);
+      --elevation-tint-300: oklch(0 0 0 / 44%);
+      --elevation-tint-400: oklch(0 0 0 / 58%);
       /* Neutral colors (ClickUp Dark Slate) */
       --neutral-black: oklch(0.13 0.01 260);
       --neutral-100: oklch(0.165 0.012 260);
@@ -707,14 +724,23 @@
   /* ---------- Ring width ---------- */
   --ring-width-*: initial;
   /* ---------- Shadow ---------- */
+  /*
+   * Cleared here and rebuilt in the `@theme inline` block below, so every
+   * shadow is cast in `--elevation-tint-*` and therefore flips with the theme.
+   * Literal values here would stay light-mode slate on a dark ground, which is
+   * how the app ended up with panels that float in light and sit flat in dark.
+   */
   --shadow-*: initial;
-  --shadow-raised-100: 0px 1px 6px -1px #292f3d08, 0px 1px 4px 0px #292f3d0a;
-  --shadow-raised-200: 0px 1px 2px -1px #292f3d0f, 0px 1px 3px 0px #292f3d0d;
-  --shadow-raised-300: 0px 2px 4px -1px #292f3d0a, 0px 4px 6px -1px #292f3d0d;
-  --shadow-overlay-100: 0px 10px 10px -5px #292f3d0a, 0px 10px 40px -5px #292f3d0a;
-  --shadow-overlay-200: 0px 10px 10px -10px #292f3d0a, 0px 30px 60px -12px #292f3d1a;
-  --shadow-direction-left: -10px 0px 30px -5px #292f3d05, -5px 0px 80px -5px #292f3d0a;
-  --shadow-direction-right: 10px 0px 30px -5px #0000000a, 5px 0px 80px -5px #0000000a;
+  /* ---------- Motion ---------- */
+  /*
+   * One easing curve for the whole app. `smooth` is the decelerating curve
+   * every surface animates on — panels, rows, cards, dropdowns — so nothing
+   * reads as if it belongs to a different product. `spring` overshoots very
+   * slightly and is reserved for elements that appear from nothing.
+   */
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --ease-entrance: cubic-bezier(0.22, 1, 0.36, 1);
   /* --------- Height --------- */
   --height-header: 3.25rem;
   /* --------- Padding --------- */
@@ -725,6 +751,21 @@
 
 /* -------------------- Semantic colors (Final colors to be used in components) -------------------- */
 @theme inline {
+  /* ---------- Shadow ---------- */
+  /*
+   * Six steps, three jobs. `raised` is for things that sit on the page and
+   * lift under the pointer (cards, rows, buttons). `overlay` is for things that
+   * float over it (menus, modals, the peek panel) — those get a second, wider,
+   * softer layer so the falloff reads as distance rather than as a thick edge.
+   * `direction` casts sideways, for the sidebar and peek rails.
+   */
+  --shadow-raised-100: 0 1px 2px -1px var(--elevation-tint-100), 0 1px 3px 0 var(--elevation-tint-100);
+  --shadow-raised-200: 0 1px 2px -1px var(--elevation-tint-200), 0 2px 6px -1px var(--elevation-tint-200);
+  --shadow-raised-300: 0 2px 4px -2px var(--elevation-tint-200), 0 6px 16px -4px var(--elevation-tint-300);
+  --shadow-overlay-100: 0 4px 10px -6px var(--elevation-tint-200), 0 12px 32px -8px var(--elevation-tint-300);
+  --shadow-overlay-200: 0 8px 16px -10px var(--elevation-tint-300), 0 28px 60px -16px var(--elevation-tint-400);
+  --shadow-direction-left: -8px 0 24px -10px var(--elevation-tint-200), -2px 0 60px -12px var(--elevation-tint-300);
+  --shadow-direction-right: 8px 0 24px -10px var(--elevation-tint-200), 2px 0 60px -12px var(--elevation-tint-300);
   /* ---------- Outline width ---------- */
   --outline-width-sm: var(--border-width-sm);
   --outline-width-md: var(--border-width-md);

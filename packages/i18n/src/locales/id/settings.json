@@ -57,6 +57,34 @@
       "title": "Token Akses Personal",
       "description": "Hasilkan token API yang aman untuk mengintegrasikan data Anda dengan sistem dan aplikasi eksternal."
     },
+    "ai": {
+      "title": "Penyedia AI",
+      "description": "Hubungkan kunci API Anda sendiri untuk menggunakan fitur AI. Keel tidak menagih Anda atas penggunaan model — penyedia Anda yang menagih.",
+      "key_absent": "Tidak ada kunci tersimpan",
+      "key_stored": "Kunci tersimpan: {{hint}}",
+      "replace_placeholder": "Masukkan kunci baru untuk menggantikan yang tersimpan",
+      "get_key": "Dapatkan kunci API {{provider}}",
+      "save": "Simpan",
+      "update": "Perbarui",
+      "remove": "Hapus",
+      "show_key": "Tampilkan kunci",
+      "hide_key": "Sembunyikan kunci",
+      "privacy_note": "Kunci dienkripsi sebelum disimpan dan hanya didekripsi di server saat permintaan dibuat. Kunci tidak pernah dikirim kembali ke peramban Anda.",
+      "unavailable": "Fitur AI tidak tersedia karena instansi ini tidak terhubung ke Supabase.",
+      "toast": {
+        "saved": {
+          "title": "Kunci tersimpan",
+          "message": "Kunci API {{provider}} Anda tersimpan dan siap digunakan."
+        },
+        "removed": {
+          "title": "Kunci dihapus",
+          "message": "Kunci API {{provider}} Anda telah dihapus."
+        },
+        "error": {
+          "message": "Kami tidak dapat menyimpan kunci tersebut. Silakan periksa dan coba lagi."
+        }
+      }
+    },
     "activity": {
       "heading": "Aktivitas",
       "description": "Lacak tindakan dan perubahan terkini Anda di semua proyek dan item kerja."
@@ -103,7 +131,8 @@
       "preferences": "Preferensi",
       "notifications": "Notifikasi",
       "api-tokens": "Token Akses Personal",
-      "connections": "Koneksi"
+      "connections": "Koneksi",
+      "ai": "Penyedia AI"
     },
     "tabs": {
       "summary": "Ringkasan",

@@ -57,6 +57,34 @@
       "title": "Tokenuri de acces personale",
       "description": "Generează tokenuri API securizate pentru a integra datele tale cu sisteme și aplicații externe."
     },
+    "ai": {
+      "title": "Furnizor de IA",
+      "description": "Conectați propria cheie API pentru a folosi funcțiile de IA. Keel nu vă facturează utilizarea modelului — o face furnizorul dumneavoastră.",
+      "key_absent": "Nicio cheie salvată",
+      "key_stored": "Cheie salvată: {{hint}}",
+      "replace_placeholder": "Introduceți o cheie nouă pentru a o înlocui pe cea salvată",
+      "get_key": "Obțineți o cheie API {{provider}}",
+      "save": "Salvați",
+      "update": "Actualizați",
+      "remove": "Eliminați",
+      "show_key": "Afișați cheia",
+      "hide_key": "Ascundeți cheia",
+      "privacy_note": "Cheile sunt criptate înainte de a fi salvate și sunt decriptate doar pe server, în momentul unei solicitări. Ele nu sunt niciodată trimise înapoi în browserul dumneavoastră.",
+      "unavailable": "Funcțiile de IA nu sunt disponibile deoarece această instanță nu este conectată la Supabase.",
+      "toast": {
+        "saved": {
+          "title": "Cheie salvată",
+          "message": "Cheia API {{provider}} este salvată și gata de utilizare."
+        },
+        "removed": {
+          "title": "Cheie eliminată",
+          "message": "Cheia API {{provider}} a fost ștearsă."
+        },
+        "error": {
+          "message": "Nu am putut salva această cheie. Vă rugăm să o verificați și să încercați din nou."
+        }
+      }
+    },
     "activity": {
       "heading": "Activitate",
       "description": "Urmărește acțiunile și modificările tale recente din toate proiectele și activitățile."
@@ -103,7 +131,8 @@
       "preferences": "Preferințe",
       "notifications": "Notificări",
       "api-tokens": "Tokenuri de acces personale",
-      "connections": "Conexiuni"
+      "connections": "Conexiuni",
+      "ai": "Furnizor de IA"
     },
     "tabs": {
       "summary": "Sumar",

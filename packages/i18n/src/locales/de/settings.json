@@ -57,6 +57,34 @@
       "title": "Persönliche Zugriffstoken",
       "description": "Generieren Sie sichere API-Token, um Ihre Daten mit externen Systemen und Anwendungen zu integrieren."
     },
+    "ai": {
+      "title": "KI-Anbieter",
+      "description": "Verbinden Sie Ihren eigenen API-Schlüssel, um KI-Funktionen zu nutzen. Keel stellt die Modellnutzung nicht in Rechnung — das übernimmt Ihr Anbieter.",
+      "key_absent": "Kein Schlüssel gespeichert",
+      "key_stored": "Gespeicherter Schlüssel: {{hint}}",
+      "replace_placeholder": "Neuen Schlüssel eingeben, um den gespeicherten zu ersetzen",
+      "get_key": "API-Schlüssel für {{provider}} abrufen",
+      "save": "Speichern",
+      "update": "Aktualisieren",
+      "remove": "Entfernen",
+      "show_key": "Schlüssel anzeigen",
+      "hide_key": "Schlüssel ausblenden",
+      "privacy_note": "Schlüssel werden vor dem Speichern verschlüsselt und ausschließlich auf dem Server entschlüsselt, wenn eine Anfrage gestellt wird. Sie werden nie an Ihren Browser zurückgesendet.",
+      "unavailable": "KI-Funktionen sind nicht verfügbar, da diese Instanz nicht mit Supabase verbunden ist.",
+      "toast": {
+        "saved": {
+          "title": "Schlüssel gespeichert",
+          "message": "Ihr API-Schlüssel für {{provider}} ist gespeichert und einsatzbereit."
+        },
+        "removed": {
+          "title": "Schlüssel entfernt",
+          "message": "Ihr API-Schlüssel für {{provider}} wurde gelöscht."
+        },
+        "error": {
+          "message": "Dieser Schlüssel konnte nicht gespeichert werden. Bitte prüfen Sie ihn und versuchen Sie es erneut."
+        }
+      }
+    },
     "activity": {
       "heading": "Aktivität",
       "description": "Verfolgen Sie Ihre letzten Aktionen und Änderungen über alle Projekte und Arbeitselemente hinweg."
@@ -103,7 +131,8 @@
       "preferences": "Einstellungen",
       "notifications": "Benachrichtigungen",
       "api-tokens": "Persönliche Zugriffstoken",
-      "connections": "Verbindungen"
+      "connections": "Verbindungen",
+      "ai": "KI-Anbieter"
     },
     "tabs": {
       "summary": "Zusammenfassung",

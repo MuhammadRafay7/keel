@@ -53,13 +53,21 @@ interface AppSidebarButtonItemProps {
 // STYLES
 // ============================================================================
 
+/*
+ * The rail sits at the far left of every screen and is scanned, not read — so
+ * the icon tile carries the whole state and the label only confirms it.
+ *
+ * The previous treatment scaled the tile up on hover. At 34px a 2% scale is
+ * under a pixel: too small to register as motion, but enough to resample the
+ * icon and make it shimmer. It is replaced by a wash and a colour shift, which
+ * are legible at this size, and the tile holds still.
+ */
 const styles = {
-  base: "group flex flex-col gap-0.5 items-center justify-center text-tertiary transition-all duration-150",
-  icon: "flex items-center justify-center gap-2 size-8.5 rounded-xl text-tertiary transition-all duration-200",
-  iconActive:
-    "bg-accent-subtle text-accent-primary shadow-xs font-semibold scale-[1.02] border border-accent-primary/20",
-  iconInactive: "group-hover:text-primary group-hover:bg-surface-2/80 text-tertiary group-hover:scale-[1.02]",
-  label: "text-11 font-medium transition-colors duration-150",
+  base: "group flex flex-col gap-1 items-center justify-center text-tertiary transition-smooth focus-ring rounded-xl",
+  icon: "relative flex items-center justify-center gap-2 size-8.5 rounded-xl text-tertiary transition-smooth",
+  iconActive: "bg-accent-subtle text-accent-primary shadow-raised-100 ring-1 ring-accent-subtle",
+  iconInactive: "text-tertiary group-hover:text-primary group-hover:bg-layer-transparent-hover",
+  label: "text-11 font-medium leading-none transition-smooth",
   labelActive: "text-accent-primary font-semibold",
   labelInactive: "group-hover:text-primary text-tertiary",
 } as const;

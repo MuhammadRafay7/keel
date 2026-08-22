@@ -99,7 +99,14 @@ export const SpreadsheetIssueRow = observer(function SpreadsheetIssueRow(props: 
             style={{ height: "calc(2.75rem - 1px)" }}
           />
         }
-        classNames={cn("bg-surface-1 transition-[background-color]", {
+        /*
+         * `group/spreadsheet-row` + a row-level hover. Every cell used to carry
+         * its own `hover:bg-layer-1`, so only the single cell under the pointer
+         * lit up — across twelve columns that gives the eye nothing to follow,
+         * which is exactly what a spreadsheet needs most. The row and the cells
+         * hover to the same token, so the highlight reads as one band.
+         */
+        classNames={cn("group/spreadsheet-row bg-surface-1 transition-[background-color] hover:bg-layer-1", {
           "group selected-issue-row": isIssueSelected,
           "border-[0.5px] border-strong-1": isIssueActive,
         })}
@@ -262,7 +269,7 @@ const IssueRowDetails = observer(function IssueRowDetails(props: IssueRowDetails
         id={`issue-${issueId}`}
         ref={cellRef}
         tabIndex={0}
-        className="group/list-block relative left-0 z-10 max-w-lg bg-surface-1 md:sticky"
+        className="group/list-block relative left-0 z-10 max-w-lg bg-surface-1 transition-[background-color] group-hover/spreadsheet-row:bg-layer-1 md:sticky"
       >
         <ControlLink
           href={workItemLink}
@@ -277,7 +284,7 @@ const IssueRowDetails = observer(function IssueRowDetails(props: IssueRowDetails
                 "border-b-[0.5px]": !getIsIssuePeeked(issueDetail.id),
                 "border border-accent-strong hover:border-accent-strong":
                   getIsIssuePeeked(issueDetail.id) && nestingLevel === peekIssue?.nestingLevel,
-                "shadow-[8px_22px_22px_10px_rgba(0,0,0,0.05)]": isScrolled.current,
+                "shadow-direction-right": isScrolled.current,
               }
             )}
           >

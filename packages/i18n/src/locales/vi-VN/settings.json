@@ -57,6 +57,34 @@
       "title": "Mã truy cập cá nhân",
       "description": "Tạo mã API bảo mật để tích hợp dữ liệu của bạn với các hệ thống và ứng dụng bên ngoài."
     },
+    "ai": {
+      "title": "Nhà cung cấp AI",
+      "description": "Kết nối khóa API của riêng bạn để sử dụng các tính năng AI. Keel không tính phí bạn cho việc sử dụng mô hình — nhà cung cấp của bạn mới tính phí.",
+      "key_absent": "Chưa lưu khóa nào",
+      "key_stored": "Khóa đã lưu: {{hint}}",
+      "replace_placeholder": "Nhập khóa mới để thay thế khóa đã lưu",
+      "get_key": "Lấy khóa API {{provider}}",
+      "save": "Lưu",
+      "update": "Cập nhật",
+      "remove": "Xóa",
+      "show_key": "Hiện khóa",
+      "hide_key": "Ẩn khóa",
+      "privacy_note": "Khóa được mã hóa trước khi lưu và chỉ được giải mã trên máy chủ khi có yêu cầu. Khóa không bao giờ được gửi lại về trình duyệt của bạn.",
+      "unavailable": "Các tính năng AI không khả dụng vì phiên bản này chưa được kết nối với Supabase.",
+      "toast": {
+        "saved": {
+          "title": "Đã lưu khóa",
+          "message": "Khóa API {{provider}} của bạn đã được lưu và sẵn sàng sử dụng."
+        },
+        "removed": {
+          "title": "Đã xóa khóa",
+          "message": "Khóa API {{provider}} của bạn đã bị xóa."
+        },
+        "error": {
+          "message": "Chúng tôi không thể lưu khóa đó. Vui lòng kiểm tra lại và thử lần nữa."
+        }
+      }
+    },
     "activity": {
       "heading": "Hoạt động",
       "description": "Theo dõi các hành động và thay đổi gần đây của bạn trong tất cả dự án và mục công việc."
@@ -103,7 +131,8 @@
       "preferences": "Tùy chọn",
       "notifications": "Thông báo",
       "api-tokens": "Mã truy cập cá nhân",
-      "connections": "Kết nối"
+      "connections": "Kết nối",
+      "ai": "Nhà cung cấp AI"
     },
     "tabs": {
       "summary": "Tóm tắt",
