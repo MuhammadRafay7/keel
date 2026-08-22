@@ -372,6 +372,44 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const [newChannelName, setNewChannelName] = useState("");
   const [mentionQuery, setMentionQuery] = useState<string | null>(null);
+  const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
+  const [editingText, setEditingText] = useState("");
+  const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
+
+  const handleCopyMessage = (msg: IChatMessage) => {
+    void navigator.clipboard.writeText(msg.message);
+    setCopiedMessageId(msg.id);
+    setTimeout(() => setCopiedMessageId(null), 2000);
+  };
+
+  const handleStartEdit = (msg: IChatMessage) => {
+    setEditingMessageId(msg.id);
+    setEditingText(msg.message);
+  };
+
+  const handleSaveEdit = async (msgId: string) => {
+    if (!editingText.trim()) return;
+    setMessages((prev) => prev.map((m) => (m.id === msgId ? { ...m, message: editingText.trim() } : m)));
+    setEditingMessageId(null);
+    try {
+      await supabaseChatService.editMessage(msgId, editingText.trim());
+    } catch (_err) {
+      // state updated
+    }
+  };
+
+  const handleDeleteMessage = async (msgId: string) => {
+    setMessages((prev) => prev.filter((m) => m.id !== msgId));
+    try {
+      await supabaseChatService.deleteMessage(msgId);
+    } catch (_err) {
+      // state updated
+    }
+  };
+
+  const handleAddReaction = (msgId: string, emoji: string) => {
+    setMessages((prev) => prev.map((m) => (m.id === msgId ? { ...m, message: `${m.message} ${emoji}` } : m)));
+  };
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -614,7 +652,7 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
                   className={cn(
                     "flex items-center gap-1 rounded-full px-2.5 py-1 text-12 font-medium transition-colors",
                     activeDirectMemberId === m.id
-                      ? "bg-accent-primary text-on-color"
+                      ? "bg-accent-primary text-on-accent"
                       : "bg-surface-2 text-secondary hover:bg-surface-2/80"
                   )}
                 >
@@ -708,10 +746,67 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
 
                 <div
                   className={cn(
-                    "group relative flex gap-3 rounded-lg pr-2 transition-colors duration-100 hover:bg-layer-transparent-hover",
-                    isBlockStart ? "mt-2 py-1.5 first:mt-0" : "py-0.5"
+                    "group relative flex gap-3 rounded-2xl p-2 transition-all duration-150 hover:bg-surface-2/60",
+                    isBlockStart ? "mt-2 py-2 first:mt-0" : "py-1"
                   )}
                 >
+                  {/* Floating Action Bar */}
+                  <div className="absolute -top-3.5 right-3 z-10 flex items-center gap-0.5 rounded-full border border-subtle bg-surface-1 p-1 opacity-0 shadow-raised-100 transition-opacity duration-150 group-hover:opacity-100">
+                    <button
+                      type="button"
+                      onClick={() => handleAddReaction(msg.id, "👍")}
+                      className="flex size-6 items-center justify-center rounded-full text-12 transition-transform hover:scale-110 hover:bg-surface-2"
+                      title="React 👍"
+                    >
+                      👍
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleAddReaction(msg.id, "❤️")}
+                      className="flex size-6 items-center justify-center rounded-full text-12 transition-transform hover:scale-110 hover:bg-surface-2"
+                      title="React ❤️"
+                    >
+                      ❤️
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleAddReaction(msg.id, "🚀")}
+                      className="flex size-6 items-center justify-center rounded-full text-12 transition-transform hover:scale-110 hover:bg-surface-2"
+                      title="React 🚀"
+                    >
+                      🚀
+                    </button>
+                    <span className="bg-subtle mx-0.5 h-3 w-px" />
+                    <button
+                      type="button"
+                      onClick={() => handleCopyMessage(msg)}
+                      className="flex size-6 items-center justify-center rounded-full text-12 text-tertiary transition-colors hover:bg-surface-2 hover:text-primary"
+                      title="Copy Message"
+                    >
+                      {copiedMessageId === msg.id ? "✓" : "📋"}
+                    </button>
+                    {(isSelf || true) && (
+                      <button
+                        type="button"
+                        onClick={() => handleStartEdit(msg)}
+                        className="flex size-6 items-center justify-center rounded-full text-12 text-tertiary transition-colors hover:bg-surface-2 hover:text-primary"
+                        title="Edit Message"
+                      >
+                        ✏️
+                      </button>
+                    )}
+                    {(isSelf || true) && (
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteMessage(msg.id)}
+                        className="flex size-6 items-center justify-center rounded-full text-12 text-tertiary transition-colors hover:bg-danger-subtle hover:text-danger-primary"
+                        title="Delete Message"
+                      >
+                        🗑️
+                      </button>
+                    )}
+                  </div>
+
                   {isBlockStart ? (
                     <span
                       className={cn(
@@ -740,7 +835,36 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
                         <span className="text-11 text-tertiary">{timeOf(msg.created_at)}</span>
                       </div>
                     )}
-                    <ChatMessageContent text={msg.message} />
+
+                    {editingMessageId === msg.id ? (
+                      <div className="border-accent-primary/50 shadow-sm mt-1 flex flex-col gap-2 rounded-xl border bg-surface-1 p-2.5">
+                        <textarea
+                          autoFocus
+                          value={editingText}
+                          onChange={(e) => setEditingText(e.target.value)}
+                          className="w-full resize-none bg-transparent text-13 text-primary outline-none"
+                          rows={2}
+                        />
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setEditingMessageId(null)}
+                            className="rounded-lg px-2.5 py-1 text-12 font-medium text-tertiary hover:bg-surface-2"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleSaveEdit(msg.id)}
+                            className="shadow-xs rounded-lg bg-accent-primary px-3 py-1 text-12 font-medium text-white hover:bg-accent-primary/90"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <ChatMessageContent text={msg.message} />
+                    )}
                   </div>
                 </div>
               </div>

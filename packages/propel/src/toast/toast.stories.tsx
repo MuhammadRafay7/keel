@@ -117,7 +117,7 @@ export const Info: Story = {
               message: "Here's some helpful information for you.",
             })
           }
-          className="rounded-sm bg-accent-primary px-4 py-2 text-13 text-on-color hover:bg-accent-primary/90"
+          className="rounded-sm bg-accent-primary px-4 py-2 text-13 text-on-accent hover:bg-accent-primary/90"
         >
           Show Info Toast
         </button>
@@ -197,7 +197,7 @@ export const UpdateToast: Story = {
         <Toast theme="light" />
         <button
           onClick={handleUpdate}
-          className="rounded-sm bg-accent-primary px-4 py-2 text-13 text-on-color hover:bg-accent-primary/90"
+          className="rounded-sm bg-accent-primary px-4 py-2 text-13 text-on-accent hover:bg-accent-primary/90"
         >
           Update Toast After 2s
         </button>
@@ -233,7 +233,7 @@ export const PromiseToast: Story = {
         <Toast theme="light" />
         <button
           onClick={handlePromise}
-          className="rounded-sm bg-accent-primary px-4 py-2 text-13 text-on-color hover:bg-accent-primary/90"
+          className="rounded-sm bg-accent-primary px-4 py-2 text-13 text-on-accent hover:bg-accent-primary/90"
         >
           Show Promise Toast
         </button>
@@ -292,7 +292,7 @@ export const AllTypes: Story = {
                 message: "Here's some info",
               })
             }
-            className="rounded-sm bg-accent-primary px-3 py-2 text-13 text-on-color hover:bg-accent-primary/90"
+            className="rounded-sm bg-accent-primary px-3 py-2 text-13 text-on-accent hover:bg-accent-primary/90"
           >
             Info
           </button>
@@ -340,7 +340,7 @@ export const MultipleToasts: Story = {
               });
             }, 1000);
           }}
-          className="rounded-sm bg-accent-primary px-4 py-2 text-13 text-on-color hover:bg-accent-primary/90"
+          className="rounded-sm bg-accent-primary px-4 py-2 text-13 text-on-accent hover:bg-accent-primary/90"
         >
           Show Multiple Toasts
         </button>
@@ -384,7 +384,7 @@ export const LongMessage: Story = {
                 "This is a longer message that provides more detailed information about what happened and what the user should do next.",
             })
           }
-          className="rounded-sm bg-accent-primary px-4 py-2 text-13 text-on-color hover:bg-accent-primary/90"
+          className="rounded-sm bg-accent-primary px-4 py-2 text-13 text-on-accent hover:bg-accent-primary/90"
         >
           Show Long Message
         </button>

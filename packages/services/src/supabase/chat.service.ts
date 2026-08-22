@@ -166,6 +166,26 @@ export class ChatService {
     return data as IChatMessage;
   }
 
+  async editMessage(messageId: string, newMessageText: string): Promise<IChatMessage> {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from("chat_messages")
+      .update({ message: newMessageText, updated_at: new Date().toISOString() })
+      .eq("id", messageId)
+      .select()
+      .single();
+
+    if (error || !data) throw error ?? new Error("Could not update message.");
+    return data as IChatMessage;
+  }
+
+  async deleteMessage(messageId: string): Promise<void> {
+    const supabase = getSupabase();
+    const { error } = await supabase.from("chat_messages").delete().eq("id", messageId);
+
+    if (error) throw error;
+  }
+
   /**
    * Streams inserts for one channel.
    *

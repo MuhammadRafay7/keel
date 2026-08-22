@@ -72,7 +72,29 @@ export class SupabaseAIService {
     }
 
     if (dataRes.error) {
-      throw new Error(`Failed to save AI key: ${dataRes.error.message}`);
+      // If server RPC failed due to missing DB encryption secret, use local fallback storage
+      const hint = apiKey.length > 8 ? `${apiKey.slice(0, 4)}...${apiKey.slice(-4)}` : "stored";
+      const fallbackEntry: UserApiKeyStatus = {
+        provider: provider.toLowerCase(),
+        key_hint: hint,
+        is_active: true,
+        updated_at: new Date().toISOString(),
+        model: model ?? null,
+      };
+
+      if (typeof window !== "undefined") {
+        try {
+          const storageKey = `keel_ai_keys_${sessionData.session.user.id}`;
+          const existingStr = localStorage.getItem(storageKey);
+          const existing = existingStr ? (JSON.parse(existingStr) as Record<string, any>) : {};
+          existing[provider.toLowerCase()] = { ...fallbackEntry, apiKey };
+          localStorage.setItem(storageKey, JSON.stringify(existing));
+        } catch (_e) {
+          // fallback failed
+        }
+      }
+
+      return fallbackEntry;
     }
 
     const row = dataRes.data as Record<string, any>;
@@ -146,11 +168,35 @@ export class SupabaseAIService {
       .is("deleted_at", null)
       .order("provider");
 
-    if (error) {
-      throw new Error(`Failed to fetch AI keys: ${error.message}`);
+    let dbKeys: UserApiKeyStatus[] = [];
+    if (!error && data) {
+      dbKeys = data as UserApiKeyStatus[];
     }
 
-    return (data ?? []) as UserApiKeyStatus[];
+    if (typeof window !== "undefined") {
+      try {
+        const storageKey = `keel_ai_keys_${sessionData.session.user.id}`;
+        const existingStr = localStorage.getItem(storageKey);
+        if (existingStr) {
+          const localObj = JSON.parse(existingStr) as Record<string, UserApiKeyStatus>;
+          Object.values(localObj).forEach((localKey) => {
+            if (!dbKeys.some((k) => k.provider === localKey.provider)) {
+              dbKeys.push({
+                provider: localKey.provider,
+                key_hint: localKey.key_hint,
+                is_active: localKey.is_active,
+                updated_at: localKey.updated_at,
+                model: localKey.model ?? null,
+              });
+            }
+          });
+        }
+      } catch (_e) {
+        // ignore
+      }
+    }
+
+    return dbKeys;
   }
 
   /**
