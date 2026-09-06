@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
+import { Building2, Globe, Users, ArrowLeft, Plus } from "lucide-react";
 // keel imports
 import { WEB_BASE_URL, ORGANIZATION_SIZE, RESTRICTED_URLS } from "@keel/constants";
 import { Button, getButtonStyling } from "@keel/propel/button";
@@ -23,27 +24,30 @@ import { useWorkspace } from "@/hooks/store";
 const instanceWorkspaceService = new InstanceWorkspaceService();
 
 export function WorkspaceCreateForm() {
-  // router
   const router = useRouter();
-  // states
   const [slugError, setSlugError] = useState(false);
   const [invalidSlug, setInvalidSlug] = useState(false);
   const [defaultValues, setDefaultValues] = useState<Partial<IWorkspace>>({
     name: "",
     slug: "",
-    organization_size: "",
+    organization_size: "1-10",
   });
-  // store hooks
   const { createWorkspace } = useWorkspace();
-  // form info
+
   const {
     handleSubmit,
     control,
     setValue,
     getValues,
+    watch,
     formState: { errors, isSubmitting, isValid },
-  } = useForm<IWorkspace>({ defaultValues, mode: "onChange" });
-  // derived values
+  } = useForm<IWorkspace>({
+    defaultValues,
+    mode: "onChange",
+  });
+
+  const workspaceName = watch("name");
+  const workspaceSlug = watch("slug");
   const [workspaceBaseURL, setWorkspaceBaseURL] = useState(() => encodeURI(WEB_BASE_URL || ""));
 
   useEffect(() => {
@@ -53,160 +57,193 @@ export function WorkspaceCreateForm() {
   }, []);
 
   const handleCreateWorkspace = async (formData: IWorkspace) => {
-    await instanceWorkspaceService
-      .slugCheck(formData.slug)
-      .then(async (res) => {
-        if (res.status === true && !RESTRICTED_URLS.includes(formData.slug)) {
-          setSlugError(false);
-          await createWorkspace(formData)
-            .then(async () => {
-              setToast({
-                type: TOAST_TYPE.SUCCESS,
-                title: "Success!",
-                message: "Workspace created successfully.",
-              });
-              router.push(`/workspace`);
-            })
-            .catch(() => {
-              setToast({
-                type: TOAST_TYPE.ERROR,
-                title: "Error!",
-                message: "Workspace could not be created. Please try again.",
-              });
-            });
-        } else setSlugError(true);
-      })
-      .catch(() => {
+    try {
+      const res = await instanceWorkspaceService.slugCheck(formData.slug);
+      if (res.status === true && !RESTRICTED_URLS.includes(formData.slug)) {
+        setSlugError(false);
+        await createWorkspace(formData);
         setToast({
-          type: TOAST_TYPE.ERROR,
-          title: "Error!",
-          message: "Some error occurred while creating workspace. Please try again.",
+          type: TOAST_TYPE.SUCCESS,
+          title: "Success!",
+          message: `Workspace "${formData.name}" created successfully.`,
         });
+        router.push(`/workspace`);
+      } else {
+        setSlugError(true);
+      }
+    } catch (_err) {
+      setToast({
+        type: TOAST_TYPE.ERROR,
+        title: "Error!",
+        message: "Failed to create workspace. Please check your network and try again.",
       });
+    }
   };
 
   useEffect(
     () => () => {
-      // when the component unmounts set the default values to whatever user typed in
       setDefaultValues(getValues());
     },
     [getValues, setDefaultValues]
   );
 
   return (
-    <div className="space-y-8">
-      <div className="grid-col grid w-full max-w-4xl grid-cols-1 items-start justify-between gap-x-10 gap-y-6 lg:grid-cols-2">
-        <div className="flex flex-col gap-1">
-          <h4 className="text-13 text-tertiary">Name your workspace</h4>
-          <div className="flex flex-col gap-1">
-            <Controller
-              control={control}
-              name="name"
-              rules={{
-                validate: (value) => validateWorkspaceName(value, true),
-              }}
-              render={({ field: { value, ref, onChange } }) => (
-                <Input
-                  id="workspaceName"
-                  type="text"
-                  value={value}
-                  onChange={(e) => {
-                    onChange(e.target.value);
-                    setValue("name", e.target.value);
-                    setValue("slug", e.target.value.toLocaleLowerCase().trim().replace(/ /g, "-"), {
-                      shouldValidate: true,
-                    });
+    <div className="space-y-8 pb-10">
+      <div className="shadow-card max-w-3xl space-y-8 rounded-3xl border border-subtle bg-surface-1 p-7 sm:p-9">
+        <div className="flex items-center gap-3.5 border-b border-subtle pb-5">
+          <div className="bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20 shadow-soft flex size-11 items-center justify-center rounded-2xl border">
+            <Building2 className="h-6 w-6" />
+          </div>
+          <div>
+            <h3 className="text-17 font-bold text-primary">Workspace Tenant Setup</h3>
+            <p className="text-12 text-secondary">Provision a new isolated organization on this Keel instance.</p>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit(handleCreateWorkspace)} className="space-y-6">
+          <div className="grid grid-cols-1 gap-6">
+            {/* Workspace Name */}
+            <div className="space-y-1.5">
+              <label className="text-13 font-semibold text-primary" htmlFor="workspaceName">
+                Workspace Name <span className="text-rose-500">*</span>
+              </label>
+              <Controller
+                control={control}
+                name="name"
+                rules={{
+                  validate: (value) => validateWorkspaceName(value, true),
+                }}
+                render={({ field: { value, ref, onChange } }) => (
+                  <Input
+                    id="workspaceName"
+                    type="text"
+                    value={value}
+                    onChange={(e) => {
+                      onChange(e.target.value);
+                      setValue("name", e.target.value);
+                      setValue(
+                        "slug",
+                        e.target.value
+                          .toLowerCase()
+                          .trim()
+                          .replace(/[^a-z0-9_-]/g, "-"),
+                        {
+                          shouldValidate: true,
+                        }
+                      );
+                    }}
+                    ref={ref}
+                    hasError={Boolean(errors.name)}
+                    placeholder="e.g. Acme Corporation or Core Engineering"
+                    className="w-full text-13"
+                  />
+                )}
+              />
+              {errors?.name?.message && <span className="text-11 text-danger-primary">{errors.name.message}</span>}
+            </div>
+
+            {/* Workspace URL Slug */}
+            <div className="space-y-1.5">
+              <label className="text-13 font-semibold text-primary" htmlFor="workspaceUrl">
+                Workspace Identifier URL <span className="text-rose-500">*</span>
+              </label>
+              <div className="focus-within:border-blue-500 shadow-soft flex w-full items-center rounded-2xl border border-subtle bg-layer-1 px-3.5 py-1 transition-all">
+                <span className="font-mono pr-1 text-12 text-secondary select-none">{workspaceBaseURL}</span>
+                <Controller
+                  control={control}
+                  name="slug"
+                  rules={{
+                    validate: (value) => validateSlug(value),
                   }}
-                  ref={ref}
-                  hasError={Boolean(errors.name)}
-                  placeholder="Something familiar and recognizable is always best."
-                  className="w-full"
+                  render={({ field: { onChange, value, ref } }) => (
+                    <Input
+                      id="workspaceUrl"
+                      type="text"
+                      value={
+                        value
+                          ? value
+                              .toLowerCase()
+                              .trim()
+                              .replace(/[^a-z0-9_-]/g, "-")
+                          : ""
+                      }
+                      onChange={(e) => {
+                        const cleanVal = e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, "-");
+                        if (/^[a-zA-Z0-9_-]+$/.test(cleanVal)) setInvalidSlug(false);
+                        else setInvalidSlug(true);
+                        onChange(cleanVal);
+                      }}
+                      ref={ref}
+                      hasError={Boolean(errors.slug)}
+                      placeholder="acme"
+                      className="font-mono block w-full border-none !bg-transparent !px-0 py-1.5 text-13 font-semibold text-primary shadow-none focus:ring-0"
+                    />
+                  )}
                 />
+              </div>
+              {slugError && (
+                <p className="text-12 text-danger-primary">This URL slug is already taken. Try something else.</p>
               )}
-            />
-            <span className="text-11 text-danger-primary">{errors?.name?.message}</span>
-          </div>
-        </div>
-        <div className="flex flex-col gap-1">
-          <h4 className="text-13 text-tertiary">Set your workspace&apos;s URL</h4>
-          <div className="flex w-full items-center gap-0.5 rounded-md border-[0.5px] border-subtle px-3">
-            <span className="text-13 whitespace-nowrap text-secondary">{workspaceBaseURL}</span>
-            <Controller
-              control={control}
-              name="slug"
-              rules={{
-                validate: (value) => validateSlug(value),
-              }}
-              render={({ field: { onChange, value, ref } }) => (
-                <Input
-                  id="workspaceUrl"
-                  type="text"
-                  value={value.toLocaleLowerCase().trim().replace(/ /g, "-")}
-                  onChange={(e) => {
-                    if (/^[a-zA-Z0-9_-]+$/.test(e.target.value)) setInvalidSlug(false);
-                    else setInvalidSlug(true);
-                    onChange(e.target.value.toLowerCase());
-                  }}
-                  ref={ref}
-                  hasError={Boolean(errors.slug)}
-                  placeholder="workspace-name"
-                  className="block w-full rounded-md border-none bg-transparent !px-0 py-2 text-13"
-                />
+              {invalidSlug && (
+                <p className="text-12 text-danger-primary">
+                  URLs can contain only letters, numbers, hyphens, and underscores.
+                </p>
               )}
-            />
-          </div>
-          {slugError && <p className="text-13 text-danger-primary">This URL is taken. Try something else.</p>}
-          {invalidSlug && (
-            <p className="text-13 text-danger-primary">{`URLs can contain only ( - ), ( _ ) and alphanumeric characters.`}</p>
-          )}
-          {errors.slug && <span className="text-11 text-danger-primary">{errors.slug.message}</span>}
-        </div>
-        <div className="flex flex-col gap-1">
-          <h4 className="text-13 text-tertiary">How many people will use this workspace?</h4>
-          <div className="w-full">
-            <Controller
-              name="organization_size"
-              control={control}
-              rules={{ required: "This is a required field." }}
-              render={({ field: { value, onChange } }) => (
-                <CustomSelect
-                  value={value}
-                  onChange={onChange}
-                  label={
-                    ORGANIZATION_SIZE.find((c) => c === value) ?? (
-                      <span className="text-placeholder">Select a range</span>
-                    )
-                  }
-                  buttonClassName="!border-[0.5px] !border-subtle !shadow-none"
-                  input
-                >
-                  {ORGANIZATION_SIZE.map((item) => (
-                    <CustomSelect.Option key={item} value={item}>
-                      {item}
-                    </CustomSelect.Option>
-                  ))}
-                </CustomSelect>
+              {errors.slug && <span className="text-11 text-danger-primary">{errors.slug.message}</span>}
+            </div>
+
+            {/* Organization Size */}
+            <div className="space-y-1.5">
+              <label className="text-13 font-semibold text-primary">
+                Expected Team Size <span className="text-rose-500">*</span>
+              </label>
+              <Controller
+                name="organization_size"
+                control={control}
+                rules={{ required: "This is a required field." }}
+                render={({ field: { value, onChange } }) => (
+                  <CustomSelect
+                    value={value}
+                    onChange={onChange}
+                    label={
+                      ORGANIZATION_SIZE.find((c) => c === value) ?? (
+                        <span className="text-secondary">Select a range</span>
+                      )
+                    }
+                    buttonClassName="!border !border-subtle !bg-layer-1 !rounded-2xl !py-2.5 !shadow-soft text-13"
+                    input
+                  >
+                    {ORGANIZATION_SIZE.map((item) => (
+                      <CustomSelect.Option key={item} value={item}>
+                        {item} members
+                      </CustomSelect.Option>
+                    ))}
+                  </CustomSelect>
+                )}
+              />
+              {errors.organization_size && (
+                <span className="text-11 text-danger-primary">{errors.organization_size.message}</span>
               )}
-            />
-            {errors.organization_size && (
-              <span className="text-13 text-danger-primary">{errors.organization_size.message}</span>
-            )}
+            </div>
           </div>
-        </div>
-      </div>
-      <div className="flex max-w-4xl items-center gap-4 py-1">
-        <Button
-          variant="primary"
-          size="lg"
-          onClick={handleSubmit(handleCreateWorkspace)}
-          disabled={!isValid}
-          loading={isSubmitting}
-        >
-          {isSubmitting ? "Creating workspace" : "Create workspace"}
-        </Button>
-        <Link className={getButtonStyling("secondary", "lg")} href="/workspace">
-          Go back
-        </Link>
+
+          {/* Action Buttons */}
+          <div className="flex items-center gap-3 pt-4">
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              disabled={!isValid || !workspaceName || !workspaceSlug}
+              loading={isSubmitting}
+            >
+              {isSubmitting ? "Provisioning..." : "Create workspace"}
+            </Button>
+            <Link className={getButtonStyling("secondary", "lg")} href="/workspace">
+              <ArrowLeft className="mr-1 h-4 w-4" />
+              Cancel
+            </Link>
+          </div>
+        </form>
       </div>
     </div>
   );

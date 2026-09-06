@@ -31,6 +31,7 @@
     "@keel/ui": "workspace:*",
     "@keel/utils": "workspace:*",
     "@react-router/node": "catalog:",
+    "@supabase/supabase-js": "catalog:",
     "isbot": "catalog:",
     "lodash-es": "catalog:",
     "lucide-react": "catalog:",

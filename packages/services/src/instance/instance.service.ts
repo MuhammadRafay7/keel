@@ -10,11 +10,12 @@ import type {
   IFormattedInstanceConfiguration,
   IInstance,
   IInstanceAdmin,
+  IInstanceConfig,
   IInstanceConfiguration,
   IInstanceInfo,
   TPage,
 } from "@keel/types";
-// api service
+import { isSupabaseConfigured } from "../supabase/client";
 import { APIService } from "../api.service";
 
 /**
@@ -38,6 +39,44 @@ export class InstanceService extends APIService {
    * @remarks This method uses the validateStatus: null option to bypass interceptors for unauthorized errors.
    */
   async info(): Promise<IInstanceInfo> {
+    if (isSupabaseConfigured) {
+      return {
+        instance: {
+          id: "keel-instance",
+          instance_name: "Keel",
+          instance_id: "keel-instance",
+          current_version: "1.4.1",
+          latest_version: "1.4.1",
+          edition: "PLANE_COMMUNITY",
+          is_telemetry_enabled: true,
+          is_support_required: true,
+          is_setup_done: true,
+          is_signup_screen_visited: true,
+          is_verified: true,
+          is_test: false,
+          is_current_version_deprecated: false,
+          is_activated: true,
+          workspaces_exist: true,
+        } as unknown as IInstance,
+        config: {
+          ENABLE_SIGNUP: "1",
+          DISABLE_WORKSPACE_CREATION: "0",
+          IS_GOOGLE_ENABLED: "0",
+          IS_GITHUB_ENABLED: "0",
+          IS_GITLAB_ENABLED: "0",
+          IS_GITEA_ENABLED: "0",
+          is_email_password_enabled: true,
+          is_magic_login_enabled: false,
+          is_smtp_configured: false,
+          is_google_enabled: false,
+          is_github_enabled: false,
+          is_gitlab_enabled: false,
+          is_gitea_enabled: false,
+          is_signup_disabled: false,
+        } as unknown as IInstanceConfig,
+      };
+    }
+
     return this.get("/api/instances/", { validateStatus: null })
       .then((response) => response.data)
       .catch((error) => {
@@ -65,6 +104,10 @@ export class InstanceService extends APIService {
    * @remarks This method uses the validateStatus: null option to bypass interceptors for unauthorized errors.
    */
   async admins(): Promise<IInstanceAdmin[]> {
+    if (isSupabaseConfigured) {
+      return [];
+    }
+
     return this.get("/api/instances/admins/", { validateStatus: null })
       .then((response) => response.data)
       .catch((error) => {
@@ -79,6 +122,14 @@ export class InstanceService extends APIService {
    * @throws {Error} If the API request fails
    */
   async update(data: Partial<IInstance>): Promise<IInstance> {
+    if (isSupabaseConfigured) {
+      return {
+        id: "keel-instance",
+        instance_name: data.instance_name ?? "Keel",
+        ...data,
+      } as unknown as IInstance;
+    }
+
     return this.patch("/api/instances/", data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -92,6 +143,17 @@ export class InstanceService extends APIService {
    * @throws {Error} If the API request fails
    */
   async configurations(): Promise<IInstanceConfiguration[]> {
+    if (isSupabaseConfigured) {
+      return [
+        { key: "ENABLE_SIGNUP", value: "1", category: "general" },
+        { key: "DISABLE_WORKSPACE_CREATION", value: "0", category: "workspace" },
+        { key: "IS_GOOGLE_ENABLED", value: "0", category: "authentication" },
+        { key: "IS_GITHUB_ENABLED", value: "0", category: "authentication" },
+        { key: "IS_GITLAB_ENABLED", value: "0", category: "authentication" },
+        { key: "IS_GITEA_ENABLED", value: "0", category: "authentication" },
+      ] as unknown as IInstanceConfiguration[];
+    }
+
     return this.get("/api/instances/configurations/")
       .then((response) => response.data)
       .catch((error) => {
@@ -106,6 +168,14 @@ export class InstanceService extends APIService {
    * @throws {Error} If the API request fails
    */
   async updateConfigurations(data: Partial<IFormattedInstanceConfiguration>): Promise<IInstanceConfiguration[]> {
+    if (isSupabaseConfigured) {
+      return Object.entries(data).map(([key, value]) => ({
+        key,
+        value: String(value),
+        category: "general",
+      })) as unknown as IInstanceConfiguration[];
+    }
+
     return this.patch("/api/instances/configurations/", data)
       .then((response) => response?.data)
       .catch((error) => {

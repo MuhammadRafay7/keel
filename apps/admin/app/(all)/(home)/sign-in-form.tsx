@@ -5,16 +5,18 @@
  */
 
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 // keel internal packages
 import type { EAdminAuthErrorCodes, TAdminAuthErrorInfo } from "@keel/constants";
 import { API_BASE_URL } from "@keel/constants";
 import { Button } from "@keel/propel/button";
-import { AuthService } from "@keel/services";
+import { AuthService, isSupabaseConfigured, supabaseAuthService } from "@keel/services";
 import { Input, Spinner } from "@keel/ui";
 // components
 import { Banner } from "@/components/common/banner";
+// hooks
+import { useUser } from "@/hooks/store";
 // local components
 import { FormHeader } from "@/components/instance/form-header";
 import { AuthBanner } from "./auth-banner";
@@ -50,6 +52,8 @@ const defaultFromData: TFormData = {
 };
 
 export function InstanceSignInForm() {
+  const router = useRouter();
+  const { fetchCurrentUser } = useUser();
   // search params
   const searchParams = useSearchParams();
   const emailParam = searchParams.get("email") || undefined;
@@ -61,18 +65,42 @@ export function InstanceSignInForm() {
   const [formData, setFormData] = useState<TFormData>(defaultFromData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorInfo, setErrorInfo] = useState<TAdminAuthErrorInfo | undefined>(undefined);
+  const [supabaseError, setSupabaseError] = useState<string | undefined>(undefined);
 
   const handleFormChange = (key: keyof TFormData, value: string | boolean) =>
     setFormData((prev) => ({ ...prev, [key]: value }));
 
   useEffect(() => {
-    if (csrfToken === undefined)
+    if (!isSupabaseConfigured && csrfToken === undefined)
       authService.requestCSRFToken().then((data) => data?.csrf_token && setCsrfToken(data.csrf_token));
   }, [csrfToken]);
 
   useEffect(() => {
     if (emailParam) setFormData((prev) => ({ ...prev, email: emailParam }));
   }, [emailParam]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    if (isSupabaseConfigured) {
+      e.preventDefault();
+      setIsSubmitting(true);
+      setSupabaseError(undefined);
+      try {
+        const result = await supabaseAuthService.signIn(formData.email, formData.password);
+        if (result.success) {
+          await fetchCurrentUser();
+          router.replace("/general");
+        } else {
+          setSupabaseError(result.error ?? "Failed to sign in");
+        }
+      } catch (err: any) {
+        setSupabaseError(err?.message ?? "An unexpected error occurred");
+      } finally {
+        setIsSubmitting(false);
+      }
+      return;
+    }
+    setIsSubmitting(true);
+  };
 
   // derived values
   const errorData: TError = useMemo(() => {
@@ -95,7 +123,7 @@ export function InstanceSignInForm() {
   }, [errorCode, errorMessage]);
 
   const isButtonDisabled = useMemo(
-    () => (!isSubmitting && formData.email && formData.password ? false : true),
+    () => isSubmitting || !formData.email || !formData.password,
     [formData.email, formData.password, isSubmitting]
   );
 
@@ -121,10 +149,12 @@ export function InstanceSignInForm() {
             className="space-y-4"
             method="POST"
             action={`${API_BASE_URL}/api/instances/admins/sign-in/`}
-            onSubmit={() => setIsSubmitting(true)}
+            onSubmit={handleSubmit}
             onError={() => setIsSubmitting(false)}
           >
-            {errorData.type && errorData?.message ? (
+            {supabaseError ? (
+              <Banner type="error" message={supabaseError} />
+            ) : errorData.type && errorData?.message ? (
               <Banner type="error" message={errorData?.message} />
             ) : (
               <>{errorInfo && <AuthBanner bannerData={errorInfo} handleBannerData={setErrorInfo} />}</>

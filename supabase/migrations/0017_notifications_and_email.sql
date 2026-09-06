@@ -78,22 +78,31 @@ language plpgsql
 security definer
 set search_path = public
 as $$
+declare
+  v_sender text := 'system';
 begin
   if p_receiver_id is null or p_receiver_id = p_triggered_by_id then
     return;
   end if;
 
+  if p_triggered_by_id is not null then
+    select coalesce(nullif(trim(u.display_name), ''), u.email, 'Keel')
+    into v_sender
+    from public.users u
+    where u.id = p_triggered_by_id;
+  end if;
+
   insert into public.notifications (
     id, created_at, updated_at, title, message, message_html, message_stripped,
     entity_name, entity_identifier, receiver_id, triggered_by_id,
-    workspace_id, project_id, data
+    workspace_id, project_id, data, sender
   )
   values (
-    gen_random_uuid(), now(), now(), p_title, p_message,
+    gen_random_uuid(), now(), now(), p_title, jsonb_build_object('text', p_message),
     coalesce(p_message_html, '<p>' || coalesce(p_message, '') || '</p>'),
     coalesce(p_message, ''),
     p_entity_name, p_entity_identifier, p_receiver_id, p_triggered_by_id,
-    p_workspace_id, p_project_id, coalesce(p_data, '{}'::jsonb)
+    p_workspace_id, p_project_id, coalesce(p_data, '{}'::jsonb), coalesce(v_sender, 'system')
   );
 end;
 $$;

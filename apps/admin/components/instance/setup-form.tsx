@@ -5,17 +5,18 @@
  */
 
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 // icons
 import { Eye, EyeOff } from "lucide-react";
 // keel internal packages
 import { API_BASE_URL, E_PASSWORD_STRENGTH } from "@keel/constants";
 import { Button } from "@keel/propel/button";
-import { AuthService } from "@keel/services";
+import { AuthService, isSupabaseConfigured, supabaseAuthService } from "@keel/services";
 import { Checkbox, Input, PasswordStrengthIndicator, Spinner } from "@keel/ui";
 import { getPasswordStrength, validatePersonName, validateCompanyName } from "@keel/utils";
 // components
 import { AuthHeader } from "@/app/(all)/(home)/auth-header";
+import { useUser } from "@/hooks/store";
 import { Banner } from "../common/banner";
 import { FormHeader } from "./form-header";
 
@@ -58,6 +59,8 @@ const defaultFromData: TFormData = {
 };
 
 export function InstanceSetupForm() {
+  const router = useRouter();
+  const { fetchCurrentUser } = useUser();
   // search params
   const searchParams = useSearchParams();
   const firstNameParam = searchParams?.get("first_name") || undefined;
@@ -77,6 +80,7 @@ export function InstanceSetupForm() {
   const [isPasswordInputFocused, setIsPasswordInputFocused] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isRetryPasswordInputFocused, setIsRetryPasswordInputFocused] = useState(false);
+  const [supabaseError, setSupabaseError] = useState<string | undefined>(undefined);
 
   const handleShowPassword = (key: keyof typeof showPassword) =>
     setShowPassword((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -85,7 +89,7 @@ export function InstanceSetupForm() {
     setFormData((prev) => ({ ...prev, [key]: value }));
 
   useEffect(() => {
-    if (csrfToken === undefined)
+    if (!isSupabaseConfigured && csrfToken === undefined)
       authService.requestCSRFToken().then((data) => data?.csrf_token && setCsrfToken(data.csrf_token));
   }, [csrfToken]);
 
@@ -96,6 +100,29 @@ export function InstanceSetupForm() {
     if (emailParam) setFormData((prev) => ({ ...prev, email: emailParam }));
     if (isTelemetryEnabledParam) setFormData((prev) => ({ ...prev, is_telemetry_enabled: isTelemetryEnabledParam }));
   }, [firstNameParam, lastNameParam, companyParam, emailParam, isTelemetryEnabledParam]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    if (isSupabaseConfigured) {
+      e.preventDefault();
+      setIsSubmitting(true);
+      setSupabaseError(undefined);
+      try {
+        const result = await supabaseAuthService.signUp(formData.email, formData.password);
+        if (result.success) {
+          await fetchCurrentUser();
+          router.replace("/general");
+        } else {
+          setSupabaseError(result.error ?? "Failed to set up account");
+        }
+      } catch (err: any) {
+        setSupabaseError(err?.message ?? "An unexpected error occurred");
+      } finally {
+        setIsSubmitting(false);
+      }
+      return;
+    }
+    setIsSubmitting(true);
+  };
 
   // derived values
   const errorData: TError = useMemo(() => {
@@ -145,16 +172,20 @@ export function InstanceSetupForm() {
             heading="Setup your Keel Instance"
             subHeading="Post setup you will be able to manage this Keel instance."
           />
-          {errorData.type &&
+          {supabaseError ? (
+            <Banner type="error" message={supabaseError} />
+          ) : (
+            errorData.type &&
             errorData?.message &&
             ![EErrorCodes.INVALID_EMAIL, EErrorCodes.INVALID_PASSWORD].includes(errorData.type) && (
               <Banner type="error" message={errorData?.message} />
-            )}
+            )
+          )}
           <form
             className="space-y-4"
             method="POST"
             action={`${API_BASE_URL}/api/instances/admins/sign-up/`}
-            onSubmit={() => setIsSubmitting(true)}
+            onSubmit={handleSubmit}
             onError={() => setIsSubmitting(false)}
           >
             <input type="hidden" name="csrfmiddlewaretoken" value={csrfToken} />

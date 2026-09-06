@@ -56,21 +56,21 @@ export const AdminSidebarHelpSection = observer(function AdminSidebarHelpSection
         }
       )}
     >
-      <div className={`flex items-center gap-1 ${isSidebarCollapsed ? "flex-col justify-center" : "w-full"}`}>
+      <div className={`flex items-center gap-1.5 ${isSidebarCollapsed ? "flex-col justify-center" : "w-full"}`}>
         <Tooltip tooltipContent="Redirect to Keel" position="right" className="ml-4" disabled={!isSidebarCollapsed}>
           <a
             href={redirectionLink}
-            className={`relative flex items-center gap-1 rounded-sm bg-layer-1 px-2 py-1 text-body-xs-medium whitespace-nowrap text-secondary`}
+            className="hover:border-blue-400/50 shadow-soft relative flex items-center gap-1.5 rounded-full border border-subtle bg-layer-1 px-3 py-1 text-12 font-medium whitespace-nowrap text-secondary transition-all hover:text-primary"
           >
-            <NewTabIcon width={14} height={14} />
-            {!isSidebarCollapsed && "Redirect to Keel"}
+            <NewTabIcon width={13} height={13} />
+            {!isSidebarCollapsed && "Open Keel"}
           </a>
         </Tooltip>
         <Tooltip tooltipContent="Help" position={isSidebarCollapsed ? "right" : "top"} className="ml-4">
           <button
             type="button"
             aria-label="Help"
-            className={`ml-auto grid place-items-center rounded-md p-1.5 text-secondary outline-none hover:bg-layer-1-hover hover:text-primary ${
+            className={`ml-auto grid place-items-center rounded-full p-1.5 text-secondary transition-colors outline-none hover:bg-layer-2 hover:text-primary ${
               isSidebarCollapsed ? "w-full" : ""
             }`}
             onClick={() => setIsNeedHelpOpen((prev) => !prev)}
@@ -82,7 +82,7 @@ export const AdminSidebarHelpSection = observer(function AdminSidebarHelpSection
           <button
             type="button"
             aria-label="Toggle sidebar"
-            className={`grid place-items-center rounded-md p-1.5 text-secondary outline-none hover:bg-layer-1-hover hover:text-primary ${
+            className={`grid place-items-center rounded-full p-1.5 text-secondary transition-colors outline-none hover:bg-layer-2 hover:text-primary ${
               isSidebarCollapsed ? "w-full" : ""
             }`}
             onClick={() => toggleSidebar(!isSidebarCollapsed)}
@@ -103,19 +103,19 @@ export const AdminSidebarHelpSection = observer(function AdminSidebarHelpSection
           leaveTo="transform opacity-0 scale-95"
         >
           <div
-            className={`absolute bottom-2 z-[15] min-w-[10rem] ${
-              isSidebarCollapsed ? "left-full" : "-left-[75px]"
-            } divide-y divide-subtle-1 rounded-sm bg-surface-1 p-1 whitespace-nowrap shadow-raised-100`}
+            className={`absolute bottom-3 z-[15] min-w-[11rem] ${
+              isSidebarCollapsed ? "left-full ml-2" : "-left-[75px]"
+            } shadow-float divide-y divide-subtle rounded-2xl border border-subtle bg-surface-1 p-1.5 whitespace-nowrap`}
             ref={helpOptionsRef}
           >
-            <div className="space-y-1 pb-2">
+            <div className="space-y-0.5 pb-1.5">
               {helpOptions.map(({ name, Icon, href }) => {
                 if (href)
                   return (
                     <Link href={href} key={name} target="_blank">
-                      <div className="flex items-center gap-x-2 rounded-sm px-2 py-1 text-11 hover:bg-layer-1-hover">
+                      <div className="flex items-center gap-x-2 rounded-xl px-2.5 py-1.5 text-11 font-medium text-secondary transition-colors hover:bg-layer-2 hover:text-primary">
                         <div className="grid flex-shrink-0 place-items-center">
-                          <Icon className="h-3.5 w-3.5 text-secondary" />
+                          <Icon className="text-blue-600 dark:text-blue-400 h-3.5 w-3.5" />
                         </div>
                         <span className="text-11">{name}</span>
                       </div>
@@ -126,17 +126,19 @@ export const AdminSidebarHelpSection = observer(function AdminSidebarHelpSection
                     <button
                       key={name}
                       type="button"
-                      className="flex w-full items-center gap-x-2 rounded-sm px-2 py-1 text-11 hover:bg-layer-1"
+                      className="flex w-full items-center gap-x-2 rounded-xl px-2.5 py-1.5 text-11 font-medium text-secondary transition-colors hover:bg-layer-2 hover:text-primary"
                     >
                       <div className="grid flex-shrink-0 place-items-center">
-                        <Icon className="h-3.5 w-3.5 text-secondary" />
+                        <Icon className="text-blue-600 dark:text-blue-400 h-3.5 w-3.5" />
                       </div>
                       <span className="text-11">{name}</span>
                     </button>
                   );
               })}
             </div>
-            <div className="px-2 pt-2 pb-1 text-10">Version: v{instance?.current_version}</div>
+            <div className="font-mono px-2.5 pt-2 pb-1 text-10 text-tertiary">
+              Version: v{instance?.current_version}
+            </div>
           </div>
         </Transition>
       </div>

@@ -7,6 +7,8 @@
 // keel imports
 import { API_BASE_URL } from "@keel/constants";
 import type { IUser, TUserProfile } from "@keel/types";
+import { isSupabaseConfigured } from "../supabase/client";
+import { supabaseUserService } from "../supabase/user.service";
 // api service
 import { APIService } from "../api.service";
 
@@ -83,6 +85,12 @@ export class UserService extends APIService {
    * @throws {Error} If the API request fails
    */
   async adminDetails(): Promise<IUser> {
+    if (isSupabaseConfigured) {
+      const user = await supabaseUserService.currentUser();
+      if (!user) throw new Error("Not authenticated");
+      return user;
+    }
+
     return this.get("/api/instances/admins/me/")
       .then((response) => response?.data)
       .catch((error) => {

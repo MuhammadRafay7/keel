@@ -40,3 +40,35 @@
     0 0 4px --alpha(var(--background-color-accent-primary) / 40%) !important;
   will-change: transform, opacity;
 }
+
+/* Keel Design Tokens & Utilities */
+.shadow-glow {
+  box-shadow: 0 0 20px -3px rgba(37, 99, 235, 0.35);
+}
+
+.shadow-glow-sm {
+  box-shadow: 0 0 12px -2px rgba(37, 99, 235, 0.25);
+}
+
+.shadow-soft {
+  box-shadow:
+    0 2px 12px -2px rgba(15, 23, 42, 0.06),
+    0 1px 3px -1px rgba(15, 23, 42, 0.04);
+}
+
+.shadow-card {
+  box-shadow:
+    0 6px 24px -4px rgba(15, 23, 42, 0.08),
+    0 2px 8px -2px rgba(15, 23, 42, 0.04);
+}
+
+.shadow-float {
+  box-shadow: 0 24px 48px -12px rgba(15, 23, 42, 0.14);
+}
+
+.bg-grid-subtle {
+  background-size: 32px 32px;
+  background-image:
+    linear-gradient(to right, rgba(148, 163, 184, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.07) 1px, transparent 1px);
+}

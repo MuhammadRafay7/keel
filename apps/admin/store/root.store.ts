@@ -14,6 +14,8 @@ import type { IUserStore } from "./user.store";
 import { UserStore } from "./user.store";
 import type { IWorkspaceStore } from "./workspace.store";
 import { WorkspaceStore } from "./workspace.store";
+import type { IAdminStore } from "./admin.store";
+import { AdminStore } from "./admin.store";
 
 enableStaticRendering(typeof window === "undefined");
 
@@ -22,12 +24,14 @@ export class RootStore {
   instance: IInstanceStore;
   user: IUserStore;
   workspace: IWorkspaceStore;
+  admin: IAdminStore;
 
   constructor() {
     this.theme = new ThemeStore(this);
     this.instance = new InstanceStore(this);
     this.user = new UserStore(this);
     this.workspace = new WorkspaceStore(this);
+    this.admin = new AdminStore(this);
   }
 
   hydrate(initialData: any) {
@@ -43,5 +47,6 @@ export class RootStore {
     this.user = new UserStore(this);
     this.theme = new ThemeStore(this);
     this.workspace = new WorkspaceStore(this);
+    this.admin = new AdminStore(this);
   }
 }

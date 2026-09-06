@@ -25,24 +25,24 @@ export const PageWrapper = (props: TPageWrapperProps) => {
   return (
     <div
       className={cn("mx-auto h-full w-full space-y-6 py-4", {
-        "max-w-[1000px] md:px-4 2xl:max-w-[1200px]": size === "md",
-        "px-4 lg:px-12": size === "lg",
+        "max-w-[1080px] md:px-6 2xl:max-w-[1280px]": size === "md",
+        "px-6 lg:px-12": size === "lg",
       })}
     >
       {customHeader ? (
-        <div className="mx-4 shrink-0 space-y-1 border-b border-subtle py-4">{customHeader}</div>
+        <div className="mx-2 shrink-0 space-y-1 border-b border-subtle/80 pt-2 pb-5">{customHeader}</div>
       ) : (
         header && (
-          <div className="mx-4 flex shrink-0 items-center justify-between gap-4 space-y-1 border-b border-subtle py-4">
+          <div className="mx-2 flex shrink-0 flex-col justify-between gap-4 border-b border-subtle/80 pt-2 pb-5 sm:flex-row sm:items-center">
             <div className={header.actions ? "flex flex-col gap-1" : "space-y-1"}>
-              <div className="text-h5-semibold text-primary">{header.title}</div>
-              <div className="text-body-sm-regular text-secondary">{header.description}</div>
+              <h1 className="text-22 sm:text-26 font-bold tracking-tight text-primary">{header.title}</h1>
+              <div className="text-13 text-tertiary">{header.description}</div>
             </div>
-            {header.actions && <div className="shrink-0">{header.actions}</div>}
+            {header.actions && <div className="flex shrink-0 items-center gap-2.5">{header.actions}</div>}
           </div>
         )
       )}
-      <div className="vertical-scrollbar scrollbar-sm flex-grow overflow-hidden overflow-y-scroll px-4 pb-4">
+      <div className="vertical-scrollbar scrollbar-sm flex-grow overflow-hidden overflow-y-scroll px-2 pb-6">
         {children}
       </div>
     </div>

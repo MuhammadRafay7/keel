@@ -18,17 +18,18 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 ENV_FILE="supabase/.env.local"
 
-if [ ! -f "$ENV_FILE" ]; then
-  echo "Missing $ENV_FILE — it holds SUPABASE_DB_URL and is gitignored, so a" >&2
-  echo "fresh clone will not have it. Copy it from a machine that does, or" >&2
-  echo "rebuild it from the database password in the Supabase dashboard." >&2
-  exit 1
+if [ -f "$ENV_FILE" ]; then
+  # shellcheck disable=SC1090
+  set -a; . "$ENV_FILE"; set +a
 fi
 
-# shellcheck disable=SC1090
-set -a; . "$ENV_FILE"; set +a
+SUPABASE_DB_URL="${SUPABASE_DB_URL:-${DATABASE_URL:-}}"
 
-: "${SUPABASE_DB_URL:?SUPABASE_DB_URL is not set in '"$ENV_FILE"'}"
+if [ -z "$SUPABASE_DB_URL" ]; then
+  echo "Missing SUPABASE_DB_URL or DATABASE_URL." >&2
+  echo "Set SUPABASE_DB_URL in the environment, or create $ENV_FILE with SUPABASE_DB_URL=..." >&2
+  exit 1
+fi
 
 case "${1:-list}" in
   list)    args=(migration list) ;;

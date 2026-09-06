@@ -47,8 +47,8 @@ export const GoogleConfiguration = observer(function GoogleConfiguration(props: 
           />
         </div>
       ) : (
-        <Link href="/authentication/google" className={cn(getButtonStyling("secondary", "base"), "text-tertiary")}>
-          <Settings2 className="h-4 w-4 p-0.5 text-tertiary" />
+        <Link href="/authentication/google" className={getButtonStyling("secondary", "base")}>
+          <Settings2 className="h-4 w-4 p-0.5" />
           Configure
         </Link>
       )}

@@ -16,4 +16,7 @@ export const CORE_HEADER_SEGMENT_LABELS: Record<string, string> = {
   gitea: "Gitea",
   workspace: "Workspace",
   create: "Create",
+  users: "Users",
+  "audit-logs": "Audit Logs",
+  settings: "Settings",
 };

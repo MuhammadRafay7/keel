@@ -4,20 +4,30 @@
  * See the LICENSE file for details.
  */
 
+import { useEffect } from "react";
 import { observer } from "mobx-react";
+import { useRouter } from "next/navigation";
 // components
 import { LogoSpinner } from "@/components/common/logo-spinner";
 import { InstanceFailureView } from "@/components/instance/failure";
 import { InstanceSetupForm } from "@/components/instance/setup-form";
 // hooks
-import { useInstance } from "@/hooks/store";
+import { useInstance, useUser } from "@/hooks/store";
 // components
 import type { Route } from "./+types/page";
 import { InstanceSignInForm } from "./sign-in-form";
 
 function HomePage() {
+  const router = useRouter();
   // store hooks
   const { instance, error } = useInstance();
+  const { isUserLoggedIn } = useUser();
+
+  useEffect(() => {
+    if (isUserLoggedIn) {
+      router.replace("/general");
+    }
+  }, [isUserLoggedIn, router]);
 
   // if instance is not fetched, show loading
   if (!instance && !error) {

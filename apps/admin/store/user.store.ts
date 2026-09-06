@@ -8,7 +8,7 @@ import { action, observable, runInAction, makeObservable } from "mobx";
 // keel internal packages
 import type { TUserStatus } from "@keel/constants";
 import { EUserStatus } from "@keel/constants";
-import { AuthService, UserService } from "@keel/services";
+import { AuthService, UserService, isSupabaseConfigured, supabaseAuthService } from "@keel/services";
 import type { IUser } from "@keel/types";
 // root store
 import type { RootStore } from "@/store/root.store";
@@ -80,9 +80,15 @@ export class UserStore implements IUserStore {
       }
       return currentUser;
     } catch (error: any) {
-      this.isLoading = false;
-      this.isUserLoggedIn = false;
-      if (error.status === 403)
+      runInAction(() => {
+        this.isLoading = false;
+        this.isUserLoggedIn = false;
+        this.currentUser = undefined;
+      });
+      if (isSupabaseConfigured) {
+        return undefined as unknown as IUser;
+      }
+      if (error?.status === 403)
         this.userStatus = {
           status: EUserStatus.AUTHENTICATION_NOT_DONE,
           message: error?.message || "",
@@ -104,6 +110,9 @@ export class UserStore implements IUserStore {
   };
 
   signOut = async () => {
+    if (isSupabaseConfigured) {
+      await supabaseAuthService.signOut();
+    }
     this.store.resetOnSignOut();
   };
 }

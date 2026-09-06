@@ -6,6 +6,8 @@
 
 import { API_BASE_URL } from "@keel/constants";
 import type { IWorkspace, TWorkspacePaginationInfo } from "@keel/types";
+import { isSupabaseConfigured } from "../supabase/client";
+import { supabaseWorkspaceService } from "../supabase/workspace.service";
 import { APIService } from "../api.service";
 
 /**
@@ -29,6 +31,18 @@ export class InstanceWorkspaceService extends APIService {
    * @throws {Error} If the API request fails
    */
   async list(nextPageCursor?: string): Promise<TWorkspacePaginationInfo> {
+    if (isSupabaseConfigured) {
+      const workspaces = await supabaseWorkspaceService.userWorkspaces();
+      return {
+        results: workspaces,
+        total_results: workspaces.length,
+        next_cursor: undefined,
+        prev_cursor: undefined,
+        next_page_results: false,
+        total_pages: 1,
+      } as unknown as TWorkspacePaginationInfo;
+    }
+
     return this.get(`/api/instances/workspaces/`, {
       params: {
         cursor: nextPageCursor,
@@ -47,6 +61,10 @@ export class InstanceWorkspaceService extends APIService {
    * @throws {Error} If the API request fails
    */
   async slugCheck(slug: string): Promise<any> {
+    if (isSupabaseConfigured) {
+      return supabaseWorkspaceService.workspaceSlugCheck(slug);
+    }
+
     const params = new URLSearchParams({ slug });
     return this.get(`/api/instances/workspace-slug-check/?${params.toString()}`)
       .then((response) => response?.data)
@@ -62,6 +80,10 @@ export class InstanceWorkspaceService extends APIService {
    * @throws {Error} If the API request fails
    */
   async create(data: Partial<IWorkspace>): Promise<IWorkspace> {
+    if (isSupabaseConfigured) {
+      return supabaseWorkspaceService.createWorkspace(data);
+    }
+
     return this.post("/api/instances/workspaces/", data)
       .then((response) => response?.data)
       .catch((error) => {

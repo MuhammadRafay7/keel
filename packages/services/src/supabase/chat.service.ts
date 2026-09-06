@@ -71,16 +71,17 @@ export class ChatService {
 
   /**
    * Lists a project's channels, seeding the defaults the first time it is opened.
+   * Only returns public channels (non-DM).
    */
   async getChannels(_workspaceSlug: string, projectId: string): Promise<IChatChannel[]> {
     const supabase = getSupabase();
     const scope = await this.resolveScope(_workspaceSlug, projectId);
 
-    // Two distinct queries rather than one `.or(...)`. The old filter
-    // interpolated the literal "global" into `project_id.eq.…`, which
-    // PostgREST hands to Postgres as a uuid comparison and which fails the
-    // whole request — so the list came back empty every time.
-    let query = supabase.from("chat_channels").select("*").eq("workspace_id", scope.workspaceId);
+    let query = supabase
+      .from("chat_channels")
+      .select("*")
+      .eq("workspace_id", scope.workspaceId)
+      .eq("is_private", false);
 
     query = scope.projectId ? query.eq("project_id", scope.projectId) : query.is("project_id", null);
 
@@ -102,6 +103,7 @@ export class ChatService {
         DEFAULT_CHANNELS.map((channel) => ({
           name: channel.name,
           description: channel.description,
+          is_private: false,
           project_id: scope.projectId,
           workspace_id: scope.workspaceId,
         }))
@@ -109,10 +111,11 @@ export class ChatService {
       .select();
 
     if (error) {
-      // Two tabs opening chat at the same moment both try to seed. The unique
-      // index added in 0023 makes the loser fail, and the right answer is
-      // whatever the winner wrote — not an error and not a second set.
-      let existingQuery = supabase.from("chat_channels").select("*").eq("workspace_id", scope.workspaceId);
+      let existingQuery = supabase
+        .from("chat_channels")
+        .select("*")
+        .eq("workspace_id", scope.workspaceId)
+        .eq("is_private", false);
 
       existingQuery = scope.projectId
         ? existingQuery.eq("project_id", scope.projectId)
@@ -125,6 +128,57 @@ export class ChatService {
     }
 
     return (data ?? []) as IChatChannel[];
+  }
+
+  /**
+   * Gets or creates a 1:1 Direct Message channel between the authenticated user and another member.
+   */
+  async getOrCreateDirectChannel(workspaceSlugOrId: string, targetUserId: string): Promise<IChatChannel> {
+    const supabase = getSupabase();
+    const scope = await this.resolveScope(workspaceSlugOrId, "global");
+    const user = (await supabase.auth.getUser())?.data?.user;
+    if (!user) throw new Error("Authentication required for direct messages.");
+
+    const dmName = user.id < targetUserId ? `dm-${user.id}-${targetUserId}` : `dm-${targetUserId}-${user.id}`;
+
+    const { data: existing, error: findError } = await supabase
+      .from("chat_channels")
+      .select("*")
+      .eq("workspace_id", scope.workspaceId)
+      .eq("name", dmName)
+      .maybeSingle();
+
+    if (findError) throw findError;
+    if (existing) return existing as IChatChannel;
+
+    const { data: created, error: insertError } = await supabase
+      .from("chat_channels")
+      .insert([
+        {
+          name: dmName,
+          description: "Direct message",
+          is_private: true,
+          project_id: null,
+          workspace_id: scope.workspaceId,
+          created_by_id: user.id,
+        },
+      ])
+      .select()
+      .single();
+
+    if (insertError) {
+      // Handle race condition where both users open DM at the same time
+      const { data: retryFind } = await supabase
+        .from("chat_channels")
+        .select("*")
+        .eq("workspace_id", scope.workspaceId)
+        .eq("name", dmName)
+        .maybeSingle();
+      if (retryFind) return retryFind as IChatChannel;
+      throw insertError;
+    }
+
+    return created as IChatChannel;
   }
 
   async createChannel(
@@ -141,6 +195,7 @@ export class ChatService {
         {
           name: toChannelSlug(channel.name ?? ""),
           description: channel.description ?? "",
+          is_private: channel.is_private ?? false,
           project_id: scope.projectId,
           workspace_id: scope.workspaceId,
         },

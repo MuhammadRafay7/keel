@@ -119,33 +119,31 @@ const InstanceAuthenticationPage = observer(function InstanceAuthenticationPage(
     >
       {formattedConfig ? (
         <div className="space-y-3">
-          <div className={cn("flex w-full items-center gap-14 rounded-sm")}>
-            <div className="flex grow items-center gap-4">
-              <div className="grow">
-                <div className="pb-1 text-16 font-medium">Allow anyone to sign up even without an invite</div>
-                <div className={cn("text-11 leading-5 font-regular text-tertiary")}>
-                  Toggling this off will only let users sign up when they are invited.
-                </div>
+          <div className="shadow-soft hover:shadow-card flex w-full items-center justify-between gap-6 rounded-3xl border border-subtle bg-surface-1 p-6 transition-all">
+            <div className="grow">
+              <div className="text-15 font-bold tracking-tight text-primary">
+                Allow anyone to sign up even without an invite
+              </div>
+              <div className="mt-1 text-12 text-tertiary">
+                Toggling this off will restrict registration so only invited users can sign up.
               </div>
             </div>
-            <div className={`shrink-0 pr-4 ${isSubmitting && "opacity-70"}`}>
-              <div className="flex items-center gap-4">
-                <ToggleSwitch
-                  value={Boolean(parseInt(enableSignUpConfig))}
-                  onChange={() => {
-                    if (Boolean(parseInt(enableSignUpConfig)) === true) {
-                      updateConfig("ENABLE_SIGNUP", "0");
-                    } else {
-                      updateConfig("ENABLE_SIGNUP", "1");
-                    }
-                  }}
-                  size="sm"
-                  disabled={isSubmitting}
-                />
-              </div>
+            <div className={`shrink-0 ${isSubmitting && "opacity-70"}`}>
+              <ToggleSwitch
+                value={Boolean(parseInt(enableSignUpConfig))}
+                onChange={() => {
+                  if (Boolean(parseInt(enableSignUpConfig)) === true) {
+                    updateConfig("ENABLE_SIGNUP", "0");
+                  } else {
+                    updateConfig("ENABLE_SIGNUP", "1");
+                  }
+                }}
+                size="sm"
+                disabled={isSubmitting}
+              />
             </div>
           </div>
-          <div className="text-lg pt-6 font-medium">Available authentication modes</div>
+          <div className="pt-6 text-15 font-bold tracking-tight text-primary">Available authentication modes</div>
           {authenticationModes.map((method) => (
             <AuthenticationMethodCard
               key={method.key}

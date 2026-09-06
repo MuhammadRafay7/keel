@@ -358,7 +358,7 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
   const { data: currentUser } = useUser();
   const {
     getUserDetails,
-    workspace: { workspaceMemberIds },
+    workspace: { workspaceMemberIds, getWorkspaceMemberIds },
   } = useMember();
 
   const [channels, setChannels] = useState<IChatChannel[]>([]);
@@ -371,14 +371,16 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
   const [isLoadingChannels, setIsLoadingChannels] = useState(true);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const [newChannelName, setNewChannelName] = useState("");
+  const [sidebarFilter, setSidebarFilter] = useState("");
   const [mentionQuery, setMentionQuery] = useState<string | null>(null);
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
-  // Chat used to fail silently in six places. These two carry the reason out
-  // to the person rather than leaving them to discover it after a reload.
   const [loadError, setLoadError] = useState<string | null>(null);
   const [sendError, setSendError] = useState<string | null>(null);
   const [editingText, setEditingText] = useState("");
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const handleCopyMessage = (msg: IChatMessage) => {
     void navigator.clipboard.writeText(msg.message);
@@ -416,18 +418,70 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
   };
 
   const handleAddReaction = (msgId: string, emoji: string) => {
-    setMessages((prev) => prev.map((m) => (m.id === msgId ? { ...m, message: `${m.message} ${emoji}` } : m)));
+    setMessages((prev) =>
+      prev.map((m) => {
+        if (m.id !== msgId) return m;
+        const currentReactions = { ...(m.reactions || {}) };
+        currentReactions[emoji] = (currentReactions[emoji] || 0) + 1;
+        return { ...m, reactions: currentReactions };
+      })
+    );
   };
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const handleSelectDirectMember = async (memberId: string) => {
+    setActiveDirectMemberId(memberId);
+    setLoadError(null);
+    try {
+      setIsLoadingMessages(true);
+      const dmChannel = await supabaseChatService.getOrCreateDirectChannel(
+        workspaceSlug?.toString() || "global",
+        memberId
+      );
+      setActiveChannel(dmChannel);
+    } catch (err) {
+      setLoadError(err instanceof Error ? err.message : "Could not open direct message channel.");
+    } finally {
+      setIsLoadingMessages(false);
+    }
+  };
 
-  const members = (workspaceMemberIds ?? [])
-    .map((id) => {
+  const handleSelectChannel = (ch: IChatChannel) => {
+    setActiveDirectMemberId(null);
+    setActiveChannel(ch);
+  };
+
+  type MemberItem = { id: string; name: string; avatar: string; email?: string; role?: string };
+
+  const rawMemberIds = workspaceSlug
+    ? getWorkspaceMemberIds(workspaceSlug.toString()) || workspaceMemberIds || []
+    : workspaceMemberIds || [];
+
+  const members: MemberItem[] = rawMemberIds
+    .filter((id) => id !== currentUser?.id)
+    .reduce<MemberItem[]>((acc, id) => {
       const member = getUserDetails(id);
-      return member ? { id, name: member.display_name || member.first_name || member.email || "Member" } : null;
-    })
-    .filter((member): member is { id: string; name: string } => Boolean(member));
+      if (member) {
+        acc.push({
+          id,
+          name: member.display_name || member.first_name || member.email || "Member",
+          avatar:
+            (member as { avatar_url?: string; avatar?: string }).avatar_url ||
+            (member as { avatar_url?: string; avatar?: string }).avatar ||
+            "",
+          email: member.email || undefined,
+          role: (member as { company_role?: string; role?: string }).company_role || undefined,
+        });
+      }
+      return acc;
+    }, []);
+
+  const filteredChannels = channels.filter((ch) => ch.name.toLowerCase().includes(sidebarFilter.toLowerCase()));
+
+  const filteredMembers = members.filter(
+    (m) =>
+      m.name.toLowerCase().includes(sidebarFilter.toLowerCase()) ||
+      (m.role && m.role.toLowerCase().includes(sidebarFilter.toLowerCase()))
+  );
 
   const mentionMatches =
     mentionQuery === null
@@ -444,13 +498,10 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
         const fetchedChannels = await supabaseChatService.getChannels(workspaceSlug.toString(), "global");
         if (cancelled) return;
         setChannels(fetchedChannels);
-        if (fetchedChannels.length > 0) setActiveChannel(fetchedChannels[0]);
+        if (fetchedChannels.length > 0 && !activeDirectMemberId) {
+          setActiveChannel(fetchedChannels[0]);
+        }
       } catch (err) {
-        // These used to be replaced with three invented channels carrying ids
-        // like "general". Nothing could be posted into them — the ids are not
-        // uuids — but the view looked healthy, so a real outage read as a chat
-        // that quietly forgot everything on reload. An empty list and a
-        // message is the honest answer.
         if (!cancelled) {
           setChannels([]);
           setActiveChannel(null);
@@ -517,7 +568,7 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
     const channelId = activeChannel?.id;
     if (!channelId) {
       setInputMessage(textToSend);
-      setSendError("No channel is open yet. Reload, or create a channel first.");
+      setSendError("No channel or direct message is open yet. Select a conversation first.");
       setIsSending(false);
       return;
     }
@@ -548,9 +599,6 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
         return withoutTemp.some((m) => m.id === created.id) ? withoutTemp : [...withoutTemp, created];
       });
     } catch (err) {
-      // The optimistic message used to be left on screen when the insert
-      // failed, which is precisely why chat "lost" messages on reload: they
-      // had never been written. Take it back out and say so.
       setMessages((prev) => prev.filter((m) => m.id !== tempMsg.id));
       setInputMessage(textToSend);
       setSendError(err instanceof Error ? err.message : "That message did not send.");
@@ -571,8 +619,6 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
       setChannels((prev) => [...prev, created]);
       setActiveChannel(created);
     } catch (err) {
-      // Same reasoning as the channel list: a locally invented channel accepts
-      // messages that can never be stored.
       setSendError(err instanceof Error ? err.message : "Could not create that channel.");
       return;
     }
@@ -604,113 +650,204 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
     : null;
 
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden bg-canvas text-primary">
-      {/* Top Integrated Channel Header & Switcher (No duplicate sidebar) */}
-      <header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-subtle bg-surface-1 px-5 py-3">
-        <div className="flex items-center gap-3 overflow-x-auto py-0.5">
-          <div className="flex items-center gap-2 border-r border-subtle pr-2">
-            <CommentFillIcon className="size-5 shrink-0 text-accent-primary" />
-            <span className="text-14 font-semibold text-primary">Workspace Chat</span>
-          </div>
-
-          <div className="flex items-center gap-1.5">
-            {channels.map((ch) => {
-              const isActive = activeChannel?.id === ch.id && !activeDirectMemberId;
-              return (
-                <button
-                  key={ch.id}
-                  type="button"
-                  onClick={() => {
-                    setActiveChannel(ch);
-                    setActiveDirectMemberId(null);
-                  }}
-                  className={cn(
-                    "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-13 font-medium transition-colors duration-150",
-                    isActive
-                      ? "shadow-sm bg-accent-primary/10 text-accent-primary"
-                      : "text-secondary hover:bg-layer-transparent-hover hover:text-primary"
-                  )}
-                >
-                  <HashIcon className={cn("size-3.5", isActive ? "text-accent-primary" : "text-tertiary")} />
-                  <span>{ch.name}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          {/* Member Direct Messages Dropdown / Switcher */}
-          {members.length > 0 && (
-            <div className="flex items-center gap-1">
-              <span className="text-11 font-medium text-tertiary">DMs:</span>
-              {members.slice(0, 3).map((m) => (
-                <button
-                  key={m.id}
-                  type="button"
-                  onClick={() => {
-                    setActiveDirectMemberId(m.id);
-                  }}
-                  className={cn(
-                    "flex items-center gap-1 rounded-full px-2.5 py-1 text-12 font-medium transition-colors",
-                    activeDirectMemberId === m.id
-                      ? "bg-accent-primary text-on-accent"
-                      : "bg-surface-2 text-secondary hover:bg-surface-2/80"
-                  )}
-                >
-                  <span
-                    className={cn(
-                      "flex size-4 items-center justify-center rounded-full text-10 font-bold",
-                      tintFor(m.id)
-                    )}
-                  >
-                    {initialOf(m.name)}
-                  </span>
-                  <span>{m.name.split(" ")[0]}</span>
-                </button>
-              ))}
+    <div className="flex h-full w-full overflow-hidden bg-canvas text-primary">
+      {/* Left Chat Navigation Sidebar */}
+      <aside className="flex w-64 shrink-0 flex-col border-r border-subtle bg-surface-1/60 backdrop-blur-xl md:w-72">
+        {/* Sidebar Header */}
+        <div className="flex h-13 shrink-0 items-center justify-between border-b border-subtle px-4">
+          <div className="flex items-center gap-2.5">
+            <div className="shadow-xs flex size-7 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary">
+              <CommentFillIcon className="size-4" />
             </div>
-          )}
-
+            <span className="text-13 font-semibold tracking-tight text-primary">Workspace Chat</span>
+          </div>
           <button
             type="button"
             onClick={() => setIsCreatingChannel(!isCreatingChannel)}
-            className="flex items-center gap-1.5 rounded-lg border border-subtle bg-surface-2 px-2.5 py-1.5 text-12 font-medium text-secondary transition-colors hover:bg-surface-2/80 hover:text-primary"
+            title="Create public channel"
+            className="flex size-6 items-center justify-center rounded-md text-secondary transition-colors hover:bg-surface-2 hover:text-primary"
           >
-            <PlusIcon className="size-3.5" />
-            <span>Channel</span>
+            <PlusIcon className="size-4" />
           </button>
         </div>
-      </header>
 
-      {/* Modal for New Channel Creation */}
-      {isCreatingChannel && (
-        <div className="border-b border-subtle bg-surface-2 px-5 py-3 shadow-raised-100">
-          <form onSubmit={handleCreateChannel} className="flex max-w-md items-center gap-2">
+        {/* Search & Filter */}
+        <div className="px-3 pt-3 pb-1">
+          <div className="relative flex items-center">
+            <SearchIcon className="absolute left-2.5 size-3.5 text-tertiary" />
             <input
               type="text"
-              autoFocus
-              value={newChannelName}
-              onChange={(e) => setNewChannelName(e.target.value)}
-              placeholder="channel-name"
-              className="flex-1 rounded-lg border border-subtle bg-surface-1 px-3 py-1.5 text-13 text-primary focus:border-accent-strong focus:outline-none"
+              value={sidebarFilter}
+              onChange={(e) => setSidebarFilter(e.target.value)}
+              placeholder="Filter channels or people..."
+              className="placeholder-tertiary focus:ring-accent-primary/20 w-full rounded-lg border border-subtle/80 bg-surface-2/60 py-1.5 pr-3 pl-8 text-12 text-primary transition-all focus:border-accent-strong focus:ring-1 focus:outline-none"
             />
-            <Button type="submit" variant="primary" size="sm" disabled={!newChannelName.trim()}>
-              Create
-            </Button>
-            <Button type="button" variant="secondary" size="sm" onClick={() => setIsCreatingChannel(false)}>
-              Cancel
-            </Button>
-          </form>
+          </div>
         </div>
-      )}
 
-      {/* Chat Messages Main Panel */}
-      <div className="flex flex-1 flex-col overflow-hidden">
+        {/* Modal for New Channel Creation */}
+        {isCreatingChannel && (
+          <div className="border-b border-subtle bg-surface-2 p-3">
+            <form onSubmit={handleCreateChannel} className="flex flex-col gap-2">
+              <span className="tracking-wider text-11 font-semibold text-secondary uppercase">New Channel</span>
+              <input
+                type="text"
+                autoFocus
+                value={newChannelName}
+                onChange={(e) => setNewChannelName(e.target.value)}
+                placeholder="channel-name"
+                className="rounded-lg border border-subtle bg-surface-1 px-2.5 py-1.5 text-12 text-primary focus:border-accent-strong focus:outline-none"
+              />
+              <div className="flex items-center justify-end gap-1.5">
+                <Button type="button" variant="secondary" size="sm" onClick={() => setIsCreatingChannel(false)}>
+                  Cancel
+                </Button>
+                <Button type="submit" variant="primary" size="sm" disabled={!newChannelName.trim()}>
+                  Create
+                </Button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {/* Navigation Sections */}
+        <div className="flex-1 space-y-4 overflow-y-auto px-2 py-3">
+          {/* Channels Section */}
+          <div>
+            <div className="flex items-center justify-between px-2 pb-1.5">
+              <span className="tracking-wider text-10 font-bold text-tertiary uppercase">
+                Channels ({filteredChannels.length})
+              </span>
+            </div>
+            <div className="space-y-0.5">
+              {isLoadingChannels && <p className="px-2 py-1 text-11 text-tertiary">Loading channels…</p>}
+              {filteredChannels.map((ch) => {
+                const isActive = activeChannel?.id === ch.id && !activeDirectMemberId;
+                return (
+                  <button
+                    key={ch.id}
+                    type="button"
+                    onClick={() => handleSelectChannel(ch)}
+                    className={cn(
+                      "group flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-left text-12 font-medium transition-all duration-150",
+                      isActive
+                        ? "shadow-xs bg-accent-primary/15 font-semibold text-accent-primary"
+                        : "text-secondary hover:bg-layer-transparent-hover hover:text-primary"
+                    )}
+                  >
+                    <HashIcon
+                      className={cn(
+                        "size-3.5 shrink-0",
+                        isActive ? "text-accent-primary" : "text-tertiary group-hover:text-secondary"
+                      )}
+                    />
+                    <span className="truncate">{ch.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Direct Messages Section */}
+          <div>
+            <div className="flex items-center justify-between px-2 pb-1.5">
+              <span className="tracking-wider text-10 font-bold text-tertiary uppercase">
+                Direct Messages ({filteredMembers.length})
+              </span>
+            </div>
+            <div className="space-y-0.5">
+              {filteredMembers.map((m) => {
+                const isSelected = activeDirectMemberId === m.id;
+                return (
+                  <button
+                    key={m.id}
+                    type="button"
+                    onClick={() => handleSelectDirectMember(m.id)}
+                    className={cn(
+                      "group flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-left text-12 font-medium transition-all duration-150",
+                      isSelected
+                        ? "shadow-xs bg-accent-primary/15 font-semibold text-accent-primary"
+                        : "text-secondary hover:bg-layer-transparent-hover hover:text-primary"
+                    )}
+                  >
+                    <span className="relative flex size-5 shrink-0 items-center justify-center">
+                      {m.avatar ? (
+                        <img src={m.avatar} alt="" className="size-5 rounded-full object-cover" />
+                      ) : (
+                        <span
+                          className={cn(
+                            "flex size-5 items-center justify-center rounded-full text-9 font-bold",
+                            tintFor(m.id)
+                          )}
+                        >
+                          {initialOf(m.name)}
+                        </span>
+                      )}
+                      <span className="bg-emerald-500 ring-surface-1 absolute -right-0.5 -bottom-0.5 size-1.5 rounded-full ring-1" />
+                    </span>
+                    <div className="min-w-0 flex-1 truncate">
+                      <span className="block truncate">{m.name}</span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      {/* Main Chat Messages Panel */}
+      <main className="flex flex-1 flex-col overflow-hidden">
+        {/* Top Active Header */}
+        <header className="flex h-13 shrink-0 items-center justify-between border-b border-subtle bg-surface-1/90 px-6 backdrop-blur-xl">
+          {activeDirectName ? (
+            <div className="flex items-center gap-3">
+              <div className="shadow-xs relative flex size-8 items-center justify-center rounded-full bg-accent-primary/20 text-12 font-bold text-accent-primary">
+                {activeDirectUser?.avatar_url ? (
+                  <img src={activeDirectUser.avatar_url} alt="" className="size-full rounded-full object-cover" />
+                ) : (
+                  initialOf(activeDirectName)
+                )}
+                <span className="bg-emerald-500 ring-surface-1 absolute -right-0.5 -bottom-0.5 size-2 rounded-full ring-2" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-13 font-semibold text-primary">{activeDirectName}</h2>
+                  <span className="text-emerald-400 border-emerald-500/20 inline-flex items-center gap-1 rounded-full border bg-surface-2 px-2 py-0.5 text-10 font-medium">
+                    <span className="bg-emerald-400 size-1.5 rounded-full" />
+                    Direct Message
+                  </span>
+                </div>
+                <p className="text-11 text-tertiary">
+                  {(activeDirectUser as { company_role?: string })?.company_role ||
+                    activeDirectUser?.email ||
+                    "Team Member"}{" "}
+                  · Private 1:1 Conversation
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center gap-3">
+              <div className="flex size-8 items-center justify-center rounded-lg border border-subtle bg-surface-2 text-primary">
+                <HashIcon className="size-4 text-accent-primary" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-13 font-semibold text-primary">{activeChannel?.name || "general"}</h2>
+                  <span className="rounded-full bg-surface-2 px-2 py-0.5 text-10 font-medium text-tertiary">
+                    Public Channel
+                  </span>
+                </div>
+                <p className="text-11 text-tertiary">{activeChannel?.description || "Workspace discussion"}</p>
+              </div>
+            </div>
+          )}
+        </header>
+
         {loadError && (
           <div
             role="alert"
-            className="mx-5 mt-4 flex items-start justify-between gap-3 rounded-xl border border-danger-subtle bg-danger-subtle px-4 py-3"
+            className="mx-6 mt-4 flex items-start justify-between gap-3 rounded-xl border border-danger-subtle bg-danger-subtle px-4 py-3"
           >
             <p className="text-13 text-danger-primary">{loadError}</p>
             <button
@@ -723,7 +860,8 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
           </div>
         )}
 
-        <div className="flex-1 space-y-2 overflow-y-auto px-5 py-4">
+        {/* Message Feed */}
+        <div className="flex-1 space-y-2 overflow-y-auto px-6 py-4">
           {isLoadingMessages && (
             <p className="flex h-full items-center justify-center text-13 text-tertiary">Loading messages…</p>
           )}
@@ -739,7 +877,9 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
                   : `This is the start of #${activeChannel?.name || "general"}`}
               </p>
               <p className="max-w-sm text-12 text-tertiary">
-                Slack & ClickUp-style real-time workspace messaging. Format with code blocks, bold, lists, and quotes.
+                {activeDirectName
+                  ? "Messages sent here are completely private between you and " + activeDirectName + "."
+                  : "Welcome to the channel. Send messages, share updates, and collaborate in real-time."}
               </p>
             </div>
           )}
@@ -793,6 +933,14 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
                       title="React 🚀"
                     >
                       🚀
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleAddReaction(msg.id, "🔥")}
+                      className="flex size-6 items-center justify-center rounded-full text-12 transition-transform hover:scale-110 hover:bg-surface-2"
+                      title="React 🔥"
+                    >
+                      🔥
                     </button>
                     <span className="bg-subtle mx-0.5 h-3 w-px" />
                     <button
@@ -881,7 +1029,27 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
                         </div>
                       </div>
                     ) : (
-                      <ChatMessageContent text={msg.message} />
+                      <>
+                        <ChatMessageContent text={msg.message} />
+                        {msg.reactions && Object.keys(msg.reactions).length > 0 && (
+                          <div className="mt-1.5 flex flex-wrap gap-1">
+                            {Object.entries(msg.reactions).map(([emoji, count]) => {
+                              if (!count || Number(count) <= 0) return null;
+                              return (
+                                <button
+                                  key={emoji}
+                                  type="button"
+                                  onClick={() => handleAddReaction(msg.id, emoji)}
+                                  className="hover:bg-surface-3 flex items-center gap-1 rounded-full border border-subtle bg-surface-2/80 px-2 py-0.5 text-11 font-medium text-secondary transition-all hover:border-accent-subtle"
+                                >
+                                  <span>{emoji}</span>
+                                  <span className="text-10 font-semibold">{String(count)}</span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
@@ -891,10 +1059,10 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Rich Composer with Slack / ClickUp Formatting Toolbar */}
-        <div className="relative shrink-0 px-5 pt-1 pb-5">
+        {/* Rich Composer */}
+        <div className="relative shrink-0 px-6 pt-1 pb-5">
           {mentionMatches.length > 0 && (
-            <div className="absolute bottom-full left-5 z-10 mb-2 w-64 overflow-hidden rounded-xl border border-subtle bg-surface-1 shadow-overlay-100">
+            <div className="absolute bottom-full left-6 z-10 mb-2 w-64 overflow-hidden rounded-xl border border-subtle bg-surface-1 shadow-overlay-100">
               {mentionMatches.map((member) => (
                 <button
                   key={member.id}
@@ -1003,7 +1171,9 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
                 }
               }}
               placeholder={
-                activeDirectName ? `Message ${activeDirectName}` : `Message #${activeChannel?.name || "general"}`
+                activeDirectName
+                  ? `Message ${activeDirectName} (Private)`
+                  : `Message #${activeChannel?.name || "general"}`
               }
               className="placeholder-tertiary w-full resize-none bg-transparent px-1 py-1 text-13 leading-relaxed text-primary focus:outline-none"
             />
@@ -1055,7 +1225,7 @@ export const WorkspaceChatView = observer(function WorkspaceChatView({
             </div>
           </form>
         </div>
-      </div>
+      </main>
     </div>
   );
 });

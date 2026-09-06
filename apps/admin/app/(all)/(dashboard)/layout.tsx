@@ -40,7 +40,7 @@ function AdminLayout(_props: Route.ComponentProps) {
     return (
       <div className="relative flex h-screen w-screen overflow-hidden">
         <AdminSidebar />
-        <main className="relative flex h-full w-full flex-col overflow-hidden bg-surface-1">
+        <main className="bg-grid-subtle relative flex h-full w-full flex-col overflow-hidden bg-surface-1">
           <AdminHeader />
           <div className="vertical-scrollbar scrollbar-md h-full w-full overflow-hidden overflow-y-scroll">
             <Outlet />

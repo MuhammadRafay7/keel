@@ -5,6 +5,7 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { joinUrlPath } from "@keel/utils";
 
+dotenv.config({ path: path.resolve(__dirname, ".env.local") });
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 
 // Expose only vars starting with VITE_
@@ -21,6 +22,9 @@ export default defineConfig(() => ({
   base: basePath,
   define: {
     "process.env": JSON.stringify(viteEnv),
+    "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(viteEnv.VITE_SUPABASE_URL ?? ""),
+    "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY": JSON.stringify(viteEnv.VITE_SUPABASE_PUBLISHABLE_KEY ?? ""),
+    "import.meta.env.VITE_WEB_BASE_URL": JSON.stringify(viteEnv.VITE_WEB_BASE_URL ?? ""),
   },
   build: {
     assetsInlineLimit: 0,

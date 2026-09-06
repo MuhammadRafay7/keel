@@ -646,6 +646,9 @@ importers:
       '@react-router/node':
         specifier: 7.18.1
         version: 7.18.1(react-router@7.18.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.3)
+      '@supabase/supabase-js':
+        specifier: 'catalog:'
+        version: 2.112.3(@opentelemetry/api@1.9.1)
       isbot:
         specifier: 'catalog:'
         version: 5.1.31
@@ -1702,6 +1705,9 @@ importers:
       '@keel/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      postgres:
+        specifier: ^3.4.9
+        version: 3.4.9
       tsdown:
         specifier: 'catalog:'
         version: 0.16.0(oxc-resolver@11.20.0)(typescript@5.8.3)
@@ -8554,6 +8560,10 @@ packages:
   postcss@8.5.25:
     resolution: {integrity: sha512-DTPx3RWSSnWyzLxQnlH0rJP+EW5ekl16ZU4/psbIhA0e53kJfdgaN5vKM+xP7yJtXVu+nfdVFmlgFDEKAe4Pyw==}
     engines: {node: ^10 || ^12 || >=14}
+
+  postgres@3.4.9:
+    resolution: {integrity: sha512-GD3qdB0x1z9xgFI6cdRD6xu2Sp2WCOEoe3mtnyB5Ee0XrrL5Pe+e4CCnJrRMnL1zYtRDZmQQVbvOttLnKDLnaw==}
+    engines: {node: '>=12'}
 
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -16733,6 +16743,8 @@ snapshots:
       nanoid: 3.3.8
       picocolors: 1.1.1
       source-map-js: 1.2.1
+
+  postgres@3.4.9: {}
 
   prelude-ls@1.2.1: {}
 

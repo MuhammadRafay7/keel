@@ -14,8 +14,28 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
  * bypasses RLS entirely and must never appear in frontend code — server-side
  * work belongs in Edge Functions.
  */
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL ?? "";
-const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? "";
+declare const process: any;
+
+function resolveEnv(viteKey: string, nextKey?: string): string {
+  try {
+    if (typeof process !== "undefined" && process?.env) {
+      // @ts-ignore
+      const val = process.env[viteKey] || (nextKey ? process.env[nextKey] : undefined);
+      if (val) return val;
+    }
+  } catch {}
+  return "";
+}
+
+const SUPABASE_URL: string =
+  ((import.meta as any).env?.VITE_SUPABASE_URL as string) ||
+  resolveEnv("VITE_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_URL") ||
+  "";
+
+const SUPABASE_PUBLISHABLE_KEY: string =
+  ((import.meta as any).env?.VITE_SUPABASE_PUBLISHABLE_KEY as string) ||
+  resolveEnv("VITE_SUPABASE_PUBLISHABLE_KEY", "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY") ||
+  "";
 
 /** True when the app has been given somewhere to point. */
 export const isSupabaseConfigured = Boolean(SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY);
