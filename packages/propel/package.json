@@ -50,8 +50,8 @@
     "./styles/react-day-picker": "./dist/styles/react-day-picker.css"
   },
   "scripts": {
-    "dev": "tsdown --watch --no-clean",
-    "build": "tsdown",
+    "dev": "node init && tsdown --watch --no-clean",
+    "build": "node init && tsdown",
     "check:lint": "oxlint --max-warnings=3605 .",
     "check:types": "tsc --noEmit",
     "check:format": "oxfmt --check .",
@@ -59,7 +59,7 @@
     "fix:format": "oxfmt .",
     "clean": "rm -rf .turbo && rm -rf .next && rm -rf node_modules && rm -rf dist",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "node init && storybook build"
   },
   "dependencies": {
     "@base-ui-components/react": "catalog:",

@@ -35,8 +35,6 @@ pnpm-debug.log*
 .pnpm-debug.log*
 
 # Local env files
-.env
-.env.local
 .env.development.local
 .env.test.local
 .env.production.local
@@ -53,7 +51,6 @@ venv
 *.pyc
 staticfiles
 mediafiles
-.env
 .DS_Store
 logs/
 htmlcov/
@@ -72,7 +69,6 @@ pnpm-debug.log
 *.njsproj
 *.sln
 package-lock.json
-.vscode
 
 # Sentry
 .sentryclirc
@@ -117,7 +113,6 @@ packages/i18n/src/types/keys.generated.ts
 
 # Local security notes (not for version control)
 /security/
-.env*
 
 # Next.js
 .next/
@@ -125,3 +120,4 @@ next-env.d.ts
 branch_structure.json
 temp_auto_push.bat
 temp_interactive_push.bat
+config.bat
